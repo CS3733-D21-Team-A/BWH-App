@@ -32,6 +32,10 @@ public class Aapp extends Application {
     }
   }
 
+  public static void setPrimaryStage(Stage primaryStage) {
+    Aapp.primaryStage = primaryStage;
+  }
+
   public static Stage getPrimaryStage(){
     return primaryStage;
   }
