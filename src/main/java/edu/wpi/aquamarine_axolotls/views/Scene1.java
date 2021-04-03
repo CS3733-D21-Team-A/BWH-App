@@ -1,6 +1,6 @@
-package edu.wpi.teamname.views;
+package edu.wpi.aquamarine_axolotls.views;
 
-import edu.wpi.teamname.App;
+import edu.wpi.aquamarine_axolotls.App;
 import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

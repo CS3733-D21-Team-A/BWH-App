@@ -1,4 +1,4 @@
-package edu.wpi.teamname;
+package edu.wpi.aquamarine_axolotls;
 
 import java.io.IOException;
 import javafx.application.Application;
