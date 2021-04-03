@@ -16,13 +16,13 @@ import org.testfx.framework.junit5.ApplicationExtension;
  * individually, it will run the entire application as if you were running it.
  */
 @ExtendWith(ApplicationExtension.class)
-public class AppTest extends FxRobot {
+public class AappTest extends FxRobot {
 
   /** Setup test suite. */
   @BeforeAll
   public static void setup() throws Exception {
     FxToolkit.registerPrimaryStage();
-    FxToolkit.setupApplication(App.class);
+    FxToolkit.setupApplication(Aapp.class);
   }
 
   @AfterAll
