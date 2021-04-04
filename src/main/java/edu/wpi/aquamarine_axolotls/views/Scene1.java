@@ -12,7 +12,7 @@ public class Scene1 {
   @FXML
   private void advanceScene(ActionEvent e) {
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/teamname/fxml/Scene2.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Scene2.fxml"));
       Aapp.getPrimaryStage().getScene().setRoot(root);
     } catch (IOException ex) {
       ex.printStackTrace();
