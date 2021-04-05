@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="812.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Default_Service_Page_Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="812.0" prefWidth="375.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Default_Service_Page">
    <children>
       <HBox prefHeight="56.0" prefWidth="287.0">
          <children>
@@ -71,7 +71,7 @@
             </HBox>
             <HBox prefHeight="72.0" prefWidth="380.0">
                <children>
-                  <Button maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE">
+                  <Button maxWidth="234.0" mnemonicParsing="false" onAction="#gift_delivery_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
@@ -79,7 +79,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Medicine Delivery" textAlignment="RIGHT" textFill="WHITE">
+                  <Button contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" onAction="#medicine_delivery_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Medicine Delivery" textAlignment="RIGHT" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
@@ -94,7 +94,7 @@
             </HBox>
             <HBox prefHeight="72.0" prefWidth="380.0">
                <children>
-                  <Button maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE">
+                  <Button maxWidth="234.0" mnemonicParsing="false" onAction="#floral_delivery_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
@@ -102,7 +102,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Religous Request" textAlignment="RIGHT" textFill="WHITE">
+                  <Button contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" onAction="#religious_request_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Religious Request" textAlignment="RIGHT" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
@@ -117,7 +117,7 @@
             </HBox>
             <HBox prefHeight="72.0" prefWidth="380.0">
                <children>
-                  <Button maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Internal Transport" textFill="WHITE">
+                  <Button maxWidth="234.0" mnemonicParsing="false" onAction="#internal_transport_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Internal Transport" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
@@ -125,7 +125,7 @@
                         <Insets left="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="External Tranport" textAlignment="RIGHT" textFill="WHITE">
+                  <Button contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" onAction="#external_transport_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="External Tranport" textAlignment="RIGHT" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
@@ -140,7 +140,7 @@
             </HBox>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button contentDisplay="BOTTOM" maxWidth="234.0" mnemonicParsing="false" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Security" textAlignment="RIGHT" textFill="WHITE">
+                  <Button contentDisplay="BOTTOM" maxWidth="234.0" mnemonicParsing="false" onAction="#security_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 68px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Security" textAlignment="RIGHT" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="16.0" />
                      </font>
