@@ -5,6 +5,45 @@ import java.sql.*;
 public class DatabaseService {
 	private Connection connection;
 
+	private class NodeTable {
+		NodeTable() {}
+
+		void nodeInformation() {
+			try {
+				Statement smnt = connection.createStatement();
+				ResultSet rset = smnt.executeQuery("SELECT * FROM Nodes");
+
+				while (rset.next()) {
+					System.out.println(rset.getString("nodeID"));
+				}
+
+				rset.close();
+				smnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		void updateNodeCoords() {
+		}
+
+		void updateNodeLocationName() {
+		}
+	}
+
+	private class EdgeTable {
+		EdgeTable() {}
+
+		void edgeInformation() {
+
+		}
+	}
+
+
+	private NodeTable nodeTable;
+	private EdgeTable edgeTable;
+
+
 	public DatabaseService(int arg) {
 		try {
 			Class.forName("org.apache.derby.jdbc.ClientDriver");
@@ -14,11 +53,14 @@ public class DatabaseService {
 		}
 
 		try {
-			connection = DriverManager.getConnection("jdbc:derby:test3");
+			connection = DriverManager.getConnection("jdbc:derby:BWH");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
 		}
+
+		nodeTable = new NodeTable();
+		edgeTable = new EdgeTable();
 
 		if (arg == -1) System.out.println(
 			"1 - Node Information\n"
@@ -31,34 +73,21 @@ public class DatabaseService {
 		try {
 			switch(arg) {
 				case 1:
-					nodeInformation();
+					nodeTable.nodeInformation();
 					break;
 				case 2:
-					updateNodeCoords();
+					nodeTable.updateNodeCoords();
 					break;
 				case 3:
-					updateNodeLocationName();
+					nodeTable.updateNodeLocationName();
 					break;
 				case 4:
-					edgeInformation();
+					edgeTable.edgeInformation();
 					break;
 			}
 			connection.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return;
 		}
-	}
-
-	private void nodeInformation() {
-	}
-
-	private void updateNodeCoords() {
-	}
-
-	private void updateNodeLocationName() {
-	}
-
-	private void edgeInformation() {
 	}
 }
