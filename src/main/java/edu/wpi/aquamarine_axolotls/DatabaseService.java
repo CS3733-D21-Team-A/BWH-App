@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseService {
 	private Connection connection;
@@ -12,9 +14,25 @@ public class DatabaseService {
 			try {
 				Statement smnt = connection.createStatement();
 				ResultSet rset = smnt.executeQuery("SELECT * FROM Nodes");
+				ResultSetMetaData rsmd = rset.getMetaData();
 
-				while (rset.next()) {
-					System.out.println(rset.getString("nodeID"));
+				List<String[]> table = new ArrayList<>(); //create table to display
+				int colCount = rsmd.getColumnCount();
+
+				table.add(new String[colCount]); //add column label row
+				for (int i = 0; i < colCount; i++) {
+					table.get(0)[i] = rsmd.getColumnName(i+1); //add column labels to first row
+				}
+
+				for (int row = 1; rset.next(); row++) {
+					table.add(new String[colCount]);
+					for (int i = 0; i < colCount; i++) {
+						table.get(row)[i] = rset.getString(rsmd.getColumnName(i+1)); //add row values
+					}
+				}
+
+				for (final Object[] row : table) {
+					System.out.format("%10s%10s%10s%10s%15s%10s%45s%20s%n", row); //printout
 				}
 
 				rset.close();
@@ -39,10 +57,8 @@ public class DatabaseService {
 		}
 	}
 
-
 	private NodeTable nodeTable;
 	private EdgeTable edgeTable;
-
 
 	public DatabaseService(int arg) {
 		try {
