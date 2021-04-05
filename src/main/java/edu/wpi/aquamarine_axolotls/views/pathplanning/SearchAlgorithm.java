@@ -1,9 +1,8 @@
 package edu.wpi.aquamarine_axolotls.views.pathplanning;
 
-import java.util.PriorityQueue;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.buildPath;
 
 public abstract class SearchAlgorithm<T extends CostTo<T>> {
 
@@ -51,7 +50,7 @@ public abstract class SearchAlgorithm<T extends CostTo<T>> {
         return next.getCostTo(goal);
     }
 
-    public final List<T> getPath(somethingfromDBoredgeinfo, T start, T goal) {
+    public final List<T> getPath(LinkedList<T> edges, T start, T goal) {
         clearFrontier();
         final Map<T, T> cameFrom = new HashMap<>();
         final Map<T, Double> costSoFar = new HashMap<>();
@@ -67,7 +66,7 @@ public abstract class SearchAlgorithm<T extends CostTo<T>> {
                 break;
             }
 
-            for (T next : getConnectingnodes) {
+            for (T next : edges) { //need to implement the related edge
                 double newCost = costSoFar.get(current) + current.getCostTo(next);
                 if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
                     costSoFar.put(next, newCost);
@@ -76,6 +75,6 @@ public abstract class SearchAlgorithm<T extends CostTo<T>> {
                 }
             }
         }
-        return buildPath(cameFrom, goal); //need to implement build path here
+        return buildPath(cameFrom, goal);
     }
 }
