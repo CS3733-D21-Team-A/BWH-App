@@ -50,7 +50,7 @@ public abstract class SearchAlgorithm<T extends CostTo<T>> {
         return next.getCostTo(goal);
     }
 
-    public final List<T> getPath(LinkedList<T> edges, T start, T goal) {
+    public final List<T> getPath(LinkedList<T> edges, LinkedList<T> nodes, T start, T goal) {
         clearFrontier();
         final Map<T, T> cameFrom = new HashMap<>();
         final Map<T, Double> costSoFar = new HashMap<>();
