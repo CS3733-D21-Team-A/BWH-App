@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class DatabaseService {
 	private Connection connection;
@@ -46,6 +47,22 @@ public class DatabaseService {
 		}
 
 		void updateNodeLocationName() {
+			Scanner sc = new Scanner(System.in);
+
+			System.out.print("Enter node ID: ");
+			String nodeID = sc.next();
+			System.out.print("Enter the new long name for this location: ");
+			String newName = sc.next();
+
+			try {
+				Statement smnt = connection.createStatement();
+				int updated = smnt.executeUpdate("UPDATE Nodes SET LongName = '" + newName + "' WHERE NodeID = '" + nodeID + "'");
+				if (updated == 0) System.out.println("Error: Invalid node ID. Exiting...");
+
+				smnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
