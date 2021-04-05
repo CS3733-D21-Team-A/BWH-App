@@ -24,57 +24,58 @@ public abstract class SearchAlgorithm<T extends CostTo<T>> {
             return cost;
         }
 
-        private final PriorityQueue<CostPair<T>> frontier = new PriorityQueue<>();
+    }
 
-        void clearFrontier() {
-            frontier.clear();
+    private final PriorityQueue<CostPair<T>> frontier = new PriorityQueue<>();
+
+    void clearFrontier() {
+        frontier.clear();
+    }
+
+    boolean isEmptyFrontier() {
+        return frontier.isEmpty();
+    }
+
+    void addToFrontier(T node, double cost) {
+        frontier.add(new CostPair<>(node, cost));
+    }
+
+    T getNextFrontier() {
+        if (frontier.isEmpty()) {
+            return null;
         }
+        return frontier.poll().getItem();
+    }
 
-        boolean isEmptyFrontier() {
-            return frontier.isEmpty();
-        }
+    double getPriorityHeuristic(T next, T goal) {
+        return next.getCostTo(goal);
+    }
 
-        void addToFrontier(T node, double cost) {
-            frontier.add(new CostPair<>(node, cost));
-        }
+    public final List<T> getPath(somethingfromDBoredgeinfo, T start, T goal) {
+        clearFrontier();
+        final Map<T, T> cameFrom = new HashMap<>();
+        final Map<T, Double> costSoFar = new HashMap<>();
 
-        T getNextFrontier() {
-            if (frontier.isEmpty()) {
-                return null;
+        addToFrontier(start, 0.0);
+        cameFrom.put(start, null);
+        costSoFar.put(start, 0.0);
+
+        while (!isEmptyFrontier()) {
+            T current = getNextFrontier();
+
+            if (current.equals(goal)) {
+                break;
             }
-            return frontier.poll().getItem();
-        }
 
-        double getPriorityHeuristic(T next, T goal) {
-            return next.getCostTo(goal);
-        }
-        public final List<T> getPath(somethingfromDB, T start, T goal) {
-            clearFrontier();
-            final Map<T, T> cameFrom = new HashMap<>();
-            final Map<T, Double> costSoFar = new HashMap<>();
-
-            addToFrontier(start, 0.0);
-            cameFrom.put(start, null);
-            costSoFar.put(start, 0.0);
-
-            while (!isEmptyFrontier()) {
-                T current = getNextFrontier();
-
-                if (current.equals(goal)) {
-                    break;
-                }
-
-                for (T next : getConnectingnodesfromDB) {
-                    double newCost = costSoFar.get(current) + current.getCostTo(next);
-                    if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
-                        costSoFar.put(next, newCost);
-                        addToFrontier(next, newCost + getPriorityHeuristic(next, goal));
-                        cameFrom.put(next, current);
-                    }
+            for (T next : getConnectingnodes) {
+                double newCost = costSoFar.get(current) + current.getCostTo(next);
+                if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
+                    costSoFar.put(next, newCost);
+                    addToFrontier(next, newCost + getPriorityHeuristic(next, goal));
+                    cameFrom.put(next, current);
                 }
             }
-            return buildPath(cameFrom, goal); //need to implement build path here
         }
-
+        return buildPath(cameFrom, goal); //need to implement build path here
     }
 }

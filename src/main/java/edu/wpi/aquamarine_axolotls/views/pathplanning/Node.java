@@ -88,7 +88,6 @@ public class Node {
         return shortName;
     }
 
-
         public double getCostTo(Node othernode){
             double xsqre = Math.pow(othernode.getXcoord() - getXcoord(),2);
             double ysqre = Math.pow(othernode.getYcoord() - getYcoord(),2);
