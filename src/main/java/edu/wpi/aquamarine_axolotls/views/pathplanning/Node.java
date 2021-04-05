@@ -1,63 +1,39 @@
 package edu.wpi.aquamarine_axolotls.views.pathplanning;
 
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import com.opencsv.bean.CsvBindByName;
 
 public class Node {
 
-    public enum NodeType {
-        CONF("Conference"),
-        ELEV("Elevator"),
-        EXIT("Exit"),
-        HALL("Hall"),
-        DEPT("Department"),
-        INFO("Information"),
-        LABS("Lab"),
-        REST("Restroom"),
-        RETL("Retail"),
-        SERV("Service"),
-        STAI("Stair Case"),
-        WORKZONE("Workzone"),
-        PANTRY("Pantry"),
-        CLASSROOM("Classroom"),
-        AUDITORIUM("Auditorium");
+    @CsvBindByName(column = "nodeID")
+    private String nodeID;
 
-        private final String name;
-        NodeType(final String name) {
-            this.name = name;
-        }
+    @CsvBindByName(column = "xcoord")
+    private int xcoord;
 
-        @Override
-        public String toString() {
-            return name;
-        }
-    }
+    @CsvBindByName(column = "ycoord")
+    private int ycoord;
 
-    private final String nodeId;
-    private final int xcoord;
-    private final int ycoord;
-    private final String floor;
-    private final String building;
-    private final NodeType nodeType;
-    private final String longName;
-    private final String shortName;
+    @CsvBindByName(column = "floor")
+    private String floor;
 
-    public Node(final String nodeId, final int xcoord, final int ycoord, final String floor,
-                final String building, final NodeType nodeType, final String longName,
-                final String shortName) {
-        this.nodeId = nodeId;
-        this.xcoord = xcoord;
-        this.ycoord = ycoord;
-        this.floor = floor;
-        this.building = building;
-        this.nodeType = nodeType;
-        this.longName = longName;
-        this.shortName = shortName;
-    }
+    @CsvBindByName(column = "building")
+    private String building;
 
-    public String getNodeId() {
-        return nodeId;
+    @CsvBindByName(column = "nodeType")
+    private String nodeType;
+
+    @CsvBindByName(column = "longName")
+    private String longName;
+
+    @CsvBindByName(column = "shortName")
+    private String shortName;
+
+
+    public String getNodeID() {
+        return nodeID;
     }
 
     public int getXcoord() {
@@ -76,7 +52,7 @@ public class Node {
         return building;
     }
 
-    public NodeType getNodeType() {
+    public String getNodeType() {
         return nodeType;
     }
 
@@ -88,6 +64,22 @@ public class Node {
         return shortName;
     }
 
+    public static Node getNode(String id, List<Node> nodes){
+        String nodeName;
+        for (int j = 1; j < nodes.size(); j++) {
+            nodeName = nodes.get(j).getNodeID();
+
+            if (nodeName.equals(id)){
+                return nodes.get(j);
+            }
+        }
+        System.out.println("Couldn't find that node");
+        return null;
+    }
+
+    public String toString(){
+        return getNodeID() + " " + getXcoord() + " " + getYcoord();
+    }
         public double getCostTo(Node othernode){
             double xsqre = Math.pow(othernode.getXcoord() - getXcoord(),2);
             double ysqre = Math.pow(othernode.getYcoord() - getYcoord(),2);
@@ -95,5 +87,6 @@ public class Node {
 
             return dist;
         }
+
 }
 
