@@ -146,8 +146,8 @@ public class Adb {
 
 		public DatabaseService() {
 			try {
-				Class.forName("org.apache.derby.jdbc.ClientDriver");
-			} catch (ClassNotFoundException e) {
+				Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+			} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 				e.printStackTrace();
 				return;
 			}
