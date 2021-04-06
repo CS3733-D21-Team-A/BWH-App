@@ -153,7 +153,7 @@ public class Adb {
 			}
 
 			try {
-				this.connection = DriverManager.getConnection("jdbc:derby:BWH");
+				this.connection = DriverManager.getConnection("jdbc:derby:BWH;user=admin;password=admin");
 			} catch (SQLException e) {
 				e.printStackTrace();
 				return;
