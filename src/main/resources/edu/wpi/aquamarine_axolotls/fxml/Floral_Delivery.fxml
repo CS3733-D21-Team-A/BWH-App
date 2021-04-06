@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Food_Delivery">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Food_Delivery">
    <children>
       <VBox alignment="CENTER" layoutX="257.0" layoutY="79.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -66,7 +66,7 @@
                   <Line endX="450.0" startX="-100.0" stroke="#c4c4c4" strokeWidth="4.0" />
                </children>
             </HBox>
-            <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
+            <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please provide at least one day between your desired delivery day and order placement." textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>
@@ -93,12 +93,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
                <children>
-                  <TextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery TIme">
+                  <TextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery Time">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </TextField>
-                  <TextField fx:id="roomNumber" maxWidth="-Infinity" prefWidth="250.0" promptText="Room Number">
+                  <TextField fx:id="roomNumber" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient's Room Number">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -108,14 +108,16 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" />
-            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
                <children>
-                  <TextField fx:id="deliveryTime1" maxWidth="-Infinity" prefHeight="58.0" prefWidth="148.0" promptText="Delivery TIme">
+                  <TextField fx:id="deliveryTime1" maxWidth="-Infinity" prefHeight="60.0" prefWidth="292.0" promptText="Insert Personalized Message">
                      <HBox.margin>
-                        <Insets left="35.0" />
+                        <Insets left="35.0" right="30.0" top="5.0" />
                      </HBox.margin>
                   </TextField>
+               </children></HBox>
+            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
+               <children>
                   <Button fx:id="nextButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="360.0" />
