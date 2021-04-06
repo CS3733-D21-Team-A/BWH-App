@@ -28,16 +28,4 @@ public class AappTest extends FxRobot {
   @AfterAll
   public static void cleanup() {}
 
-  @Test
-  public void testButton() {
-    verifyThat("Scene 1", Node::isVisible);
-    clickOn("Advance Scene");
-    verifyThat("Scene 2", Node::isVisible);
-    clickOn("Advance Scene");
-    verifyThat("Scene 3", Node::isVisible);
-    clickOn("Advance Scene");
-    verifyThat("Scene 4", Node::isVisible);
-    clickOn("Advance Scene");
-    verifyThat("Scene 1", Node::isVisible);
-  }
 }
