@@ -105,7 +105,6 @@ public class Node extends Edge{
             double xsqre = Math.pow(othernode.getXcoord() - getXcoord(),2);
             double ysqre = Math.pow(othernode.getYcoord() - getYcoord(),2);
             double dist = Math.sqrt(xsqre+ysqre);
-            System.out.println("dist: " + dist);
 
             return dist;
         }

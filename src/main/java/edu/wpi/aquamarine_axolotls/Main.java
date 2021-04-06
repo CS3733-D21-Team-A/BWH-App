@@ -32,8 +32,8 @@ public class Main {
 
     //System.out.println(connectedNode);
 
-    Node start = newNode.getNode("CREST004L1",nodes);
-    Node goal = newNode.getNode("CHALL004L1",nodes);
+    Node start = newNode.getNode("CCONF002L1",nodes);
+    Node goal = newNode.getNode("CCONF003L1",nodes);
     List<Node> path = newSearch.getPath(edges,nodes,start,goal);
     System.out.println(path);
 

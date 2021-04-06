@@ -68,7 +68,7 @@ public class SearchAlgorithm extends Node implements CostTo {
 
         void addToFrontier(Node node, double cost) {
             CostPair pair = new CostPair(node, cost);
-            System.out.println("pair " + pair);
+            //System.out.println("pair " + pair);
             frontier.add(pair);
         }
 
@@ -105,7 +105,6 @@ public class SearchAlgorithm extends Node implements CostTo {
                     if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
                         costSoFar.put(next, newCost);
                         addToFrontier(next, newCost + getPriorityHeuristic(next, goal));
-
                         cameFrom.put(next, current);
 
                     }
