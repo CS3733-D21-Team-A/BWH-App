@@ -2,7 +2,6 @@ package edu.wpi.aquamarine_axolotls;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -18,8 +17,8 @@ public class Adb {
 			 */
 			void nodeInformation() {
 				try {
-					Statement smnt = connection.createStatement();
-					ResultSet rset = smnt.executeQuery("SELECT * FROM Nodes");
+					PreparedStatement smnt = connection.prepareStatement("SELECT * FROM Nodes");
+					ResultSet rset = smnt.executeQuery();
 					ResultSetMetaData rsmd = rset.getMetaData();
 
 					List<String[]> table = new ArrayList<>(); //create table to display
@@ -61,14 +60,14 @@ public class Adb {
 				System.out.print("Enter the new Y coordinate: ");
 				int newYC = Integer.parseInt(sc.next());
 				try {
-					PreparedStatement ps = connection.prepareStatement("UPDATE Nodes SET xcoord=?, ycoord=? WHERE NodeID=?");
-					ps.setInt(1,newXC);
-					ps.setInt(2,newYC);
-					ps.setString(3,nodeID);
-					int updatedRows = ps.executeUpdate();
+					PreparedStatement smnt = connection.prepareStatement("UPDATE Nodes SET xcoord=?, ycoord=? WHERE NodeID=?");
+					smnt.setInt(1,newXC);
+					smnt.setInt(2,newYC);
+					smnt.setString(3,nodeID);
+					int updatedRows = smnt.executeUpdate();
 					if (updatedRows == 0) System.out.println("Error: Invalid node ID. Exiting...");
 
-					ps.close();
+					smnt.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -87,8 +86,10 @@ public class Adb {
 				String newName = sc.next();
 
 				try {
-					Statement smnt = connection.createStatement();
-					int updated = smnt.executeUpdate("UPDATE Nodes SET LongName = '" + newName + "' WHERE NodeID = '" + nodeID + "'");
+					PreparedStatement smnt = connection.prepareStatement("UPDATE Nodes SET LongName=? WHERE NodeID=?");
+					smnt.setString(1,newName);
+					smnt.setString(2,nodeID);
+					int updated = smnt.executeUpdate();
 					if (updated == 0) System.out.println("Error: Invalid node ID. Exiting...");
 
 					smnt.close();
@@ -104,10 +105,10 @@ public class Adb {
 			/**
 			 * Display list of edges along with their attributes
 			 */
-			void edgeInformation() {
+			void edgeInformation() { //TODO: Refactor this into an interface?
 				try {
-					Statement smnt = connection.createStatement();
-					ResultSet rset = smnt.executeQuery("SELECT * FROM Edges");
+					PreparedStatement smnt = connection.prepareStatement("SELECT * FROM Edges");
+					ResultSet rset = smnt.executeQuery();
 					ResultSetMetaData rsmd = rset.getMetaData();
 
 					List<String[]> table = new ArrayList<>(); //create table to display
