@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Default_Service_Page">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Default_Service_Page">
    <children>
       <HBox prefHeight="56.0" prefWidth="287.0">
          <children>
@@ -143,6 +143,6 @@
             </HBox>
          </children>
       </VBox>
-      <Line endX="450.0" layoutX="366.0" layoutY="80.0" startX="-100.0" stroke="#c4c4c4" strokeWidth="4.0" />
+      <Line endX="145.0" layoutX="366.0" layoutY="80.0" startX="-274.5" stroke="#c4c4c4" strokeWidth="4.0" />
    </children>
 </AnchorPane>
