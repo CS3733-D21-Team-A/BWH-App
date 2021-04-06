@@ -110,12 +110,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
                <children>
-                  <ComboBox prefHeight="25.0" prefWidth="250.0" promptText="Food Options" />
+                  <ComboBox fx:id="foodOptions" prefHeight="25.0" prefWidth="250.0" promptText="Food Options" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="nextButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                  <Button fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="360.0" />
                      </HBox.margin>

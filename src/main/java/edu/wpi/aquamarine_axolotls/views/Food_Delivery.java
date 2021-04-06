@@ -9,7 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-
+import javafx.scene.control.Button;
 import java.io.IOException;
 
 public class Food_Delivery extends Service_Request {
@@ -32,11 +32,13 @@ public class Food_Delivery extends Service_Request {
     @FXML
     private ComboBox foodOptions;
 
-    /*
+    @FXML
+    private Button submitButton;
+    
     @FXML
     public void initialize(){
         foodOptions.setItems(foodOptionList);
     }
-    */
+
 
 }

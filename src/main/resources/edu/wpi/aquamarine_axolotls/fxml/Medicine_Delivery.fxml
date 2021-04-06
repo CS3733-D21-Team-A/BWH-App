@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Food_Delivery">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Medicine_Delivery">
    <children>
       <VBox alignment="CENTER" layoutX="257.0" layoutY="79.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -110,7 +110,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
                <children>
-                  <TextField fx:id="deliveryTime1" maxWidth="-Infinity" prefHeight="60.0" prefWidth="292.0" promptText="Insert Special Instructions">
+                  <TextField fx:id="specInstruct" maxWidth="-Infinity" prefHeight="60.0" prefWidth="292.0" promptText="Insert Special Instructions">
                      <HBox.margin>
                         <Insets left="35.0" right="30.0" top="5.0" />
                      </HBox.margin>
@@ -118,7 +118,7 @@
                </children></HBox>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="nextButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                  <Button fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="360.0" />
                      </HBox.margin>
