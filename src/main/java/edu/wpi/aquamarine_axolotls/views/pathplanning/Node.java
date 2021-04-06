@@ -67,7 +67,7 @@ public class Node extends Edge{
 
     public static Node getNode(String id, List<Node> nodes){
         String nodeName;
-        for (int j = 1; j < nodes.size(); j++) {
+        for (int j = 0; j < nodes.size(); j++) {
             nodeName = nodes.get(j).getNodeID();
 
             if (nodeName.equals(id)){
@@ -82,7 +82,7 @@ public class Node extends Edge{
         String nodeName = myNode.getNodeID();
         List<Node> connectedNode = new ArrayList<>();
 
-        for (int j = 1; j < edges.size(); j++) {
+        for (int j = 0; j < edges.size(); j++) {
             String startNodeName = edges.get(j).getStartNode();
             //System.out.println(startNodeName);
             String endNodeName = edges.get(j).getEndNode();

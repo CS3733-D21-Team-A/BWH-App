@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.buildPath;
+import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.checkPath;
 
 public class SearchAlgorithm extends Node implements CostTo {
 
@@ -111,6 +112,10 @@ public class SearchAlgorithm extends Node implements CostTo {
                 }
             }
             System.out.println("pathfound");
-            return buildPath(cameFrom, goal);
+            List<Node> foundPath = buildPath(cameFrom, goal);
+            if (checkPath(foundPath,start,goal)){
+                return foundPath;
+            }
+            return null;
         }
 }
