@@ -156,10 +156,6 @@ public class DatabaseService {
 		nodeTable = new NodeTable();
 		edgeTable = new EdgeTable();
 
-		nodeTable.nodeInformation();
-		nodeTable.updateNodeCoords();
-		nodeTable.nodeInformation();
-
 		if (arg == -1) System.out.println(
 			"1 - Node Information\n"
 			+ "2 - Update Node Coordinates\n"
