@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Default_Service_Page">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Default_Service_Page">
    <children>
       <HBox prefHeight="56.0" prefWidth="287.0">
          <children>
@@ -23,6 +21,7 @@
       <Text layoutX="219.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20 px; -fx-font-family: Optima;" text="SERVICES" textAlignment="CENTER" wrappingWidth="162.76488763633415" />
       <VBox layoutX="-3.0" layoutY="87.0" prefHeight="713.0" prefWidth="607.0">
          <children>
+
             <HBox prefHeight="71.0" prefWidth="473.0">
                <children>
                   <Button maxWidth="234.0" mnemonicParsing="false" onAction="#food_delivery_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Food Delivery" textFill="WHITE">
@@ -144,5 +143,6 @@
             </HBox>
          </children>
       </VBox>
+      <Line endX="450.0" layoutX="366.0" layoutY="80.0" startX="-100.0" stroke="#c4c4c4" strokeWidth="4.0" />
    </children>
 </AnchorPane>
