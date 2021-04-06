@@ -6,6 +6,7 @@ import com.opencsv.bean.CsvToBeanBuilder;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.Edge;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.FileDataReader;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.views.pathplanning.SearchAlgorithm;
 
 
 public class Main {
@@ -24,10 +25,17 @@ public class Main {
 
     FileDataReader filedataReader = new FileDataReader();
     Edge newEdge = new Edge();
+    Node newNode = new Node();
+    SearchAlgorithm newSearch = new SearchAlgorithm();
     filedataReader.setup();
-    List<Node> connectedNode = Edge.getConnected("GHALL006L1", edges, nodes);
+    //List<Node> connectedNode = Node.getConnected(newNode.getNode("CDEPT003L1",nodes), edges, nodes);
 
-    System.out.println(connectedNode);
+    //System.out.println(connectedNode);
+
+    Node start = newNode.getNode("CREST004L1",nodes);
+    Node goal = newNode.getNode("CHALL004L1",nodes);
+    List<Node> path = newSearch.getPath(edges,nodes,start,goal);
+    System.out.println(path);
 
   }
 }

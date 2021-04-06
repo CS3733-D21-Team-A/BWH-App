@@ -1,21 +1,28 @@
 package edu.wpi.aquamarine_axolotls.views.pathplanning;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.buildPath;
 
-public abstract class SearchAlgorithm<T extends CostTo<T>> {
+public class SearchAlgorithm extends Node implements CostTo {
 
-    protected static class CostPair<T> {
-        private final T item;
+    public SearchAlgorithm(){
+
+    }
+
+    protected static class CostPair implements Comparable<CostPair>{
+        private final Node item;
         private final double cost;
 
-        CostPair(T item, double cost) {
+
+        CostPair(Node item, double cost) {
             this.item = item;
             this.cost = cost;
         }
 
-        public T getItem() {
+        public Node getItem() {
             return item;
         }
 
@@ -23,58 +30,88 @@ public abstract class SearchAlgorithm<T extends CostTo<T>> {
             return cost;
         }
 
-    }
-
-    private final PriorityQueue<CostPair<T>> frontier = new PriorityQueue<>();
-
-    void clearFrontier() {
-        frontier.clear();
-    }
-
-    boolean isEmptyFrontier() {
-        return frontier.isEmpty();
-    }
-
-    void addToFrontier(T node, double cost) {
-        frontier.add(new CostPair<>(node, cost));
-    }
-
-    T getNextFrontier() {
-        if (frontier.isEmpty()) {
-            return null;
+        public String toString() {
+            return getItem() + "," + getCost();
         }
-        return frontier.poll().getItem();
-    }
 
-    double getPriorityHeuristic(T next, T goal) {
-        return next.getCostTo(goal);
-    }
+        public int compareTo(CostPair o) {
+            return Double.compare(cost, o.cost);
+        }
 
-    public final List<T> getPath(List<T> edges, LinkedList<T> nodes, T start, T goal) {
-        clearFrontier();
-        final Map<T, T> cameFrom = new HashMap<>();
-        final Map<T, Double> costSoFar = new HashMap<>();
-
-        addToFrontier(start, 0.0);
-        cameFrom.put(start, null);
-        costSoFar.put(start, 0.0);
-
-        while (!isEmptyFrontier()) {
-            T current = getNextFrontier();
-
-            if (current.equals(goal)) {
-                break;
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
             }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            CostPair costPair = (CostPair) o;
+            return Objects.equals(item, costPair.item);
+        }
 
-            for (T next : current.get) { //need to implement the related edge
-                double newCost = costSoFar.get(current) + current.getCostTo(next);
-                if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
-                    costSoFar.put(next, newCost);
-                    addToFrontier(next, newCost + getPriorityHeuristic(next, goal));
-                    cameFrom.put(next, current);
+        @Override
+        public int hashCode() {
+            return Objects.hash(item);
+        }
+    }
+
+        private final PriorityQueue<CostPair> frontier = new PriorityQueue<CostPair>();
+
+        void clearFrontier() {
+            frontier.clear();
+        }
+
+        boolean isEmptyFrontier() {
+            return frontier.isEmpty();
+        }
+
+        void addToFrontier(Node node, double cost) {
+            CostPair pair = new CostPair(node, cost);
+            System.out.println("pair " + pair);
+            frontier.add(pair);
+        }
+
+        Node getNextFrontier() {
+            if (frontier.isEmpty()) {
+                return null;
+            }
+            return frontier.poll().getItem();
+        }
+
+        double getPriorityHeuristic(Node next, Node goal) {
+            return next.getCostTo(goal);
+        }
+
+        public final List<Node> getPath(List<Edge> edges, List<Node> nodes, Node start, Node goal) {
+            clearFrontier();
+            final Map<Node, Node> cameFrom = new HashMap<>();
+            final Map<Node, Double> costSoFar = new HashMap<>();
+
+            addToFrontier(start, 0.0);
+            cameFrom.put(start, null);
+            costSoFar.put(start, 0.0);
+
+            while (!isEmptyFrontier()) {
+                Node current = getNextFrontier();
+
+                if (current.equals(goal)) {
+                    break;
+                }
+
+                List<Node> connectedNodes = getConnected(current, edges, nodes);
+                for (Node next : connectedNodes) {
+                    double newCost = costSoFar.get(current) + current.getCostTo(next);
+                    if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
+                        costSoFar.put(next, newCost);
+                        addToFrontier(next, newCost + getPriorityHeuristic(next, goal));
+
+                        cameFrom.put(next, current);
+
+                    }
                 }
             }
+            System.out.println("pathfound");
+            return buildPath(cameFrom, goal);
         }
-        return buildPath(cameFrom, goal);
-    }
 }

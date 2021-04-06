@@ -1,11 +1,12 @@
 package edu.wpi.aquamarine_axolotls.views.pathplanning;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import com.opencsv.bean.CsvBindByName;
 
-public class Node {
+public class Node extends Edge{
 
     @CsvBindByName(column = "nodeID")
     private String nodeID;
@@ -77,6 +78,26 @@ public class Node {
         return null;
     }
 
+    public static List<Node> getConnected(Node myNode, List<Edge> edges, List<Node> nodes){
+        String nodeName = myNode.getNodeID();
+        List<Node> connectedNode = new ArrayList<>();
+
+        for (int j = 1; j < edges.size(); j++) {
+            String startNodeName = edges.get(j).getStartNode();
+            //System.out.println(startNodeName);
+            String endNodeName = edges.get(j).getEndNode();
+            //System.out.println(endNodeName);
+            if (nodeName.equals(startNodeName)){
+                connectedNode.add(getNode(endNodeName, nodes));
+            }
+            if (nodeName.equals(endNodeName)){
+                connectedNode.add(getNode(startNodeName, nodes));
+            }
+        }
+        System.out.println("getConnected complete");
+        return connectedNode;
+    }
+
     public String toString(){
         return getNodeID() + " " + getXcoord() + " " + getYcoord();
     }
@@ -84,6 +105,7 @@ public class Node {
             double xsqre = Math.pow(othernode.getXcoord() - getXcoord(),2);
             double ysqre = Math.pow(othernode.getYcoord() - getYcoord(),2);
             double dist = Math.sqrt(xsqre+ysqre);
+            System.out.println("dist: " + dist);
 
             return dist;
         }

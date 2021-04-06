@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class PathBuilder {
-    static <T> List<T> buildPath(final Map<T, T> cameFrom, final T goal) {
-        LinkedList<T> path = new LinkedList<>(); // We want Queue interface
-        T next = goal;
+    static  List<Node> buildPath(final Map<Node, Node> cameFrom, final Node goal) {
+        LinkedList<Node> path = new LinkedList<>(); // We want Queue interface
+        Node next = goal;
         while (cameFrom.get(next) != null) {
             path.push(next);
             next = cameFrom.get(next);
