@@ -128,6 +128,6 @@ public class AStarTest {
         System.out.println("expected Path: " + expectedPath);
         System.out.println("test Path: " + testPath);
 
-        Assertions.assertEquals(testPath, expectedPath);
+        Assertions.assertEquals(expectedPath,testPath);
     }
 }
