@@ -152,7 +152,7 @@ class DatabaseService {
 		}
 
 		try {
-			this.connection = DriverManager.getConnection("jdbc:derby:BWH;user=admin;password=admin");
+			this.connection = DriverManager.getConnection("jdbc:derby:classpath:edu/wpi/aquamarine_axolotls/BWH;user=admin;password=admin");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
