@@ -20,7 +20,7 @@ public class Main {
     List<Node> nodes = new CsvToBeanBuilder(new FileReader(nodeFileName)).withType(Node.class).build().parse();
     List<Edge> edges = new CsvToBeanBuilder(new FileReader(edgeFileName)).withType(Edge.class).build().parse();
 
-    System.out.println(nodes);
+    //System.out.println(nodes);
 
     FileDataReader filedataReader = new FileDataReader();
     Edge newEdge = new Edge();
