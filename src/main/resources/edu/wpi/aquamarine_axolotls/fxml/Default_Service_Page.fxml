@@ -105,7 +105,7 @@
                         <Insets />
                      </HBox.margin>
                   </Button>
-                  <Button alignment="CENTER" maxWidth="234.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#internal_transport_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #012D5A;" text="Internal Transport" textFill="WHITE">
+                  <Button alignment="CENTER" maxWidth="234.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#internal_transport_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #012D5A; -fx-background-radius: 7;" text="Internal Transport" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="14.0" />
                      </font>
