@@ -65,6 +65,10 @@ public class Node extends Edge{
         return shortName;
     }
 
+    /*
+     * Get the node by node ID
+     * */
+
     public static Node getNode(String id, List<Node> nodes){
         String nodeName;
         for (int j = 0; j < nodes.size(); j++) {
@@ -77,6 +81,10 @@ public class Node extends Edge{
         System.out.println("Couldn't find that node");
         return null;
     }
+
+    /*
+     * Get the connected node of current one with the edge information
+     * */
 
     public static List<Node> getConnected(Node myNode, List<Edge> edges, List<Node> nodes){
         String nodeName = myNode.getNodeID();
@@ -101,6 +109,11 @@ public class Node extends Edge{
     public String toString(){
         return getNodeID() + " " + getXcoord() + " " + getYcoord();
     }
+
+    /*
+     * Get cost to other node by distance
+     * */
+
         public double getCostTo(Node othernode){
             double xsqre = Math.pow(othernode.getXcoord() - getXcoord(),2);
             double ysqre = Math.pow(othernode.getYcoord() - getYcoord(),2);

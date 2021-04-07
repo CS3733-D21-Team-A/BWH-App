@@ -13,6 +13,11 @@ public class SearchAlgorithm extends Node implements CostTo {
 
     }
 
+    /*
+     * Cost pair definition, the pair consist of a node and the cost
+     * Used in priority queue
+     * */
+
     protected static class CostPair implements Comparable<CostPair>{
         private final Node item;
         private final double cost;
@@ -59,6 +64,10 @@ public class SearchAlgorithm extends Node implements CostTo {
 
         private final PriorityQueue<CostPair> frontier = new PriorityQueue<CostPair>();
 
+
+         /*
+            * Frontier operations
+         * */
         void clearFrontier() {
             frontier.clear();
         }
@@ -84,6 +93,9 @@ public class SearchAlgorithm extends Node implements CostTo {
             return next.getCostTo(goal);
         }
 
+        /*
+        Find the path using Astar
+         */
         public final List<Node> getPath(List<Edge> edges, List<Node> nodes, Node start, Node goal) {
             clearFrontier();
             final Map<Node, Node> cameFrom = new HashMap<>();

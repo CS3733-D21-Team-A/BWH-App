@@ -25,12 +25,19 @@ public class AStarTest {
 
     String nodeFileName = "src/test/resources/edu/wpi/aquamarine_axolotls/testNodes.csv";
     String edgeFileName = "src/test/resources/edu/wpi/aquamarine_axolotls/testEdges.csv";
+    String twoNodeFileName = "src/test/resources/edu/wpi/aquamarine_axolotls/twoNodes.csv";
+    String twoEdgeFileName = "src/test/resources/edu/wpi/aquamarine_axolotls/twoEdges.csv";
 
     List<Node> nodes = new CsvToBeanBuilder(new FileReader(nodeFileName)).withType(Node.class).build().parse();
     List<Edge> edges = new CsvToBeanBuilder(new FileReader(edgeFileName)).withType(Edge.class).build().parse();
 
+    List<Node> twoNodes = new CsvToBeanBuilder(new FileReader(twoNodeFileName)).withType(Node.class).build().parse();
+    List<Edge> twoEdges = new CsvToBeanBuilder(new FileReader(twoEdgeFileName)).withType(Edge.class).build().parse();
+
     public AStarTest() throws IOException {
     }
+
+    /*Test for the map with only one node in it, the start is the same as the goal*/
 
     @Test
     public void oneNodeTest() {
@@ -46,8 +53,32 @@ public class AStarTest {
 
         Assertions.assertEquals(testPath, expectedPath);
     }
+
+    /*Test for the map with only two node in it*/
+
     @Test
-    public void twoNodeTest1() {
+    public void twoNodeTest() {
+        Node start = Node.getNode("A",twoNodes);
+        Node goal = Node.getNode("B",twoNodes);
+
+        System.out.println(start);
+        System.out.println(goal);
+
+        List<Node> testPath = aStar.getPath(twoEdges,twoNodes,start,goal);
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.add(Node.getNode("A",twoNodes));
+        expectedPath.add(Node.getNode("B",twoNodes));
+
+        System.out.println(expectedPath);
+        System.out.println(testPath);
+
+        Assertions.assertEquals(expectedPath,testPath);
+    }
+
+    /*Test general search with input map*/
+
+    @Test
+    public void generalNodeTest1() {
         Node start = Node.getNode("A",nodes);
         Node goal = Node.getNode("C",nodes);
 
@@ -60,13 +91,15 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(testPath, expectedPath);
+        Assertions.assertEquals(expectedPath,testPath);
     }
 
+    /*Test general search with input map*/
+
     @Test
-    public void twoNodeTest2() {
-        Node start = Node.getNode("E",nodes);
-        Node goal = Node.getNode("K",nodes);
+    public void generalNodeTest2() {
+        Node start = Node.getNode("H",nodes);
+        Node goal = Node.getNode("F",nodes);
 
         List<Node> testPath = aStar.getPath(edges,nodes,start,goal);
         List<Node> expectedPath = new ArrayList<>();
@@ -78,8 +111,11 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(testPath, expectedPath);
+        Assertions.assertEquals(expectedPath,testPath);
     }
+
+    /*Test for the case that the end is not connected to any of the node
+    * and no path can be generated*/
 
     @Test
     public void noConnectedNodeTest() {
