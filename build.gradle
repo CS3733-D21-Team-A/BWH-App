@@ -39,10 +39,6 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
     )
-    compile(
-            [group: 'org.apache.derby', name: 'derby', version:'10.14.2.0'],
-            [group: 'org.apache.derby', name: 'derbyclient', version:'10.14.2.0']
-    )
 
 //These are test dependencies. These are only used for running verification tasks via Gradle.
     testCompile(
@@ -65,7 +61,9 @@ jar {
         attributes 'Main-Class': 'edu.wpi.aquamarine_axolotls.Main',
                 'Class-Path': configurations.runtime.files.collect { "$it.name"}.join(' ')
     }
-    from configurations.runtime.collect { zipTree(it) }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 
