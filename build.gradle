@@ -55,8 +55,11 @@ test {
 // with the Main method you want run!
 jar {
     manifest {
-        attributes 'Main-Class': 'edu.wpi.aquamarine_axolotls.Main'
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+        attributes 'Main-Class': 'edu.wpi.aquamarine_axolotls.Main',
+                'Class-Path': configurations.runtime.files.collect { "$it.name"}.join(' ')
     }
+    from configurations.runtime.collect { zipTree(it) }
 }
 
 
