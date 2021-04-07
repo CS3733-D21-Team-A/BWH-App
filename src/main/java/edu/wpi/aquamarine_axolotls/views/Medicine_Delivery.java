@@ -4,11 +4,13 @@ import javafx.fxml.FXML;
 
 import javax.xml.soap.Text;
 import java.awt.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 public class Medicine_Delivery extends Service_Request {
-   /*
+
     @FXML
-    private Button back_button2;
+    private Button back_button;
 
     @FXML
     private TextField firstName;
@@ -20,11 +22,11 @@ public class Medicine_Delivery extends Service_Request {
     private TextField deliveryTime;
 
     @FXML
-    private TextField roomNumber2;
+    private TextField roomNumber;
 
     @FXML
-    private TextField specInstruct2;
+    private TextField specInstruct;
 
-    */
-
+    @FXML
+    private Button submitButton;
 }
