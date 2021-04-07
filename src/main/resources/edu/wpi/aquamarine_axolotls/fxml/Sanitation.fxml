@@ -108,7 +108,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="28.0" prefWidth="600.0">
                                  <children>
-                                    <TextField fx:id="lastName1" maxWidth="-Infinity" prefWidth="250.0" promptText="Location">
+                                    <TextField fx:id="locationInput" maxWidth="-Infinity" prefWidth="250.0" promptText="Location">
                                        <HBox.margin>
                                           <Insets bottom="10.0" />
                                        </HBox.margin>
@@ -130,7 +130,7 @@
                                                 <Insets right="15.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <RadioButton mnemonicParsing="false" />
+                                          <RadioButton fx:id="isCovidRelated" mnemonicParsing="false" />
                                        </children>
                                     </HBox>
                                     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
@@ -143,14 +143,14 @@
                                                 <Insets right="15.0" />
                                              </HBox.margin>
                                           </Label>
-                                          <RadioButton mnemonicParsing="false" />
+                                          <RadioButton fx:id="isBiohazard" mnemonicParsing="false" />
                                        </children>
                                     </HBox>
                                  </children>
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
                                  <children>
-                                    <ComboBox fx:id="service_requests" prefHeight="25.0" prefWidth="250.0" promptText="Service Request Type">
+                                    <ComboBox fx:id="serviceRequests" prefHeight="25.0" prefWidth="250.0" promptText="Service Request Type">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" />
                                        </HBox.margin>
@@ -162,7 +162,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                                  <children>
-                                    <TextField fx:id="roomNumber" alignment="TOP_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="520.0" promptText="Please Enter a Brief Description">
+                                    <TextField fx:id="descriptionInput" alignment="TOP_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="520.0" promptText="Please Enter a Brief Description">
                                        <HBox.margin>
                                           <Insets />
                                        </HBox.margin>
@@ -171,7 +171,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="50.0" prefWidth="200.0">
                                  <children>
-                                    <Button mnemonicParsing="false" text="Upload an Image" />
+                                    <Button fx:id="uploadImage" mnemonicParsing="false" text="Upload an Image" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="10.0" />

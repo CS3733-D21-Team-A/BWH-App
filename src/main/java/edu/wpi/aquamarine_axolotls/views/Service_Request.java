@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 
 import java.io.IOException;
 
-public abstract class Service_Request {
+public class Service_Request {
     public void return_home(ActionEvent actionEvent) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
