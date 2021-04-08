@@ -128,10 +128,10 @@ public class Node extends Edge{
 
     /**
      * Helper function that turns a node into a string that can be printed out
-     * @return A string consisting of the node ID, x coord and y coord separated by spaces
+     * @return A string consisting of the node ID, x coord, y coord and short name separated by spaces
      */
     public String toString(){
-        return getNodeID() + " " + getXcoord() + " " + getYcoord();
+        return "\n" + getNodeID() + " " + getXcoord() + " " + getYcoord() + " " + getShortName();
     }
 
     /**
