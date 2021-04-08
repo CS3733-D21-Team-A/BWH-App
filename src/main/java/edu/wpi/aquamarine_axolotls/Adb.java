@@ -13,6 +13,11 @@ public class Adb {
 			return;
 		}
 
+		if (Integer.parseInt(args[0]) == 5) {
+			System.out.println("Exiting...");
+			return;
+		}
+
 		DatabaseService db = new DatabaseService();
 
 		switch(Integer.parseInt(args[0])) {

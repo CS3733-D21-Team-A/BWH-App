@@ -54,11 +54,11 @@ class DatabaseService {
 			Scanner sc = new Scanner(System.in);
 
 			System.out.print("Enter nodeID: ");
-			String nodeID = sc.next();
+			String nodeID = sc.nextLine();
 			System.out.print("Enter the new X coordinate: "); //TODO: check node ID before asking for values
-			int newXC = Integer.parseInt(sc.next());
+			int newXC = Integer.parseInt(sc.nextLine());
 			System.out.print("Enter the new Y coordinate: ");
-			int newYC = Integer.parseInt(sc.next());
+			int newYC = Integer.parseInt(sc.nextLine());
 			try {
 				PreparedStatement smnt = connection.prepareStatement("UPDATE Nodes SET xcoord=?, ycoord=? WHERE NodeID=?");
 				smnt.setInt(1,newXC);
@@ -81,9 +81,9 @@ class DatabaseService {
 			Scanner sc = new Scanner(System.in);
 
 			System.out.print("Enter node ID: ");
-			String nodeID = sc.next();
+			String nodeID = sc.nextLine();
 			System.out.print("Enter the new long name for this location: "); //TODO: check node ID before asking for values
-			String newName = sc.next();
+			String newName = sc.nextLine();
 
 			try {
 				PreparedStatement smnt = connection.prepareStatement("UPDATE Nodes SET LongName=? WHERE NodeID=?");
