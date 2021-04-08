@@ -12,7 +12,9 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.JFXButton?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Laundry">
    <children>
       <VBox alignment="CENTER" layoutX="257.0" layoutY="79.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -40,7 +42,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" VBox.vgrow="ALWAYS" />
             <HBox maxHeight="27.0" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="back_button" mnemonicParsing="false" onAction="#return_home" prefHeight="13.0" prefWidth="30.0">
+                  <JFXButton fx:id="back_button" mnemonicParsing="false" onAction="#return_home" prefHeight="13.0" prefWidth="30.0">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" scaleY="0.7">
                            <image>
@@ -48,7 +50,7 @@
                            </image>
                         </ImageView>
                      </graphic>
-                  </Button>
+                  </JFXButton>
                </children>
                <opaqueInsets>
                   <Insets />
@@ -82,16 +84,16 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="28.0" prefWidth="600.0">
                <children>
-                  <TextField fx:id="firstName" maxWidth="-Infinity" prefWidth="250.0" promptText="First Name">
+                  <JFXTextField fx:id="firstName" maxWidth="-Infinity" prefWidth="250.0" promptText="First Name">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
-                  </TextField>
-                  <TextField fx:id="lastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Last Name">
+                  </JFXTextField>
+                  <JFXTextField fx:id="lastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Last Name">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
-                  </TextField>
+                  </JFXTextField>
                </children>
                <VBox.margin>
                   <Insets bottom="5.0" top="20.0" />
@@ -99,16 +101,16 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0">
                <children>
-                  <TextField fx:id="roomNumber" maxWidth="-Infinity" prefHeight="27.0" prefWidth="250.0" promptText="Room Number">
+                  <JFXTextField fx:id="roomNumber" maxWidth="-Infinity" prefHeight="27.0" prefWidth="250.0" promptText="Room Number">
                      <HBox.margin>
                         <Insets left="1.0" right="10.0" />
                      </HBox.margin>
-                  </TextField>
-                  <TextField fx:id="specialInstruct" maxWidth="-Infinity" prefHeight="46.0" prefWidth="254.0" promptText="Insert Special Instructions">
+                  </JFXTextField>
+                  <JFXTextField fx:id="specialInstruct" maxWidth="-Infinity" prefHeight="46.0" prefWidth="254.0" promptText="Insert Special Instructions">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
-                  </TextField>
+                  </JFXTextField>
                </children>
                <VBox.margin>
                   <Insets />
@@ -117,11 +119,11 @@
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" />
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                  <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="360.0" />
                      </HBox.margin>
-                  </Button>
+                  </JFXButton>
                </children>
             </HBox>
          </children>
