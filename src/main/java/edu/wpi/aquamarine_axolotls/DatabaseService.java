@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls;
 
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +37,7 @@ class DatabaseService {
 				}
 
 				for (final Object[] row : table) {
-					System.out.format("%10s%10s%10s%10s%15s%10s%45s%20s%n", row); //printout
+					System.out.format("%10s%10s%10s%10s%15s%10s%45s%30s%n", row); //printout
 				}
 
 				rset.close();
@@ -143,16 +144,93 @@ class DatabaseService {
 	NodeTable getNodeTable() { return this.nodeTable; }
 	EdgeTable getEdgeTable() { return this.edgeTable; }
 
+	private void createDB() {
+		try {
+			PreparedStatement smnt = connection.prepareStatement(
+				"CREATE TABLE Nodes (" +
+					"nodeID VARCHAR(25) PRIMARY KEY," +
+					"xcoord NUMERIC(5)," +
+					"ycoord NUMERIC(5)," +
+					"floor VARCHAR(3)," +
+					"building VARCHAR(30)," +
+					"nodeType VARCHAR(5)," +
+					"longName VARCHAR(50)," +
+					"shortName VARCHAR(30)" +
+				")"
+			);
+			smnt.execute();
+
+			smnt = connection.prepareStatement(
+				"CREATE TABLE Edges (" +
+					"edgeID VARCHAR(51) PRIMARY KEY," +
+					"startNode VARCHAR(25)," +
+					"endNode VARCHAR(25)," +
+					"CONSTRAINT FK_startNode FOREIGN KEY (startNode) REFERENCES Nodes(nodeID)," +
+					"CONSTRAINT FK_endNode FOREIGN KEY (endNode) REFERENCES Nodes(nodeID)" +
+				")"
+			);
+			smnt.execute();
+
+			System.out.println("No database found. New one created.");
+			populateDB();
+		} catch (SQLException e) {
+			System.out.println("Database Found!");
+		}
+	}
+
+	private void populateDB() {
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+			PreparedStatement smnt = connection.prepareStatement("INSERT INTO Nodes (nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName) VALUES (?,?,?,?,?,?,?,?)");
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] inp = line.split(",");
+				for (int i = 0; i < inp.length; i++) {
+					if (inp[i].matches("[0-9]+")) {
+						smnt.setInt(i+1, Integer.parseInt(inp[i]));
+					} else {
+						smnt.setString(i+1, inp[i]);
+					}
+				}
+				smnt.execute();
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		in = this.getClass().getClassLoader().getResourceAsStream("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv");
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+			PreparedStatement smnt = connection.prepareStatement("INSERT INTO Edges (edgeID, startNode, endNode) VALUES (?,?,?)");
+			String line = br.readLine();
+			while ((line = br.readLine()) != null) {
+				String[] inp = line.split(",");
+				for (int i = 0; i < inp.length; i++) {
+					if (inp[i].matches("[0-9]+")) {
+						smnt.setInt(i+1, Integer.parseInt(inp[i]));
+					} else {
+						smnt.setString(i+1, inp[i]);
+					}
+				}
+				smnt.execute();
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+	}
+
 	public DatabaseService() {
 		try {
-			Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-		} catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			return;
 		}
 
 		try {
-			this.connection = DriverManager.getConnection("jdbc:derby:classpath:edu/wpi/aquamarine_axolotls/BWH;user=admin;password=admin");
+			this.connection = DriverManager.getConnection("jdbc:derby:BWH;create=true", "admin", "admin");
+			createDB();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return;
