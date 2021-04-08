@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import com.opencsv.bean.CsvToBeanBuilder;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.Edge;
-import edu.wpi.aquamarine_axolotls.views.pathplanning.FileDataReader;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.SearchAlgorithm;
 
@@ -31,7 +30,6 @@ public class Main {
 
     //Initialize the search controller
     SearchAlgorithm newSearch = new SearchAlgorithm();
-    filedataReader.setup(); //Setup currently doesn't do anything
 
     //List<Node> connectedNode = Node.getConnected(newNode.getNode("CDEPT003L1",nodes), edges, nodes);
 
