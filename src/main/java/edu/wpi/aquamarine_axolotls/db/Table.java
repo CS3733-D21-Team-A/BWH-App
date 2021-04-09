@@ -57,7 +57,7 @@ class Table {
 
 	/**
 	 * Get the full SQL table as a ResultSet.
-	 * @return ResultSet representing the full table.
+	 * @return List of maps representing the full table.
 	 */
 	List<Map<String,String>> getEntries() {
 		return null; //TODO: Implement this
@@ -66,9 +66,9 @@ class Table {
 	/**
 	 * Query the SQL table for an entry with the provided primary key.
 	 * @param entryID Primary key representing entry to look for.
-	 * @return ResultSet representing the entry to query for.
+	 * @return Map representing the entry to query for or null if entry not present.
 	 */
-	List<Map<String,String>> getEntry(String entryID) {
+	Map<String,String> getEntry(String entryID) {
 		return null; //TODO: Implement this
 	}
 
@@ -76,7 +76,7 @@ class Table {
 	 * Query the SQL table for entries with the provided value in the provided column.
 	 * @param columnName Name of column to filter by.
 	 * @param value Value to query for.
-	 * @return ResultSet containing the results of the query.
+	 * @return List of maps containing the results of the query.
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) {
 		return null; //TODO: Implement this
