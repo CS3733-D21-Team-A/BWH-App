@@ -108,7 +108,7 @@ public class DatabaseController {
 	 * Get the full Edges table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getEdge() {
+	public List<Map<String,String>> getEdges() {
 		return null; //TODO: Implement this
 	}
 
