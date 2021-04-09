@@ -20,24 +20,24 @@ class Table {
 	}
 
 	/**
-	 * get the columns of of this table
-	 * @return a dictionaary whose keys are the names of the columns and value
-	 * is a boolean indicating if they representing type (false = int,true = String)
+	 * get the columns of of this table.
+	 * @return a dictionaary whose keys are the names of the columns and value.
+	 * is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	Map<String,Boolean> getColumns() {
 		return this.columns; //TODO: Implement this
 	}
 
 	/**
-	 * Add an entry to the database (assumes entry with provided primary key doesn't already exist)
-	 * @param values Values to enter into the database. Key is column name, value is value to enter
+	 * Add an entry to the database (assumes entry with provided primary key doesn't already exist).
+	 * @param values Values to enter into the database. Key is column name, value is value to enter.
 	 */
 	void addEntry(Map<String,String> values) {
 		//TODO: Implement this
 	}
 
 	/**
-	 * Edit an existing entry in the database (assumines entry with provided primary key exists)
+	 * Edit an existing entry in the database (assumines entry with provided primary key exists).
 	 * @param key Primary key representing entry to edit.
 	 * @param values Values to edit for the entry. Key is attribute to change, value is new value.
 	 * @return Rows in database updated.
@@ -47,7 +47,7 @@ class Table {
 	}
 
 	/**
-	 * Deletes an in the database (assumes entry with provided primary key exists)
+	 * Deletes an in the database (assumes entry with provided primary key exists).
 	 * @param entryID Primary key representing entry to delete.
 	 * @return Rows in database updated.
 	 */
@@ -56,7 +56,7 @@ class Table {
 	}
 
 	/**
-	 * Get the full SQL table as a ResultSet
+	 * Get the full SQL table as a ResultSet.
 	 * @return ResultSet representing the full table.
 	 */
 	ResultSet getEntries() {
@@ -69,6 +69,16 @@ class Table {
 	 * @return ResultSet representing the entry to query for.
 	 */
 	ResultSet getEntry(String entryID) {
+		return null; //TODO: Implement this
+	}
+
+	/**
+	 * Query the SQL table for entries with the provided value in the provided column.
+	 * @param columnName Name of column to filter by.
+	 * @param value Value to query for.
+	 * @return ResultSet containing the results of the query.
+	 */
+	ResultSet getEntriesByValue(String columnName, String value) {
 		return null; //TODO: Implement this
 	}
 }

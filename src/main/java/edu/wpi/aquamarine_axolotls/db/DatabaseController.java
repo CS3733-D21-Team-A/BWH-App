@@ -122,6 +122,15 @@ public class DatabaseController {
 		return null; //TODO: Implement this
 	}
 
+	/**
+	 * Get edges connected to the node with the provided ID
+	 * @param nodeID ID of node to find edges connected to.
+	 * @return ResultSet of edges connected to the desired node.
+	 */
+	public ResultSet getEdgesConnectedToNode(String nodeID) {
+		return null; //TODO: Implement this
+	}
+
 	// ===== CHANGES =====
 
 	/**
