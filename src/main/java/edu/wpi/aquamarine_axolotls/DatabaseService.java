@@ -239,4 +239,6 @@ class DatabaseService {
 		this.nodeTable = new NodeTable();
 		this.edgeTable = new EdgeTable();
 	}
+
+	
 }

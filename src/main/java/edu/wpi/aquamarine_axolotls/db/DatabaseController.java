@@ -1,12 +1,14 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class DatabaseController {
 	private PreparedStatement queuedChanges;
 	private Table nodeTable;
 	private Table edgeTable;
+	private Connection connection;
 
 	public DatabaseController() {
 		//TODO: Implement this
@@ -19,9 +21,33 @@ public class DatabaseController {
 	 * @param nodeID ID of node to check.
 	 * @return Boolean indicating presence of node in the database.
 	 */
-	public boolean nodeExists(String nodeID) {
-		return false;//TODO: Implement this
+	public boolean nodeExists(String nodeID) throws SQLException {
+		ArrayList<String>  rID = new ArrayList<String>();
+		Boolean y = false;
+
+		try {
+			PreparedStatement smnt = connection.prepareStatement("SELECT NodeID FROM NODE");
+			ResultSet rs = smnt.executeQuery();
+			ResultSetMetaData rsmd = rs.getMetaData();
+
+			while(rs.next()){
+				rID.add(rs.getString(1));
+				for(int i = 0; i < rID.size();) {
+					if (!rID.get(i).equals(nodeID)) {
+						i++;
+					} else if (rID.get(i).equals(nodeID)) {
+						y = true;
+					}
+				}
+				}
+			} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return y;
 	}
+
+
+
 
 	/**
 	 * Add a node to the database (assumes node with provided primary key doesn't already exist).
