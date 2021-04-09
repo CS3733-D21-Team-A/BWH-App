@@ -1,10 +1,9 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import java.sql.*;
+import java.util.List;
 import java.util.Map;
 
 public class DatabaseController {
-	private PreparedStatement queuedChanges;
 	private Table nodeTable;
 	private Table edgeTable;
 
@@ -51,19 +50,19 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Get the full Nodes table as a ResultSet
-	 * @return ResultSet representing the full Nodes table.
+	 * Get the full Nodes table as a List<Map<String,String>>
+	 * @return List of maps representing the full Nodes table.
 	 */
-	public ResultSet getNodes() {
+	public List<Map<String,String>> getNodes() {
 		return null; //TODO: Implement this
 	}
 
 	/**
 	 * Query the Nodes table for an entry with the provided primary key.
 	 * @param nodeID ID representing node to look for.
-	 * @return ResultSet representing the node to query for.
+	 * @return Map representing the node to query for.
 	 */
-	public ResultSet getNode(String nodeID) {
+	public Map<String,String> getNode(String nodeID) {
 		return null; //TODO: Implement this
 	}
 
@@ -106,52 +105,28 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Get the full Edges table as a ResultSet
-	 * @return ResultSet representing the full Nodes table.
+	 * Get the full Edges table as a List<Map<String,String>>
+	 * @return List of maps representing the full Nodes table.
 	 */
-	public ResultSet getEdge() {
+	public List<Map<String,String>> getEdge() {
 		return null; //TODO: Implement this
 	}
 
 	/**
 	 * Query the Edges table for an entry with the provided primary key.
 	 * @param edgeID ID representing node to look for.
-	 * @return ResultSet representing the node to query for.
+	 * @return Map representing the node to query for.
 	 */
-	public ResultSet getEdge(String edgeID) {
+	public Map<String,String> getEdge(String edgeID) {
 		return null; //TODO: Implement this
 	}
 
 	/**
 	 * Get edges connected to the node with the provided ID
 	 * @param nodeID ID of node to find edges connected to.
-	 * @return ResultSet of edges connected to the desired node.
+	 * @return List of maps of edges connected to the desired node.
 	 */
-	public ResultSet getEdgesConnectedToNode(String nodeID) {
+	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) {
 		return null; //TODO: Implement this
-	}
-
-	// ===== CHANGES =====
-
-	/**
-	 * Save any currently unsaved table changes.
-	 */
-	public void saveChanges() {
-		//TODO: Implement this
-	}
-
-	/**
-	 * Drop any currently unsaved table changes.
-	 */
-	public void cancelChanges() {
-		//TODO: Implement this
-	}
-
-	/**
-	 * Return whether or not there are any unsaved table changes.
-	 * @return Whether or not there are any unsaved table changes.
-	 */
-	public boolean unsavedChanges() {
-		return false; //TODO: Implement this
 	}
 }

@@ -1,7 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
 
 class Table {
@@ -59,7 +59,7 @@ class Table {
 	 * Get the full SQL table as a ResultSet.
 	 * @return ResultSet representing the full table.
 	 */
-	ResultSet getEntries() {
+	List<Map<String,String>> getEntries() {
 		return null; //TODO: Implement this
 	}
 
@@ -68,7 +68,7 @@ class Table {
 	 * @param entryID Primary key representing entry to look for.
 	 * @return ResultSet representing the entry to query for.
 	 */
-	ResultSet getEntry(String entryID) {
+	List<Map<String,String>> getEntry(String entryID) {
 		return null; //TODO: Implement this
 	}
 
@@ -78,7 +78,7 @@ class Table {
 	 * @param value Value to query for.
 	 * @return ResultSet containing the results of the query.
 	 */
-	ResultSet getEntriesByValue(String columnName, String value) {
+	List<Map<String,String>> getEntriesByValue(String columnName, String value) {
 		return null; //TODO: Implement this
 	}
 }
