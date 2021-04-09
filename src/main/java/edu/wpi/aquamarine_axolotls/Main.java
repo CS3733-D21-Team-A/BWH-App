@@ -8,10 +8,11 @@ import edu.wpi.aquamarine_axolotls.views.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.views.pathplanning.SearchAlgorithm;
 
 
+import java.io.IOException;
 public class Main {
-
   public static void main(String[] args) throws IOException{
     //Aapp.launch(Aapp.class, args);
+    Adb.main(args);
 
     //Declare file paths for node and edge CSVs
     String nodeFileName = "src/main/resources/edu/wpi/aquamarine_axolotls/MapAnodes.csv";
