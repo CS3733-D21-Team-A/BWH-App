@@ -2,13 +2,13 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.util.Dictionary;
+import java.util.Map;
 
 class Table {
 	private Connection connection;
 	private String tableName;
 	private String primaryKey; //this isn't absolutely necessary, but may simplify things.
-	private Dictionary<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things.
+	private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things.
 
 	/**
 	 * Table contructor
@@ -24,7 +24,7 @@ class Table {
 	 * @return a dictionaary whose keys are the names of the columns and value
 	 * is a boolean indicating if they representing type (false = int,true = String)
 	 */
-	Dictionary<String,Boolean> getColumns() {
+	Map<String,Boolean> getColumns() {
 		return this.columns; //TODO: Implement this
 	}
 
@@ -32,7 +32,7 @@ class Table {
 	 * Add an entry to the database (assumes entry with provided primary key doesn't already exist)
 	 * @param values Values to enter into the database. Key is column name, value is value to enter
 	 */
-	void addEntry(Dictionary<String,String> values) {
+	void addEntry(Map<String,String> values) {
 		//TODO: Implement this
 	}
 
@@ -42,7 +42,7 @@ class Table {
 	 * @param values Values to edit for the entry. Key is attribute to change, value is new value.
 	 * @return Rows in database updated.
 	 */
-	int editEntry(String key, Dictionary<String,String> values) {
+	int editEntry(String key, Map<String,String> values) {
 		return -1; //TODO: Implement this
 	}
 

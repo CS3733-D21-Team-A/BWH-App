@@ -1,9 +1,10 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import java.sql.ResultSet;
-import java.util.Dictionary;
+import java.sql.*;
+import java.util.Map;
 
 public class DatabaseController {
+	private PreparedStatement queuedChanges;
 	private Table nodeTable;
 	private Table edgeTable;
 
@@ -24,19 +25,19 @@ public class DatabaseController {
 
 	/**
 	 * Add a node to the database (assumes node with provided primary key doesn't already exist).
-	 * @param values Dictionary whose keys are the column names and values are the entry values
+	 * @param values Map whose keys are the column names and values are the entry values
 	 */
-	public void addNode(Dictionary<String,String> values) {
+	public void addNode(Map<String,String> values) {
 		//TODO: Implement this
 	}
 
 	/**
 	 * Edit an existing node in the database (assumes node with provided ID exists).
 	 * @param nodeID ID of node to edit.
-	 * @param values Dictionary whose keys are the column names and values are the new entry values
+	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editNode(String nodeID, Dictionary<String,String> values) {
+	public int editNode(String nodeID, Map<String,String> values) {
 		return -1; //TODO: Implement this
 	}
 
@@ -79,19 +80,19 @@ public class DatabaseController {
 
 	/**
 	 * Add an edge to the database (assumes edge with provided primary key doesn't already exist).
-	 * @param values Dictionary whose keys are the column names and values are the entry values
+	 * @param values Map whose keys are the column names and values are the entry values
 	 */
-	public void addEdge(Dictionary<String,String> values) {
+	public void addEdge(Map<String,String> values) {
 		//TODO: Implement this
 	}
 
 	/**
 	 * Edit an existing edge in the database (assumes node with provided ID exists).
 	 * @param nodeID ID of edge to edit.
-	 * @param values Dictionary whose keys are the column names and values are the new entry values
+	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editEdge(String nodeID, Dictionary<String,String> values) {
+	public int editEdge(String nodeID, Map<String,String> values) {
 		return -1; //TODO: Implement this
 	}
 
