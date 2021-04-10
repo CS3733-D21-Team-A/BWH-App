@@ -1,20 +1,18 @@
-package edu.wpi.aquamarine_axolotls.views.pathplanning;
-
-import com.opencsv.bean.CsvBindByName;
-
-import java.util.ArrayList;
-import java.util.List;
+package edu.wpi.aquamarine_axolotls.pathplanning;
 
 public class Edge{
 
-    @CsvBindByName(column = "edgeID")
     private String edgeID;
 
-    @CsvBindByName(column = "startNode")
     private String startNode;
 
-    @CsvBindByName(column = "endNode")
     private String endNode;
+
+    public Edge(String ID, String start, String end) {
+        this.edgeID = ID;
+        this.startNode = start;
+        this.endNode = end;
+    }
 
     public String getEdgeID(){
         return edgeID;

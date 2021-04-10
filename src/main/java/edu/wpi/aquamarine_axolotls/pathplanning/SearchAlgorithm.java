@@ -1,30 +1,38 @@
-package edu.wpi.aquamarine_axolotls.views.pathplanning;
-
-import org.jetbrains.annotations.NotNull;
+package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import java.util.*;
 
-import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.buildPath;
-import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.checkPath;
+import static edu.wpi.aquamarine_axolotls.pathplanning.PathBuilder.buildPath;
+import static edu.wpi.aquamarine_axolotls.pathplanning.PathBuilder.checkPath;
 
 public class SearchAlgorithm implements CostTo {
 
-    private final List<Node> nodes = new ArrayList<>();
-    private final List<Edge> edges = new ArrayList<>();
+    private List<Node> nodes = new ArrayList<>();
+    private List<Edge> edges = new ArrayList<>();
 
-    public SearchAlgorithm(List<Map<String, String>> nodeMap, List<Map<String, String>> egeMap){
+    public SearchAlgorithm(List<Map<String, String>> nodeMap, List<Map<String, String>> edgeMap){
         for (int i = 0; i < nodeMap.size(); i++) {
-            nodes.add(new Node(
-                    nodeMap.get(i).get("nodeID"),
-                    Integer.parseInt(nodeMap.get(i).get("xcoord")),
-                    Integer.parseInt(nodeMap.get(i).get("ycoord")),
-                    nodeMap.get(i).get("floor"),
-                    nodeMap.get(i).get("building"),
-                    nodeMap.get(i).get("nodeType"),
-                    nodeMap.get(i).get("longName"),
-                    nodeMap.get(i).get("shortName")
+            Map<String, String> currNodeMap = nodeMap.get(i);
+            this.nodes.add(new Node(
+                    currNodeMap.get("nodeID"),
+                    Integer.parseInt(currNodeMap.get("xcoord")),
+                    Integer.parseInt(currNodeMap.get("ycoord")),
+                    currNodeMap.get("floor"),
+                    currNodeMap.get("building"),
+                    currNodeMap.get("nodeType"),
+                    currNodeMap.get("longName"),
+                    currNodeMap.get("shortName")
                     )
             );
+        }
+
+        for (int j = 0; j < edgeMap.size(); j++) {
+            Map<String, String> currEdgeMap = edgeMap.get(j);
+            this.edges.add(new Edge(
+                    edgeMap.get(j).get("edgeID"),
+                    edgeMap.get(j).get("startNode"),
+                    edgeMap.get(j).get("endNode")
+            ));
         }
     }
 

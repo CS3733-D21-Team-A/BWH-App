@@ -1,20 +1,15 @@
 package edu.wpi.aquamarine_axolotls;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import edu.wpi.aquamarine_axolotls.views.pathplanning.Edge;
-import edu.wpi.aquamarine_axolotls.views.pathplanning.Node;
-import edu.wpi.aquamarine_axolotls.views.pathplanning.SearchAlgorithm;
+import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.io.FileReader;
 import java.util.*;
 
 public class AStarTest {

@@ -1,11 +1,6 @@
-package edu.wpi.aquamarine_axolotls.views.pathplanning;
+package edu.wpi.aquamarine_axolotls.pathplanning;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-public class Node extends Edge{
+public class Node{
 
     private String nodeID;
 
