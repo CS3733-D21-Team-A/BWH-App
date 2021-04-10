@@ -19,7 +19,7 @@ public class DatabaseController {
 	 * @return Boolean indicating presence of node in the database.
 	 */
 	public boolean nodeExists(String nodeID) {
-		return false;//TODO: Implement this
+		return !(nodeTable.getEntry(nodeID) ==null);
 	}
 
 	/**
@@ -27,7 +27,6 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
 	public void addNode(Map<String,String> values) {
-		//TODO: Implement this
 		nodeTable.addEntry(values);
 	}
 
@@ -56,7 +55,7 @@ public class DatabaseController {
 	 * Get the full Nodes table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getNodes() {
+	public List<Map<String,String>> getNodes(){
 		return nodeTable.getEntries();
 	}
 
