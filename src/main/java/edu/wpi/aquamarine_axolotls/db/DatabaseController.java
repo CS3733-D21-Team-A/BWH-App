@@ -105,11 +105,11 @@ public class DatabaseController {
 
 	/**
 	 * Edit an existing edge in the database (assumes node with provided ID exists).
-	 * @param nodeID ID of edge to edit.
+	 * @param edgeID ID of edge to edit.
 	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editEdge(String nodeID, Map<String,String> values) {
+	public int editEdge(String edgeID, Map<String,String> values) {
 		return -1; //TODO: Implement this
 	}
 
