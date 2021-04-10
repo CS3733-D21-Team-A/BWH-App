@@ -1,7 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
 
 class Table {
@@ -22,7 +22,7 @@ class Table {
 	/**
 	 * get the columns of of this table.
 	 * @return a dictionaary whose keys are the names of the columns and value.
-	 * is a boolean indicating if they representing type (false = int,true = String).
+	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	Map<String,Boolean> getColumns() {
 		return this.columns; //TODO: Implement this
@@ -57,18 +57,18 @@ class Table {
 
 	/**
 	 * Get the full SQL table as a ResultSet.
-	 * @return ResultSet representing the full table.
+	 * @return List of maps representing the full table.
 	 */
-	ResultSet getEntries() {
+	List<Map<String,String>> getEntries() {
 		return null; //TODO: Implement this
 	}
 
 	/**
 	 * Query the SQL table for an entry with the provided primary key.
 	 * @param entryID Primary key representing entry to look for.
-	 * @return ResultSet representing the entry to query for.
+	 * @return Map representing the entry to query for or null if entry not present.
 	 */
-	ResultSet getEntry(String entryID) {
+	Map<String,String> getEntry(String entryID) {
 		return null; //TODO: Implement this
 	}
 
@@ -76,9 +76,9 @@ class Table {
 	 * Query the SQL table for entries with the provided value in the provided column.
 	 * @param columnName Name of column to filter by.
 	 * @param value Value to query for.
-	 * @return ResultSet containing the results of the query.
+	 * @return List of maps containing the results of the query.
 	 */
-	ResultSet getEntriesByValue(String columnName, String value) {
+	List<Map<String,String>> getEntriesByValue(String columnName, String value) {
 		return null; //TODO: Implement this
 	}
 }
