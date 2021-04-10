@@ -1,6 +1,10 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +36,16 @@ class Table {
 	 * Add an entry to the database (assumes entry with provided primary key doesn't already exist).
 	 * @param values Values to enter into the database. Key is column name, value is value to enter.
 	 */
-	void addEntry(Map<String,String> values) {
-		//TODO: Implement this
+	void addEntry(Map<String,String> values) throws SQLException {
+		try {
+			//PreparedStatement smnt = connection.prepareStatement("INSERT INTO Nodes (nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName) VALUES (?,?,?,?,?,?,?,?)");
+			PreparedStatement smnt = connection.prepareStatement("INSERT INTO Nodes (nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName) VALUES (values)");
+			ResultSet rs = smnt.executeQuery();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -42,8 +54,49 @@ class Table {
 	 * @param values Values to edit for the entry. Key is attribute to change, value is new value.
 	 * @return Rows in database updated.
 	 */
-	int editEntry(String key, Map<String,String> values) {
-		return -1; //TODO: Implement this
+	int editEntry(String key, Map<String,String> values) throws SQLException{
+		if(tableName.equals("NODES")){
+			try {
+				PreparedStatement smnt = connection.prepareStatement("UPDATE Nodes SET (nodeID, xcoord, ycoord, floor, building, nodeType, longName, shortName) WHERE NodeID = key ");
+				smnt.setString(1,values.get("NODEID"));
+				smnt.setInt(2, values.get("XCOORD");
+				smnt.setInt(3, values.get("YCOORD");
+				smnt.setString(4,values.get("FLOOR"));
+				smnt.setString(5, values.get("BUILDING"));
+				smnt.setString(6, values.get("NODETYPE"));
+				smnt.setString(7, values.get("LONGNAME"));
+				smnt.setString(8, values.get("SHORTNAME"));
+
+				int updated = smnt.executeUpdate();
+				if(updated == 0) System.out.println("Error: Invalid node ID. Exiting...");
+
+				smnt.close();
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		else{
+			try{
+				PreparedStatement snmt = connection.prepareStatement("UPDATE EDGES SET (EDGEID, STARTNDOE, ENDNODE) WHERE EDGEID == key ");
+				snmt.setString(1,values.get("EDGEID"));
+				snmt.setString(2, values.get("STARTNDOE"));
+				snmt.setString(3, values.get("ENDNODE"));
+
+				int updated = snmt.executeUpdate();
+				if(updated == 0) System.out.println("Error: Invalid node ID. Exiting...");
+
+				snmt.close();
+
+			}
+			catch(SQLException e){
+				e.printStackTrace();
+			}
+
+		}
+
+		return -1;
 	}
 
 	/**
@@ -51,8 +104,16 @@ class Table {
 	 * @param entryID Primary key representing entry to delete.
 	 * @return Rows in database updated.
 	 */
-	int deleteEntry(String entryID) {
-		return -1; //TODO: Implement this
+	int deleteEntry(String entryID) throws SQLException{
+		try {
+			PreparedStatement smnt = connection.prepareStatement("DELETE FROM Node WHERE NodeID == entryID ");
+			ResultSet rs = smnt.executeQuery();
+
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
