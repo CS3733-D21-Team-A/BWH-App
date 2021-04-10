@@ -1,9 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,7 +77,7 @@ class Table {
 		}
 		else{
 			try{
-				PreparedStatement snmt = connection.prepareStatement("UPDATE EDGES SET (EDGEID, STARTNDOE, ENDNODE) WHERE EDGEID == key ");
+				PreparedStatement snmt = connection.prepareStatement("UPDATE EDGES SET (edgeID, startNode, endNode) WHERE edgeID = key ");
 				snmt.setString(1,values.get("EDGEID"));
 				snmt.setString(2, values.get("STARTNDOE"));
 				snmt.setString(3, values.get("ENDNODE"));
@@ -105,16 +103,58 @@ class Table {
 	 * @return Rows in database updated.
 	 */
 	int deleteEntry(String entryID) throws SQLException{
-		try {
-			PreparedStatement smnt = connection.prepareStatement("DELETE FROM Node WHERE NodeID == entryID ");
-			ResultSet rs = smnt.executeQuery();
+		if(tableName.equals("NODES")){
+			try {
+				PreparedStatement smnt = connection.prepareStatement("DELETE FROM Node WHERE NodeID = entryID ");
+				int rs = smnt.executeUpdate();
+				smnt.close();
+				return rs;
 
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
+		else{
+			try {
+				PreparedStatement smnt = connection.prepareStatement("DELETE FROM Edges WHERE edgeID = entryID ");
+				ResultSet rs = smnt.executeQuery();
+
+				rs.close();
+				smnt.close();
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
+	/*
+					List<String[]> table = new ArrayList<>(); //create table to display
+				int colCount = rsmd.getColumnCount();
+
+				table.add(new String[colCount]); //add column label row
+				for (int i = 0; i < colCount; i++) {
+					table.get(0)[i] = rsmd.getColumnName(i+1); //add column labels to first row
+				}
+
+				for (int row = 1; rset.next(); row++) {
+					table.add(new String[colCount]);
+					for (int i = 0; i < colCount; i++) {
+						table.get(row)[i] = rset.getString(rsmd.getColumnName(i+1)); //add row values
+					}
+				}
+
+				for (final Object[] row : table) {
+					System.out.format("%10s%10s%10s%10s%15s%10s%45s%30s%n", row); //printout
+				}
+
+				rset.close();
+				smnt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+	 */
 
 	/**
 	 * Get the full SQL table as a ResultSet.
