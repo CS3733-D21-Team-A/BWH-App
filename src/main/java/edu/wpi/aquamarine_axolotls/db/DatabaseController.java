@@ -23,12 +23,21 @@ public class DatabaseController {
 	// ===== NODES =====
 
 	/**
+	 * Get the columns of the node table.
+	 * @return a dictionaary whose keys are the names of the columns and value.
+	 * Value is a boolean indicating if they representing type (false = int,true = String).
+	 */
+	public Map<String,Boolean> getNodeColumns() {
+		return null; //TODO: Implement this
+	}
+
+	/**
 	 * Check if a node exists.
 	 * @param nodeID ID of node to check.
 	 * @return Boolean indicating presence of node in the database.
 	 */
 	public boolean nodeExists(String nodeID) {
-		return !(nodeTable.getEntry(nodeID) ==null);
+		return nodeTable.getEntry(nodeID) != null;
 	}
 
 	/**
@@ -78,6 +87,15 @@ public class DatabaseController {
 	// ===== EDGES =====
 
 	/**
+	 * Get the columns of the edge table.
+	 * @return a dictionaary whose keys are the names of the columns and value.
+	 * Value is a boolean indicating if they representing type (false = int,true = String).
+	 */
+	public Map<String,Boolean> getEdgeColumns() {
+		return null; //TODO: Implement this
+	}
+
+	/**
 	 * Check if an edge exists.
 	 * @param edgeID ID of edge to check.
 	 * @return Boolean indicating presence of edge in the database.
@@ -96,11 +114,11 @@ public class DatabaseController {
 
 	/**
 	 * Edit an existing edge in the database (assumes node with provided ID exists).
-	 * @param nodeID ID of edge to edit.
+	 * @param edgeID ID of edge to edit.
 	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editEdge(String nodeID, Map<String,String> values) {
+	public int editEdge(String edgeID, Map<String,String> values) {
 		return -1; //TODO: Implement this
 	}
 
