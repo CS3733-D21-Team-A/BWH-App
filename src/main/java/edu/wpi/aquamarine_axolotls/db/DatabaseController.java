@@ -37,8 +37,7 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int editNode(String nodeID, Map<String,String> values) {
-		nodeTable.editEntry(nodeID,values);
-		return 1;
+		return nodeTable.editEntry(nodeID,values);
 	}
 
 	/**
@@ -47,8 +46,7 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int deleteNode(String nodeID) {
-		nodeTable.deleteEntry(nodeID);
-		return 1;
+		return nodeTable.deleteEntry(nodeID);
 	}
 
 	/**
