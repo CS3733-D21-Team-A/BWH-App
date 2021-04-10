@@ -1,15 +1,18 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 class TableFactory {
-	private Connection connection;
+	final private Connection connection;
 
 	/**
 	 * TableFactory constructor.
 	 */
-	TableFactory() { //Note: may want to pass the connection into this?
-		//TODO: Implement this
+	TableFactory() throws ClassNotFoundException, SQLException { //Note: may want to pass the connection into this?
+		Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+		this.connection = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
 	}
 
 	/**
