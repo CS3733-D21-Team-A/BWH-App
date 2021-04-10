@@ -28,6 +28,7 @@ public class DatabaseController {
 	 */
 	public void addNode(Map<String,String> values) {
 		//TODO: Implement this
+		nodeTable.addEntry(values);
 	}
 
 	/**
@@ -37,7 +38,8 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int editNode(String nodeID, Map<String,String> values) {
-		return -1; //TODO: Implement this
+		nodeTable.editEntry(nodeID,values);
+		return 1;
 	}
 
 	/**
@@ -46,7 +48,8 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int deleteNode(String nodeID) {
-		return -1; //TODO: Implement this
+		nodeTable.deleteEntry(nodeID);
+		return 1;
 	}
 
 	/**
@@ -54,7 +57,7 @@ public class DatabaseController {
 	 * @return List of maps representing the full Nodes table.
 	 */
 	public List<Map<String,String>> getNodes() {
-		return null; //TODO: Implement this
+		return nodeTable.getEntries();
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class DatabaseController {
 	 * @return Map representing the node to query for.
 	 */
 	public Map<String,String> getNode(String nodeID) {
-		return null; //TODO: Implement this
+		return nodeTable.getEntry(nodeID);
 	}
 
 	// ===== EDGES =====
