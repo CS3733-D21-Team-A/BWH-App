@@ -14,6 +14,15 @@ public class DatabaseController {
 	// ===== NODES =====
 
 	/**
+	 * Get the columns of the node table.
+	 * @return a dictionaary whose keys are the names of the columns and value.
+	 * Value is a boolean indicating if they representing type (false = int,true = String).
+	 */
+	public Map<String,Boolean> getNodeColumns() {
+		return null; //TODO: Implement this
+	}
+
+	/**
 	 * Check if a node exists.
 	 * @param nodeID ID of node to check.
 	 * @return Boolean indicating presence of node in the database.
@@ -67,6 +76,15 @@ public class DatabaseController {
 	}
 
 	// ===== EDGES =====
+
+	/**
+	 * Get the columns of the edge table.
+	 * @return a dictionaary whose keys are the names of the columns and value.
+	 * Value is a boolean indicating if they representing type (false = int,true = String).
+	 */
+	public Map<String,Boolean> getEdgeColumns() {
+		return null; //TODO: Implement this
+	}
 
 	/**
 	 * Check if an edge exists.
