@@ -22,7 +22,7 @@ class Table {
 	/**
 	 * get the columns of of this table.
 	 * @return a dictionaary whose keys are the names of the columns and value.
-	 * is a boolean indicating if they representing type (false = int,true = String).
+	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	Map<String,Boolean> getColumns() {
 		return this.columns; //TODO: Implement this
