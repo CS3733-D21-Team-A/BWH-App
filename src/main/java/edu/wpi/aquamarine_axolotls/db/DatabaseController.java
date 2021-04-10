@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -7,8 +8,16 @@ public class DatabaseController {
 	private Table nodeTable;
 	private Table edgeTable;
 
-	public DatabaseController() {
-		//TODO: Implement this
+	public DatabaseController() throws SQLException, ClassNotFoundException {
+		// Implement this
+		// create a new, get and store edge table and node table
+		// not creating those tables
+		// instantinate new table factory
+		// call get table on table factory for each table
+		//
+		TableFactory tempFactory = new TableFactory();
+		nodeTable = tempFactory.getTable("Nodes");
+		edgeTable = tempFactory.getTable("Edges");
 	}
 
 	// ===== NODES =====
