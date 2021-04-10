@@ -19,7 +19,7 @@ public class DatabaseController {
 	 * @return Boolean indicating presence of node in the database.
 	 */
 	public boolean nodeExists(String nodeID) {
-		return !(nodeTable.getEntry(nodeID) ==null);
+		return nodeTable.getEntry(nodeID) != null;
 	}
 
 	/**
