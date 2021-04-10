@@ -7,10 +7,25 @@ import java.util.*;
 import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.buildPath;
 import static edu.wpi.aquamarine_axolotls.views.pathplanning.PathBuilder.checkPath;
 
-public class SearchAlgorithm extends Node implements CostTo {
+public class SearchAlgorithm implements CostTo {
 
-    public SearchAlgorithm(){
+    private final List<Node> nodes = new ArrayList<>();
+    private final List<Edge> edges = new ArrayList<>();
 
+    public SearchAlgorithm(List<Map<String, String>> nodeMap, List<Map<String, String>> egeMap){
+        for (int i = 0; i < nodeMap.size(); i++) {
+            nodes.add(new Node(
+                    nodeMap.get(i).get("nodeID"),
+                    Integer.parseInt(nodeMap.get(i).get("xcoord")),
+                    Integer.parseInt(nodeMap.get(i).get("ycoord")),
+                    nodeMap.get(i).get("floor"),
+                    nodeMap.get(i).get("building"),
+                    nodeMap.get(i).get("nodeType"),
+                    nodeMap.get(i).get("longName"),
+                    nodeMap.get(i).get("shortName")
+                    )
+            );
+        }
     }
 
     /*
@@ -69,9 +84,9 @@ public class SearchAlgorithm extends Node implements CostTo {
     //Define the priority queue used for the algorithm, called the "frontier"
     private final PriorityQueue<CostPair> frontier = new PriorityQueue<CostPair>();
 
-     /*
-        * Frontier operations
-     * */
+
+//==========FRONTIER OPERATIONS=========//
+
 
     /**
      * Completely clears the frontier in the search algorithm
@@ -119,19 +134,94 @@ public class SearchAlgorithm extends Node implements CostTo {
      * @return The direct straight-line cost from next to goal
      */
     double getPriorityHeuristic(Node next, Node goal) {
-        return next.getCostTo(goal);
+        return getCostTo(next, goal);
+    }
+
+
+//==========GETTING NODES=========//
+
+
+    /**
+     * Gets a node by its ID from a list of nodes
+     * @param id String, the id of the node to look for
+     * @return The node once we find it, or null if that node doesn't exist
+     */
+    public Node getNode(String id){
+        String nodeName;
+        //Loop through the list of nodes
+        for (int j = 0; j < this.nodes.size(); j++) {
+            //Get the name of the current node we're looking at
+            nodeName = this.nodes.get(j).getNodeID();
+
+            //If this node is the one we're looking for, return it
+            if (nodeName.equals(id)){
+                return this.nodes.get(j);
+            }
+        }
+        //If we go through all the nodes and don't find the one we were looking for, return null
+        System.out.println("Couldn't find that node");
+        return null;
+    }
+
+
+    /**
+     * Gets all neighbors of this node
+     * @param myNode The node we're looking from
+     * @return
+     */
+    public List<Node> getConnected(Node myNode){
+        //Get the id of the node
+        String nodeName = myNode.getNodeID();
+        //Initialize the list we're using to store all the connected nodes
+        List<Node> connectedNode = new ArrayList<>();
+
+        //Loop through all the edges
+        for (int j = 0; j < this.edges.size(); j++) {
+            //Get the name of the node at the start of the edge
+            String startNodeName = this.edges.get(j).getStartNode();
+            //System.out.println(startNodeName);
+
+            //Get the name of the node at the end of the edge
+            String endNodeName = this.edges.get(j).getEndNode();
+            //System.out.println(endNodeName);
+
+            //If this node is the node at the start of the edge, add the end as its neighbor
+            if (nodeName.equals(startNodeName)){
+                connectedNode.add(getNode(endNodeName));
+            }
+            //If this node is the node at the end of the edge, add the start as its neighbor
+            if (nodeName.equals(endNodeName)){
+                connectedNode.add(getNode(startNodeName));
+            }
+        }
+        System.out.println("getConnected complete");
+        //Return all connected nodes
+        return connectedNode;
+    }
+
+
+    /**
+     * Gets the cost to go DIRECTLY to another node
+     * Note that this specifically measures the straight distance between the two, even  if they aren't neighbors
+     * @param othernode The other node to go to
+     * @return Double, the distance between them
+     */
+    public double getCostTo(Node firstnode, Node othernode){
+        double xsqre = Math.pow(othernode.getXcoord() - firstnode.getXcoord(),2);
+        double ysqre = Math.pow(othernode.getYcoord() - firstnode.getYcoord(),2);
+        double dist = Math.sqrt(xsqre+ysqre);
+
+        return dist;
     }
 
 
     /**
      * Determines the most efficient path from a start node to end node using the A* algorithm
-     * @param edges A list of all edges in the grid
-     * @param nodes A list of all nodes in the grid
      * @param start The node to start at
      * @param goal The node to go to
      * @return
      */
-    public final List<Node> getPath(List<Edge> edges, List<Node> nodes, Node start, Node goal) {
+    public final List<Node> getPath(Node start, Node goal) {
         //Empty out the priority queue
         clearFrontier();
 
@@ -159,12 +249,12 @@ public class SearchAlgorithm extends Node implements CostTo {
             //Otherwise...
 
             //Get the nodes connected to the current node
-            List<Node> connectedNodes = getConnected(current, edges, nodes);
+            List<Node> connectedNodes = getConnected(current);
 
             //Run through all the connected nodes
             for (Node next : connectedNodes) {
                 //Get the newCost, which consists of the cost so far + the cost to the neighbor we're looking at
-                double newCost = costSoFar.get(current) + current.getCostTo(next);
+                double newCost = costSoFar.get(current) + getCostTo(current, next);
                 //If the next node is NOT in the current path, or the new cost is less than the total cost to the neighbor node...
                 if (!cameFrom.containsKey(next) || newCost < costSoFar.get(next)) {
                     //This means that we've found a cheaper path
