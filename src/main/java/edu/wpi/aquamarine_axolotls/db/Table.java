@@ -4,10 +4,10 @@ import java.sql.*;
 import java.util.*;
 
 class Table {
-	private Connection connection;
-	private String tableName;
-	private String primaryKey; //this isn't absolutely necessary, but may simplify things.
-	private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
+	final private Connection connection;
+	final private String tableName;
+	final private String primaryKey; //this isn't absolutely necessary, but may simplify things.
+	final private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 
 	/**
 	 * Table contructor
@@ -42,31 +42,40 @@ class Table {
 	 * @param values Values to enter into the database. Key is column name, value is value to enter.
 	 */
 	void addEntry(Map<String,String> values) throws SQLException {
-			//PreparedStatement smnt = connection.prepareStatement("INSERT INTO Nodes (nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName) VALUES (?,?,?,?,?,?,?,?)");
-		// gets all columns
-		Set<String> column_names = columns.keySet();
+		Set<String> column_names = values.keySet(); // gets all columns
 
-		// first part of statement ie all column names
-		StringBuilder stringBuilder = new StringBuilder("INSERT INTO " + tableName + "(");
-		// gets all values we are adding to each column name for the new node
-		StringBuilder stringBuilder2 = new StringBuilder("VALUES (");
-		// builds values
-		for (String column : column_names) {
+		StringBuilder stringBuilder = new StringBuilder("INSERT INTO " + tableName + "("); // first part of statement ie all column names
+		StringBuilder stringBuilder2 = new StringBuilder("VALUES ("); // gets all values we are adding to each column name for the new node
+
+		for (String column : column_names) { // builds values
 			stringBuilder.append(column);
-			stringBuilder.append(", ");
-			stringBuilder2.append(values.get(column) + ", ");
+			stringBuilder.append(",");
+			stringBuilder2.append("?,");
 		}
-		// remove extra , and space
-		stringBuilder.delete(stringBuilder.length()-2, stringBuilder.length()-1);
-		stringBuilder2.delete(stringBuilder2.length()-2, stringBuilder2.length()-1);
+
+		// remove extra comma
+		stringBuilder.delete(stringBuilder.length()-1, stringBuilder.length());
+		stringBuilder2.delete(stringBuilder2.length()-1, stringBuilder2.length());
+
 		// adds needed parens
 		stringBuilder.append(") ");
 		stringBuilder2.append(")");
+
 		// appends two halves together
 		stringBuilder.append(stringBuilder2);
 
 		// executes statement
-		PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString());
+		PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString()); //TODO: Refactor out duplicate code?
+
+		int i = 1;
+		for (String column : column_names) {
+			if (columns.get(column)) {
+				smnt.setString(i, values.get(column));
+			} else {
+				smnt.setInt(i, Integer.parseInt(values.get(column)));
+			}
+			i++;
+		}
 
 		smnt.executeUpdate();
 	}
@@ -112,58 +121,35 @@ class Table {
 	 * @return Rows in database updated.
 	 */
 	int deleteEntry(String entryID) throws SQLException{
-		// orginal PreparedStatement smnt = connection.prepareStatement("DELETE FROM Node WHERE NodeID = entryID ");
-		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = " + entryID);
+		PreparedStatement smnt = connection.prepareStatement("DELETE FROM ? WHERE ? = ?");
+		smnt.setString(1, tableName);
+		smnt.setString(2, primaryKey);
+		smnt.setString(3, entryID);
+
 		return smnt.executeUpdate();
 	}
 
-	List<Map<String,String>> convertRS(ResultSet rs) {
-		try{
-			List<Map<String,String>> entries = new ArrayList<Map<String,String>>();
-			while(rs != null){
-				// new row to add
-				Map<String, String> entry = new HashMap<String, String>();
-				// for every column in the table
-				for(String column : columns.keySet()){
-					// put the value at that column into our new row vector
-					entry.put(column, rs.getString(column));
-				}
-				// add this row to the list
-				entries.add(entry);
-				// increment the row
-				rs.next();
+	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
+		List<Map<String,String>> entries = new ArrayList<Map<String,String>>();
+		do {
+			Map<String,String> entry = new HashMap<String,String>(); // new row to add
+			for(String column : columns.keySet()) { // for every column in the table
+				entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 			}
-			return entries;
-
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-
-		return null;
-
+			entries.add(entry); // add this row to the list
+		} while(rs.next()); // increment the row
+		return entries;
 	}
+
 	/**
 	 * Get the full SQL table as a ResultSet.
 	 * @return List of maps representing the full table.
 	 */
-	List<Map<String,String>> getEntries() {
+	List<Map<String,String>> getEntries() throws SQLException {
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM ?"); // gets everything from table
+		smnt.setString(1, tableName);
 
-		// how to get around try catch for SQL statement?
-
-		try {
-			// gets everything from table
-			PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName);
-			// gets sql result
-			ResultSet rs = smnt.executeQuery();
-			// convert rs to List of maps
-			return convertRS(rs);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-
+		return resultSetToList(smnt.executeQuery()); // gets sql result and convert rs to List of maps
 	}
 
 	/**
@@ -171,25 +157,18 @@ class Table {
 	 * @param entryID Primary key representing entry to look for.
 	 * @return Map representing the entry to query for or null if entry not present.
 	 */
-	Map<String,String> getEntry(String entryID) {
-		// how to get around try catch for SQL statement?
-		PreparedStatement smnt;
-		ResultSet rs;
-		// will return null if SQL exception?
+	Map<String,String> getEntry(String entryID) throws SQLException {
 		Map<String, String> entry = new HashMap<String, String>();
-		try {
-			// gets row from table
-			smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + primaryKey + " = " + entryID);
-			// gets sql result
-			rs = smnt.executeQuery();
-			// starting from first row in table iterate thru until the end
-			for(String column : columns.keySet()){
-				// put the value at that column into our new row vector
-				entry.put(column, rs.getString(column));
-			}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM ? WHERE ? = ?"); // gets row from table
+		smnt.setString(1, tableName);
+		smnt.setString(2, primaryKey);
+		smnt.setString(3, entryID);
+
+		ResultSet rs = smnt.executeQuery(); // gets sql result
+
+		for(String column : columns.keySet()){ // starting from first row in table iterate thru until the end
+			entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 		}
 
 		return entry;
@@ -201,23 +180,14 @@ class Table {
 	 * @param value Value to query for.
 	 * @return List of maps containing the results of the query.
 	 */
-	List<Map<String,String>> getEntriesByValue(String columnName, String value) {
-		// how to get around try catch for SQL statement?
-		PreparedStatement smnt;
-		ResultSet rs;
+	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
 
-		try {
-			// gets row/rows that have column name with value
-			smnt = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnName + " = " + value);
-			// gets sql result
-			rs = smnt.executeQuery();
-			// convert RS to List of maps
-			return convertRS(rs);
+		PreparedStatement smnt = connection.prepareStatement("SELECT ? FROM ? WHERE ? = ?"); // gets row/rows that have column name with value
+		smnt.setString(1, columnName);
+		smnt.setString(2, tableName);
+		smnt.setString(3, columnName);
+		smnt.setString(4, value);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return resultSetToList(smnt.executeQuery()); // gets sql result and convert RS to List of maps
 	}
 }
