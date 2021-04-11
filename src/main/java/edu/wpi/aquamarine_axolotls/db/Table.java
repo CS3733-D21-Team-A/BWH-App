@@ -1,24 +1,31 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class Table {
 	private Connection connection;
 	private String tableName;
 	private String primaryKey; //this isn't absolutely necessary, but may simplify things.
-	private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things.
+	private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 
 	/**
 	 * Table contructor
 	 * @param connection Database connection to use.
 	 * @param tableName Name of table in database to represent.
 	 */
-	Table(Connection connection, String tableName) {
-		//TODO: Implement this
+	Table(Connection connection, String tableName) throws SQLException {
+		this.connection = connection;
+		this.tableName = tableName;
+
+		DatabaseMetaData dbmd = connection.getMetaData();
+		this.primaryKey = dbmd.getPrimaryKeys(null, null, tableName).getString("PK_NAME");
+
+		this.columns = new HashMap<String,Boolean>();
+		ResultSet rst = dbmd.getColumns(null, null, tableName, null);
+		while (rst.next()) {
+			columns.put(rst.getString("COLUMN_NAME"), rst.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
+		}
 	}
 
 	/**
@@ -27,7 +34,7 @@ class Table {
 	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	Map<String,Boolean> getColumns() {
-		return this.columns; //TODO: Implement this
+		return this.columns;
 	}
 
 	/**
@@ -52,49 +59,33 @@ class Table {
 	 * @param values Values to edit for the entry. Key is attribute to change, value is new value.
 	 * @return Rows in database updated.
 	 */
-	int editEntry(String key, Map<String,String> values) throws SQLException{
-		if(tableName.equals("NODES")){
-			try {
-				PreparedStatement smnt = connection.prepareStatement("UPDATE Nodes SET (nodeID, xcoord, ycoord, floor, building, nodeType, longName, shortName) WHERE NodeID = key ");
-				smnt.setString(1,values.get("NODEID"));
-				smnt.setInt(2, values.get("XCOORD");
-				smnt.setInt(3, values.get("YCOORD");
-				smnt.setString(4,values.get("FLOOR"));
-				smnt.setString(5, values.get("BUILDING"));
-				smnt.setString(6, values.get("NODETYPE"));
-				smnt.setString(7, values.get("LONGNAME"));
-				smnt.setString(8, values.get("SHORTNAME"));
+	int editEntry(String key, Map<String,String> values) throws SQLException {
 
-				int updated = smnt.executeUpdate();
-				if(updated == 0) System.out.println("Error: Invalid node ID. Exiting...");
+		Set<String> editColumns = values.keySet();
 
-				smnt.close();
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-
+		StringBuilder stringBuilder = new StringBuilder("UPDATE " + tableName + " SET ");
+		for (String column : editColumns) {
+			stringBuilder.append(column);
+			stringBuilder.append("=?, ");
 		}
-		else{
-			try{
-				PreparedStatement snmt = connection.prepareStatement("UPDATE EDGES SET (edgeID, startNode, endNode) WHERE edgeID = key ");
-				snmt.setString(1,values.get("EDGEID"));
-				snmt.setString(2, values.get("STARTNDOE"));
-				snmt.setString(3, values.get("ENDNODE"));
+		stringBuilder.delete(stringBuilder.length()-2, stringBuilder.length()-1);
+		stringBuilder.append("WHERE ");
+		stringBuilder.append(primaryKey);
+		stringBuilder.append("=?");
 
-				int updated = snmt.executeUpdate();
-				if(updated == 0) System.out.println("Error: Invalid node ID. Exiting...");
+		PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString());
 
-				snmt.close();
-
+		int i = 1;
+		for (String column : editColumns) {
+			if (columns.get(column)) {
+				smnt.setString(i, values.get(column));
+			} else {
+				smnt.setInt(i, Integer.parseInt(values.get(column)));
 			}
-			catch(SQLException e){
-				e.printStackTrace();
-			}
-
+			i++;
 		}
 
-		return -1;
+		return smnt.executeUpdate();
 	}
 
 	/**
@@ -127,7 +118,7 @@ class Table {
 				e.printStackTrace();
 			}
 		}
-
+		return -1;
 	}
 	/*
 					List<String[]> table = new ArrayList<>(); //create table to display
