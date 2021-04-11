@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -91,7 +92,7 @@ public class DatabaseController {
 	 * @param edgeID ID of edge to check.
 	 * @return Boolean indicating presence of edge in the database.
 	 */
-	public boolean edgeExists(String edgeID) {
+	public boolean edgeExists(String edgeID) throws SQLException {
 		return edgeTable.getEntry(edgeID) != null;
 	}
 
@@ -101,7 +102,7 @@ public class DatabaseController {
 	 */
 
 	// DONE
-	public void addEdge(Map<String,String> values) {
+	public void addEdge(Map<String,String> values) throws SQLException {
 		edgeTable.addEntry(values);
 	}
 
@@ -111,7 +112,7 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editEdge(String edgeID, Map<String,String> values) {
+	public int editEdge(String edgeID, Map<String,String> values) throws SQLException {
 		return edgeTable.editEntry(edgeID, values);
 	}
 
@@ -120,7 +121,7 @@ public class DatabaseController {
 	 * @param edgeID ID of node to delete.
 	 * @return Rows in database updated.
 	 */
-	public int deleteEdge(String edgeID) {
+	public int deleteEdge(String edgeID) throws SQLException {
 			return edgeTable.deleteEntry(edgeID);
 	}
 
@@ -128,7 +129,7 @@ public class DatabaseController {
 	 * Get the full Edges table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getEdges() {
+	public List<Map<String,String>> getEdges() throws SQLException  {
 		return edgeTable.getEntries();
 	}
 
@@ -137,7 +138,7 @@ public class DatabaseController {
 	 * @param edgeID ID representing node to look for.
 	 * @return Map representing the node to query for.
 	 */
-	public Map<String,String> getEdge(String edgeID) {
+	public Map<String,String> getEdge(String edgeID) throws SQLException {
 		return edgeTable.getEntry(edgeID);
 	}
 
@@ -146,7 +147,7 @@ public class DatabaseController {
 	 * @param nodeID ID of node to find edges connected to.
 	 * @return List of maps of edges connected to the desired node.
 	 */
-	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) {
+	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) throws SQLException {
 		// gets all edges that has nodeID as a start node
 		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID);
 		// gets all edges that have the nodeID as a end node
