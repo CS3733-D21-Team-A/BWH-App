@@ -1,5 +1,8 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
+import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import org.apache.derby.iapi.db.Database;
+
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.pathplanning.PathBuilder.buildPath;
@@ -10,7 +13,12 @@ public class SearchAlgorithm implements CostTo {
     private List<Node> nodes = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
 
-    public SearchAlgorithm(List<Map<String, String>> nodeMap, List<Map<String, String>> edgeMap){
+    public SearchAlgorithm(){
+        DatabaseController dbControl = new DatabaseController();
+
+        List<Map<String, String>> nodeMap = dbControl.getNodes();
+        List<Map<String, String>> edgeMap = dbControl.getEdges();
+
         for (int i = 0; i < nodeMap.size(); i++) {
             Map<String, String> currNodeMap = nodeMap.get(i);
             this.nodes.add(new Node(
@@ -22,6 +30,44 @@ public class SearchAlgorithm implements CostTo {
                     currNodeMap.get("nodeType"),
                     currNodeMap.get("longName"),
                     currNodeMap.get("shortName")
+                    )
+            );
+        }
+
+        for (int j = 0; j < edgeMap.size(); j++) {
+            Map<String, String> currEdgeMap = edgeMap.get(j);
+            this.edges.add(new Edge(
+                    edgeMap.get(j).get("edgeID"),
+                    edgeMap.get(j).get("startNode"),
+                    edgeMap.get(j).get("endNode")
+            ));
+        }
+    }
+
+    /**
+     * Clears the SearchAlgorithm's current node and edge data and reloads it from the database
+     * Use this if you have a persistent instance of SearchAlgorithm and want to update it based on database changes
+     */
+    public void updateSearchData() {
+        DatabaseController dbControl = new DatabaseController();
+
+        List<Map<String, String>> nodeMap = dbControl.getNodes();
+        List<Map<String, String>> edgeMap = dbControl.getEdges();
+
+        this.nodes.clear();
+        this.edges.clear();
+
+        for (int i = 0; i < nodeMap.size(); i++) {
+            Map<String, String> currNodeMap = nodeMap.get(i);
+            this.nodes.add(new Node(
+                            currNodeMap.get("nodeID"),
+                            Integer.parseInt(currNodeMap.get("xcoord")),
+                            Integer.parseInt(currNodeMap.get("ycoord")),
+                            currNodeMap.get("floor"),
+                            currNodeMap.get("building"),
+                            currNodeMap.get("nodeType"),
+                            currNodeMap.get("longName"),
+                            currNodeMap.get("shortName")
                     )
             );
         }
@@ -150,7 +196,7 @@ public class SearchAlgorithm implements CostTo {
 
 
     /**
-     * Gets a node by its ID from a list of nodes
+     * Gets a node by its ID from the search algorithm controller's list of nodes
      * @param id String, the id of the node to look for
      * @return The node once we find it, or null if that node doesn't exist
      */
@@ -173,9 +219,9 @@ public class SearchAlgorithm implements CostTo {
 
 
     /**
-     * Gets all neighbors of this node
+     * Gets all neighbors of a given node
      * @param myNode The node we're looking from
-     * @return
+     * @return A list of nodes that are connected to the given node
      */
     public List<Node> getConnected(Node myNode){
         //Get the id of the node
@@ -225,13 +271,16 @@ public class SearchAlgorithm implements CostTo {
 
     /**
      * Determines the most efficient path from a start node to end node using the A* algorithm
-     * @param start The node to start at
-     * @param goal The node to go to
+     * @param startID The ID of the node to start at
+     * @param goalID The ID of the node to go to
      * @return
      */
-    public final List<Node> getPath(Node start, Node goal) {
+    public final List<Node> getPath(String startID, String goalID) {
         //Empty out the priority queue
         clearFrontier();
+
+        Node start = getNode(startID);
+        Node goal = getNode(goalID);
 
         //Inititalize the list of nodes we've been to and costs to nodes so far
         final Map<Node, Node> cameFrom = new HashMap<>(); //This hashmap is structured with a node as a key and the node we came from to get there as its value

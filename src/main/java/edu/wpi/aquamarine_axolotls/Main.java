@@ -31,7 +31,7 @@ public class Main {
     //Node newNode = new Node();
 
     //Initialize the search controller
-    SearchAlgorithm newSearch = new SearchAlgorithm(dbControl.getNodes(), dbControl.getEdges());
+    SearchAlgorithm newSearch = new SearchAlgorithm();
 
     //List<Node> connectedNode = Node.getConnected(newNode.getNode("CDEPT003L1",nodes), edges, nodes);
 
@@ -39,8 +39,8 @@ public class Main {
     //Node start = newNode.getNode("aPARK016GG",nodes);
     //Node goal = newNode.getNode("aPARK007GG",nodes);
 
-    Node start = newSearch.getNode("aPARK016GG");
-    Node goal = newSearch.getNode("aPARK007GG");
+    String start = "aPARK016GG";
+    String goal = "aPARK007GG";
 
     //Actually run the function to get the path from start to end
     List<Node> path = newSearch.getPath(start,goal);
