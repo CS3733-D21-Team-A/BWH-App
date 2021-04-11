@@ -19,7 +19,9 @@ class Table {
 		this.tableName = tableName;
 
 		DatabaseMetaData dbmd = connection.getMetaData();
-		this.primaryKey = dbmd.getPrimaryKeys(null, null, tableName).getString("PK_NAME");
+		ResultSet rs = dbmd.getPrimaryKeys(null, null, tableName);
+		rs.next();
+		this.primaryKey = rs.getString("COLUMN_NAME");
 
 		this.columns = new HashMap<String,Boolean>();
 		ResultSet rst = dbmd.getColumns(null, null, tableName, null);
@@ -121,7 +123,7 @@ class Table {
 	 * @return Rows in database updated.
 	 */
 	int deleteEntry(String entryID) throws SQLException{
-		PreparedStatement smnt = connection.prepareStatement("DELETE FROM ? WHERE ? = ?");
+		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?");
 		smnt.setString(1, tableName);
 		smnt.setString(2, primaryKey);
 		smnt.setString(3, entryID);
@@ -146,9 +148,7 @@ class Table {
 	 * @return List of maps representing the full table.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM ?"); // gets everything from table
-		smnt.setString(1, tableName);
-
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName); // gets everything from table
 		return resultSetToList(smnt.executeQuery()); // gets sql result and convert rs to List of maps
 	}
 
@@ -160,14 +160,14 @@ class Table {
 	Map<String,String> getEntry(String entryID) throws SQLException {
 		Map<String, String> entry = new HashMap<String, String>();
 
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM ? WHERE ? = ?"); // gets row from table
-		smnt.setString(1, tableName);
-		smnt.setString(2, primaryKey);
-		smnt.setString(3, entryID);
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + primaryKey + " = ?"); // gets row from table
+		smnt.setString(1, entryID);
 
 		ResultSet rs = smnt.executeQuery(); // gets sql result
 
-		for(String column : columns.keySet()){ // starting from first row in table iterate thru until the end
+		if (!rs.next()) return null;
+
+		for (String column : columns.keySet()) { // starting from first row in table iterate thru until the end
 			entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 		}
 
@@ -182,11 +182,8 @@ class Table {
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
 
-		PreparedStatement smnt = connection.prepareStatement("SELECT ? FROM ? WHERE ? = ?"); // gets row/rows that have column name with value
-		smnt.setString(1, columnName);
-		smnt.setString(2, tableName);
-		smnt.setString(3, columnName);
-		smnt.setString(4, value);
+		PreparedStatement smnt = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnName + " = ?"); // gets row/rows that have column name with value
+		smnt.setString(1, value);
 
 		return resultSetToList(smnt.executeQuery()); // gets sql result and convert RS to List of maps
 	}

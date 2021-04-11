@@ -5,13 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 public class DatabaseController {
-	private Table nodeTable;
-	private Table edgeTable;
+	final private Table nodeTable;
+	final private Table edgeTable;
 
-	public DatabaseController() throws SQLException, ClassNotFoundException {
+	public DatabaseController() {
 		TableFactory tableFactory = new TableFactory();
-		nodeTable = tableFactory.getTable("Nodes");
-		edgeTable = tableFactory.getTable("Edges");
+		nodeTable = tableFactory.getTable("NODES"); // Make the table names global static variables
+		edgeTable = tableFactory.getTable("EDGES"); // Make the table names global static variables
 	}
 
 	// ===== NODES =====
@@ -22,7 +22,7 @@ public class DatabaseController {
 	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	public Map<String,Boolean> getNodeColumns() {
-		return null; //TODO: Implement this
+		return nodeTable.getColumns();
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class DatabaseController {
 	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	public Map<String,Boolean> getEdgeColumns() {
-		return null; //TODO: Implement this
+		return edgeTable.getColumns();
 	}
 
 	/**
