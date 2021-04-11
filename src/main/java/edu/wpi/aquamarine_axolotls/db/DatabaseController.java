@@ -92,15 +92,17 @@ public class DatabaseController {
 	 * @return Boolean indicating presence of edge in the database.
 	 */
 	public boolean edgeExists(String edgeID) {
-		return false;//TODO: Implement this
+		return edgeTable.getEntry(edgeID) != null;
 	}
 
 	/**
 	 * Add an edge to the database (assumes edge with provided primary key doesn't already exist).
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
+
+	// DONE
 	public void addEdge(Map<String,String> values) {
-		//TODO: Implement this
+		edgeTable.addEntry(values);
 	}
 
 	/**
@@ -110,7 +112,7 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int editEdge(String edgeID, Map<String,String> values) {
-		return -1; //TODO: Implement this
+		return edgeTable.editEntry(edgeID, values);
 	}
 
 	/**
@@ -119,7 +121,7 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int deleteEdge(String edgeID) {
-		return -1; //TODO: Implement this
+			return edgeTable.deleteEntry(edgeID);
 	}
 
 	/**
@@ -127,7 +129,7 @@ public class DatabaseController {
 	 * @return List of maps representing the full Nodes table.
 	 */
 	public List<Map<String,String>> getEdges() {
-		return null; //TODO: Implement this
+		return edgeTable.getEntries();
 	}
 
 	/**
@@ -136,7 +138,7 @@ public class DatabaseController {
 	 * @return Map representing the node to query for.
 	 */
 	public Map<String,String> getEdge(String edgeID) {
-		return null; //TODO: Implement this
+		return edgeTable.getEntry(edgeID);
 	}
 
 	/**
@@ -145,6 +147,13 @@ public class DatabaseController {
 	 * @return List of maps of edges connected to the desired node.
 	 */
 	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) {
-		return null; //TODO: Implement this
+		// gets all edges that has nodeID as a start node
+		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID);
+		// gets all edges that have the nodeID as a end node
+		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID));
+
+		return edges;
 	}
 }
+
+
