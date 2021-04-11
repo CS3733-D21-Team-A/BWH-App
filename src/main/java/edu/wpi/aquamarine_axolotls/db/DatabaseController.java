@@ -8,8 +8,16 @@ public class DatabaseController {
 	private Table nodeTable;
 	private Table edgeTable;
 
-	public DatabaseController() {
-		//TODO: Implement this
+	public DatabaseController() throws SQLException, ClassNotFoundException {
+		// Implement this
+		// create a new, get and store edge table and node table
+		// not creating those tables
+		// instantinate new table factory
+		// call get table on table factory for each table
+		//
+		TableFactory tempFactory = new TableFactory();
+		nodeTable = tempFactory.getTable("Nodes");
+		edgeTable = tempFactory.getTable("Edges");
 	}
 
 	// ===== NODES =====
@@ -29,7 +37,7 @@ public class DatabaseController {
 	 * @return Boolean indicating presence of node in the database.
 	 */
 	public boolean nodeExists(String nodeID) {
-		return false;//TODO: Implement this
+		return nodeTable.getEntry(nodeID) != null;
 	}
 
 	/**
@@ -37,7 +45,7 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
 	public void addNode(Map<String,String> values) {
-		//TODO: Implement this
+		nodeTable.addEntry(values);
 	}
 
 	/**
@@ -47,7 +55,7 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int editNode(String nodeID, Map<String,String> values) {
-		return -1; //TODO: Implement this
+		return nodeTable.editEntry(nodeID,values);
 	}
 
 	/**
@@ -56,15 +64,15 @@ public class DatabaseController {
 	 * @return Rows in database updated.
 	 */
 	public int deleteNode(String nodeID) {
-		return -1; //TODO: Implement this
+		return nodeTable.deleteEntry(nodeID);
 	}
 
 	/**
 	 * Get the full Nodes table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getNodes() {
-		return null; //TODO: Implement this
+	public List<Map<String,String>> getNodes(){
+		return nodeTable.getEntries();
 	}
 
 	/**
@@ -73,7 +81,7 @@ public class DatabaseController {
 	 * @return Map representing the node to query for.
 	 */
 	public Map<String,String> getNode(String nodeID) {
-		return null; //TODO: Implement this
+		return nodeTable.getEntry(nodeID);
 	}
 
 	// ===== EDGES =====
