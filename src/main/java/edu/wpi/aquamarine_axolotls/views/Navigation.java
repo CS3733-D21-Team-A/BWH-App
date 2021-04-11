@@ -67,8 +67,8 @@ public class Navigation {
             Double scaledY= yScale(Integer.parseInt(currentNode.get("ycoord")));
 
             Circle node = new Circle();
-            node.setCenterX(scaledX);
-            node.setCenterY(scaledY);
+            node.setCenterX(5000);
+            node.setCenterY(3400);
             node.setRadius(4);
             anchor.getChildren().add(node);
 
