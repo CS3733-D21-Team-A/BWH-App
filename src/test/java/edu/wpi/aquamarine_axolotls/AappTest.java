@@ -11,6 +11,8 @@ import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 
+import javax.xml.soap.Text;
+
 /**
  * This is an integration test for the entire application. Rather than running a single scene
  * individually, it will run the entire application as if you were running it.
@@ -27,5 +29,29 @@ public class AappTest extends FxRobot {
 
   @AfterAll
   public static void cleanup() {}
+
+  @Test
+  public void testSceneLayout() {
+    verifyThat("Welcome", Node::isVisible);
+    verifyThat("BRIGHAM AND WOMEN'S HOSPITAL", Node::isVisible);
+  }
+  @Test
+  public void testSignInButton() {
+    clickOn("#sign_in_button");
+  }
+  @Test
+  public void testMapButton(){
+  clickOn("#map_button");
+  }
+  @Test
+  public void testServiceRequests(){
+    clickOn("#service_req");
+  }
+  @Test
+  public void testSettingsButton(){
+    clickOn("#settings_button");
+  }
+
+
 
 }
