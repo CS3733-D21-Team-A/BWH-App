@@ -1,14 +1,17 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public class DatabaseController {
-	private Table nodeTable;
-	private Table edgeTable;
+	final private Table nodeTable;
+	final private Table edgeTable;
 
 	public DatabaseController() {
-		//TODO: Implement this
+		TableFactory tableFactory = new TableFactory();
+		nodeTable = tableFactory.getTable("NODES"); // Make the table names global static variables
+		edgeTable = tableFactory.getTable("EDGES"); // Make the table names global static variables
 	}
 
 	// ===== NODES =====
@@ -19,7 +22,7 @@ public class DatabaseController {
 	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	public Map<String,Boolean> getNodeColumns() {
-		return null; //TODO: Implement this
+		return nodeTable.getColumns();
 	}
 
 	/**
@@ -27,16 +30,16 @@ public class DatabaseController {
 	 * @param nodeID ID of node to check.
 	 * @return Boolean indicating presence of node in the database.
 	 */
-	public boolean nodeExists(String nodeID) {
-		return false;//TODO: Implement this
+	public boolean nodeExists(String nodeID) throws SQLException {
+		return nodeTable.getEntry(nodeID) != null;
 	}
 
 	/**
 	 * Add a node to the database (assumes node with provided primary key doesn't already exist).
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
-	public void addNode(Map<String,String> values) {
-		//TODO: Implement this
+	public void addNode(Map<String,String> values) throws SQLException {
+		nodeTable.addEntry(values);
 	}
 
 	/**
@@ -45,8 +48,8 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editNode(String nodeID, Map<String,String> values) {
-		return -1; //TODO: Implement this
+	public int editNode(String nodeID, Map<String,String> values) throws SQLException {
+		return nodeTable.editEntry(nodeID,values);
 	}
 
 	/**
@@ -54,16 +57,16 @@ public class DatabaseController {
 	 * @param nodeID ID of node to delete.
 	 * @return Rows in database updated.
 	 */
-	public int deleteNode(String nodeID) {
-		return -1; //TODO: Implement this
+	public int deleteNode(String nodeID) throws SQLException {
+		return nodeTable.deleteEntry(nodeID);
 	}
 
 	/**
 	 * Get the full Nodes table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getNodes() {
-		return null; //TODO: Implement this
+	public List<Map<String,String>> getNodes() throws SQLException {
+		return nodeTable.getEntries();
 	}
 
 	/**
@@ -71,8 +74,8 @@ public class DatabaseController {
 	 * @param nodeID ID representing node to look for.
 	 * @return Map representing the node to query for.
 	 */
-	public Map<String,String> getNode(String nodeID) {
-		return null; //TODO: Implement this
+	public Map<String,String> getNode(String nodeID) throws SQLException {
+		return nodeTable.getEntry(nodeID);
 	}
 
 	// ===== EDGES =====
@@ -83,7 +86,7 @@ public class DatabaseController {
 	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	public Map<String,Boolean> getEdgeColumns() {
-		return null; //TODO: Implement this
+		return edgeTable.getColumns();
 	}
 
 	/**
@@ -91,16 +94,18 @@ public class DatabaseController {
 	 * @param edgeID ID of edge to check.
 	 * @return Boolean indicating presence of edge in the database.
 	 */
-	public boolean edgeExists(String edgeID) {
-		return false;//TODO: Implement this
+	public boolean edgeExists(String edgeID) throws SQLException {
+		return edgeTable.getEntry(edgeID) != null;
 	}
 
 	/**
 	 * Add an edge to the database (assumes edge with provided primary key doesn't already exist).
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
-	public void addEdge(Map<String,String> values) {
-		//TODO: Implement this
+
+	// DONE
+	public void addEdge(Map<String,String> values) throws SQLException {
+		edgeTable.addEntry(values);
 	}
 
 	/**
@@ -109,8 +114,8 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editEdge(String edgeID, Map<String,String> values) {
-		return -1; //TODO: Implement this
+	public int editEdge(String edgeID, Map<String,String> values) throws SQLException {
+		return edgeTable.editEntry(edgeID, values);
 	}
 
 	/**
@@ -118,16 +123,16 @@ public class DatabaseController {
 	 * @param edgeID ID of node to delete.
 	 * @return Rows in database updated.
 	 */
-	public int deleteEdge(String edgeID) {
-		return -1; //TODO: Implement this
+	public int deleteEdge(String edgeID) throws SQLException {
+			return edgeTable.deleteEntry(edgeID);
 	}
 
 	/**
 	 * Get the full Edges table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getEdges() {
-		return null; //TODO: Implement this
+	public List<Map<String,String>> getEdges() throws SQLException  {
+		return edgeTable.getEntries();
 	}
 
 	/**
@@ -135,8 +140,8 @@ public class DatabaseController {
 	 * @param edgeID ID representing node to look for.
 	 * @return Map representing the node to query for.
 	 */
-	public Map<String,String> getEdge(String edgeID) {
-		return null; //TODO: Implement this
+	public Map<String,String> getEdge(String edgeID) throws SQLException {
+		return edgeTable.getEntry(edgeID);
 	}
 
 	/**
@@ -144,7 +149,12 @@ public class DatabaseController {
 	 * @param nodeID ID of node to find edges connected to.
 	 * @return List of maps of edges connected to the desired node.
 	 */
-	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) {
-		return null; //TODO: Implement this
+	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) throws SQLException {
+		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID); // gets all edges that has nodeID as a start node
+		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID)); // gets all edges that have the nodeID as a end node
+
+		return edges;
 	}
 }
+
+

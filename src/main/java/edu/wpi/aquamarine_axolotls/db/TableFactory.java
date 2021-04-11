@@ -5,14 +5,18 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 class TableFactory {
-	final private Connection connection;
+	private Connection connection;
 
 	/**
 	 * TableFactory constructor.
 	 */
-	TableFactory() throws ClassNotFoundException, SQLException { //Note: may want to pass the connection into this?
-		Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-		this.connection = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
+	TableFactory() { //Note: may want to pass the connection into this?
+		try {
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			this.connection = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -21,6 +25,11 @@ class TableFactory {
 	 * @return Table object representing the corresponding table in the database.
 	 */
 	Table getTable(String tableName) {
-		return new Table(connection, tableName);
+		try {
+			return new Table(connection, tableName);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
