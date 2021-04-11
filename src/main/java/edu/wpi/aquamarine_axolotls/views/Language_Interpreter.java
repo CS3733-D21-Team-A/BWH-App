@@ -19,22 +19,22 @@ public class Language_Interpreter extends Service_Request {
             .observableArrayList("Espanol", "Francois", "Deustch");
 
     @FXML
-    public TextField firstName;
+    private TextField firstName;
 
     @FXML
-    public TextField lastName;
+    private TextField lastName;
 
     @FXML
-    public ComboBox language;
+    private ComboBox language;
 
     @FXML
-    public TextField roomNumber;
+    private TextField roomNumber;
 
     @FXML
-    public TextField specInstruct;
+    private TextField specInstruct;
 
     @FXML
-    public Button submitButton;
+    private Button submitButton;
 
     @FXML
     public void initialize(){

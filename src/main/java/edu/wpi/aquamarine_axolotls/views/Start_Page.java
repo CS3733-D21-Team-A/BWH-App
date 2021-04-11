@@ -5,11 +5,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import com.jfoenix.controls.JFXButton;
 
 import java.io.IOException;
 
 public class Start_Page {
+    @FXML
+    private JFXButton sign_in_button;
 
+    @FXML
+    private JFXButton map_button;
+
+    @FXML
+    private JFXButton service_req;
+
+    @FXML
+    private JFXButton help_button;
+
+    @FXML
+    private JFXButton settings_button;
     @FXML
     public void Sign_In_Button(ActionEvent actionEvent) {
         try {

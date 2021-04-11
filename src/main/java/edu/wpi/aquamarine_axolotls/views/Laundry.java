@@ -14,17 +14,18 @@ import java.io.IOException;
 public class Laundry {
 
     @FXML
-    public Button back_button;
+    private Button back_button;
 
     @FXML
-    public TextField firstname;
+    private TextField firstname;
 
     @FXML
-    public TextField lastName;
+    private TextField lastName;
 
     @FXML
-    public TextField roomNumber;
+    private TextField roomNumber;
 
+    @FXML
     public void return_home(ActionEvent actionEvent) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));

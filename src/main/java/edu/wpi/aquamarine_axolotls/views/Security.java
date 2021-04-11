@@ -13,40 +13,40 @@ public class Security extends Service_Request{
 			  .observableArrayList("High", "Medium", "Low", "Other (enter special instructions)");
 
 	@FXML
-	public Label text;
+	private Label text;
 
 	@FXML
-	public Button back_button;
+	private Button back_button;
 
 	@FXML
-	public Label formName;
+	private Label formName;
 
 	@FXML
-	public Label description;
+	private Label description;
 
 	@FXML
-	public TextField firstName;
+	private TextField firstName;
 
 	@FXML
-	public TextField lastName;
+	private TextField lastName;
 
 	@FXML
-	public TextField roomNumber;
+	private TextField roomNumber;
 
 	@FXML
-	public TextField newRoomNum;
+	private TextField newRoomNum;
 
 	@FXML
-	public TextField reason;
+	private TextField reason;
 
 	@FXML
-	public ComboBox secLevel;
+	private ComboBox secLevel;
 
 	@FXML
-	public TextField specInstruct;
+	private TextField specInstruct;
 
 	@FXML
-	public Button submitButton;
+	private Button submitButton;
 
 	@FXML
 	public void initialize(){
