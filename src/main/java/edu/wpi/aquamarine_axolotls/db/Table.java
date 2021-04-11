@@ -94,31 +94,9 @@ class Table {
 	 * @return Rows in database updated.
 	 */
 	int deleteEntry(String entryID) throws SQLException{
-		if(tableName.equals("NODES")){
-			try {
-				PreparedStatement smnt = connection.prepareStatement("DELETE FROM Node WHERE NodeID = entryID ");
-				int rs = smnt.executeUpdate();
-				smnt.close();
-				return rs;
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-		}
-		else{
-			try {
-				PreparedStatement smnt = connection.prepareStatement("DELETE FROM Edges WHERE edgeID = entryID ");
-				ResultSet rs = smnt.executeQuery();
-
-				rs.close();
-				smnt.close();
-
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return -1;
+		// orginal PreparedStatement smnt = connection.prepareStatement("DELETE FROM Node WHERE NodeID = entryID ");
+		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = " + entryID);
+		return smnt.executeUpdate();
 	}
 	/*
 					List<String[]> table = new ArrayList<>(); //create table to display
@@ -152,7 +130,9 @@ class Table {
 	 * @return List of maps representing the full table.
 	 */
 	List<Map<String,String>> getEntries() {
-		return null; //TODO: Implement this
+		// TODO: implement
+		return null;
+
 	}
 
 	/**
