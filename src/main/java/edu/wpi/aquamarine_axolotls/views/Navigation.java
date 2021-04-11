@@ -43,7 +43,7 @@ public class Navigation {
     public Double xScale(int xCoord){
         Double xCoordDouble = new Double(xCoord);
         Double imgWidth = 438.0;
-        Double proportion = 5000/imgWidth;
+        Double proportion = imgWidth/5000;
 
         Double newXCoord = xCoordDouble*proportion; //may need to add margins depending on how it's placed on
 
@@ -53,7 +53,7 @@ public class Navigation {
     public Double yScale(int yCoord){
         Double yCoordDouble = new Double(yCoord);
         Double imgWidth = 327.0;
-        Double proportion = 3400/imgWidth;
+        Double proportion = imgWidth/3400;
 
         Double newYCoord = yCoordDouble*proportion; //may need to add margins depending on how it's placed on
 
@@ -69,19 +69,20 @@ public class Navigation {
             Circle node = new Circle();
             node.setCenterX(scaledX);
             node.setCenterY(scaledY);
-            node.setRadius(10);
+            node.setRadius(4);
+            anchor.getChildren().add(node);
+
         }
         return;
     }
     @FXML
     public void testdrawcircle(){
-        Circle node = new Circle();
+            Circle node = new Circle();
+            node.setCenterX(xScale(5000));
+            node.setCenterY(yScale(3400));
+            node.setRadius(5);
+            anchor.getChildren().add(node);
+        }
 
-        node.setCenterX(200);
-        node.setCenterY(200);
-        node.setRadius(10);
-        anchor.getChildren().add(node);
-
-    }
 
 }
