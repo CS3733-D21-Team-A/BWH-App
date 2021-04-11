@@ -9,15 +9,9 @@ public class DatabaseController {
 	private Table edgeTable;
 
 	public DatabaseController() throws SQLException, ClassNotFoundException {
-		// Implement this
-		// create a new, get and store edge table and node table
-		// not creating those tables
-		// instantinate new table factory
-		// call get table on table factory for each table
-		//
-		TableFactory tempFactory = new TableFactory();
-		nodeTable = tempFactory.getTable("Nodes");
-		edgeTable = tempFactory.getTable("Edges");
+		TableFactory tableFactory = new TableFactory();
+		nodeTable = tableFactory.getTable("Nodes");
+		edgeTable = tableFactory.getTable("Edges");
 	}
 
 	// ===== NODES =====
@@ -36,7 +30,7 @@ public class DatabaseController {
 	 * @param nodeID ID of node to check.
 	 * @return Boolean indicating presence of node in the database.
 	 */
-	public boolean nodeExists(String nodeID) {
+	public boolean nodeExists(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID) != null;
 	}
 
@@ -44,7 +38,7 @@ public class DatabaseController {
 	 * Add a node to the database (assumes node with provided primary key doesn't already exist).
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
-	public void addNode(Map<String,String> values) {
+	public void addNode(Map<String,String> values) throws SQLException {
 		nodeTable.addEntry(values);
 	}
 
@@ -54,7 +48,7 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the new entry values
 	 * @return Rows in database updated.
 	 */
-	public int editNode(String nodeID, Map<String,String> values) {
+	public int editNode(String nodeID, Map<String,String> values) throws SQLException {
 		return nodeTable.editEntry(nodeID,values);
 	}
 
@@ -63,7 +57,7 @@ public class DatabaseController {
 	 * @param nodeID ID of node to delete.
 	 * @return Rows in database updated.
 	 */
-	public int deleteNode(String nodeID) {
+	public int deleteNode(String nodeID) throws SQLException {
 		return nodeTable.deleteEntry(nodeID);
 	}
 
@@ -71,7 +65,7 @@ public class DatabaseController {
 	 * Get the full Nodes table as a List<Map<String,String>>
 	 * @return List of maps representing the full Nodes table.
 	 */
-	public List<Map<String,String>> getNodes(){
+	public List<Map<String,String>> getNodes() throws SQLException {
 		return nodeTable.getEntries();
 	}
 
@@ -80,7 +74,7 @@ public class DatabaseController {
 	 * @param nodeID ID representing node to look for.
 	 * @return Map representing the node to query for.
 	 */
-	public Map<String,String> getNode(String nodeID) {
+	public Map<String,String> getNode(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID);
 	}
 
@@ -156,10 +150,8 @@ public class DatabaseController {
 	 * @return List of maps of edges connected to the desired node.
 	 */
 	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) throws SQLException {
-		// gets all edges that has nodeID as a start node
-		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID);
-		// gets all edges that have the nodeID as a end node
-		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID));
+		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID); // gets all edges that has nodeID as a start node
+		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID)); // gets all edges that have the nodeID as a end node
 
 		return edges;
 	}
