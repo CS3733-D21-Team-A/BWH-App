@@ -7,15 +7,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Math.floor;
+
 public class Navigation {
 
-
+    @FXML private AnchorPane anchor;
     @FXML private JFXButton homeButton;
     @FXML private JFXButton helpButton;
     @FXML private JFXComboBox startLocation;
@@ -70,6 +72,16 @@ public class Navigation {
             node.setRadius(10);
         }
         return;
+    }
+    @FXML
+    public void testdrawcircle(){
+        Circle node = new Circle();
+
+        node.setCenterX(200);
+        node.setCenterY(200);
+        node.setRadius(10);
+        anchor.getChildren().add(node);
+
     }
 
 }
