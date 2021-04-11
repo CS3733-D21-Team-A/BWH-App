@@ -335,9 +335,9 @@ public class SearchAlgorithm {
     }
 
 
-
     /**
      * Builds a list of nodes that show the path from the start to the end
+     * Meant to be run AFTER the full search algorithm is complete
      * @param cameFrom The list of nodes listed alongside which nodes came before them in the path
      * @param goal The goal node
      * @return A list of all the nodes used to make the path
