@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 class TableFactory {
 	private Connection connection;
@@ -9,7 +11,12 @@ class TableFactory {
 	 * TableFactory constructor.
 	 */
 	TableFactory() { //Note: may want to pass the connection into this?
-		//TODO: Implement this
+		try {
+			Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+			this.connection = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -18,6 +25,11 @@ class TableFactory {
 	 * @return Table object representing the corresponding table in the database.
 	 */
 	Table getTable(String tableName) {
-		return new Table(connection, tableName);
+		try {
+			return new Table(connection, tableName);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
