@@ -187,4 +187,13 @@ class Table {
 
 		return resultSetToList(smnt.executeQuery()); // gets sql result and convert RS to List of maps
 	}
+
+	/**
+	 * Empties the table by deleting all entries.
+	 * @return rows deleted.
+	 */
+	int emptyTable() throws SQLException {
+		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName);
+		return smnt.executeUpdate();
+	}
 }
