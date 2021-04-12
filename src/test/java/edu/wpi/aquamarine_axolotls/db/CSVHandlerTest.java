@@ -22,7 +22,7 @@ public class CSVHandlerTest {
 	}
 
 	@BeforeEach
-	void resetDB() throws URISyntaxException, IOException, SQLException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
@@ -30,11 +30,18 @@ public class CSVHandlerTest {
 	}
 
 	@Test
-	void importEdgesTest() throws SQLException, IOException, URISyntaxException {
+	void importEdgesTest() throws SQLException, IOException {
 		assertNotNull(db.getEdges());
 		db.emptyEdgeTable();
 		assertNull(db.getEdges());
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 		assertNotNull(db.getEdges());
+	}
+
+	@Test
+	void cascadeDownTest() throws SQLException {
+		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
+		System.out.println(db.deleteNode("CCONF002L1"));
+		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
 	}
 }

@@ -125,9 +125,7 @@ class Table {
 	 */
 	int deleteEntry(String entryID) throws SQLException{
 		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?");
-		smnt.setString(1, tableName);
-		smnt.setString(2, primaryKey);
-		smnt.setString(3, entryID);
+		smnt.setString(1, entryID);
 
 		return smnt.executeUpdate();
 	}
