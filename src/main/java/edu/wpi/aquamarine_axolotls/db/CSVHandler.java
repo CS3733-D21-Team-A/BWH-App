@@ -22,6 +22,12 @@ public class CSVHandler {
 		this.databaseController = databaseController;
 	}
 
+	/**
+	 * Inserts values from the provided reader based on the provided methods.
+	 * @param br BufferedReader for input.
+	 * @param tableEmptier method for emptying the table to input to.
+	 * @param tableAdder method for adding new entries to the table.
+	 */
 	private void insertValues(BufferedReader br, SQLRunnable tableEmptier, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
 		Map<String,String> values = new HashMap<String,String>();
 
@@ -42,9 +48,9 @@ public class CSVHandler {
 
 
 	/**
-	 * Import a CSV into the database (assumes no conflicts will occur)
-	 * @param file CSV to import
-	 * @param table identifer for table import CSV into
+	 * Import a CSV into the database (assumes no conflicts will occur).
+	 * @param file CSV to import.
+	 * @param table identifer for table import CSV into.
 	 */
 	public void importCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -61,8 +67,14 @@ public class CSVHandler {
 		}
 	}
 
+	/**
+	 * Export the contents of the database to a CSV.
+	 * @param file File to export to.
+	 * @param table identifer for table to export.
+	 */
+	public void exportCSV(File file, DatabaseInfo.TABLES table) {
 
-
+	}
 
 
 
