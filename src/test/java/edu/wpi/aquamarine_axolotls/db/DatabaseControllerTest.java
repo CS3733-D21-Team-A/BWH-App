@@ -164,7 +164,6 @@ class DatabaseControllerTest {
 	@Test
 	void editNodeSomeValues() {
 		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "13");
 		newNode.put("FLOOR", "2");
 
