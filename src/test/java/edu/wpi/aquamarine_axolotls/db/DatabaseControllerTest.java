@@ -14,17 +14,19 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	DatabaseController db = new DatabaseController();
-	CSVHandler csvHandler = new CSVHandler(db);
+	private final DatabaseController db = new DatabaseController();
+	private final CSVHandler csvHandler = new CSVHandler(db);
+	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
+	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
 	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws URISyntaxException, IOException, SQLException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
-		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv").toURI()), DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI()), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 	}
 
 	@Test
@@ -119,13 +121,7 @@ class DatabaseControllerTest {
 		newNode.put("BUILDING", "Empire State");
 		newNode.put("NODETYPE", "BUILDING");
 		newNode.put("SHORTNAME", "MRS");
-		try{
-			db.addNode(newNode);
-			fail();
-		}
-		catch(SQLException e){
-			assertTrue(true);
-		}
+		assertThrows(SQLException.class, () -> db.addNode(newNode));
 	}
 
 	@Test
@@ -133,13 +129,7 @@ class DatabaseControllerTest {
 		Map<String, String> newNode = new HashMap<String, String>();
 		newNode.put("NODEID", "CCONF001L1");
 
-		try{
-			db.addNode(newNode);
-			fail();
-		}
-		catch(SQLException e){
-			assertTrue(true);
-		}
+		assertThrows(SQLException.class, () -> db.addNode(newNode));
 	}
 
 	@Test
@@ -174,6 +164,7 @@ class DatabaseControllerTest {
 	@Test
 	void editNodeSomeValues() {
 		Map<String, String> newNode = new HashMap<String, String>();
+		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "13");
 		newNode.put("FLOOR", "2");
 
