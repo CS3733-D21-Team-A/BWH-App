@@ -113,6 +113,7 @@ class Table {
 			}
 			i++;
 		}
+		smnt.setString(i,key);
 
 		return smnt.executeUpdate();
 	}
