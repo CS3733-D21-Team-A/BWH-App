@@ -14,17 +14,19 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	DatabaseController db = new DatabaseController();
-	CSVHandler csvHandler = new CSVHandler(db);
+	private final DatabaseController db = new DatabaseController();
+	private final CSVHandler csvHandler = new CSVHandler(db);
+	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
+	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
 	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws URISyntaxException, IOException, SQLException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
-		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv").toURI()), DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI()), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 	}
 
 	@Test
@@ -119,13 +121,7 @@ class DatabaseControllerTest {
 		newNode.put("BUILDING", "Empire State");
 		newNode.put("NODETYPE", "BUILDING");
 		newNode.put("SHORTNAME", "MRS");
-		try{
-			db.addNode(newNode);
-			fail();
-		}
-		catch(SQLException e){
-			assertTrue(true);
-		}
+		assertThrows(SQLException.class, () -> db.addNode(newNode));
 	}
 
 	@Test
@@ -133,93 +129,41 @@ class DatabaseControllerTest {
 		Map<String, String> newNode = new HashMap<String, String>();
 		newNode.put("NODEID", "CCONF001L1");
 
-		try{
-			db.addNode(newNode);
-			fail();
-		}
-		catch(SQLException e){
-			assertTrue(true);
-		}
+		assertThrows(SQLException.class, () -> db.addNode(newNode));
 	}
 
 	@Test
-	void editNodeAllValues() {
+	void editNodeIDValues() {
 		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test2");
-		newNode.put("XCOORD", "100");
-		newNode.put("YCOORD", "5");
-		newNode.put("FLOOR", "G");
-		newNode.put("BUILDING", "KEN");
-		newNode.put("NODETYPE", "EXIT");
-		newNode.put("LONGNAME", "Its a made up place!");
-		newNode.put("SHORTNAME", "KHALL");
+		newNode.put("NODEID", "Test");
 
-		try{
-			db.editNode("Test2", newNode);
-			Map<String, String> editted = db.getNode("Test2");
-			assertEquals(editted.get("NODEID"), "Test2");
-			assertEquals(editted.get("XCOORD"), "100");
-			assertEquals(editted.get("YCOORD"), "5");
-			assertEquals(editted.get("FLOOR"), "G");
-			assertEquals(editted.get("BUILDING"), "KEN");
-			assertEquals(editted.get("NODETYPE"), "EXIT");
-			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
-			assertEquals(editted.get("SHORTNAME"), "KHALL");
-
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-			fail();
-		}
+		assertThrows(SQLException.class, () -> db.editNode("CCONF001L1", newNode));
 	}
 
 	@Test
 	void editNodeSomeValues() {
+		try {
+			Map<String, String> before = db.getNode("CCONF001L1");
+			assertEquals(before.get("XCOORD"),"2255");
+			assertEquals(before.get("FLOOR"),"L1");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
 		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "13");
 		newNode.put("FLOOR", "2");
 
 		try{
-			db.editNode("Test2", newNode);
-			Map<String, String> editted = db.getNode("Test1");
+			db.editNode("CCONF001L1", newNode);
+			Map<String, String> editted = db.getNode("CCONF001L1");
 			assertEquals(editted.get("XCOORD"), "13"); // changed value
-			assertEquals(editted.get("YCOORD"), "300");
 			assertEquals(editted.get("FLOOR"), "2"); // changed value
-			assertEquals(editted.get("BUILDING"), "Mars");
-			assertEquals(editted.get("NODETYPE"), "EXIT");
-			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
-			assertEquals(editted.get("SHORTNAME"), "MRS");
-
 		}
 		catch(SQLException e){
 			e.printStackTrace();
 			fail();
 		}
 	}
-
-	@Test
-	void editNodeChangeKey() {
-		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test3");
-
-		try{
-			db.editNode("Test2", newNode);
-			Map<String, String> editted = db.getNode("Test3");
-			assertEquals(editted.get("NODEID"), "Test3");
-			assertEquals(editted.get("XCOORD"), "100");
-			assertEquals(editted.get("YCOORD"), "5");
-			assertEquals(editted.get("FLOOR"), "G");
-			assertEquals(editted.get("BUILDING"), "KEN");
-			assertEquals(editted.get("NODETYPE"), "EXIT");
-			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
-			assertEquals(editted.get("SHORTNAME"), "KHALL");
-
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-			fail();
-		}
-	}
-
 }
