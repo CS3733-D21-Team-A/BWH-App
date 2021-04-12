@@ -172,4 +172,11 @@ public class AStarTest {
 
         Assertions.assertEquals(expectedPath,testPath);
     }
+
+
+    //TESTS TO MAKE
+    //--Getting nodes by long name instead of ID
+    //--Passing node ID for one param and long name for the other
+    //--General path tests for the database integration
+    //--Getting nodes by long name from the database
 }
