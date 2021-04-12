@@ -13,18 +13,21 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CSVHandlerTest {
 	private final DatabaseController db = new DatabaseController();
 	private final CSVHandler csvHandler = new CSVHandler(db);
-	private final File nodeFile;
-	private final File edgeFile;
+	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
+	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
-	public CSVHandlerTest() throws URISyntaxException {
-		nodeFile = new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv").toURI());
-		edgeFile = new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI());
-	}
+	public CSVHandlerTest() throws URISyntaxException, SQLException, IOException {}
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {
+		System.out.println(db.getEdges());
+		System.out.println(db.getNodes());
 		db.emptyEdgeTable();
+		System.out.println(db.getEdges());
+		System.out.println(db.getNodes());
 		db.emptyNodeTable();
+		System.out.println(db.getEdges());
+		System.out.println(db.getNodes());
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 	}

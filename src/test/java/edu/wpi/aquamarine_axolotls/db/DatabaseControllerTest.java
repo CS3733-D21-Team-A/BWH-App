@@ -17,6 +17,8 @@ class DatabaseControllerTest {
 	DatabaseController db = new DatabaseController();
 	CSVHandler csvHandler = new CSVHandler(db);
 
+	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+
 	@BeforeEach
 	void resetDB() throws URISyntaxException, IOException, SQLException {
 		db.emptyEdgeTable();

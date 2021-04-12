@@ -39,6 +39,7 @@ dependencies {
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
     )
+    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
 
 //These are test dependencies. These are only used for running verification tasks via Gradle.
     testCompile(
