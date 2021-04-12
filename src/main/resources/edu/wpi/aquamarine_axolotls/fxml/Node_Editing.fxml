@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -11,10 +14,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="edu.wpi.aquamarine_axolotls.views.Node_Editing">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Node_Editing">
     <children>
         <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -82,31 +83,76 @@
                     <children>
                         <VBox prefHeight="400.0" prefWidth="162.0">
                             <children>
-                                <JFXComboBox fx:id="startLocation" prefWidth="150.0" promptText="Start location">
+                        <JFXButton fx:id="deleteButton" onAction="#PressdeleteButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Delete" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="addButton" onAction="#pressAddButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Add" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton fx:id="editButton" onAction="#pressEditButton" prefHeight="27.0" prefWidth="129.0" style="-fx-background-color: #003da6;" text="Edit" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Times New Roman" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <Label fx:id="label" prefHeight="17.0" prefWidth="141.0" textAlignment="CENTER">
+                           <VBox.margin>
+                              <Insets bottom="5.0" top="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Times New Roman" size="12.0" />
+                           </font>
+                        </Label>
+                                <JFXComboBox fx:id="nodeDropdown" prefHeight="27.0" prefWidth="200.0" promptText="Node Dropdown">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets />
                                     </VBox.margin>
                                 </JFXComboBox>
-                                <JFXComboBox fx:id="destination" prefWidth="150.0" promptText="Destination">
+                                <JFXTextField fx:id="longName" promptText="Long Name">
                                     <VBox.margin>
-                                        <Insets top="5.0" />
+                                        <Insets />
                                     </VBox.margin>
-                                </JFXComboBox>
-                                <HBox alignment="TOP_CENTER" prefHeight="22.0" prefWidth="142.0">
-                                    <children>
-                                        <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="23.0" prefWidth="86.0" text="Go" textAlignment="CENTER">
-                                            <font>
-                                                <Font size="10.0" />
-                                            </font>
-                                        </JFXButton>
-                                    </children>
+                                </JFXTextField>
+                                <JFXTextField fx:id="shortName" promptText="Short Name">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets />
                                     </VBox.margin>
-                                </HBox>
+                                </JFXTextField>
+                                <JFXTextField promptText="x Coordiniate" fx:id="xCoor">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </JFXTextField>
+                                <JFXTextField fx:id="yCoor" promptText="y Coordinate">
+                                    <VBox.margin>
+                                        <Insets />
+                                    </VBox.margin>
+                                </JFXTextField>
+                        <Label fx:id="submissionlabel" prefHeight="4.0" prefWidth="124.0" textOverrun="CLIP">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="7.0" />
+                           </font>
+                        </Label>
+                                <JFXButton fx:id="findPathButton2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="136.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                    <font>
+                                        <Font size="10.0" />
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets left="10.0" right="10.0" />
+                                    </VBox.margin>
+                                </JFXButton>
                             </children>
                             <padding>
-                                <Insets left="10.0" right="10.0" top="20.0" />
+                                <Insets left="10.0" right="10.0" top="10.0" />
                             </padding>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
