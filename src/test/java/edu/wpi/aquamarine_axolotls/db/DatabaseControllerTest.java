@@ -145,7 +145,6 @@ class DatabaseControllerTest {
 	@Test
 	void editNodeAllValues() {
 		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test2");
 		newNode.put("XCOORD", "100");
 		newNode.put("YCOORD", "5");
 		newNode.put("FLOOR", "G");
@@ -155,9 +154,8 @@ class DatabaseControllerTest {
 		newNode.put("SHORTNAME", "KHALL");
 
 		try{
-			db.editNode("Test2", newNode);
-			Map<String, String> editted = db.getNode("Test2");
-			assertEquals(editted.get("NODEID"), "Test2");
+			db.editNode("CCONF003L1", newNode);
+			Map<String, String> editted = db.getNode("CCONF003L1");
 			assertEquals(editted.get("XCOORD"), "100");
 			assertEquals(editted.get("YCOORD"), "5");
 			assertEquals(editted.get("FLOOR"), "G");
@@ -176,20 +174,14 @@ class DatabaseControllerTest {
 	@Test
 	void editNodeSomeValues() {
 		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "13");
 		newNode.put("FLOOR", "2");
 
 		try{
-			db.editNode("Test2", newNode);
-			Map<String, String> editted = db.getNode("Test1");
+			db.editNode("CDEPT002L1", newNode);
+			Map<String, String> editted = db.getNode("CDEPT002L1");
 			assertEquals(editted.get("XCOORD"), "13"); // changed value
-			assertEquals(editted.get("YCOORD"), "300");
 			assertEquals(editted.get("FLOOR"), "2"); // changed value
-			assertEquals(editted.get("BUILDING"), "Mars");
-			assertEquals(editted.get("NODETYPE"), "EXIT");
-			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
-			assertEquals(editted.get("SHORTNAME"), "MRS");
 
 		}
 		catch(SQLException e){
@@ -198,28 +190,5 @@ class DatabaseControllerTest {
 		}
 	}
 
-	@Test
-	void editNodeChangeKey() {
-		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test3");
-
-		try{
-			db.editNode("Test2", newNode);
-			Map<String, String> editted = db.getNode("Test3");
-			assertEquals(editted.get("NODEID"), "Test3");
-			assertEquals(editted.get("XCOORD"), "100");
-			assertEquals(editted.get("YCOORD"), "5");
-			assertEquals(editted.get("FLOOR"), "G");
-			assertEquals(editted.get("BUILDING"), "KEN");
-			assertEquals(editted.get("NODETYPE"), "EXIT");
-			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
-			assertEquals(editted.get("SHORTNAME"), "KHALL");
-
-		}
-		catch(SQLException e){
-			e.printStackTrace();
-			fail();
-		}
-	}
 
 }
