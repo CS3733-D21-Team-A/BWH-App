@@ -246,6 +246,23 @@ public class SearchAlgorithm {
         return null;
     }
 
+    public Node getNodeByLongName(String longName) {
+        String nodeLongName;
+        //Loop through the list of nodes
+        for (int j = 0; j < this.nodes.size(); j++) {
+            //Get the name of the current node we're looking at
+            nodeLongName = this.nodes.get(j).getLongName();
+
+            //If this node is the one we're looking for, return it
+            if (nodeLongName.equals(nodes.get(j).getLongName())){
+                return this.nodes.get(j);
+            }
+        }
+        //If we go through all the nodes and don't find the one we were looking for, return null
+        System.out.println("Couldn't find that node");
+        return null;
+    }
+
 
     /**
      * Gets all neighbors of a given node
@@ -304,12 +321,19 @@ public class SearchAlgorithm {
      * @param goalID The ID of the node to go to
      * @return
      */
-    public final List<Node> getPath(String startID, String goalID) {
+    public List<Node> getPath(String startID, String goalID) {
         //Empty out the priority queue
         clearFrontier();
 
         Node start = getNode(startID);
         Node goal = getNode(goalID);
+
+        if (start == null) {
+            start = getNodeByLongName(startID);
+        }
+        if (goal == null) {
+            goal = getNodeByLongName(goalID);
+        }
 
         //Inititalize the list of nodes we've been to and costs to nodes so far
         final Map<Node, Node> cameFrom = new HashMap<>(); //This hashmap is structured with a node as a key and the node we came from to get there as its value
