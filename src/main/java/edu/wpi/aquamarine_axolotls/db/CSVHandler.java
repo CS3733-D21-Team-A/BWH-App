@@ -6,11 +6,6 @@ import java.util.*;
 
 public class CSVHandler {
 	@FunctionalInterface
-	private interface SQLRunnable { //need this because normal Runnables can't throw exceptions
-		void run() throws SQLException;
-	}
-
-	@FunctionalInterface
 	private interface SQLConsumer<T> { //need this because normal Consumers can't throw exceptions
 		void accept(T input) throws SQLException;
 	}
@@ -24,17 +19,14 @@ public class CSVHandler {
 	/**
 	 * Inserts values from the provided reader based on the provided methods.
 	 * @param br BufferedReader for input.
-	 * @param tableEmptier method for emptying the table to input to.
 	 * @param tableAdder method for adding new entries to the table.
 	 */
-	private void insertValues(BufferedReader br, SQLRunnable tableEmptier, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
+	private void insertValues(BufferedReader br, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
 		Map<String,String> values = new HashMap<String,String>();
 
 		String line = br.readLine();
 		String[] columns = line.split(","); //record column names
 		String[] inp;
-
-		tableEmptier.run();
 
 		while ((line = br.readLine()) != null) {
 			inp = line.split(","); //split entries by column
@@ -56,10 +48,10 @@ public class CSVHandler {
 
 		switch (table) { //Clear the database on import
 			case NODES:
-				insertValues(br, databaseController::emptyNodeTable, databaseController::addNode);
+				insertValues(br, databaseController::addNode);
 				break;
 			case EDGES:
-				insertValues(br, databaseController::emptyEdgeTable, databaseController::addEdge);
+				insertValues(br, databaseController::addEdge);
 				break;
 			default:
 				System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.

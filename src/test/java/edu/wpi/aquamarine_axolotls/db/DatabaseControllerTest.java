@@ -19,9 +19,10 @@ class DatabaseControllerTest {
 
 	@BeforeEach
 	void resetDB() throws URISyntaxException, IOException, SQLException {
-		getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv");
-		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI()), DatabaseInfo.TABLES.EDGES);
+		db.emptyEdgeTable();
+		db.emptyNodeTable();
 		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv").toURI()), DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI()), DatabaseInfo.TABLES.EDGES);
 	}
 
 	@Test

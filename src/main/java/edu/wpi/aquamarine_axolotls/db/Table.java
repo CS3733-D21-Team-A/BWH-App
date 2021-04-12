@@ -134,23 +134,24 @@ class Table {
 
 	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
 		List<Map<String,String>> entries = new ArrayList<Map<String,String>>();
-		do {
+		while (rs.next()) {
 			Map<String,String> entry = new HashMap<String,String>(); // new row to add
 			for(String column : columns.keySet()) { // for every column in the table
 				entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 			}
 			entries.add(entry); // add this row to the list
-		} while(rs.next()); // increment the row
-		return entries;
+		} // increment the row
+		return entries.size() != 0 ? entries : null;
 	}
 
 	/**
 	 * Get the full SQL table as a ResultSet.
-	 * @return List of maps representing the full table.
+	 * @return List of maps representing the full table. Null if the table is empty.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
 		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName); // gets everything from table
-		return resultSetToList(smnt.executeQuery()); // gets sql result and convert rs to List of maps
+		ResultSet rs = smnt.executeQuery();
+		return resultSetToList(rs); // gets sql result and convert rs to List of maps
 	}
 
 	/**
