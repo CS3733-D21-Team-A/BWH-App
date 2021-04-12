@@ -71,7 +71,7 @@ class Table {
 
 		int i = 1;
 		for (String column : column_names) {
-			if (columns.get(column)) {
+			if (columns.get(column.toUpperCase())) {
 				smnt.setString(i, values.get(column));
 			} else {
 				smnt.setInt(i, Integer.parseInt(values.get(column)));
@@ -106,7 +106,7 @@ class Table {
 
 		int i = 1;
 		for (String column : editColumns) {
-			if (columns.get(column)) {
+			if (columns.get(column.toUpperCase())) {
 				smnt.setString(i, values.get(column));
 			} else {
 				smnt.setInt(i, Integer.parseInt(values.get(column)));

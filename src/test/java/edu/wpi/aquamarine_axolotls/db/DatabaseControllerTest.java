@@ -1,7 +1,11 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +15,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
 	DatabaseController db = new DatabaseController();
+	CSVHandler csvHandler = new CSVHandler(db);
+
+	@BeforeEach
+	void resetDB() throws URISyntaxException, IOException, SQLException {
+		getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv");
+		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI()), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv").toURI()), DatabaseInfo.TABLES.NODES);
+	}
 
 	@Test
 	void nodeDoesntExist() {
