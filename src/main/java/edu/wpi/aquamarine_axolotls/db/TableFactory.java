@@ -21,12 +21,12 @@ class TableFactory {
 
 	/**
 	 * Create and return an object representing the table with the corresponding name.
-	 * @param tableName Name of table to link to.
+	 * @param table identifier for table to link to.
 	 * @return Table object representing the corresponding table in the database.
 	 */
-	Table getTable(String tableName) {
+	Table getTable(DatabaseInfo.TABLES table) {
 		try {
-			return new Table(connection, tableName);
+			return new Table(connection, DatabaseInfo.TABLE_NAMES.get(table));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

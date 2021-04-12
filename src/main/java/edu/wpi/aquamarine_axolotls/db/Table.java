@@ -71,7 +71,7 @@ class Table {
 
 		int i = 1;
 		for (String column : column_names) {
-			if (columns.get(column)) {
+			if (columns.get(column.toUpperCase())) {
 				smnt.setString(i, values.get(column));
 			} else {
 				smnt.setInt(i, Integer.parseInt(values.get(column)));
@@ -106,13 +106,14 @@ class Table {
 
 		int i = 1;
 		for (String column : editColumns) {
-			if (columns.get(column)) {
+			if (columns.get(column.toUpperCase())) {
 				smnt.setString(i, values.get(column));
 			} else {
 				smnt.setInt(i, Integer.parseInt(values.get(column)));
 			}
 			i++;
 		}
+		smnt.setString(i,key);
 
 		return smnt.executeUpdate();
 	}
@@ -124,32 +125,31 @@ class Table {
 	 */
 	int deleteEntry(String entryID) throws SQLException{
 		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?");
-		smnt.setString(1, tableName);
-		smnt.setString(2, primaryKey);
-		smnt.setString(3, entryID);
+		smnt.setString(1, entryID);
 
 		return smnt.executeUpdate();
 	}
 
 	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
 		List<Map<String,String>> entries = new ArrayList<Map<String,String>>();
-		do {
+		while (rs.next()) {
 			Map<String,String> entry = new HashMap<String,String>(); // new row to add
 			for(String column : columns.keySet()) { // for every column in the table
 				entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 			}
 			entries.add(entry); // add this row to the list
-		} while(rs.next()); // increment the row
-		return entries;
+		} // increment the row
+		return entries.size() != 0 ? entries : null;
 	}
 
 	/**
 	 * Get the full SQL table as a ResultSet.
-	 * @return List of maps representing the full table.
+	 * @return List of maps representing the full table. Null if the table is empty.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
 		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName); // gets everything from table
-		return resultSetToList(smnt.executeQuery()); // gets sql result and convert rs to List of maps
+		ResultSet rs = smnt.executeQuery();
+		return resultSetToList(rs); // gets sql result and convert rs to List of maps
 	}
 
 	/**
@@ -186,5 +186,14 @@ class Table {
 		smnt.setString(1, value);
 
 		return resultSetToList(smnt.executeQuery()); // gets sql result and convert RS to List of maps
+	}
+
+	/**
+	 * Empties the table by deleting all entries.
+	 * @return rows deleted.
+	 */
+	int emptyTable() throws SQLException {
+		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName);
+		return smnt.executeUpdate();
 	}
 }

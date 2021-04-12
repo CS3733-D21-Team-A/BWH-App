@@ -10,8 +10,8 @@ public class DatabaseController {
 
 	public DatabaseController() {
 		TableFactory tableFactory = new TableFactory();
-		nodeTable = tableFactory.getTable("NODES"); // Make the table names global static variables
-		edgeTable = tableFactory.getTable("EDGES"); // Make the table names global static variables
+		nodeTable = tableFactory.getTable(DatabaseInfo.TABLES.NODES);
+		edgeTable = tableFactory.getTable(DatabaseInfo.TABLES.EDGES);
 	}
 
 	// ===== NODES =====
@@ -76,6 +76,14 @@ public class DatabaseController {
 	 */
 	public Map<String,String> getNode(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID);
+	}
+
+	/**
+	 * Empties the node table by deleting all entries.
+	 * @return rows deleted.
+	 */
+	int emptyNodeTable() throws SQLException {
+		return nodeTable.emptyTable();
 	}
 
 	// ===== EDGES =====
@@ -154,6 +162,14 @@ public class DatabaseController {
 		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID)); // gets all edges that have the nodeID as a end node
 
 		return edges;
+	}
+
+	/**
+	 * Empties the edge table by deleting all entries.
+	 * @return rows deleted.
+	 */
+	int emptyEdgeTable() throws SQLException {
+		return edgeTable.emptyTable();
 	}
 }
 

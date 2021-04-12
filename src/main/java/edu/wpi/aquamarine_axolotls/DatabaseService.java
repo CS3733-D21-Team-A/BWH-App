@@ -165,8 +165,8 @@ class DatabaseService {
 					"edgeID VARCHAR(51) PRIMARY KEY," +
 					"startNode VARCHAR(25)," +
 					"endNode VARCHAR(25)," +
-					"CONSTRAINT FK_startNode FOREIGN KEY (startNode) REFERENCES Nodes(nodeID)," +
-					"CONSTRAINT FK_endNode FOREIGN KEY (endNode) REFERENCES Nodes(nodeID)" +
+					"CONSTRAINT FK_startNode FOREIGN KEY (startNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+					"CONSTRAINT FK_endNode FOREIGN KEY (endNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 				")"
 			);
 			smnt.execute();
