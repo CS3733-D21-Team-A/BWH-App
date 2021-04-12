@@ -17,8 +17,8 @@ import java.util.*;
 public class AStarTest {
 
 
+    SearchAlgorithm aStarDB = new SearchAlgorithm();
 
-    SearchAlgorithm aStarDB;
     SearchAlgorithm aStarManual;
     String floor = "placeholder floor text";
     String building = "placeholder building text";
@@ -29,12 +29,10 @@ public class AStarTest {
     List<Node> testNodes = new ArrayList<>();
     List<Edge> testEdges = new ArrayList<>();
 
-    @BeforeAll
+    @Before
     public void setupTestNodesEdges() {
-        String[] adbArgs = {"1"};
-        Adb.main(adbArgs);
-
-        aStarDB = new SearchAlgorithm();
+//        String[] adbArgs = {"1"};
+//        Adb.main(adbArgs);
 
         testNodes.add(new Node("A", 10, 6, floor, building, type, "Anesthesia Conf Floor L1", shortName));
         testNodes.add(new Node("B", 9, 2, floor, building, type, "Medical Records Conference Room Floor L1", shortName));
@@ -216,4 +214,21 @@ public class AStarTest {
     //--Passing node ID for one param and long name for the other
     //--General path tests for the database integration
     //--Getting nodes by long name from the database
+
+    @Test
+    public void generalNodeTestDB1() {
+        //Node start = Node.getNode("A",nodes);
+        //Node goal = Node.getNode("C",nodes);
+
+        List<Node> testPath = aStarDB.getPath("CCONF002L1", "WELEV00HL1");
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.add(aStarDB.getNode("CCONF002L1"));
+        expectedPath.add(aStarDB.getNode("WELEV00HL1"));
+
+        System.out.println(expectedPath);
+        System.out.println(testPath);
+
+        Assertions.assertEquals(expectedPath,testPath);
+    }
+
 }
