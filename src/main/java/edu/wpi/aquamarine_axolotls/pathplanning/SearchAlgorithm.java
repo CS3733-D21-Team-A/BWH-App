@@ -254,7 +254,7 @@ public class SearchAlgorithm {
             nodeLongName = this.nodes.get(j).getLongName();
 
             //If this node is the one we're looking for, return it
-            if (nodeLongName.equals(nodes.get(j).getLongName())){
+            if (nodeLongName.equals(longName)) {
                 return this.nodes.get(j);
             }
         }
