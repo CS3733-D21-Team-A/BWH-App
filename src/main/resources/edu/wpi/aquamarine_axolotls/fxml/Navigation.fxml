@@ -94,7 +94,7 @@
                         </JFXComboBox>
                         <HBox alignment="TOP_CENTER" prefHeight="22.0" prefWidth="142.0">
                            <children>
-                              <JFXButton fx:id="circle" contentDisplay="CENTER" mnemonicParsing="false" onAction="#initiateNodes" prefHeight="23.0" prefWidth="86.0" text="Go" textAlignment="CENTER">
+                              <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="23.0" prefWidth="86.0" text="Go" textAlignment="CENTER">
                                  <font>
                                     <Font size="10.0" />
                                  </font>

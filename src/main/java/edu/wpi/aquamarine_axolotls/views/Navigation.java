@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 
 import javax.print.attribute.standard.Destination;
 import java.io.IOException;
@@ -73,7 +76,6 @@ public class Navigation {
         }
     }
 
-
     /**
     * Scales the x coordinate from table for image (5000,3400)
     * @param xCoord x coordinate from table
@@ -99,7 +101,37 @@ public class Navigation {
         return newYCoord;
     }
 
-    public void initiateNodes(){
+    public void findPath(){
+        anchor.getChildren().removeAll();
+
+        String start = startLocation.getSelectionModel().getSelectedItem().toString();
+        String end = destination.getSelectionModel().getSelectedItem().toString();
+        SearchAlgorithm searchAlgorithm = new SearchAlgorithm();
+        List<Node> pathNodes = searchAlgorithm.getPath(start, end);
+
+        Double prevX = 1000.0;
+        Double prevY = 1000.0;
+        for (int i = 0; i < pathNodes.size(); i++){
+            Circle circ = new Circle();
+            Line line = new Line();
+            Double scaledX = xScale(pathNodes.get(i).getXcoord());
+            Double scaledY = yScale(pathNodes.get(i).getYcoord());
+
+            circ.setCenterX(scaledX);
+            circ.setCenterY(scaledY);
+            circ.setRadius(1);
+
+            line.setStartX(scaledX);
+            line.setStartY(scaledY);
+            line.setEndX(prevX);
+            line.setEndY(prevY);
+
+            anchor.getChildren().addAll(circ, line);
+            prevX = scaledX;
+            prevY = scaledY;
+        }
+
+        /*
         try{
             Map<String, String> node = db.getNode("aPARK001GG"); // only displays a node and top left and bottom right
             Circle circ = new Circle();
@@ -121,10 +153,9 @@ public class Navigation {
             anchor.getChildren().add(circ);
         } catch(SQLException e){
             e.printStackTrace();
-        }
+        }*/
         return;
     }
-
 
 
 }
