@@ -1,13 +1,20 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,15 +49,87 @@ public class Food_Delivery extends Service_Request {
     private Button submitButton;
 
     @FXML
-    private AnchorPane anchorPane;
+    private AnchorPane myAnchorPane;
+
+    @FXML
+    private StackPane stackPane;
 
     @FXML
     public void initialize(){
         foodOptions.setItems(foodOptionList);
     }
 
+    @FXML
+    public void handleButtonAction(javafx.event.ActionEvent actionEvent) {
+
+        Stage stage = (Stage) myAnchorPane.getScene().getWindow();
+
+        Alert.AlertType type = Alert.AlertType.CONFIRMATION;
+
+        Alert alert = new Alert(type, "");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+        alert.getDialogPane().setContentText("Click OK to confirm submission");
+
+        alert.getDialogPane().setHeaderText("Are you sure you would like to submit?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.get() == ButtonType.OK)
+        {
+            try {
+                Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
+                Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }        }
+
+    }
 
     @FXML
-    public void handleButtonAction() {}
+    public void return_home(javafx.event.ActionEvent actionEvent) {
+
+        Stage stage = (Stage) myAnchorPane.getScene().getWindow();
+
+        Alert.AlertType type = Alert.AlertType.CONFIRMATION;
+
+        Alert alert = new Alert(type, "");
+
+        alert.initModality(Modality.APPLICATION_MODAL);
+        alert.initOwner(stage);
+        alert.getDialogPane().setContentText("Your changes will not be saved.");
+
+        alert.getDialogPane().setHeaderText("Are you sure you would like to return to the previous screen?");
+
+        Optional result = alert.showAndWait();
+        if(result.get() == ButtonType.OK)
+        {
+            try {
+                Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
+                Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }        }
+
+    }
+    @FXML
+    public void loadHelp(javafx.event.ActionEvent event){
+        JFXDialogLayout content = new JFXDialogLayout();
+
+        JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        content.setHeading(new Text("Help Page"));
+        content.setBody(new Text("Help Page Information:"));
+
+        JFXButton exit_button = new JFXButton("Close");
+        exit_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                help.close();
+            }
+        });
+
+        content.setActions(exit_button);
+        help.show();
+    }
 
 }

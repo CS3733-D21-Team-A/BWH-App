@@ -90,7 +90,7 @@ public class Floral_Delivery extends Service_Request{
 
         Alert.AlertType type = Alert.AlertType.CONFIRMATION;
 
-        JFXAlert<String> alert = new JFXAlert<>((Stage) back_button.getScene().getWindow());
+        Alert alert = new Alert(type, "");
 
         alert.initModality(Modality.APPLICATION_MODAL);
         alert.initOwner(stage);
@@ -115,10 +115,9 @@ public class Floral_Delivery extends Service_Request{
 
     JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
     content.setHeading(new Text("Help Page"));
-    content.setBody(new Text("here is information that the help page would show"));
+    content.setBody(new Text("Help Page Information:"));
 
         JFXButton exit_button = new JFXButton("Close");
-        JFXButton other = new JFXButton("other option");
         exit_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -126,7 +125,7 @@ public class Floral_Delivery extends Service_Request{
             }
         });
 
-    content.setActions(exit_button,other);
+    content.setActions(exit_button);
     help.show();
 }
 
