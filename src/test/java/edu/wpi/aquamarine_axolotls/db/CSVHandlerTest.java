@@ -20,14 +20,8 @@ public class CSVHandlerTest {
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {
-		System.out.println(db.getEdges());
-		System.out.println(db.getNodes());
 		db.emptyEdgeTable();
-		System.out.println(db.getEdges());
-		System.out.println(db.getNodes());
 		db.emptyNodeTable();
-		System.out.println(db.getEdges());
-		System.out.println(db.getNodes());
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 	}
