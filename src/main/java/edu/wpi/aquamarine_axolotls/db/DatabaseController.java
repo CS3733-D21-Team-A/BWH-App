@@ -66,7 +66,7 @@ public class DatabaseController {
 	 * @return List of maps representing the full Nodes table.
 	 */
 	public List<Map<String,String>> getNodes() throws SQLException {
-		return nodeTable.getEntries();
+		return nodeTable.getNodes();
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class DatabaseController {
 	 * @return List of maps representing the full Nodes table.
 	 */
 	public List<Map<String,String>> getEdges() throws SQLException  {
-		return edgeTable.getEntries();
+		return edgeTable.getEdges();
 	}
 
 	/**
