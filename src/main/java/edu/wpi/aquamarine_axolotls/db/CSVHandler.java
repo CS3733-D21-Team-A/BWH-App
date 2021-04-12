@@ -2,8 +2,7 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import java.io.*;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CSVHandler {
 	@FunctionalInterface
@@ -72,10 +71,43 @@ public class CSVHandler {
 	 * @param file File to export to.
 	 * @param table identifer for table to export.
 	 */
-	public void exportCSV(File file, DatabaseInfo.TABLES table) {
+	public void exportCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(file,false));
 
+		List<Map<String,String>> values;
+
+		switch (table) {
+			case NODES:
+				values = databaseController.getNodes();
+				break;
+			case EDGES:
+				values = databaseController.getEdges();
+				break;
+			default:
+				System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
+				return;
+		}
+
+		Object[] objArr = values.get(0).keySet().toArray();
+		String[] columns = Arrays.copyOf(objArr, objArr.length, String[].class);
+
+		StringBuilder sb = new StringBuilder();
+		for (String column : columns) {
+			sb.append(column);
+			sb.append(',');
+		}
+		sb.delete(sb.length()-1,sb.length());
+		sb.append('\n');
+
+		for (Map<String,String> value : values) {
+			for (String column : columns) {
+				sb.append(value.get(column.toUpperCase()));
+				sb.append(',');
+			}
+			sb.delete(sb.length()-1,sb.length());
+			sb.append('\n');
+		}
+
+		bw.write(sb.toString());
 	}
-
-
-
 }
