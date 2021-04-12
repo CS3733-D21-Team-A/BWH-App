@@ -41,7 +41,14 @@ public class CSVHandlerTest {
 	@Test
 	void cascadeDownTest() throws SQLException {
 		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
-		System.out.println(db.deleteNode("CCONF002L1"));
+		db.deleteNode("CCONF002L1");
 		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+	}
+
+	@Test
+	void cascadeUpTest() throws SQLException {
+		assertTrue(db.nodeExists("CCONF002L1"));
+		db.deleteEdge("CCONF002L1_WELEV00HL1");
+		assertTrue(db.nodeExists("CCONF002L1"));
 	}
 }
