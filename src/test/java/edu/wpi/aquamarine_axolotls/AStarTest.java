@@ -29,7 +29,7 @@ public class AStarTest {
     List<Node> testNodes = new ArrayList<>();
     List<Edge> testEdges = new ArrayList<>();
 
-    @Before
+    @BeforeAll
     public void setupTestNodesEdges() {
 //        String[] adbArgs = {"1"};
 //        Adb.main(adbArgs);
@@ -219,6 +219,7 @@ public class AStarTest {
     public void generalNodeTestDB1() {
         //Node start = Node.getNode("A",nodes);
         //Node goal = Node.getNode("C",nodes);
+        System.out.println("Running batabase integration test 1");
 
         List<Node> testPath = aStarDB.getPath("CCONF002L1", "WELEV00HL1");
         List<Node> expectedPath = new ArrayList<>();
