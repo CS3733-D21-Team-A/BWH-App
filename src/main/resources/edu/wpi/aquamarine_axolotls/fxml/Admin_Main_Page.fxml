@@ -98,7 +98,7 @@
                                     </font>
                                 </JFXButton>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="help_button" prefHeight="34.0" prefWidth="151.0" text="Settings" textFill="WHITE">
+                                <JFXButton fx:id="help_button" prefHeight="34.0" prefWidth="151.0" text="Help" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
@@ -107,7 +107,7 @@
                                     </font>
                                 </JFXButton>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="settings_button" prefHeight="34.0" prefWidth="151.0" text="Help" textFill="WHITE">
+                                <JFXButton fx:id="settings_button" prefHeight="34.0" prefWidth="151.0" text="Settings" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>

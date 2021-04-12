@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,37 @@ import javafx.event.EventHandler;
 import javafx.stage.Popup;
 
 public class Default_Service_Page {
+    @FXML
+    private JFXButton food_delivery_button;
+
+    @FXML
+    private JFXButton language_interpreters_button;
+
+    @FXML
+    private JFXButton gift_delivery_button;
+
+    @FXML
+    private JFXButton sanitation_button;
+
+    @FXML
+    private JFXButton laundry_button;
+
+    @FXML
+    private JFXButton medicine_button;
+    @FXML
+    private JFXButton floral_delivery;
+
+    @FXML
+    private JFXButton religious_request_button;
+
+    @FXML
+    private JFXButton internal_transport_button;
+
+    @FXML
+    private JFXButton external_transport_button;
+
+    @FXML
+    private JFXButton back_button;
 
 
     // Button Presses for Default Service Page, each button leads to its service request form

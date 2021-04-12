@@ -47,14 +47,14 @@
                         <Insets />
                      </HBox.margin>
                   </JFXButton>
-                  <Button fx:id="gift_delivery_button" maxWidth="234.0" mnemonicParsing="false" onAction="#gift_delivery_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE">
+                  <JFXButton fx:id="gift_delivery_button" maxWidth="234.0" mnemonicParsing="false" onAction="#gift_delivery_b" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #012D5A; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE">
                      <font>
                         <Font name="Optima Regular" size="14.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="30.0" right="10.0" />
                      </HBox.margin>
-                  </Button>
+                  </JFXButton>
                </children>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -152,7 +152,7 @@
       </VBox>
       <Line endX="145.0" layoutX="366.0" layoutY="80.0" startX="-274.5" stroke="#c4c4c4" strokeWidth="4.0" />
 
-         <Button fx:id="back_button" layoutX="-1.0" layoutY="55.0" mnemonicParsing="false" onAction="#return_home" prefHeight="13.0" prefWidth="30.0" />
+         <JFXButton fx:id="back_button" layoutX="-1.0" layoutY="55.0" mnemonicParsing="false" onAction="#return_home" prefHeight="13.0" prefWidth="30.0" />
          <ImageView fitHeight="20.0" fitWidth="16.0" layoutX="6.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
             <image>
                <Image url="@../img/back icon.jpg" />
