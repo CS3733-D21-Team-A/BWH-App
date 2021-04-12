@@ -141,7 +141,7 @@ public void clearfields(){
         else{
             submissionlabel.setText(  "You did not make a proper submission");
         }
-        label.setText("Add Another Node?");
+        label.setText("Another Node?");
         clearfields();
 
         return;
