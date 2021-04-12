@@ -111,7 +111,6 @@ public class DatabaseController {
 	 * @param values Map whose keys are the column names and values are the entry values
 	 */
 
-	// DONE
 	public void addEdge(Map<String,String> values) throws SQLException {
 		edgeTable.addEntry(values);
 	}
