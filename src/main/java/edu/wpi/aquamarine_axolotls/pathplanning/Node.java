@@ -29,6 +29,21 @@ public class Node{
         this.shortName = shortName;
     }
 
+    /**
+     * Alternate constructor for testing purposes that just takes an ID and fills everything else with placeholders
+     * @param ID Id of the node
+     */
+    public Node(String ID) {
+        this.nodeID = ID;
+        this.xcoord = 0;
+        this.ycoord = 0;
+        this.floor = "placeholder";
+        this.building = "placeholder";
+        this.nodeType = "placeholder";
+        this.longName = "placeholder";
+        this.shortName = "placeholder";
+    }
+
     public String getNodeID() {
         return nodeID;
     }

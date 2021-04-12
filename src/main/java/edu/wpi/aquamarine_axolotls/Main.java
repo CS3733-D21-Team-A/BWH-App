@@ -12,6 +12,7 @@ public class Main {
     //Aapp.launch(Aapp.class, args);
     Adb.main(args);
 
+    /*
     DatabaseController dbControl = new DatabaseController();
 
     try {
@@ -32,6 +33,6 @@ public class Main {
 
     //Actually run the function to get the path from start to end
     List<Node> path = newSearch.getPath(start,goal);
-    System.out.println(path);
+    System.out.println(path);*/
   }
 }

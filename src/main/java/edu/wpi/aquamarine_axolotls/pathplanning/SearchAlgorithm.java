@@ -2,7 +2,9 @@ package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import org.apache.derby.iapi.db.Database;
+import sun.awt.AWTAccessor;
 
+import java.sql.SQLException;
 import java.util.*;
 
 //import static edu.wpi.aquamarine_axolotls.pathplanning.PathBuilder.buildPath;
@@ -16,8 +18,18 @@ public class SearchAlgorithm {
     public SearchAlgorithm(){
         DatabaseController dbControl = new DatabaseController();
 
-        List<Map<String, String>> nodeMap = dbControl.getNodes();
-        List<Map<String, String>> edgeMap = dbControl.getEdges();
+        List<Map<String, String>> nodeMap = new ArrayList<>();
+        List<Map<String, String>> edgeMap = new ArrayList<>();
+
+        try {
+            nodeMap = dbControl.getNodes();
+            edgeMap = dbControl.getEdges();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
 
         for (int i = 0; i < nodeMap.size(); i++) {
             Map<String, String> currNodeMap = nodeMap.get(i);
@@ -44,6 +56,15 @@ public class SearchAlgorithm {
         }
     }
 
+    public SearchAlgorithm(List<Node> nodeList, List<Edge> edgeList) {
+        for (int i = 0; i < nodeList.size(); i++) {
+            this.nodes.add(nodeList.get(i));
+        }
+        for (int j = 0; j < edgeList.size(); j++) {
+            this.edges.add(edgeList.get(j));
+        }
+    }
+
     /**
      * Clears the SearchAlgorithm's current node and edge data and reloads it from the database
      * Use this if you have a persistent instance of SearchAlgorithm and want to update it based on database changes
@@ -51,8 +72,16 @@ public class SearchAlgorithm {
     public void updateSearchData() {
         DatabaseController dbControl = new DatabaseController();
 
-        List<Map<String, String>> nodeMap = dbControl.getNodes();
-        List<Map<String, String>> edgeMap = dbControl.getEdges();
+        List<Map<String, String>> nodeMap = new ArrayList<>();
+        List<Map<String, String>> edgeMap = new ArrayList<>();
+
+        try {
+            nodeMap = dbControl.getNodes();
+            edgeMap = dbControl.getEdges();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         this.nodes.clear();
         this.edges.clear();
@@ -200,7 +229,7 @@ public class SearchAlgorithm {
      * @param id String, the id of the node to look for
      * @return The node once we find it, or null if that node doesn't exist
      */
-    private Node getNode(String id) {
+    public Node getNode(String id) {
         String nodeName;
         //Loop through the list of nodes
         for (int j = 0; j < this.nodes.size(); j++) {
