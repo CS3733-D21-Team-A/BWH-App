@@ -49,20 +49,15 @@ public class CSVHandler {
 	public void importCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 
-		try {
-			switch (table) { //Clear the database on import
-				case NODES:
-					insertValues(br, databaseController::emptyNodeTable, databaseController::addNode);
-					break;
-				case EDGES:
-					insertValues(br, databaseController::emptyEdgeTable, databaseController::addEdge);
-					break;
-				default:
-					System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
+		switch (table) { //Clear the database on import
+			case NODES:
+				insertValues(br, databaseController::emptyNodeTable, databaseController::addNode);
+				break;
+			case EDGES:
+				insertValues(br, databaseController::emptyEdgeTable, databaseController::addEdge);
+				break;
+			default:
+				System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
 		}
 	}
 
