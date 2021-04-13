@@ -4,6 +4,8 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import org.apache.derby.iapi.db.Database;
 import sun.awt.AWTAccessor;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -15,7 +17,7 @@ public class SearchAlgorithm {
     private List<Node> nodes = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
 
-    public SearchAlgorithm(){
+    public SearchAlgorithm() throws SQLException, IOException, URISyntaxException {
         DatabaseController dbControl = new DatabaseController();
 
         List<Map<String, String>> nodeMap = new ArrayList<>();
@@ -69,7 +71,7 @@ public class SearchAlgorithm {
      * Clears the SearchAlgorithm's current node and edge data and reloads it from the database
      * Use this if you have a persistent instance of SearchAlgorithm and want to update it based on database changes
      */
-    public void updateSearchData() {
+    public void updateSearchData() throws SQLException, IOException, URISyntaxException {
         DatabaseController dbControl = new DatabaseController();
 
         List<Map<String, String>> nodeMap = new ArrayList<>();
