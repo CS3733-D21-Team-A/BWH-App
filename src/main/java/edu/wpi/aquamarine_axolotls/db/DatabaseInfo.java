@@ -6,19 +6,37 @@ import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * Class containing static info for reference when working with the database.
+ */
 public class DatabaseInfo {
-
 	/**
 	 * Enum for available tables.
 	 */
 	public enum TABLES {
+		/**
+		 * Node table.
+		 */
 		NODES,
+		/**
+		 * Edge table.
+		 */
 		EDGES
 	}
 
+	/**
+	 * Path to default node CSV resource.
+	 */
 	public static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv";
+
+	/**
+	 * Path to default edge CSV resource.
+	 */
 	public static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Edges.csv";
 
+	/**
+	 * Map associating TABLES enum to usable table names.
+	 */
 	public static final Map<TABLES,String> TABLE_NAMES;
 	static {
 		Map<TABLES,String> aMap = new EnumMap<TABLES,String>(TABLES.class);

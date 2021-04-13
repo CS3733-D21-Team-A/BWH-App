@@ -1,21 +1,27 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller class for working with the BWH database.
+ */
 public class DatabaseController {
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
 
 	/**
-	 * DatabaseController constructor.
+	 * DatabaseController constructor. Creates and populates new database if one is not found.
 	 * @throws SQLException Something went wrong.
 	 * @throws IOException Something went wrong.
 	 * @throws URISyntaxException Something went wrong.
@@ -261,5 +267,3 @@ public class DatabaseController {
 		csvHandler.importCSV(DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
 	}
 }
-
-

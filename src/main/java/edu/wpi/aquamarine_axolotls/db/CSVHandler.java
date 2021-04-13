@@ -4,6 +4,9 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Class for handling importing and exporting CSVs to and from the database.
+ */
 public class CSVHandler {
 	@FunctionalInterface
 	private interface SQLConsumer<T> { //need this because normal Consumers can't throw exceptions
@@ -12,6 +15,10 @@ public class CSVHandler {
 
 	final DatabaseController databaseController;
 
+	/**
+	 * CSVHandler constructer.
+	 * @param databaseController DatabaseController to use in operations.
+	 */
 	public CSVHandler(DatabaseController databaseController) {
 		this.databaseController = databaseController;
 	}
