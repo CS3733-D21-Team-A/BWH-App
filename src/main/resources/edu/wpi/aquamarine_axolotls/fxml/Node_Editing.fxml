@@ -17,7 +17,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Node_Editing">
     <children>
-        <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
             <children>
                 <GridPane alignment="CENTER_LEFT" prefHeight="68.0" prefWidth="600.0">
                     <columnConstraints>
@@ -78,10 +78,10 @@
                         </HBox>
                     </children>
                 </GridPane>
-                <HBox prefHeight="9.0" prefWidth="600.0" style="-fx-background-color: #003da6;" />
-                <HBox prefHeight="340.0" prefWidth="600.0">
+                <HBox prefHeight="11.0" prefWidth="598.0" style="-fx-background-color: #003da6;" />
+                <HBox prefHeight="335.0" prefWidth="585.0">
                     <children>
-                        <VBox prefHeight="400.0" prefWidth="162.0">
+                        <VBox prefHeight="335.0" prefWidth="156.0">
                             <children>
                         <JFXButton fx:id="deleteButton" onAction="#PressdeleteButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Delete" textFill="WHITE">
                            <VBox.margin>
@@ -101,7 +101,7 @@
                               <Font name="Times New Roman" size="13.0" />
                            </font>
                         </JFXButton>
-                        <Label fx:id="label" prefHeight="17.0" prefWidth="141.0" textAlignment="CENTER">
+                        <Label fx:id="label" prefHeight="17.0" prefWidth="138.0" textAlignment="CENTER">
                            <VBox.margin>
                               <Insets bottom="5.0" top="5.0" />
                            </VBox.margin>
@@ -109,37 +109,37 @@
                               <Font name="Times New Roman" size="12.0" />
                            </font>
                         </Label>
-                                <JFXComboBox fx:id="nodeDropdown" prefHeight="27.0" prefWidth="200.0" promptText="Node Dropdown">
+                                <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="137.0" promptText="Node Dropdown" style="-fx-font-size: 8;">
                                     <VBox.margin>
                                         <Insets />
                                     </VBox.margin>
                                 </JFXComboBox>
-                                <JFXTextField fx:id="longName" promptText="Long Name">
+                                <JFXTextField fx:id="longName" minHeight="15.0" prefHeight="15.0" promptText="Long Name" style="-fx-font-size: 10;">
                                     <VBox.margin>
-                                        <Insets />
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="shortName" promptText="Short Name">
+                                <JFXTextField fx:id="shortName" maxHeight="15.0" minHeight="15.0" promptText="Short Name" style="-fx-font-size: 10;">
                                     <VBox.margin>
-                                        <Insets />
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField promptText="x Coordiniate" fx:id="xCoor">
+                                <JFXTextField maxHeight="15.0" maxWidth="1.7976931348623157E308" minHeight="15.0" promptText="x Coordiniate" style="-fx-font-size: 10;" fx:id="xCoor">
                                     <VBox.margin>
-                                        <Insets />
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="yCoor" promptText="y Coordinate">
+                                <JFXTextField fx:id="yCoor" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" promptText="y Coordinate" style="-fx-font-size: 10;">
                                     <VBox.margin>
-                                        <Insets />
+                                        <Insets top="10.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                        <Label fx:id="submissionlabel" prefHeight="4.0" prefWidth="124.0" textOverrun="CLIP">
+                        <Label fx:id="submissionlabel" prefHeight="21.0" prefWidth="141.0" textAlignment="CENTER" textOverrun="CLIP">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                            <font>
-                              <Font size="7.0" />
+                              <Font name="Times New Roman" size="8.0" />
                            </font>
                         </Label>
                                 <JFXButton fx:id="findPathButton2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="136.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">

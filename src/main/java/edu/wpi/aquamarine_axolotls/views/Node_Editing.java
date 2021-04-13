@@ -47,6 +47,7 @@ public class Node_Editing {
     @FXML
     private JFXButton findPathButton2;
 
+    @FXML
     ObservableList<String> options = FXCollections.observableArrayList(
             "Parking Spot 1 45 Francis Street Lobby",
             "Parking Spot 45 Francis Street Lobby",
@@ -110,6 +111,7 @@ public void clearfields(){
         xCoor.setVisible(false);
         yCoor.setVisible(false);
         label.setText("Delete");
+     //  nodeDropdown.Remove(nodeDropdown.SelectedItem);
 
     }
 
@@ -130,21 +132,31 @@ public void clearfields(){
     public void submitfunction(){
         if(label.getText() == "Edit"){
             submissionlabel.setText("You have edited "+ nodeDropdown.getSelectionModel().getSelectedItem().toString());
+            getText();
         }
 
         else if(label.getText() == "Delete"){
             submissionlabel.setText("You have deleted "+ nodeDropdown.getSelectionModel().getSelectedItem().toString());
+
         }
-        else if(label.getText() == "Add"){
-            submissionlabel.setText("You have added "+ longName.getText());
+        else if(label.getText() == "Add") {
+            submissionlabel.setText("You have added " + longName.getText());
+            getText();
         }
         else{
-            submissionlabel.setText(  "You did not make a proper submission");
+            submissionlabel.setText(  "Invalid submission");
         }
         label.setText("Another Node?");
         clearfields();
 
         return;
+    }
+
+    private void getText() {
+        if (longName.getText() != "") System.out.println(longName.getText());
+        if (shortName.getText() != "") System.out.println(shortName.getText());
+        if (xCoor.getText() != "") System.out.println(xCoor.getText());
+        if (yCoor.getText() != "") System.out.println(yCoor.getText());
     }
 
 }
