@@ -3,7 +3,9 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +17,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -29,6 +33,8 @@ public class EdgeEditing {
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
+    @FXML public JFXButton importButton;
+    @FXML public JFXButton exportButton;
     @FXML private JFXComboBox edgeDropdown;
     @FXML private JFXTextField edgeIDtextbox;
     @FXML private JFXComboBox startNodeDropdown;
@@ -42,36 +48,37 @@ public class EdgeEditing {
 
     int label = 3; // 0 means delete, 1 means add, 2 means edit, 3 means invalid
 
-
     DatabaseController db;
+    CSVHandler csvHandler;
 
     @FXML
     public void initialize() {
         table.setEditable(false);
 
-        ObservableList<String> edgeOptions = FXCollections.observableArrayList();
+        ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
 
-        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));
+        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
         startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
         endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
 
-        edgeDropdown.setVisible(false);
+        edgeDropdown.setVisible(false);         //making fields invisible
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
 
-        deleteButton.setStyle("-fx-background-color: #003da6; ");
+        deleteButton.setStyle("-fx-background-color: #003da6; ");       //setting buttons to default color
         addButton.setStyle("-fx-background-color: #003da6; ");
         editButton.setStyle("-fx-background-color: #003da6; ");
 
         try {
             db = new DatabaseController();
+            csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
             List<Map<String, String>> nodes = db.getNodes();
 
             for (Map<String, String> edge : edges) {
-                edgeOptions.add(edge.get("EDGEID"));
+                edgeOptions.add(edge.get("EDGEID"));    //getting edge options
                 table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
             }
             for (Map<String, String> node : nodes) {
@@ -184,7 +191,15 @@ public class EdgeEditing {
         String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString();
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem().toString();
         String endNode = endNodeDropdown.getSelectionModel().getSelectedItem().toString();
+
         try{
+            if (startNode.equals("")){
+                startNode = db.getNode(edgeID).get("STARTNODE");
+            }
+            if (endNode.equals("")){
+                endNode = db.getNode(edgeID).get("ENDNODE");
+            }
+
             if (db.edgeExists(edgeID)){
                 Map<String, String> edge = new HashMap<String, String>();
                 edge.put("EDGEID", edgeID);
@@ -221,6 +236,34 @@ public class EdgeEditing {
         }
         initialize();
     }
-    private void getText() {}
 
+    public void loadCSV() { //still in the works
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
+        try{
+            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
+    }
+
+    public void exportCSV() { //still in the works
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
+        try{
+            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.EDGES);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
+    }
 }
