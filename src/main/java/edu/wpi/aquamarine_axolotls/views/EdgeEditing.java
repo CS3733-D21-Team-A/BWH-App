@@ -62,8 +62,8 @@ public class EdgeEditing {
         endNodeDropdown.setVisible(false);
 
         deleteButton.setStyle("-fx-background-color: #003da6; ");
-        deleteButton.setStyle("-fx-background-color: #003da6; ");
-        deleteButton.setStyle("-fx-background-color: #003da6; ");
+        addButton.setStyle("-fx-background-color: #003da6; ");
+        editButton.setStyle("-fx-background-color: #003da6; ");
 
         try {
             db = new DatabaseController();
@@ -97,7 +97,11 @@ public class EdgeEditing {
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
+
         deleteButton.setStyle("-fx-background-color: #91b7fa; ");
+        addButton.setStyle("-fx-background-color: #003da6; ");
+        editButton.setStyle("-fx-background-color: #003da6; ");
+
         label = 0;
     }
 
@@ -106,7 +110,11 @@ public class EdgeEditing {
         edgeIDtextbox.setVisible(true);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
+
+        deleteButton.setStyle("-fx-background-color: #003da6; ");
         addButton.setStyle("-fx-background-color: #91b7fa; ");
+        editButton.setStyle("-fx-background-color: #003da6; ");
+
         label = 1;
     }
 
@@ -115,6 +123,9 @@ public class EdgeEditing {
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
+
+        deleteButton.setStyle("-fx-background-color: #003da6; ");
+        addButton.setStyle("-fx-background-color: #003da6; ");
         editButton.setStyle("-fx-background-color: #91b7fa; ");
 
         table.setEditable(true);
