@@ -4,11 +4,17 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -29,6 +35,10 @@ public class EdgeEditing {
     @FXML private JFXComboBox endNodeDropdown;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
+    @FXML private TableView table;
+    @FXML private TableColumn<Edge,String> edgeIdCol;
+    @FXML private TableColumn<Edge,String> startNodeCol;
+    @FXML private TableColumn<Edge,String> endNodeCol;
 
     int label = 3; // 0 means delete, 1 means add, 2 means edit, 3 means invalid
 
@@ -37,12 +47,23 @@ public class EdgeEditing {
 
     @FXML
     public void initialize() {
+        table.setEditable(false);
+
         ObservableList<String> edgeOptions = FXCollections.observableArrayList();
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
+
+        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));
+        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
+        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
+
         edgeDropdown.setVisible(false);
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
+
+        deleteButton.setStyle("-fx-background-color: #003da6; ");
+        deleteButton.setStyle("-fx-background-color: #003da6; ");
+        deleteButton.setStyle("-fx-background-color: #003da6; ");
 
         try {
             db = new DatabaseController();
@@ -51,8 +72,8 @@ public class EdgeEditing {
 
             for (Map<String, String> edge : edges) {
                 edgeOptions.add(edge.get("EDGEID"));
+                table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
             }
-
             for (Map<String, String> node : nodes) {
                 if (node.get("NODETYPE").equals("EXIT") || node.get("NODETYPE").equals("PARK")) {
                     nodeOptions.add(node.get("NODEID"));
@@ -61,6 +82,7 @@ public class EdgeEditing {
             edgeDropdown.setItems(edgeOptions);
             startNodeDropdown.setItems(nodeOptions);
             endNodeDropdown.setItems(nodeOptions);
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -70,12 +92,12 @@ public class EdgeEditing {
         }
     }
 
-
     public void pressDeleteButton() {
         edgeDropdown.setVisible(true);
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
+        deleteButton.setStyle("-fx-background-color: #91b7fa; ");
         label = 0;
     }
 
@@ -84,6 +106,7 @@ public class EdgeEditing {
         edgeIDtextbox.setVisible(true);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
+        addButton.setStyle("-fx-background-color: #91b7fa; ");
         label = 1;
     }
 
@@ -92,20 +115,19 @@ public class EdgeEditing {
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
+        editButton.setStyle("-fx-background-color: #91b7fa; ");
+
+        table.setEditable(true);
+        edgeIdCol.setCellFactory(TextFieldTableCell.<Edge>forTableColumn());
+        startNodeCol.setCellFactory(TextFieldTableCell.<Edge>forTableColumn());
+        endNodeCol.setCellFactory(TextFieldTableCell.<Edge>forTableColumn());
+
         label = 2;
-    }
-
-
-    public void viewDatabase(){
-        try{
-            System.out.println(db.getEdges());
-        }catch (SQLException sq){
-            sq.printStackTrace();
-        }
     }
 
     public void delete(){
         String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString();
+        System.out.println(edgeID);
         try{
             if (db.edgeExists(edgeID)){
                 db.deleteEdge(edgeID);
@@ -123,32 +145,38 @@ public class EdgeEditing {
         String edgeID = edgeIDtextbox.getText();
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem().toString();
         String endNode = endNodeDropdown.getSelectionModel().getSelectedItem().toString();
-        try{
-            if (!db.edgeExists(edgeID)){
-                Map<String, String> edge = new HashMap<String, String>();
-                edge.put("EDGEID", edgeID);
-                edge.put("STARTNODE", startNode);
-                edge.put("ENDNODE", endNode);
 
-                db.addEdge(edge);
-                submissionlabel.setText("You have added "+ edgeID);
-            }else{
-                submissionlabel.setText("Edge already exist");
+        if (edgeID.equals("") || startNode.equals("") || endNode.equals("")){
+            submissionlabel.setText("Did not fill out all required fields");
+            return;
+        }else {
+            try {
+                if (!db.edgeExists(edgeID)) {
+                    Map<String, String> edge = new HashMap<String, String>();
+                    edge.put("EDGEID", edgeID);
+                    edge.put("STARTNODE", startNode);
+                    edge.put("ENDNODE", endNode);
+
+                    db.addEdge(edge);
+                    submissionlabel.setText("You have added " + edgeID);
+                } else {
+                    submissionlabel.setText("Edge already exist");
+                }
+            } catch (SQLException sq) {
+                sq.printStackTrace();
             }
-        }catch (SQLException sq){
-            sq.printStackTrace();
+            return;
         }
-        return;
     }
 
     public void edit(){
-        String edgeID = edgeIDtextbox.getText();
+        String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString();
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem().toString();
         String endNode = endNodeDropdown.getSelectionModel().getSelectedItem().toString();
         try{
             if (db.edgeExists(edgeID)){
                 Map<String, String> edge = new HashMap<String, String>();
-               // edge.put("EDGEID", edgeID);
+                edge.put("EDGEID", edgeID);
                 edge.put("STARTNODE", startNode);
                 edge.put("ENDNODE", endNode);
 
