@@ -104,7 +104,7 @@ public class Navigation {
     }
 
     public void findPath() {
-        anchor.getChildren().removeAll();
+        anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
         SearchAlgorithm searchAlgorithm;
@@ -133,7 +133,7 @@ public class Navigation {
 
                 circ.setCenterX(scaledX);
                 circ.setCenterY(scaledY);
-                circ.setRadius(1);
+                circ.setRadius(2);
                 circ.setFill(Color.RED);
 
                 line.setStartX(scaledX);
