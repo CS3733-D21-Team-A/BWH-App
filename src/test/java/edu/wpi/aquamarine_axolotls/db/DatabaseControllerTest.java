@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -200,10 +198,26 @@ class DatabaseControllerTest {
 			db.addEdge(newEdge1);
 			db.addEdge(newEdge2);
 
-			System.out.println(db.getEdgesConnectedToNode("TEST1"));
+			List<Map<String,String>> edges = db.getEdgesConnectedToNode("TEST1");
+			assertEquals(edges.get(0), newEdge1);
+			assertEquals(edges.get(1), newEdge2);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
 		}
+	}
+
+	@Test
+	void cascadeDownTest() throws SQLException {
+		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
+		db.deleteNode("CCONF002L1");
+		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+	}
+
+	@Test
+	void cascadeUpTest() throws SQLException {
+		assertTrue(db.nodeExists("CCONF002L1"));
+		db.deleteEdge("CCONF002L1_WELEV00HL1");
+		assertTrue(db.nodeExists("CCONF002L1"));
 	}
 }

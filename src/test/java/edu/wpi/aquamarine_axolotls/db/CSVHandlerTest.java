@@ -4,7 +4,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
@@ -36,16 +38,39 @@ public class CSVHandlerTest {
 	}
 
 	@Test
-	void cascadeDownTest() throws SQLException {
-		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
-		db.deleteNode("CCONF002L1");
-		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+	void exportEdgesTest() {
+		try {
+			File file = new File("edgeTest.csv");
+			file.delete();
+			assertTrue(file.createNewFile());
+			assertEquals(file.length(), 0);
+
+			csvHandler.exportCSV(file, DatabaseInfo.TABLES.EDGES);
+
+			assertNotEquals(file.length(), 0);
+			assertTrue(file.delete());
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@Test
-	void cascadeUpTest() throws SQLException {
-		assertTrue(db.nodeExists("CCONF002L1"));
-		db.deleteEdge("CCONF002L1_WELEV00HL1");
-		assertTrue(db.nodeExists("CCONF002L1"));
+	void exportNodesTest() {
+		try {
+			File file = new File("nodeTest.csv");
+			file.delete();
+			assertTrue(file.createNewFile());
+			assertEquals(file.length(), 0);
+
+			csvHandler.exportCSV(file, DatabaseInfo.TABLES.NODES);
+
+			assertNotEquals(file.length(), 0);
+			assertTrue(file.delete());
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
+
 }

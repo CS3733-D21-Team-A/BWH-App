@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,12 +24,10 @@ public class DatabaseController {
 		}
 
 		connection = DriverManager.getConnection("jdbc:derby:BWH;create=true", "admin", "admin"); //TODO: login credentials
-		if (dbExists) {
-			System.out.println("Database found!");
-		} else {
+		if (!dbExists) {
 			System.out.println("No database found. Creating new one...");
 			createDB();
-		}
+		} else System.out.println("Database found!");
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(DatabaseInfo.TABLES.NODES);
@@ -221,10 +218,10 @@ public class DatabaseController {
 		smnt = connection.prepareStatement( //TODO: Make the column names available as static variables?
 			"CREATE TABLE EDGES (" +
 				"EDGEID VARCHAR(51) PRIMARY KEY," +
-				"STARTID VARCHAR(25)," +
+				"STARTNODE VARCHAR(25)," +
 				"ENDNODE VARCHAR(25)," +
-				"CONSTRAINT FK_startNode FOREIGN KEY (startNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT," +
-				"CONSTRAINT FK_endNode FOREIGN KEY (endNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+				"CONSTRAINT FK_STARTNODE FOREIGN KEY (STARTNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+				"CONSTRAINT FK_ENDNODE FOREIGN KEY (ENDNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 			")"
 		);
 		smnt.execute();

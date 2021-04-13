@@ -64,7 +64,8 @@ public class CSVHandler {
 	 * @param table identifer for table to export.
 	 */
 	public void exportCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(file,false));
+		FileWriter fw = new FileWriter(file,false);
+		BufferedWriter bw = new BufferedWriter(fw);
 
 		List<Map<String,String>> values;
 
@@ -101,5 +102,7 @@ public class CSVHandler {
 		}
 
 		bw.write(sb.toString());
+		bw.close();
+		fw.close();
 	}
 }
