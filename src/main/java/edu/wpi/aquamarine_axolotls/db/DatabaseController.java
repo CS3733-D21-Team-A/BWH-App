@@ -1,17 +1,44 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class DatabaseController {
+	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
 
-	public DatabaseController() {
-		TableFactory tableFactory = new TableFactory();
-		nodeTable = tableFactory.getTable("NODES"); // Make the table names global static variables
-		edgeTable = tableFactory.getTable("EDGES"); // Make the table names global static variables
+	public DatabaseController() throws SQLException, IOException, URISyntaxException {
+		boolean dbExists;
+		try {
+			DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
+			dbExists = true;
+		} catch (SQLException e) {
+			dbExists = false;
+		}
+
+		connection = DriverManager.getConnection("jdbc:derby:BWH;create=true", "admin", "admin"); //TODO: login credentials
+		if (dbExists) {
+			System.out.println("Database found!");
+		} else {
+			System.out.println("No database found. Creating new one...");
+			createDB();
+		}
+
+		TableFactory tableFactory = new TableFactory(connection);
+		nodeTable = tableFactory.getTable(DatabaseInfo.TABLES.NODES);
+		edgeTable = tableFactory.getTable(DatabaseInfo.TABLES.EDGES);
+
+		if (!dbExists) {
+			populateDB();
+		}
 	}
 
 	// ===== NODES =====
@@ -46,19 +73,17 @@ public class DatabaseController {
 	 * Edit an existing node in the database (assumes node with provided ID exists).
 	 * @param nodeID ID of node to edit.
 	 * @param values Map whose keys are the column names and values are the new entry values
-	 * @return Rows in database updated.
 	 */
-	public int editNode(String nodeID, Map<String,String> values) throws SQLException {
-		return nodeTable.editEntry(nodeID,values);
+	public void editNode(String nodeID, Map<String,String> values) throws SQLException {
+		nodeTable.editEntry(nodeID,values);
 	}
 
 	/**
 	 * Delete a node from the database (assumes node with provided ID exists).
 	 * @param nodeID ID of node to delete.
-	 * @return Rows in database updated.
 	 */
-	public int deleteNode(String nodeID) throws SQLException {
-		return nodeTable.deleteEntry(nodeID);
+	public void deleteNode(String nodeID) throws SQLException {
+		nodeTable.deleteEntry(nodeID);
 	}
 
 	/**
@@ -76,6 +101,13 @@ public class DatabaseController {
 	 */
 	public Map<String,String> getNode(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID);
+	}
+
+	/**
+	 * Empties the node table by deleting all entries.
+	 */
+	void emptyNodeTable() throws SQLException {
+		nodeTable.emptyTable();
 	}
 
 	// ===== EDGES =====
@@ -112,19 +144,17 @@ public class DatabaseController {
 	 * Edit an existing edge in the database (assumes node with provided ID exists).
 	 * @param edgeID ID of edge to edit.
 	 * @param values Map whose keys are the column names and values are the new entry values
-	 * @return Rows in database updated.
 	 */
-	public int editEdge(String edgeID, Map<String,String> values) throws SQLException {
-		return edgeTable.editEntry(edgeID, values);
+	public void editEdge(String edgeID, Map<String,String> values) throws SQLException {
+		edgeTable.editEntry(edgeID, values);
 	}
 
 	/**
 	 * Delete a edge from the database (assumes node with provided ID exists).
 	 * @param edgeID ID of node to delete.
-	 * @return Rows in database updated.
 	 */
-	public int deleteEdge(String edgeID) throws SQLException {
-			return edgeTable.deleteEntry(edgeID);
+	public void deleteEdge(String edgeID) throws SQLException {
+			edgeTable.deleteEntry(edgeID);
 	}
 
 	/**
@@ -150,10 +180,60 @@ public class DatabaseController {
 	 * @return List of maps of edges connected to the desired node.
 	 */
 	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) throws SQLException {
-		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID); // gets all edges that has nodeID as a start node
-		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID)); // gets all edges that have the nodeID as a end node
+		List<Map<String,String>> edges = edgeTable.getEntriesByValue("STARTNODE", nodeID); // gets all edges that has nodeID as a start node
+		List<Map<String,String>> edges2 = edgeTable.getEntriesByValue("ENDNODE", nodeID); // gets all edges that have the nodeID as a end node
+		if (edges == null) {
+			edges = edges2;
+		} else if (edges2 != null) {
+			edges.addAll(edges2);
+		}
 
 		return edges;
+	}
+
+	/**
+	 * Empties the edge table by deleting all entries.
+	 */
+	void emptyEdgeTable() throws SQLException {
+		edgeTable.emptyTable();
+	}
+
+
+	// ===== DATABASE CREATION =====
+
+
+	private void createDB() throws SQLException, IOException, URISyntaxException {
+		PreparedStatement smnt = connection.prepareStatement(
+			"CREATE TABLE NODES (" +
+				"NODEID VARCHAR(25) PRIMARY KEY," +
+				"XCOORD NUMERIC(5)," +
+				"YCOORD NUMERIC(5)," +
+				"FLOOR VARCHAR(3)," +
+				"BUILDING VARCHAR(30)," +
+				"NODETYPE VARCHAR(5)," +
+				"LONGNAME VARCHAR(50)," +
+				"SHORTNAME VARCHAR(30)" +
+			")"
+		);
+
+		smnt.execute();
+
+		smnt = connection.prepareStatement( //TODO: Make the column names available as static variables?
+			"CREATE TABLE EDGES (" +
+				"EDGEID VARCHAR(51) PRIMARY KEY," +
+				"STARTID VARCHAR(25)," +
+				"ENDNODE VARCHAR(25)," +
+				"CONSTRAINT FK_startNode FOREIGN KEY (startNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+				"CONSTRAINT FK_endNode FOREIGN KEY (endNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+			")"
+		);
+		smnt.execute();
+	}
+
+	private void populateDB() throws URISyntaxException, IOException, SQLException {
+		CSVHandler csvHandler = new CSVHandler(this);
+		csvHandler.importCSV(DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
 	}
 }
 

@@ -179,7 +179,7 @@ class DatabaseService {
 	}
 
 	private void populateDB() {
-		InputStream in = this.getClass().getClassLoader().getResourceAsStream("edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv");
+		InputStream in = this.getClass().getClassLoader().getResourceAsStream("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv");
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 			PreparedStatement smnt = connection.prepareStatement("INSERT INTO Nodes (nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName) VALUES (?,?,?,?,?,?,?,?)");
 			String line = br.readLine();
@@ -199,7 +199,7 @@ class DatabaseService {
 			return;
 		}
 
-		in = this.getClass().getClassLoader().getResourceAsStream("edu/wpi/aquamarine_axolotls/csv/MapAedges.csv");
+		in = this.getClass().getClassLoader().getResourceAsStream("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv");
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
 			PreparedStatement smnt = connection.prepareStatement("INSERT INTO Edges (edgeID, startNode, endNode) VALUES (?,?,?)");
 			String line = br.readLine();

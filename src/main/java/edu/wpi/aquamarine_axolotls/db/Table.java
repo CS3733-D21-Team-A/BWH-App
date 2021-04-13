@@ -23,11 +23,14 @@ class Table {
 		rs.next();
 		this.primaryKey = rs.getString("COLUMN_NAME");
 
+		rs.close();
+
 		this.columns = new HashMap<String,Boolean>();
-		ResultSet rst = dbmd.getColumns(null, null, tableName, null);
-		while (rst.next()) {
-			columns.put(rst.getString("COLUMN_NAME"), rst.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
+		rs = dbmd.getColumns(null, null, tableName, null);
+		while (rs.next()) {
+			columns.put(rs.getString("COLUMN_NAME"), rs.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 		}
+		rs.close();
 	}
 
 	/**
@@ -71,7 +74,7 @@ class Table {
 
 		int i = 1;
 		for (String column : column_names) {
-			if (columns.get(column)) {
+			if (columns.get(column.toUpperCase())) {
 				smnt.setString(i, values.get(column));
 			} else {
 				smnt.setInt(i, Integer.parseInt(values.get(column)));
@@ -80,15 +83,15 @@ class Table {
 		}
 
 		smnt.executeUpdate();
+		smnt.close();
 	}
 
 	/**
 	 * Edit an existing entry in the database (assumines entry with provided primary key exists).
 	 * @param key Primary key representing entry to edit.
 	 * @param values Values to edit for the entry. Key is attribute to change, value is new value.
-	 * @return Rows in database updated.
 	 */
-	int editEntry(String key, Map<String,String> values) throws SQLException {
+	void editEntry(String key, Map<String,String> values) throws SQLException {
 
 		Set<String> editColumns = values.keySet();
 
@@ -106,50 +109,53 @@ class Table {
 
 		int i = 1;
 		for (String column : editColumns) {
-			if (columns.get(column)) {
+			if (columns.get(column.toUpperCase())) {
 				smnt.setString(i, values.get(column));
 			} else {
 				smnt.setInt(i, Integer.parseInt(values.get(column)));
 			}
 			i++;
 		}
+		smnt.setString(i,key);
 
-		return smnt.executeUpdate();
+		smnt.executeUpdate();
+		smnt.close();
 	}
 
 	/**
 	 * Deletes an in the database (assumes entry with provided primary key exists).
 	 * @param entryID Primary key representing entry to delete.
-	 * @return Rows in database updated.
 	 */
-	int deleteEntry(String entryID) throws SQLException{
+	void deleteEntry(String entryID) throws SQLException{
 		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?");
-		smnt.setString(1, tableName);
-		smnt.setString(2, primaryKey);
-		smnt.setString(3, entryID);
+		smnt.setString(1, entryID);
 
-		return smnt.executeUpdate();
+		smnt.executeUpdate();
 	}
 
 	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
-		List<Map<String,String>> entries = new ArrayList<Map<String,String>>();
-		do {
-			Map<String,String> entry = new HashMap<String,String>(); // new row to add
+		List<Map<String,String>> entries = new ArrayList<>();
+		while (rs.next()) {
+			Map<String,String> entry = new HashMap<>(); // new row to add
 			for(String column : columns.keySet()) { // for every column in the table
 				entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 			}
 			entries.add(entry); // add this row to the list
-		} while(rs.next()); // increment the row
-		return entries;
+		} // increment the row
+		return entries.size() != 0 ? entries : null;
 	}
 
 	/**
 	 * Get the full SQL table as a ResultSet.
-	 * @return List of maps representing the full table.
+	 * @return List of maps representing the full table. Null if the table is empty.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
 		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName); // gets everything from table
-		return resultSetToList(smnt.executeQuery()); // gets sql result and convert rs to List of maps
+		ResultSet rs = smnt.executeQuery();
+		List<Map<String,String>> res = resultSetToList(rs);
+		rs.close();
+		smnt.close();
+		return res; // gets sql result and convert rs to List of maps
 	}
 
 	/**
@@ -171,6 +177,8 @@ class Table {
 			entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 		}
 
+		rs.close();
+		smnt.close();
 		return entry;
 	}
 
@@ -182,9 +190,22 @@ class Table {
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
 
-		PreparedStatement smnt = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnName + " = ?"); // gets row/rows that have column name with value
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?"); // gets row/rows that have column name with value
 		smnt.setString(1, value);
+		ResultSet rs = smnt.executeQuery();
 
-		return resultSetToList(smnt.executeQuery()); // gets sql result and convert RS to List of maps
+		List<Map<String,String>> res = resultSetToList(rs); // gets sql result and convert RS to List of maps
+		rs.close();
+		smnt.close();
+		return res;
+	}
+
+	/**
+	 * Empties the table by deleting all entries.
+	 */
+	void emptyTable() throws SQLException {
+		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName);
+		smnt.executeUpdate();
+		smnt.close();
 	}
 }
