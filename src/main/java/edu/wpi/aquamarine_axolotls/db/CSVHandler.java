@@ -19,7 +19,9 @@ public class CSVHandler {
 	/**
 	 * Inserts values from the provided reader based on the provided methods.
 	 * @param br BufferedReader for input.
-	 * @param tableAdder method for adding new entries to the table.
+	 * @param tableAdder Method for adding new entries to the table.
+	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
+	 * @throws SQLException Something went wrong.
 	 */
 	private void insertValues(BufferedReader br, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
 		Map<String,String> values = new HashMap<String,String>();
@@ -42,6 +44,8 @@ public class CSVHandler {
 	 * Import a CSV into the database (assumes no conflicts will occur).
 	 * @param file CSV to import.
 	 * @param table identifer for table import CSV into.
+	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
+	 * @throws SQLException Something went wrong.
 	 */
 	public void importCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
@@ -62,6 +66,8 @@ public class CSVHandler {
 	 * Export the contents of the database to a CSV.
 	 * @param file File to export to.
 	 * @param table identifer for table to export.
+	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
+	 * @throws SQLException Something went wrong.
 	 */
 	public void exportCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
 		FileWriter fw = new FileWriter(file,false);

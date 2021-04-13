@@ -8,6 +8,9 @@ import java.util.Map;
 
 public class DatabaseInfo {
 
+	/**
+	 * Enum for available tables.
+	 */
 	public enum TABLES {
 		NODES,
 		EDGES
@@ -24,6 +27,12 @@ public class DatabaseInfo {
 		TABLE_NAMES = Collections.unmodifiableMap(aMap);
 	}
 
+	/**
+	 * Convert resource path string to File.
+	 * @param resourcePath path to resource in app structure.
+	 * @return File for corresponding resource.
+	 * @throws URISyntaxException Something went wrong.
+	 */
 	static File resourcePathToFile(String resourcePath) throws URISyntaxException {
 		return new File(DatabaseInfo.class.getClassLoader().getResource(resourcePath).toURI());
 	}

@@ -14,6 +14,12 @@ public class DatabaseController {
 	final private Table nodeTable;
 	final private Table edgeTable;
 
+	/**
+	 * DatabaseController constructor.
+	 * @throws SQLException Something went wrong.
+	 * @throws IOException Something went wrong.
+	 * @throws URISyntaxException Something went wrong.
+	 */
 	public DatabaseController() throws SQLException, IOException, URISyntaxException {
 		boolean dbExists;
 		try {
@@ -53,6 +59,7 @@ public class DatabaseController {
 	 * Check if a node exists.
 	 * @param nodeID ID of node to check.
 	 * @return Boolean indicating presence of node in the database.
+	 * @throws SQLException Something went wrong.
 	 */
 	public boolean nodeExists(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID) != null;
@@ -60,7 +67,8 @@ public class DatabaseController {
 
 	/**
 	 * Add a node to the database (assumes node with provided primary key doesn't already exist).
-	 * @param values Map whose keys are the column names and values are the entry values
+	 * @param values Map whose keys are the column names and values are the entry values.
+	 * @throws SQLException Something went wrong (likely node already exists or malformed imput).
 	 */
 	public void addNode(Map<String,String> values) throws SQLException {
 		nodeTable.addEntry(values);
@@ -69,7 +77,8 @@ public class DatabaseController {
 	/**
 	 * Edit an existing node in the database (assumes node with provided ID exists).
 	 * @param nodeID ID of node to edit.
-	 * @param values Map whose keys are the column names and values are the new entry values
+	 * @param values Map whose keys are the column names and values are the new entry values.
+	 * @throws SQLException Something went wrong (likely tried to edit node that doesn't exist or change a nodeID).
 	 */
 	public void editNode(String nodeID, Map<String,String> values) throws SQLException {
 		nodeTable.editEntry(nodeID,values);
@@ -78,14 +87,16 @@ public class DatabaseController {
 	/**
 	 * Delete a node from the database (assumes node with provided ID exists).
 	 * @param nodeID ID of node to delete.
+	 * @throws SQLException Something went wrong (likely node doesn't exist).
 	 */
 	public void deleteNode(String nodeID) throws SQLException {
 		nodeTable.deleteEntry(nodeID);
 	}
 
 	/**
-	 * Get the full Nodes table as a List<Map<String,String>>
+	 * Get the full Nodes table as a List of Maps
 	 * @return List of maps representing the full Nodes table.
+	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getNodes() throws SQLException {
 		return nodeTable.getEntries();
@@ -95,6 +106,7 @@ public class DatabaseController {
 	 * Query the Nodes table for an entry with the provided primary key.
 	 * @param nodeID ID representing node to look for.
 	 * @return Map representing the node to query for.
+	 * @throws SQLException Something went wrong.
 	 */
 	public Map<String,String> getNode(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID);
@@ -102,6 +114,7 @@ public class DatabaseController {
 
 	/**
 	 * Empties the node table by deleting all entries.
+	 * @throws SQLException Something went wrong.
 	 */
 	void emptyNodeTable() throws SQLException {
 		nodeTable.emptyTable();
@@ -122,6 +135,7 @@ public class DatabaseController {
 	 * Check if an edge exists.
 	 * @param edgeID ID of edge to check.
 	 * @return Boolean indicating presence of edge in the database.
+	 * @throws SQLException Something went wrong.
 	 */
 	public boolean edgeExists(String edgeID) throws SQLException {
 		return edgeTable.getEntry(edgeID) != null;
@@ -129,10 +143,9 @@ public class DatabaseController {
 
 	/**
 	 * Add an edge to the database (assumes edge with provided primary key doesn't already exist).
-	 * @param values Map whose keys are the column names and values are the entry values
+	 * @param values Map whose keys are the column names and values are the entry values.
+	 * @throws SQLException Something went wrong (likely edge already exists or malformed input).
 	 */
-
-	// DONE
 	public void addEdge(Map<String,String> values) throws SQLException {
 		edgeTable.addEntry(values);
 	}
@@ -141,6 +154,7 @@ public class DatabaseController {
 	 * Edit an existing edge in the database (assumes node with provided ID exists).
 	 * @param edgeID ID of edge to edit.
 	 * @param values Map whose keys are the column names and values are the new entry values
+	 * @throws SQLException Something went wrong (likely edge doesn't exist or tried to edit edge ID).
 	 */
 	public void editEdge(String edgeID, Map<String,String> values) throws SQLException {
 		edgeTable.editEntry(edgeID, values);
@@ -149,14 +163,16 @@ public class DatabaseController {
 	/**
 	 * Delete a edge from the database (assumes node with provided ID exists).
 	 * @param edgeID ID of node to delete.
+	 * @throws SQLException Something went wrong (likely edge doesn't exist).
 	 */
 	public void deleteEdge(String edgeID) throws SQLException {
 			edgeTable.deleteEntry(edgeID);
 	}
 
 	/**
-	 * Get the full Edges table as a List<Map<String,String>>
+	 * Get the full Edges table as a List of Maps
 	 * @return List of maps representing the full Nodes table.
+	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getEdges() throws SQLException  {
 		return edgeTable.getEntries();
@@ -166,6 +182,7 @@ public class DatabaseController {
 	 * Query the Edges table for an entry with the provided primary key.
 	 * @param edgeID ID representing node to look for.
 	 * @return Map representing the node to query for.
+	 * @throws SQLException Something went wrong.
 	 */
 	public Map<String,String> getEdge(String edgeID) throws SQLException {
 		return edgeTable.getEntry(edgeID);
@@ -175,14 +192,15 @@ public class DatabaseController {
 	 * Get edges connected to the node with the provided ID
 	 * @param nodeID ID of node to find edges connected to.
 	 * @return List of maps of edges connected to the desired node.
+	 * @throws SQLException Something went wrong (likely node doesn't exist).
 	 */
 	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) throws SQLException {
 		List<Map<String,String>> edges = edgeTable.getEntriesByValue("STARTNODE", nodeID); // gets all edges that has nodeID as a start node
 		List<Map<String,String>> edges2 = edgeTable.getEntriesByValue("ENDNODE", nodeID); // gets all edges that have the nodeID as a end node
 		if (edges == null) {
-			edges = edges2;
+			edges = edges2; //replace edges with edges2 if edges is null. If edges2 is also null that's okay
 		} else if (edges2 != null) {
-			edges.addAll(edges2);
+			edges.addAll(edges2); //edges isn't null, so we add edges2 if it isn't also null
 		}
 
 		return edges;
@@ -199,7 +217,11 @@ public class DatabaseController {
 	// ===== DATABASE CREATION =====
 
 
-	private void createDB() throws SQLException, IOException, URISyntaxException {
+	/**
+	 * Populate the tables of a new database (assumes database has been initialized but is empty)
+	 * @throws SQLException Something went wrong
+	 */
+	private void createDB() throws SQLException {
 		PreparedStatement smnt = connection.prepareStatement(
 			"CREATE TABLE NODES (" +
 				"NODEID VARCHAR(25) PRIMARY KEY," +
@@ -227,6 +249,12 @@ public class DatabaseController {
 		smnt.execute();
 	}
 
+	/**
+	 * Populate the database with default nodes and edges (assumes database is fresh and empty)
+	 * @throws URISyntaxException Something went wrong.
+	 * @throws IOException Something went wrong.
+	 * @throws SQLException Something went wrong.
+	 */
 	private void populateDB() throws URISyntaxException, IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
 		csvHandler.importCSV(DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
