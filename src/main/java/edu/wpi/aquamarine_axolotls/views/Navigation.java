@@ -3,9 +3,6 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
-import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,7 +55,6 @@ public class Navigation {
                             "Parking Spot 10 80 Francis Parking",
                             "Entrance 75 Francis St",
                             "Entrance ER 75 Francis Street");
-    DatabaseController db = new DatabaseController();
 
     @FXML
     public void initialize(){
@@ -100,7 +96,7 @@ public class Navigation {
 
         return newYCoord;
     }
-
+/*
     public void findPath(){
         anchor.getChildren().removeAll();
 
@@ -153,9 +149,9 @@ public class Navigation {
             anchor.getChildren().add(circ);
         } catch(SQLException e){
             e.printStackTrace();
-        }*/
+        }
         return;
     }
-
+*/
 
 }
