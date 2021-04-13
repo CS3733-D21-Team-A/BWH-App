@@ -122,7 +122,7 @@ public class DatabaseController {
 	 * Empties the node table by deleting all entries.
 	 * @throws SQLException Something went wrong.
 	 */
-	void emptyNodeTable() throws SQLException {
+	public void emptyNodeTable() throws SQLException {
 		nodeTable.emptyTable();
 	}
 
@@ -215,7 +215,7 @@ public class DatabaseController {
 	/**
 	 * Empties the edge table by deleting all entries.
 	 */
-	void emptyEdgeTable() throws SQLException {
+	public void emptyEdgeTable() throws SQLException {
 		edgeTable.emptyTable();
 	}
 
