@@ -3,6 +3,9 @@ package edu.wpi.aquamarine_axolotls.db;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Class acting as an entity representing/working on a SQL table.
+ */
 class Table {
 	final private Connection connection;
 	final private String tableName;
@@ -133,6 +136,12 @@ class Table {
 		smnt.executeUpdate();
 	}
 
+	/**
+	 * Converts a ResultSet to a List of Maps.
+	 * @param rs ResultSet to convert.
+	 * @return List of Maps representing ResultSet.
+	 * @throws SQLException Something went wrong.
+	 */
 	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
 		List<Map<String,String>> entries = new ArrayList<>();
 		while (rs.next()) {

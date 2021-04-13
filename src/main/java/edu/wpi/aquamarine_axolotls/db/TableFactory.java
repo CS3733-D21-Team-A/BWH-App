@@ -3,6 +3,9 @@ package edu.wpi.aquamarine_axolotls.db;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Factory class for Table object creation
+ */
 class TableFactory {
 	private Connection connection;
 
