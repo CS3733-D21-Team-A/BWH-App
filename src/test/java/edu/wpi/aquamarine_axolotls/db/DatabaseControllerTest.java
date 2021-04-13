@@ -7,24 +7,22 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private final DatabaseController db = new DatabaseController();
-	private final CSVHandler csvHandler = new CSVHandler(db);
-	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
-	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
-
-	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+	DatabaseController db = new DatabaseController();
+	CSVHandler csvHandler = new CSVHandler(db);
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException {
+	void resetDB() throws URISyntaxException, IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
-		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv").toURI()), DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(new File(getClass().getClassLoader().getResource("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv").toURI()), DatabaseInfo.TABLES.EDGES);
 	}
 
 	@Test
@@ -119,7 +117,13 @@ class DatabaseControllerTest {
 		newNode.put("BUILDING", "Empire State");
 		newNode.put("NODETYPE", "BUILDING");
 		newNode.put("SHORTNAME", "MRS");
-		assertThrows(SQLException.class, () -> db.addNode(newNode));
+		try{
+			db.addNode(newNode);
+			fail();
+		}
+		catch(SQLException e){
+			assertTrue(true);
+		}
 	}
 
 	@Test
@@ -127,37 +131,39 @@ class DatabaseControllerTest {
 		Map<String, String> newNode = new HashMap<String, String>();
 		newNode.put("NODEID", "CCONF001L1");
 
-		assertThrows(SQLException.class, () -> db.addNode(newNode));
-	}
-
-	@Test
-	void editNodeIDFails() {
-		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "Test");
-
-		assertThrows(SQLException.class, () -> db.editNode("CCONF001L1", newNode));
-	}
-
-	@Test
-	void editNodeSomeValues() {
-		try {
-			Map<String, String> before = db.getNode("CCONF001L1");
-			assertEquals(before.get("XCOORD"),"2255");
-			assertEquals(before.get("FLOOR"),"L1");
-		} catch (SQLException e) {
-			e.printStackTrace();
+		try{
+			db.addNode(newNode);
 			fail();
 		}
+		catch(SQLException e){
+			assertTrue(true);
+		}
+	}
 
+	@Test
+	void editNodeAllValues() {
 		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("XCOORD", "13");
-		newNode.put("FLOOR", "2");
+		newNode.put("NODEID", "Test2");
+		newNode.put("XCOORD", "100");
+		newNode.put("YCOORD", "5");
+		newNode.put("FLOOR", "G");
+		newNode.put("BUILDING", "KEN");
+		newNode.put("NODETYPE", "EXIT");
+		newNode.put("LONGNAME", "Its a made up place!");
+		newNode.put("SHORTNAME", "KHALL");
 
 		try{
-			db.editNode("CCONF001L1", newNode);
-			Map<String, String> editted = db.getNode("CCONF001L1");
-			assertEquals(editted.get("XCOORD"), "13"); // changed value
-			assertEquals(editted.get("FLOOR"), "2"); // changed value
+			db.editNode("Test2", newNode);
+			Map<String, String> editted = db.getNode("Test2");
+			assertEquals(editted.get("NODEID"), "Test2");
+			assertEquals(editted.get("XCOORD"), "100");
+			assertEquals(editted.get("YCOORD"), "5");
+			assertEquals(editted.get("FLOOR"), "G");
+			assertEquals(editted.get("BUILDING"), "KEN");
+			assertEquals(editted.get("NODETYPE"), "EXIT");
+			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
+			assertEquals(editted.get("SHORTNAME"), "KHALL");
+
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -166,58 +172,52 @@ class DatabaseControllerTest {
 	}
 
 	@Test
-	void connectedEdges() {
-		Map<String,String> newNode1 = new HashMap<String,String>();
-		newNode1.put("NODEID","TEST1");
-		newNode1.put("XCOORD","420");
-		newNode1.put("YCOORD","69");
+	void editNodeSomeValues() {
+		Map<String, String> newNode = new HashMap<String, String>();
+		newNode.put("NODEID", "Test1");
+		newNode.put("XCOORD", "13");
+		newNode.put("FLOOR", "2");
 
-		Map<String,String> newNode2 = new HashMap<String,String>();
-		newNode2.put("NODEID","TEST2");
-		newNode2.put("XCOORD","69");
-		newNode2.put("YCOORD","420");
+		try{
+			db.editNode("Test2", newNode);
+			Map<String, String> editted = db.getNode("Test1");
+			assertEquals(editted.get("XCOORD"), "13"); // changed value
+			assertEquals(editted.get("YCOORD"), "300");
+			assertEquals(editted.get("FLOOR"), "2"); // changed value
+			assertEquals(editted.get("BUILDING"), "Mars");
+			assertEquals(editted.get("NODETYPE"), "EXIT");
+			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
+			assertEquals(editted.get("SHORTNAME"), "MRS");
 
-		Map<String,String> newNode3 = new HashMap<String,String>();
-		newNode3.put("NODEID","TEST3");
-		newNode3.put("XCOORD","100");
-		newNode3.put("YCOORD","100");
-
-		Map<String,String> newEdge1 = new HashMap<String,String>();
-		newEdge1.put("EDGEID","TEST1_TEST2");
-		newEdge1.put("STARTNODE","TEST1");
-		newEdge1.put("ENDNODE","TEST2");
-
-		Map<String,String> newEdge2 = new HashMap<String,String>();
-		newEdge2.put("EDGEID","TEST1_TEST3");
-		newEdge2.put("STARTNODE","TEST1");
-		newEdge2.put("ENDNODE","TEST3");
-		try {
-			db.addNode(newNode1);
-			db.addNode(newNode2);
-			db.addNode(newNode3);
-			db.addEdge(newEdge1);
-			db.addEdge(newEdge2);
-
-			List<Map<String,String>> edges = db.getEdgesConnectedToNode("TEST1");
-			assertEquals(edges.get(0), newEdge1);
-			assertEquals(edges.get(1), newEdge2);
-		} catch (SQLException e) {
+		}
+		catch(SQLException e){
 			e.printStackTrace();
 			fail();
 		}
 	}
 
 	@Test
-	void cascadeDownTest() throws SQLException {
-		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
-		db.deleteNode("CCONF002L1");
-		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+	void editNodeChangeKey() {
+		Map<String, String> newNode = new HashMap<String, String>();
+		newNode.put("NODEID", "Test3");
+
+		try{
+			db.editNode("Test2", newNode);
+			Map<String, String> editted = db.getNode("Test3");
+			assertEquals(editted.get("NODEID"), "Test3");
+			assertEquals(editted.get("XCOORD"), "100");
+			assertEquals(editted.get("YCOORD"), "5");
+			assertEquals(editted.get("FLOOR"), "G");
+			assertEquals(editted.get("BUILDING"), "KEN");
+			assertEquals(editted.get("NODETYPE"), "EXIT");
+			assertEquals(editted.get("LONGNAME"), "Its a made up place!");
+			assertEquals(editted.get("SHORTNAME"), "KHALL");
+
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			fail();
+		}
 	}
 
-	@Test
-	void cascadeUpTest() throws SQLException {
-		assertTrue(db.nodeExists("CCONF002L1"));
-		db.deleteEdge("CCONF002L1_WELEV00HL1");
-		assertTrue(db.nodeExists("CCONF002L1"));
-	}
 }

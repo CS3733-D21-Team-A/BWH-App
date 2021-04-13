@@ -34,14 +34,14 @@ public class SearchAlgorithm {
         for (int i = 0; i < nodeMap.size(); i++) {
             Map<String, String> currNodeMap = nodeMap.get(i);
             this.nodes.add(new Node(
-                    currNodeMap.get("nodeID"),
-                    Integer.parseInt(currNodeMap.get("xcoord")),
-                    Integer.parseInt(currNodeMap.get("ycoord")),
-                    currNodeMap.get("floor"),
-                    currNodeMap.get("building"),
-                    currNodeMap.get("nodeType"),
-                    currNodeMap.get("longName"),
-                    currNodeMap.get("shortName")
+                    currNodeMap.get("NODEID"),
+                    Integer.parseInt(currNodeMap.get("XCOORD")),
+                    Integer.parseInt(currNodeMap.get("YCOORD")),
+                    currNodeMap.get("FLOOR"),
+                    currNodeMap.get("BUILDING"),
+                    currNodeMap.get("NODETYPE"),
+                    currNodeMap.get("LONGNAME"),
+                    currNodeMap.get("SHORTNAME")
                     )
             );
         }
@@ -49,9 +49,9 @@ public class SearchAlgorithm {
         for (int j = 0; j < edgeMap.size(); j++) {
             Map<String, String> currEdgeMap = edgeMap.get(j);
             this.edges.add(new Edge(
-                    edgeMap.get(j).get("edgeID"),
-                    edgeMap.get(j).get("startNode"),
-                    edgeMap.get(j).get("endNode")
+                    edgeMap.get(j).get("EDGEID"),
+                    edgeMap.get(j).get("STARTNODE"),
+                    edgeMap.get(j).get("ENDNODE")
             ));
         }
     }
@@ -254,7 +254,7 @@ public class SearchAlgorithm {
             nodeLongName = this.nodes.get(j).getLongName();
 
             //If this node is the one we're looking for, return it
-            if (nodeLongName.equals(nodes.get(j).getLongName())){
+            if (nodeLongName.equals(longName)) {
                 return this.nodes.get(j);
             }
         }

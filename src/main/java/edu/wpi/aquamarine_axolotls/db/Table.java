@@ -149,8 +149,14 @@ class Table {
 	 * Get the full SQL table as a ResultSet.
 	 * @return List of maps representing the full table. Null if the table is empty.
 	 */
-	List<Map<String,String>> getEntries() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName); // gets everything from table
+	List<Map<String,String>> getNodes() throws SQLException {
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM Nodes"); // gets everything from table
+		ResultSet rs = smnt.executeQuery();
+		return resultSetToList(rs); // gets sql result and convert rs to List of maps
+	}
+
+	List<Map<String,String>> getEdges() throws SQLException {
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM Edges"); // gets everything from table
 		ResultSet rs = smnt.executeQuery();
 		List<Map<String,String>> res = resultSetToList(rs);
 		rs.close();

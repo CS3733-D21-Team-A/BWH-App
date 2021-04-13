@@ -17,8 +17,8 @@ import java.util.*;
 public class AStarTest {
 
 
+    SearchAlgorithm aStarDB = new SearchAlgorithm();
 
-    SearchAlgorithm aStarDB;
     SearchAlgorithm aStarManual;
     String floor = "placeholder floor text";
     String building = "placeholder building text";
@@ -31,22 +31,20 @@ public class AStarTest {
 
     @BeforeAll
     public void setupTestNodesEdges() {
-        String[] adbArgs = {"1"};
-        Adb.main(adbArgs);
+//        String[] adbArgs = {"1"};
+//        Adb.main(adbArgs);
 
-        aStarDB = new SearchAlgorithm();
-
-        testNodes.add(new Node("A", 10, 6, floor, building, type, longName, shortName));
-        testNodes.add(new Node("B", 9, 2, floor, building, type, longName, shortName));
-        testNodes.add(new Node("C", 5, 7, floor, building, type, longName, shortName));
-        testNodes.add(new Node("D", 9, 9, floor, building, type, longName, shortName));
-        testNodes.add(new Node("E", 1, 2, floor, building, type, longName, shortName));
-        testNodes.add(new Node("F", 10, 1, floor, building, type, longName, shortName));
-        testNodes.add(new Node("G", 7, 4, floor, building, type, longName, shortName));
-        testNodes.add(new Node("H", 3, 1, floor, building, type, longName, shortName));
-        testNodes.add(new Node("I", 5, 4, floor, building, type, longName, shortName));
-        testNodes.add(new Node("J", 9, 1, floor, building, type, longName, shortName));
-        testNodes.add(new Node("K", 10, 1, floor, building, type, longName, shortName));
+        testNodes.add(new Node("A", 10, 6, floor, building, type, "Anesthesia Conf Floor L1", shortName));
+        testNodes.add(new Node("B", 9, 2, floor, building, type, "Medical Records Conference Room Floor L1", shortName));
+        testNodes.add(new Node("C", 5, 7, floor, building, type, "Abrams Conference Room", shortName));
+        testNodes.add(new Node("D", 9, 9, floor, building, type, "Day Surgery Family Waiting Floor L1", shortName));
+        testNodes.add(new Node("E", 1, 2, floor, building, type, "Day Surgery Family Waiting Exit Floor L1", shortName));
+        testNodes.add(new Node("F", 10, 1, floor, building, type, "Medical Records Film Library Floor L1", shortName));
+        testNodes.add(new Node("G", 7, 4, floor, building, type, "Hallway 1 Floor L1", shortName));
+        testNodes.add(new Node("H", 3, 1, floor, building, type, "Hallway 2 Floor L1", shortName));
+        testNodes.add(new Node("I", 5, 4, floor, building, type, "Hallway 3 Floor L1", shortName));
+        testNodes.add(new Node("J", 9, 1, floor, building, type, "Hallway 4 Floor L1", shortName));
+        testNodes.add(new Node("K", 10, 1, floor, building, type, "Hallway 4 Floor L1", shortName));
 
         testEdges.add(new Edge("EI", "E", "I"));
         testEdges.add(new Edge("EH", "E", "H"));
@@ -156,6 +154,7 @@ public class AStarTest {
         Assertions.assertEquals(expectedPath,testPath);
     }
 
+
     /*Test for the case that the end is not connected to any of the node
     * and no path can be generated*/
 
@@ -172,4 +171,65 @@ public class AStarTest {
 
         Assertions.assertEquals(expectedPath,testPath);
     }
+
+
+    @Test
+    public void generalLongNameTest1() {
+        //Node start = Node.getNode("A",nodes);
+        //Node goal = Node.getNode("C",nodes);
+
+        List<Node> testPath = aStarManual.getPath("Anesthesia Conf Floor L1", "Abrams Conference Room");
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.add(aStarManual.getNode("A"));
+        expectedPath.add(aStarManual.getNode("D"));
+        expectedPath.add(aStarManual.getNode("C"));
+
+        System.out.println(expectedPath);
+        System.out.println(testPath);
+
+        Assertions.assertEquals(expectedPath,testPath);
+    }
+
+
+    @Test
+    public void generalLongNameTest2() {
+        //Node start = Node.getNode("H",nodes);
+        //Node goal = Node.getNode("F",nodes);
+
+        List<Node> testPath = aStarManual.getPath("Hallway 2 Floor L1", "Medical Records Film Library Floor L1");
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.add(aStarManual.getNode("H"));
+        expectedPath.add(aStarManual.getNode("I"));
+        expectedPath.add(aStarManual.getNode("J"));
+        expectedPath.add(aStarManual.getNode("F"));
+
+        System.out.println(expectedPath);
+        System.out.println(testPath);
+
+        Assertions.assertEquals(expectedPath,testPath);
+    }
+
+    //TESTS TO MAKE
+    //--Getting nodes by long name instead of ID
+    //--Passing node ID for one param and long name for the other
+    //--General path tests for the database integration
+    //--Getting nodes by long name from the database
+
+    @Test
+    public void generalNodeTestDB1() {
+        //Node start = Node.getNode("A",nodes);
+        //Node goal = Node.getNode("C",nodes);
+        System.out.println("Running batabase integration test 1");
+
+        List<Node> testPath = aStarDB.getPath("CCONF002L1", "WELEV00HL1");
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.add(aStarDB.getNode("CCONF002L1"));
+        expectedPath.add(aStarDB.getNode("WELEV00HL1"));
+
+        System.out.println(expectedPath);
+        System.out.println(testPath);
+
+        Assertions.assertEquals(expectedPath,testPath);
+    }
+
 }
