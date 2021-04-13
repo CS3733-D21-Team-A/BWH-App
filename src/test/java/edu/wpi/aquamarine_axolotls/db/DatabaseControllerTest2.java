@@ -32,11 +32,9 @@ class DatabaseControllerTest2 {
 		if (dir.exists()) {
 			assertTrue(deleteDirectory(dir));
 		}
-		try {
-			DatabaseController db = new DatabaseController();
+		try (DatabaseController db = new DatabaseController()) {
 			System.out.println(db.getNodes());
 			System.out.println(db.getEdges());
-			db.close();
 		} catch (SQLException | IOException | URISyntaxException e) {
 			e.printStackTrace();
 			fail();

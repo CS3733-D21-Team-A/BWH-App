@@ -55,6 +55,7 @@ public class DatabaseController implements AutoCloseable {
 			System.out.println("Connection already closed.");
 		} else {
 			connection.close();
+			liveInstances--;
 		}
 	}
 
