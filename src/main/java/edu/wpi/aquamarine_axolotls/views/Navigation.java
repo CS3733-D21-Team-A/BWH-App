@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
+import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.shape.Line;
 
 import javax.print.attribute.standard.Destination;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -27,39 +29,31 @@ public class Navigation {
     @FXML private JFXComboBox startLocation;
     @FXML private JFXComboBox destination;
     @FXML private JFXButton findPathButton;
-    ObservableList<String> options = FXCollections.observableArrayList(
-                    "Parking Spot 1 45 Francis Street Lobby",
-                            "Parking Spot 45 Francis Street Lobby",
-                            "Parking Spot 3 45 Francis Street Lobby",
-                            "Parking Spot 4 45 Francis Street Lobby",
-                            "Parking Spot 5 45 Francis Street Lobby",
-                            "Parking Spot 6 45 Francis Street Lobby",
-                            "Parking Spot 7 45 Francis Street Lobby",
-                            "Parking Spot 8 45 Francis Street Lobby",
-                            "Parking Spot 9 45 Francis Street Lobby",
-                            "Parking Spot 10 45 Francis Street Lobby",
-                            "Parking Spot 11 45 Francis Street Lobby",
-                            "Parking Spot 12 45 Francis Street Lobby",
-                            "Parking Spot 13 45 Francis Street Lobby",
-                            "Parking Spot 14 45 Francis Street Lobby",
-                            "Parking Spot 15 45 Francis Street Lobby",
-                            "Parking Spot 1 80 Francis Parking",
-                            "Parking Spot 2 80 Francis Parking",
-                            "Parking Spot 3 80 Francis Parking",
-                            "Parking Spot 4 80 Francis Parking",
-                            "Parking Spot 5 80 Francis Parking",
-                            "Parking Spot 6 80 Francis Parking",
-                            "Parking Spot 7 80 Francis Parking",
-                            "Parking Spot 8 80 Francis Parking",
-                            "Parking Spot 9 80 Francis Parking",
-                            "Parking Spot 10 80 Francis Parking",
-                            "Entrance 75 Francis St",
-                            "Entrance ER 75 Francis Street");
+    ObservableList<String> options = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(){
-        startLocation.setItems(options);
-        destination.setItems(options);
+        DatabaseController db;
+
+        try {
+            db = new DatabaseController();
+            List<Map<String, String>> nodes = db.getNodes();
+            for(Map<String, String> node : nodes){
+                options.add(node.get("NODEID"));
+            }
+
+            startLocation.setItems(options);
+            destination.setItems(options);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
+
+
     }
 
     @FXML //need to navigate to home
