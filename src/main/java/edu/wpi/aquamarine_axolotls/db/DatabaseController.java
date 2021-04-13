@@ -26,8 +26,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public DatabaseController() throws SQLException, IOException, URISyntaxException {
 		boolean dbExists;
-		try {
-			DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
+		try (Connection cTest = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin")) { //TODO: login credentials
 			dbExists = true;
 		} catch (SQLException e) {
 			dbExists = false;

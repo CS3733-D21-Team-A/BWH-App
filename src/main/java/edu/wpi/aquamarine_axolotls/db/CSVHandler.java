@@ -31,7 +31,7 @@ public class CSVHandler {
 	 * @throws SQLException Something went wrong.
 	 */
 	private void insertValues(BufferedReader br, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
-		Map<String,String> values = new HashMap<String,String>();
+		Map<String,String> values = new HashMap<>();
 
 		String line = br.readLine();
 		String[] columns = line.split(","); //record column names
