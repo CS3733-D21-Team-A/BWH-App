@@ -166,4 +166,44 @@ class DatabaseControllerTest {
 			fail();
 		}
 	}
+
+	@Test
+	void connectedEdges() {
+		Map<String,String> newNode1 = new HashMap<String,String>();
+		newNode1.put("NODEID","TEST1");
+		newNode1.put("XCOORD","420");
+		newNode1.put("YCOORD","69");
+
+		Map<String,String> newNode2 = new HashMap<String,String>();
+		newNode2.put("NODEID","TEST2");
+		newNode2.put("XCOORD","69");
+		newNode2.put("YCOORD","420");
+
+		Map<String,String> newNode3 = new HashMap<String,String>();
+		newNode3.put("NODEID","TEST3");
+		newNode3.put("XCOORD","100");
+		newNode3.put("YCOORD","100");
+
+		Map<String,String> newEdge1 = new HashMap<String,String>();
+		newEdge1.put("EDGEID","TEST1_TEST2");
+		newEdge1.put("STARTNODE","TEST1");
+		newEdge1.put("ENDNODE","TEST2");
+
+		Map<String,String> newEdge2 = new HashMap<String,String>();
+		newEdge2.put("EDGEID","TEST1_TEST3");
+		newEdge2.put("STARTNODE","TEST1");
+		newEdge2.put("ENDNODE","TEST3");
+		try {
+			db.addNode(newNode1);
+			db.addNode(newNode2);
+			db.addNode(newNode3);
+			db.addEdge(newEdge1);
+			db.addEdge(newEdge2);
+
+			System.out.println(db.getEdgesConnectedToNode("TEST1"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 }

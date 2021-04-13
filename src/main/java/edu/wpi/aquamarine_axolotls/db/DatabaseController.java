@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -179,8 +180,13 @@ public class DatabaseController {
 	 * @return List of maps of edges connected to the desired node.
 	 */
 	public List<Map<String,String>> getEdgesConnectedToNode(String nodeID) throws SQLException {
-		List<Map<String,String>> edges = edgeTable.getEntriesByValue("startNode", nodeID); // gets all edges that has nodeID as a start node
-		edges.addAll(edgeTable.getEntriesByValue("endNode", nodeID)); // gets all edges that have the nodeID as a end node
+		List<Map<String,String>> edges = edgeTable.getEntriesByValue("STARTNODE", nodeID); // gets all edges that has nodeID as a start node
+		List<Map<String,String>> edges2 = edgeTable.getEntriesByValue("ENDNODE", nodeID); // gets all edges that have the nodeID as a end node
+		if (edges == null) {
+			edges = edges2;
+		} else if (edges2 != null) {
+			edges.addAll(edges2);
+		}
 
 		return edges;
 	}
@@ -198,25 +204,25 @@ public class DatabaseController {
 
 	private void createDB() throws SQLException, IOException, URISyntaxException {
 		PreparedStatement smnt = connection.prepareStatement(
-			"CREATE TABLE Nodes (" +
-				"nodeID VARCHAR(25) PRIMARY KEY," +
-				"xcoord NUMERIC(5)," +
-				"ycoord NUMERIC(5)," +
-				"floor VARCHAR(3)," +
-				"building VARCHAR(30)," +
-				"nodeType VARCHAR(5)," +
-				"longName VARCHAR(50)," +
-				"shortName VARCHAR(30)" +
+			"CREATE TABLE NODES (" +
+				"NODEID VARCHAR(25) PRIMARY KEY," +
+				"XCOORD NUMERIC(5)," +
+				"YCOORD NUMERIC(5)," +
+				"FLOOR VARCHAR(3)," +
+				"BUILDING VARCHAR(30)," +
+				"NODETYPE VARCHAR(5)," +
+				"LONGNAME VARCHAR(50)," +
+				"SHORTNAME VARCHAR(30)" +
 			")"
 		);
 
 		smnt.execute();
 
-		smnt = connection.prepareStatement(
-			"CREATE TABLE Edges (" +
-				"edgeID VARCHAR(51) PRIMARY KEY," +
-				"startNode VARCHAR(25)," +
-				"endNode VARCHAR(25)," +
+		smnt = connection.prepareStatement( //TODO: Make the column names available as static variables?
+			"CREATE TABLE EDGES (" +
+				"EDGEID VARCHAR(51) PRIMARY KEY," +
+				"STARTID VARCHAR(25)," +
+				"ENDNODE VARCHAR(25)," +
 				"CONSTRAINT FK_startNode FOREIGN KEY (startNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT," +
 				"CONSTRAINT FK_endNode FOREIGN KEY (endNode) REFERENCES Nodes(nodeID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 			")"

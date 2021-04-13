@@ -134,9 +134,9 @@ class Table {
 	}
 
 	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
-		List<Map<String,String>> entries = new ArrayList<Map<String,String>>();
+		List<Map<String,String>> entries = new ArrayList<>();
 		while (rs.next()) {
-			Map<String,String> entry = new HashMap<String,String>(); // new row to add
+			Map<String,String> entry = new HashMap<>(); // new row to add
 			for(String column : columns.keySet()) { // for every column in the table
 				entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 			}
@@ -190,7 +190,7 @@ class Table {
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
 
-		PreparedStatement smnt = connection.prepareStatement("SELECT " + columnName + " FROM " + tableName + " WHERE " + columnName + " = ?"); // gets row/rows that have column name with value
+		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?"); // gets row/rows that have column name with value
 		smnt.setString(1, value);
 		ResultSet rs = smnt.executeQuery();
 
