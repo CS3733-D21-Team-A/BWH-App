@@ -244,6 +244,7 @@ public class EdgeEditing {
         );
         File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
         try{
+            db.emptyEdgeTable();
             csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES);
         }catch(IOException ie){
             ie.printStackTrace();
