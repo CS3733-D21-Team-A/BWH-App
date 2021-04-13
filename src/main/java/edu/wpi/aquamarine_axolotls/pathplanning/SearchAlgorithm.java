@@ -17,17 +17,8 @@ public class SearchAlgorithm {
     private List<Node> nodes = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
 
-    public SearchAlgorithm(){
-        DatabaseController dbControl = null;
-        try {
-            dbControl = new DatabaseController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    public SearchAlgorithm() throws SQLException, IOException, URISyntaxException {
+        DatabaseController dbControl = new DatabaseController();
 
         List<Map<String, String>> nodeMap = new ArrayList<>();
         List<Map<String, String>> edgeMap = new ArrayList<>();
@@ -61,7 +52,7 @@ public class SearchAlgorithm {
             Map<String, String> currEdgeMap = edgeMap.get(j);
             this.edges.add(new Edge(
                     edgeMap.get(j).get("EDGEID"),
-                    edgeMap.get(j).get("STARTID"),
+                    edgeMap.get(j).get("STARTNODE"),
                     edgeMap.get(j).get("ENDNODE")
             ));
         }
@@ -80,17 +71,8 @@ public class SearchAlgorithm {
      * Clears the SearchAlgorithm's current node and edge data and reloads it from the database
      * Use this if you have a persistent instance of SearchAlgorithm and want to update it based on database changes
      */
-    public void updateSearchData() {
-        DatabaseController dbControl = null;
-        try {
-            dbControl = new DatabaseController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+    public void updateSearchData() throws SQLException, IOException, URISyntaxException {
+        DatabaseController dbControl = new DatabaseController();
 
         List<Map<String, String>> nodeMap = new ArrayList<>();
         List<Map<String, String>> edgeMap = new ArrayList<>();
