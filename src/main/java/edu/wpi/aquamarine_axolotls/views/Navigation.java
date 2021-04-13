@@ -90,6 +90,10 @@ public class Navigation {
 
         return newYCoord;
     }
+
+    public void findPath(){
+        return;
+    }
 /*
     public void findPath(){
         anchor.getChildren().removeAll();
