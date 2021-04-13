@@ -258,7 +258,7 @@ public class EdgeEditing {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
+        File csv = fileChooser.showSaveDialog(importButton.getScene().getWindow());
         try{
             csvHandler.exportCSV(csv, DatabaseInfo.TABLES.EDGES);
         }catch(IOException ie){
