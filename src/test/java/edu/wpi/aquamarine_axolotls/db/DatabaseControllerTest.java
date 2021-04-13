@@ -208,6 +208,40 @@ class DatabaseControllerTest {
 	}
 
 	@Test
+	void editEdgeChangeStart() {
+		Map<String, String> newEdge = new HashMap<String, String>();
+		newEdge.put("EDGEID", "WELEV00HL1_CHALL002L1");
+		newEdge.put("STARTNODE", "WELEV00HL1");
+		newEdge.put("ENDNODE", "CHALL002L1");
+
+		try{
+			db.editEdge("CCONF002L1_WELEV00HL1", newEdge);
+			assertTrue(db.edgeExists("WELEV00HL1_CHALL002L1"));
+			assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+
+			Map<String, String> edge = db.getEdge("WELEV00HL1_CHALL002L1");
+			assertEquals(edge.get("STARTNODE"), "WELEV00HL1");
+			assertEquals(edge.get("ENDNODE"), "CHALL002L1");
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void deleteEdgeExists() {
+		try{
+			db.deleteEdge("CDEPT004L1_CHALL002L1");
+			assertFalse(db.edgeExists("CDEPT004L1_CHALL002L1"));
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
 	void cascadeDownTest() throws SQLException {
 		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
 		db.deleteNode("CCONF002L1");
