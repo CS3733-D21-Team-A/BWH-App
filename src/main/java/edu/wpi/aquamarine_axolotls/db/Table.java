@@ -22,18 +22,18 @@ class Table {
 		this.tableName = tableName;
 
 		DatabaseMetaData dbmd = connection.getMetaData();
-		ResultSet rs = dbmd.getPrimaryKeys(null, null, tableName);
-		rs.next();
-		this.primaryKey = rs.getString("COLUMN_NAME");
-
-		rs.close();
-
-		this.columns = new HashMap<String,Boolean>();
-		rs = dbmd.getColumns(null, null, tableName, null);
-		while (rs.next()) {
-			columns.put(rs.getString("COLUMN_NAME"), rs.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
+		try (ResultSet rs = dbmd.getPrimaryKeys(null, null, tableName)) {
+			rs.next();
+			this.primaryKey = rs.getString("COLUMN_NAME");
 		}
-		rs.close();
+
+		this.columns = new HashMap<>();
+		try (ResultSet rs = dbmd.getColumns(null, null, tableName, null)){
+			while (rs.next()) {
+				columns.put(rs.getString("COLUMN_NAME"), rs.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
+			}
+		}
+
 	}
 
 	/**
@@ -50,12 +50,12 @@ class Table {
 	 * @param values Values to enter into the database. Key is column name, value is value to enter.
 	 */
 	void addEntry(Map<String,String> values) throws SQLException {
-		Set<String> column_names = values.keySet(); // gets all columns
+		Set<String> addColumns = values.keySet(); // gets all columns
 
 		StringBuilder stringBuilder = new StringBuilder("INSERT INTO " + tableName + "("); // first part of statement ie all column names
 		StringBuilder stringBuilder2 = new StringBuilder("VALUES ("); // gets all values we are adding to each column name for the new node
 
-		for (String column : column_names) { // builds values
+		for (String column : addColumns) { // builds values
 			stringBuilder.append(column);
 			stringBuilder.append(",");
 			stringBuilder2.append("?,");
@@ -73,20 +73,19 @@ class Table {
 		stringBuilder.append(stringBuilder2);
 
 		// executes statement
-		PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString()); //TODO: Refactor out duplicate code?
-
-		int i = 1;
-		for (String column : column_names) {
-			if (columns.get(column.toUpperCase())) {
-				smnt.setString(i, values.get(column));
-			} else {
-				smnt.setInt(i, Integer.parseInt(values.get(column)));
+		try (PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString())) { //TODO: Refactor out duplicate code?
+			int i = 1;
+			for (String column : addColumns) {
+				if (columns.get(column.toUpperCase())) {
+					smnt.setString(i, values.get(column));
+				} else {
+					smnt.setInt(i, Integer.parseInt(values.get(column)));
+				}
+				i++;
 			}
-			i++;
-		}
 
-		smnt.executeUpdate();
-		smnt.close();
+			smnt.executeUpdate();
+		}
 	}
 
 	/**
@@ -108,21 +107,20 @@ class Table {
 		stringBuilder.append(primaryKey);
 		stringBuilder.append("=?");
 
-		PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString());
-
-		int i = 1;
-		for (String column : editColumns) {
-			if (columns.get(column.toUpperCase())) {
-				smnt.setString(i, values.get(column));
-			} else {
-				smnt.setInt(i, Integer.parseInt(values.get(column)));
+		try (PreparedStatement smnt = connection.prepareStatement(stringBuilder.toString())) {
+			int i = 1;
+			for (String column : editColumns) {
+				if (columns.get(column.toUpperCase())) {
+					smnt.setString(i, values.get(column));
+				} else {
+					smnt.setInt(i, Integer.parseInt(values.get(column)));
+				}
+				i++;
 			}
-			i++;
-		}
-		smnt.setString(i,key);
+			smnt.setString(i, key);
 
-		smnt.executeUpdate();
-		smnt.close();
+			smnt.executeUpdate();
+		}
 	}
 
 	/**
@@ -130,10 +128,10 @@ class Table {
 	 * @param entryID Primary key representing entry to delete.
 	 */
 	void deleteEntry(String entryID) throws SQLException{
-		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?");
-		smnt.setString(1, entryID);
-
-		smnt.executeUpdate();
+		try (PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?")) {
+			smnt.setString(1, entryID);
+			smnt.executeUpdate();
+		}
 	}
 
 	/**
@@ -159,11 +157,12 @@ class Table {
 	 * @return List of maps representing the full table. Null if the table is empty.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName); // gets everything from table
-		ResultSet rs = smnt.executeQuery();
-		List<Map<String,String>> res = resultSetToList(rs);
-		rs.close();
-		smnt.close();
+		List<Map<String, String>> res;
+		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName)) { // gets everything from table
+			try (ResultSet rs = smnt.executeQuery()) {
+				res = resultSetToList(rs);
+			}
+		}
 		return res; // gets sql result and convert rs to List of maps
 	}
 
@@ -173,21 +172,19 @@ class Table {
 	 * @return Map representing the entry to query for or null if entry not present.
 	 */
 	Map<String,String> getEntry(String entryID) throws SQLException {
-		Map<String, String> entry = new HashMap<String, String>();
+		Map<String, String> entry = new HashMap<>();
 
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + primaryKey + " = ?"); // gets row from table
-		smnt.setString(1, entryID);
+		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + primaryKey + " = ?")) { // gets row from table
+			smnt.setString(1, entryID);
 
-		ResultSet rs = smnt.executeQuery(); // gets sql result
+			try (ResultSet rs = smnt.executeQuery()) { // gets sql result
+				if (!rs.next()) return null;
 
-		if (!rs.next()) return null;
-
-		for (String column : columns.keySet()) { // starting from first row in table iterate thru until the end
-			entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
+				for (String column : columns.keySet()) { // starting from first row in table iterate thru until the end
+					entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
+				}
+			}
 		}
-
-		rs.close();
-		smnt.close();
 		return entry;
 	}
 
@@ -198,14 +195,13 @@ class Table {
 	 * @return List of maps containing the results of the query.
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
-
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?"); // gets row/rows that have column name with value
-		smnt.setString(1, value);
-		ResultSet rs = smnt.executeQuery();
-
-		List<Map<String,String>> res = resultSetToList(rs); // gets sql result and convert RS to List of maps
-		rs.close();
-		smnt.close();
+		List<Map<String, String>> res;
+		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?")) { // gets row/rows that have column name with value
+			smnt.setString(1, value);
+			try (ResultSet rs = smnt.executeQuery()) {
+				res = resultSetToList(rs); // gets sql result and convert RS to List of maps
+			}
+		}
 		return res;
 	}
 
@@ -213,8 +209,8 @@ class Table {
 	 * Empties the table by deleting all entries.
 	 */
 	void emptyTable() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName);
-		smnt.executeUpdate();
-		smnt.close();
+		try (PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName)) {
+			smnt.executeUpdate();
+		}
 	}
 }

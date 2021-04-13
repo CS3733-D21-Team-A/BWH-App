@@ -1,20 +1,18 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CSVHandlerTest {
 	private final DatabaseController db = new DatabaseController();
-	private final CSVHandler csvHandler = new CSVHandler(db);
+	private CSVHandler csvHandler;
 	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
 	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
@@ -24,9 +22,17 @@ public class CSVHandlerTest {
 	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
+
+		csvHandler = new CSVHandler(db);
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 	}
+
+	@AfterAll
+	void cleanup() throws SQLException {
+		db.close();
+	}
+
 
 	@Test
 	void importEdgesTest() throws SQLException, IOException {
