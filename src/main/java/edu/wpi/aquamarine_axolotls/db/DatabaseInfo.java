@@ -13,8 +13,8 @@ public class DatabaseInfo {
 		EDGES
 	}
 
-	public static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv";
-	public static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Edges.csv";
+	public static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv";
+	public static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/MapAedges.csv";
 
 	public static final Map<TABLES,String> TABLE_NAMES;
 	static {

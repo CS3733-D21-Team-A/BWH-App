@@ -39,7 +39,10 @@ public class Navigation {
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for(Map<String, String> node : nodes){
-                options.add(node.get("NODEID"));
+                if(node.get("NODETYPE").equals("EXIT") || node.get("NODETYPE").equals("PARK")){
+                    options.add(node.get("NODEID"));
+                }
+
             }
 
             startLocation.setItems(options);
