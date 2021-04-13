@@ -133,7 +133,7 @@ class DatabaseControllerTest {
 	}
 
 	@Test
-	void editNodeIDValues() {
+	void editNodeIDFails() {
 		Map<String, String> newNode = new HashMap<String, String>();
 		newNode.put("NODEID", "Test");
 
