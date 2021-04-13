@@ -17,6 +17,9 @@ class DatabaseControllerTest {
 	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
 	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
+	//private final File nodeFile = DatabaseInfo.resourcePathToFile("edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv");
+	//private final File edgeFile = DatabaseInfo.resourcePathToFile("edu/wpi/aquamarine_axolotls/csv/L1Edges.csv");
+
 	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 
 	@BeforeEach

@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,10 +32,10 @@ public class Navigation {
     @FXML private JFXComboBox destination;
     @FXML private JFXButton findPathButton;
     ObservableList<String> options = FXCollections.observableArrayList();
-
+    DatabaseController db;
     @FXML
     public void initialize(){
-        DatabaseController db;
+
 
         try {
             db = new DatabaseController();
@@ -95,8 +97,46 @@ public class Navigation {
     }
 
     public void findPath(){
-        return;
+        anchor.getChildren().removeAll();
+        String start = startLocation.getSelectionModel().getSelectedItem().toString();
+        String end = destination.getSelectionModel().getSelectedItem().toString();
+        SearchAlgorithm searchAlgorithm = new SearchAlgorithm();
+        List<Node> pathNodes = searchAlgorithm.getPath(start, end);
+
+
+        Node first = pathNodes.get(1); //TODO: make this not stanky code, doesnt deal with null
+
+        Circle circ = new Circle();
+        Double scaledX = xScale(first.getXcoord());
+        Double scaledY = yScale(first.getYcoord());
+        circ.setCenterX(scaledX);
+        circ.setCenterY(scaledY);
+        circ.setRadius(1);
+
+        Double prevX = scaledX;
+        Double prevY = scaledY;
+
+        for(Node node : pathNodes){
+            circ = new Circle();
+            Line line = new Line();
+            scaledX = xScale(node.getXcoord());
+            scaledY = yScale(node.getYcoord());
+
+            circ.setCenterX(scaledX);
+            circ.setCenterY(scaledY);
+            circ.setRadius(1);
+
+            line.setStartX(scaledX);
+            line.setStartY(scaledY);
+            line.setEndX(prevX);
+            line.setEndY(prevY);
+
+            anchor.getChildren().addAll(circ, line);
+            prevX = scaledX;
+            prevY = scaledY;
+        }
     }
+
 /*
     public void findPath(){
         anchor.getChildren().removeAll();
