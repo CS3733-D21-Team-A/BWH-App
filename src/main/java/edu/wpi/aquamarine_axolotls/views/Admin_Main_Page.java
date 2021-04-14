@@ -23,9 +23,16 @@ public class Admin_Main_Page {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
-
+    @FXML
+    public void Map_Page(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Navigation.fxml"));
+            Aapp.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 
     @FXML
     public void Node_Page(ActionEvent actionEvent) {
@@ -35,7 +42,6 @@ public class Admin_Main_Page {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
     @FXML
     public void Edge_Page(ActionEvent actionEvent) {
@@ -45,7 +51,6 @@ public class Admin_Main_Page {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
     }
 
 }
