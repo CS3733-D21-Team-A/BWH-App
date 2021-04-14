@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class Node_Editing {
     @FXML private JFXButton homeButton;
     @FXML private JFXButton helpButton;
@@ -45,14 +44,14 @@ public class Node_Editing {
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
     @FXML private TableView table;
-    @FXML private TableColumn nodeIDCol;
-    @FXML private TableColumn lNameCol;
-    @FXML private TableColumn sNameCol;
-    @FXML private TableColumn xCol;
-    @FXML private TableColumn yCol;
-    @FXML private TableColumn floorCol;
-    @FXML private TableColumn buildingCol;
-    @FXML private TableColumn typeCol;
+    @FXML private TableColumn<Node,String> nodeIDCol;
+    @FXML private TableColumn<Node,String> lNameCol;
+    @FXML private TableColumn<Node,String> sNameCol;
+    @FXML private TableColumn<Node,String> xCol;
+    @FXML private TableColumn<Node,String> yCol;
+    @FXML private TableColumn<Node,String> floorCol;
+    @FXML private TableColumn<Node,String> buildingCol;
+    @FXML private TableColumn<Node,String> typeCol;
 
     String state = "";
 
@@ -305,6 +304,5 @@ public class Node_Editing {
 
         return;
     }
-
 
 }
