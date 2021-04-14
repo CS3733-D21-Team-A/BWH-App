@@ -1,6 +1,9 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.apache.derby.iapi.services.io.FileUtil;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +13,12 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest2 {
+	@AfterAll
+	@BeforeAll
+	static void cleanup() {
+		TestUtil.resetDB();
+	}
+
 	@Test
 	void dbCreation() {
 		File dir = new File("./BWH");

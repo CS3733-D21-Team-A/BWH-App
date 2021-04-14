@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -39,8 +40,9 @@ class DatabaseControllerTest {
 	}
 
 	@AfterAll
-	static void shutdownDB() {
-		assertTrue(DatabaseController.shutdownDB());
+	@BeforeAll
+	static void cleanup() {
+		TestUtil.resetDB();
 	}
 
 	@Test

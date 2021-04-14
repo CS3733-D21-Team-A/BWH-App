@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -9,7 +10,6 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CSVHandlerTest {
 	private final DatabaseController db = new DatabaseController();
 	private CSVHandler csvHandler;
@@ -29,8 +29,9 @@ public class CSVHandlerTest {
 	}
 
 	@AfterAll
-	void cleanup() {
-		assertTrue(DatabaseController.shutdownDB());
+	@BeforeAll
+	static void cleanup() {
+		TestUtil.resetDB();
 	}
 
 

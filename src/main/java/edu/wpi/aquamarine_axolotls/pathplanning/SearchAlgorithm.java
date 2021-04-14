@@ -25,8 +25,7 @@ public class SearchAlgorithm {
         try {
             nodeMap = dbControl.getNodes();
             edgeMap = dbControl.getEdges();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

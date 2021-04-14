@@ -4,22 +4,20 @@ import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.TestInstance;
-
-import java.io.FileReader;
 
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AStarTest {
-
-
-    SearchAlgorithm aStarDB = new SearchAlgorithm();
+    SearchAlgorithm aStarDB;
 
     SearchAlgorithm aStarManual;
     String floor = "placeholder floor text";
@@ -33,8 +31,7 @@ public class AStarTest {
 
     @BeforeAll
     public void setupTestNodesEdges() {
-//        String[] adbArgs = {"1"};
-//        Adb.main(adbArgs);
+        TestUtil.resetDB();
 
         testNodes.add(new Node("A", 10, 6, floor, building, type, "Anesthesia Conf Floor L1", shortName));
         testNodes.add(new Node("B", 9, 2, floor, building, type, "Medical Records Conference Room Floor L1", shortName));
@@ -66,8 +63,14 @@ public class AStarTest {
         aStarManual = new SearchAlgorithm(testNodes, testEdges);
     }
 
-
-    public AStarTest() throws IOException, SQLException, URISyntaxException {
+    @BeforeEach
+    void testSetup() {
+        try {
+            aStarDB = new SearchAlgorithm();
+        } catch (SQLException | URISyntaxException | IOException e) {
+            e.printStackTrace();
+            fail();
+        }
     }
 
     /*Test for the map with only one node in it, the start is the same as the goal*/
@@ -88,7 +91,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(testPath, expectedPath);
+        assertEquals(testPath, expectedPath);
     }
 
     /*Test for the map with only two node in it*/
@@ -114,7 +117,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     /*Test general search with input map*/
@@ -133,7 +136,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     /*Test general search with input map*/
@@ -153,7 +156,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
 
@@ -171,7 +174,7 @@ public class AStarTest {
         System.out.println("expected Path: " + expectedPath);
         System.out.println("test Path: " + testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
 
@@ -189,7 +192,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
 
@@ -208,7 +211,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     //TESTS TO MAKE
@@ -231,7 +234,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     @Test
@@ -247,7 +250,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     @Test
@@ -267,7 +270,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     @Test
@@ -287,7 +290,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     @Test
@@ -307,7 +310,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
     @Test
@@ -327,7 +330,7 @@ public class AStarTest {
         System.out.println(expectedPath);
         System.out.println(testPath);
 
-        Assertions.assertEquals(expectedPath,testPath);
+        assertEquals(expectedPath,testPath);
     }
 
 }
