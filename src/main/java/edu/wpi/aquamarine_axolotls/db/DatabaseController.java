@@ -13,7 +13,6 @@ import java.util.Map;
  * Controller class for working with the BWH database.
  */
 public class DatabaseController implements AutoCloseable {
-	public static int liveInstances = 0;
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
@@ -45,22 +44,25 @@ public class DatabaseController implements AutoCloseable {
 		if (!dbExists) {
 			populateDB();
 		}
-		liveInstances++;
 	}
 
 	@Override
 	public void close() throws SQLException {
-		if (connection.isClosed()) {
-			System.out.println("Connection already closed.");
-		} else {
+		if (!connection.isClosed()) {
 			connection.close();
-			liveInstances--;
+			System.out.println("Connection closed successfully!");
+			try (Connection shutdown = DriverManager.getConnection("jdbc:derby:BWH;shutdown=true", "admin", "admin")) {
+				System.out.println("Database shutdown failed.");
+			} catch (SQLException e) {
+				System.out.println("Database shutdown successful!");
+			}
+		} else {
+			System.out.println("Connection already closed.");
 		}
 	}
 
 	@Override
 	protected void finalize() throws SQLException {
-		System.out.println("Garbage collecting DatabaseController...");
 		this.close();
 	}
 

@@ -33,7 +33,6 @@ class Table {
 				columns.put(rs.getString("COLUMN_NAME"), rs.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 			}
 		}
-
 	}
 
 	/**
