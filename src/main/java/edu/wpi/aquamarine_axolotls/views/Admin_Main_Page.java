@@ -16,6 +16,17 @@ public class Admin_Main_Page {
     private Button service_req;
 
     @FXML
+    public void Sign_In_Button(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Log_In.fxml"));
+            Aapp.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
+
+    @FXML
     public void service_comp(ActionEvent actionEvent) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));

@@ -67,7 +67,7 @@
                                     </VBox.margin>
                                 </HBox>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="map_button" onAction="#Map_Page" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
+                                <JFXButton onAction="#Sign_In_Button" prefHeight="34.0" prefWidth="151.0" text="Sign In" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
@@ -76,7 +76,7 @@
                                     </font>
                                 </JFXButton>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="service_req" onAction="#service_comp" prefHeight="34.0" prefWidth="151.0" text="Service Request Page" textFill="WHITE">
+                                <JFXButton fx:id="map_button" onAction="#Map_Page" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
@@ -89,6 +89,15 @@
                                         <Insets />
                                     </VBox.margin>
                                 </Line>
+                                <JFXButton fx:id="service_req" onAction="#service_comp" prefHeight="34.0" prefWidth="151.0" text="Service Request Page" textFill="WHITE">
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" top="10.0" />
+                                    </VBox.margin>
+                                    <font>
+                                        <Font name="Times New Roman" size="13.0" />
+                                    </font>
+                                </JFXButton>
+                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
                                 <JFXButton fx:id="nodes_button" onAction="#Node_Page" prefHeight="34.0" prefWidth="151.0" text="Nodes Map" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
@@ -99,15 +108,6 @@
                                 </JFXButton>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
                                 <JFXButton fx:id="edges_button" onAction="#Edge_Page" prefHeight="34.0" prefWidth="151.0" text="Edges Map" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
-                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="help_button" prefHeight="34.0" prefWidth="151.0" text="Settings" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
