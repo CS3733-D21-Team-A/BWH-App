@@ -83,58 +83,108 @@
                     <children>
                         <VBox prefHeight="335.0" prefWidth="156.0">
                             <children>
-                        <JFXButton fx:id="deleteButton" onAction="#PressdeleteButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Delete" textFill="WHITE">
+                        <HBox prefHeight="17.0" prefWidth="146.0">
+                           <children>
+                              <HBox prefHeight="17.0" prefWidth="55.0">
+                                 <children>
+                                    <JFXButton fx:id="import_button" maxHeight="15.0" minHeight="15.0" minWidth="0.0" mnemonicParsing="false" onAction="#import_CSV" prefHeight="12.0" prefWidth="55.0" style="-fx-border-radius: 7; -fx-background-color: #003da6;" text="Import" textFill="WHITE">
+                                       <font>
+                                          <Font size="6.0" />
+                                       </font>
+                                    </JFXButton>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets top="5.0" />
+                                 </HBox.margin>
+                              </HBox>
+                              <JFXButton fx:id="export_button" maxHeight="15.0" minHeight="15.0" mnemonicParsing="false" onAction="#export_CSV" prefHeight="15.0" prefWidth="55.0" style="-fx-background-color: #003da6; -fx-border-radius: 7;" text="Export" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets left="10.0" top="5.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font size="6.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                        <Label fx:id="label" prefHeight="12.0" prefWidth="122.0" textAlignment="CENTER">
                            <VBox.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <JFXButton fx:id="addButton" onAction="#pressAddButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Add" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets left="20.0" right="20.0" top="10.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <JFXButton fx:id="editButton" onAction="#pressEditButton" prefHeight="27.0" prefWidth="129.0" style="-fx-background-color: #003da6;" text="Edit" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets left="20.0" right="20.0" top="10.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="Times New Roman" size="13.0" />
-                           </font>
-                        </JFXButton>
-                        <Label fx:id="label" prefHeight="17.0" prefWidth="138.0" textAlignment="CENTER">
-                           <VBox.margin>
-                              <Insets bottom="5.0" top="5.0" />
+                              <Insets top="5.0" />
                            </VBox.margin>
                            <font>
                               <Font name="Times New Roman" size="12.0" />
                            </font>
                         </Label>
-                                <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="137.0" promptText="Node Dropdown" style="-fx-font-size: 8;">
+                        <JFXButton fx:id="deleteButton" maxHeight="8.0" minHeight="20.0" onAction="#PressdeleteButton" prefHeight="8.0" prefWidth="92.0" style="-fx-background-color: #003da6;" text="Delete" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="addButton" minHeight="20.0" onAction="#pressAddButton" prefHeight="15.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Add" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="editButton" onAction="#pressEditButton" prefHeight="20.0" prefWidth="92.0" style="-fx-background-color: #003da6;" text="Edit" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="20.0" right="20.0" top="5.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="Times New Roman" size="10.0" />
+                           </font>
+                        </JFXButton>
+                                <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="13.0" prefHeight="13.0" prefWidth="132.0" promptText="Node Dropdown" style="-fx-font-size: 8;">
                                     <VBox.margin>
-                                        <Insets />
+                                        <Insets top="5.0" />
                                     </VBox.margin>
                                 </JFXComboBox>
-                                <JFXTextField fx:id="longName" minHeight="15.0" prefHeight="15.0" promptText="Long Name" style="-fx-font-size: 10;">
+                        <JFXTextField fx:id="nodeID" maxHeight="15.0" minHeight="15.0" promptText="Node ID" style="-fx-font-size: 9;">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                                <JFXTextField fx:id="longName" minHeight="15.0" prefHeight="15.0" promptText="Long Name" style="-fx-font-size: 9;">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets top="5.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="shortName" maxHeight="15.0" minHeight="15.0" promptText="Short Name" style="-fx-font-size: 10;">
+                                <JFXTextField fx:id="shortName" maxHeight="15.0" minHeight="15.0" promptText="Short Name" style="-fx-font-size: 9;">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets top="5.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField maxHeight="15.0" maxWidth="1.7976931348623157E308" minHeight="15.0" promptText="x Coordiniate" style="-fx-font-size: 10;" fx:id="xCoor">
+                                <JFXTextField maxHeight="15.0" maxWidth="1.7976931348623157E308" minHeight="15.0" promptText="x Coordiniate" style="-fx-font-size: 9;" fx:id="xCoor">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets top="5.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="yCoor" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" promptText="y Coordinate" style="-fx-font-size: 10;">
+                                <JFXTextField fx:id="yCoor" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" promptText="y Coordinate" style="-fx-font-size: 9;">
                                     <VBox.margin>
-                                        <Insets top="10.0" />
+                                        <Insets top="5.0" />
                                     </VBox.margin>
                                 </JFXTextField>
-                        <Label fx:id="submissionlabel" prefHeight="21.0" prefWidth="141.0" textAlignment="CENTER" textOverrun="CLIP">
+                        <JFXTextField fx:id="floor" maxHeight="15.0" minHeight="15.0" promptText="Floor" style="-fx-font-size: 9;">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="building" maxHeight="15.0" minHeight="15.0" promptText="Building" style="-fx-font-size: 9;">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="nodeType" maxHeight="15.0" minHeight="15.0" promptText="Node Type" style="-fx-font-size: 9;">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXTextField>
+                        <Label fx:id="submissionlabel" prefHeight="19.0" prefWidth="122.0" textAlignment="CENTER" textOverrun="CLIP">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -142,7 +192,7 @@
                               <Font name="Times New Roman" size="8.0" />
                            </font>
                         </Label>
-                                <JFXButton fx:id="findPathButton2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="136.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                <JFXButton fx:id="findPathButton2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="3.0" prefWidth="102.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
                                     <font>
                                         <Font size="10.0" />
                                     </font>
@@ -151,9 +201,9 @@
                                     </VBox.margin>
                                 </JFXButton>
                             </children>
-                            <padding>
-                                <Insets left="10.0" right="10.0" top="10.0" />
-                            </padding>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                             <children>

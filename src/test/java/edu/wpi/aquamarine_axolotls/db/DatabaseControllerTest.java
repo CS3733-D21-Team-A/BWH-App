@@ -144,6 +144,7 @@ class DatabaseControllerTest {
 			Map<String, String> before = db.getNode("CCONF001L1");
 			assertEquals(before.get("XCOORD"),"2255");
 			assertEquals(before.get("FLOOR"),"L1");
+			assertEquals(before.get("FLOOR"),"L1");
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
