@@ -1,21 +1,18 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Controller class for working with the BWH database.
  */
-public class DatabaseController {
+public class DatabaseController implements AutoCloseable {
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
@@ -28,8 +25,7 @@ public class DatabaseController {
 	 */
 	public DatabaseController() throws SQLException, IOException, URISyntaxException {
 		boolean dbExists;
-		try {
-			DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin"); //TODO: login credentials
+		try (Connection cTest = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin")) { //TODO: login credentials
 			dbExists = true;
 		} catch (SQLException e) {
 			dbExists = false;
@@ -48,6 +44,26 @@ public class DatabaseController {
 		if (!dbExists) {
 			populateDB();
 		}
+	}
+
+	@Override
+	public void close() throws SQLException {
+		if (!connection.isClosed()) {
+			connection.close();
+			System.out.println("Connection closed successfully!");
+			try (Connection shutdown = DriverManager.getConnection("jdbc:derby:BWH;shutdown=true", "admin", "admin")) {
+				System.out.println("Database shutdown failed.");
+			} catch (SQLException e) {
+				System.out.println("Database shutdown successful!");
+			}
+		} else {
+			System.out.println("Connection already closed.");
+		}
+	}
+
+	@Override
+	protected void finalize() throws SQLException {
+		this.close();
 	}
 
 	// ===== NODES =====
@@ -228,31 +244,13 @@ public class DatabaseController {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement(
-			"CREATE TABLE NODES (" +
-				"NODEID VARCHAR(25) PRIMARY KEY," +
-				"XCOORD NUMERIC(5)," +
-				"YCOORD NUMERIC(5)," +
-				"FLOOR VARCHAR(3)," +
-				"BUILDING VARCHAR(30)," +
-				"NODETYPE VARCHAR(5)," +
-				"LONGNAME VARCHAR(50)," +
-				"SHORTNAME VARCHAR(30)" +
-			")"
-		);
+		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.NODE_TABLE_SQL)) {
+			smnt.execute();
+		}
 
-		smnt.execute();
-
-		smnt = connection.prepareStatement( //TODO: Make the column names available as static variables?
-			"CREATE TABLE EDGES (" +
-				"EDGEID VARCHAR(51) PRIMARY KEY," +
-				"STARTNODE VARCHAR(25)," +
-				"ENDNODE VARCHAR(25)," +
-				"CONSTRAINT FK_STARTNODE FOREIGN KEY (STARTNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
-				"CONSTRAINT FK_ENDNODE FOREIGN KEY (ENDNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" +
-			")"
-		);
-		smnt.execute();
+		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.EDGE_TABLE_SQL)) { //TODO: Make the column names available as static variables?
+			smnt.execute();
+		}
 	}
 
 	/**

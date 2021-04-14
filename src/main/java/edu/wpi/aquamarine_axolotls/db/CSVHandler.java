@@ -31,7 +31,7 @@ public class CSVHandler {
 	 * @throws SQLException Something went wrong.
 	 */
 	private void insertValues(BufferedReader br, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
-		Map<String,String> values = new HashMap<String,String>();
+		Map<String,String> values = new HashMap<>();
 
 		String line = br.readLine();
 		String[] columns = line.split(","); //record column names
@@ -55,17 +55,17 @@ public class CSVHandler {
 	 * @throws SQLException Something went wrong.
 	 */
 	public void importCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
-		BufferedReader br = new BufferedReader(new FileReader(file));
-
-		switch (table) { //Clear the database on import
-			case NODES:
-				insertValues(br, databaseController::addNode);
-				break;
-			case EDGES:
-				insertValues(br, databaseController::addEdge);
-				break;
-			default:
-				System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
+		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+			switch (table) { //Clear the database on import
+				case NODES:
+					insertValues(br, databaseController::addNode);
+					break;
+				case EDGES:
+					insertValues(br, databaseController::addEdge);
+					break;
+				default:
+					System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
+			}
 		}
 	}
 
@@ -77,45 +77,42 @@ public class CSVHandler {
 	 * @throws SQLException Something went wrong.
 	 */
 	public void exportCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
-		FileWriter fw = new FileWriter(file,false);
-		BufferedWriter bw = new BufferedWriter(fw);
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(file,false))) {
+			List<Map<String, String>> values;
 
-		List<Map<String,String>> values;
+			switch (table) {
+				case NODES:
+					values = databaseController.getNodes();
+					break;
+				case EDGES:
+					values = databaseController.getEdges();
+					break;
+				default:
+					System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
+					return;
+			}
 
-		switch (table) {
-			case NODES:
-				values = databaseController.getNodes();
-				break;
-			case EDGES:
-				values = databaseController.getEdges();
-				break;
-			default:
-				System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
-				return;
-		}
+			Object[] objArr = values.get(0).keySet().toArray();
+			String[] columns = Arrays.copyOf(objArr, objArr.length, String[].class);
 
-		Object[] objArr = values.get(0).keySet().toArray();
-		String[] columns = Arrays.copyOf(objArr, objArr.length, String[].class);
-
-		StringBuilder sb = new StringBuilder();
-		for (String column : columns) {
-			sb.append(column);
-			sb.append(',');
-		}
-		sb.delete(sb.length()-1,sb.length());
-		sb.append('\n');
-
-		for (Map<String,String> value : values) {
+			StringBuilder sb = new StringBuilder();
 			for (String column : columns) {
-				sb.append(value.get(column.toUpperCase()));
+				sb.append(column);
 				sb.append(',');
 			}
-			sb.delete(sb.length()-1,sb.length());
+			sb.delete(sb.length() - 1, sb.length());
 			sb.append('\n');
-		}
 
-		bw.write(sb.toString());
-		bw.close();
-		fw.close();
+			for (Map<String, String> value : values) {
+				for (String column : columns) {
+					sb.append(value.get(column.toUpperCase()));
+					sb.append(',');
+				}
+				sb.delete(sb.length() - 1, sb.length());
+				sb.append('\n');
+			}
+
+			bw.write(sb.toString());
+		}
 	}
 }
