@@ -11,7 +11,7 @@ import javax.xml.soap.Text;
 import java.awt.*;
 import java.io.IOException;
 
-public class Laundry {
+public class Laundry extends Service_Request{
 
     @FXML
     private Button back_button;

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Navigation {
+public class Navigation extends Default_Page {
 
     @FXML
     private AnchorPane anchor;
@@ -62,18 +62,6 @@ public class Navigation {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
-        }
-
-
-    }
-
-    @FXML //need to navigate to home
-    public void return_Home(ActionEvent actionEvent) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/home.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -147,16 +135,6 @@ public class Navigation {
                 prevX = scaledX;
                 prevY = scaledY;
             }
-    }
-    @FXML
-    public void return_home(ActionEvent actionEvent) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
     }
 
 }

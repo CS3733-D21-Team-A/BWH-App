@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class Node_Editing {
+public class Node_Editing extends Default_Page {
     @FXML private JFXButton homeButton;
     @FXML private JFXButton helpButton;
     @FXML public JFXButton deleteButton;

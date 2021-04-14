@@ -19,7 +19,7 @@
                     <children>
                         <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/logo.png" />
+                                <Image url="@../img/logo.png" />
                             </image>
                         </ImageView>
                         <Label fx:id="text" prefHeight="54.0" prefWidth="543.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
@@ -67,7 +67,7 @@
                                     </VBox.margin>
                                 </HBox>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="map_button" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
+                                <JFXButton fx:id="map_button" onAction="#Map_Page" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
@@ -119,7 +119,7 @@
                         </VBox>
                         <ImageView fitHeight="360.0" fitWidth="471.0">
                             <image>
-                                <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/Brigham-Womens-TO-USE.jpeg" />
+                                <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
                             </image>
                         </ImageView>
                     </children>

@@ -154,7 +154,7 @@
          <JFXButton fx:id="back_button" layoutX="-1.0" layoutY="55.0" mnemonicParsing="false" onAction="#return_home" prefHeight="36.0" prefWidth="38.0" text=" " />
          <ImageView fitHeight="20.0" fitWidth="16.0" layoutX="10.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true">
             <image>
-               <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
+               <Image url="@../img/back icon.jpg" />
             </image>
          </ImageView>
    </children>

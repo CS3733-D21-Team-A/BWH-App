@@ -24,7 +24,7 @@
                <children>
                   <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/logo.png" />
+                        <Image url="@../img/logo.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="text" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
@@ -43,11 +43,11 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" VBox.vgrow="ALWAYS" />
             <HBox maxHeight="27.0" prefHeight="100.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="back_button" mnemonicParsing="false" onAction="#return_home" prefHeight="13.0" prefWidth="30.0">
+                  <Button fx:id="back_button" mnemonicParsing="false" onAction="#return_servicePg" prefHeight="13.0" prefWidth="30.0">
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" scaleY="0.7">
                            <image>
-                              <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
+                              <Image url="@../img/back icon.jpg" />
                            </image>
                         </ImageView>
                      </graphic>
