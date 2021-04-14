@@ -1,7 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,19 +11,36 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private final DatabaseController db = new DatabaseController();
-	private final CSVHandler csvHandler = new CSVHandler(db);
+	private DatabaseController db;
 	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
 	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
-	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+	DatabaseControllerTest() throws URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException {
+	void resetDB() throws IOException, SQLException, URISyntaxException {
+		db = new DatabaseController();
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
+
+		CSVHandler csvHandler = new CSVHandler(db);
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+	}
+
+	@AfterEach
+	void closeDB() {
+		try {
+			db.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@AfterAll
+	static void shutdownDB() {
+		assertTrue(DatabaseController.shutdownDB());
 	}
 
 	@Test
@@ -40,7 +56,7 @@ class DatabaseControllerTest {
 	@Test
 	void nodeDoesExist() {
 		try {
-			assertTrue(db.nodeExists("WELEV00ML1"));
+			assertTrue(db.nodeExists("aPARK020GG"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -62,7 +78,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void nodeColumnValidTypes() {
-		Map<String, Boolean> colName = db.getNodeColumns();
+		Map<String,Boolean> colName = db.getNodeColumns();
 		assertTrue(colName.get("NODEID")); // String
 		assertFalse(colName.get("XCOORD")); // not String
 		assertFalse(colName.get("YCOORD"));
@@ -74,8 +90,8 @@ class DatabaseControllerTest {
 	}
 
 	@Test
-	void addNodeAllValues() {
-		Map<String, String> newNode = new HashMap<String, String>();
+	void addNode() {
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "12");
 		newNode.put("YCOORD", "300");
@@ -85,6 +101,7 @@ class DatabaseControllerTest {
 		newNode.put("LONGNAME", "Its a made up place!");
 		newNode.put("SHORTNAME", "MRS");
 		try{
+			assertFalse(db.nodeExists("Test1"));
 			db.addNode(newNode);
 			assertTrue(db.nodeExists("Test1"));
 		}
@@ -95,8 +112,8 @@ class DatabaseControllerTest {
 	}
 
 	@Test
-	void addNodeSomeValues() {
-		Map<String, String> newNode = new HashMap<String, String>();
+	void addNodeNotAllValues() {
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test2");
 		newNode.put("XCOORD", "20");
 		newNode.put("BUILDING", "FS");
@@ -114,7 +131,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNodeNoPKEY() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("XCOORD", "20");
 		newNode.put("BUILDING", "Empire State");
 		newNode.put("NODETYPE", "BUILDING");
@@ -124,41 +141,40 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNodeDupKeys() {
-		Map<String, String> newNode = new HashMap<String, String>();
-		newNode.put("NODEID", "CCONF001L1");
+		Map<String,String> newNode = new HashMap<>();
+		newNode.put("NODEID", "aPARK023GG");
 
 		assertThrows(SQLException.class, () -> db.addNode(newNode));
 	}
 
 	@Test
 	void editNodeIDFails() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test");
 
-		assertThrows(SQLException.class, () -> db.editNode("CCONF001L1", newNode));
+		assertThrows(SQLException.class, () -> db.editNode("aWALK011GG", newNode));
 	}
 
 	@Test
-	void editNodeSomeValues() {
+	void editNode() {
 		try {
-			Map<String, String> before = db.getNode("CCONF001L1");
-			assertEquals(before.get("XCOORD"),"2255");
-			assertEquals(before.get("FLOOR"),"L1");
-			assertEquals(before.get("FLOOR"),"L1");
+			Map<String,String> before = db.getNode("aPARK019GG");
+			assertEquals("195", before.get("XCOORD"));
+			assertEquals("G", before.get("FLOOR"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
 		}
 
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("XCOORD", "13");
 		newNode.put("FLOOR", "2");
 
 		try{
-			db.editNode("CCONF001L1", newNode);
-			Map<String, String> editted = db.getNode("CCONF001L1");
-			assertEquals(editted.get("XCOORD"), "13"); // changed value
-			assertEquals(editted.get("FLOOR"), "2"); // changed value
+			db.editNode("aPARK019GG", newNode);
+			Map<String,String> editted = db.getNode("aPARK019GG");
+			assertEquals("13", editted.get("XCOORD")); // changed value
+			assertEquals("2", editted.get("FLOOR")); // changed value
 		}
 		catch(SQLException e){
 			e.printStackTrace();
@@ -167,31 +183,298 @@ class DatabaseControllerTest {
 	}
 
 	@Test
+	void deleteNode() {
+		try {
+			assertTrue(db.nodeExists("aEXIT00101"));
+			db.deleteNode("aEXIT00101");
+			assertFalse(db.nodeExists("aEXIT00101"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void deleteNodeDNE() {
+		try {
+			assertFalse(db.nodeExists("Test1"));
+			db.deleteNode("Test1");
+			assertFalse(db.nodeExists("Test1"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void getNode() {
+		try {
+			Map<String,String> node = db.getNode("aPARK009GG");
+			assertEquals("3390", node.get("XCOORD"));
+			assertEquals("1207", node.get("YCOORD"));
+			assertEquals("G", node.get("FLOOR"));
+			assertEquals("Parking", node.get("BUILDING"));
+			assertEquals("PARK", node.get("NODETYPE"));
+			assertEquals("Parking Spot 9 45 Francis Street Lobby", node.get("LONGNAME"));
+			assertEquals("45FSL09", node.get("SHORTNAME"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void getNodeDNE() {
+		try {
+			assertNull(db.getNode("Test1"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+	}
+
+	@Test
+	void emptyNodeTable() {
+		try {
+			assertTrue(db.getNodes().size() != 0);
+			db.emptyNodeTable();
+			assertNull(db.getNodes());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+
+	}
+
+
+	@Test
+	void edgeColumnValidNames() {
+		Set<String> colName = db.getEdgeColumns().keySet();
+		assertTrue(colName.contains("EDGEID"));
+		assertTrue(colName.contains("STARTNODE"));
+		assertTrue(colName.contains("ENDNODE"));
+	}
+
+	@Test
+	void edgeColumnValidTypes() {
+		Map<String, Boolean> colName = db.getEdgeColumns();
+		assertTrue(colName.get("EDGEID")); // String
+		assertTrue(colName.get("STARTNODE")); // not String
+		assertTrue(colName.get("ENDNODE"));
+	}
+
+	@Test
+	void edgeExists() {
+		try {
+			assertTrue(db.edgeExists("aWALK002GG_aWALK003GG"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void edgeExistsDNE() {
+		try {
+			assertFalse(db.edgeExists("aWALK002GG_aWALK043GG"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void addEdge() {
+		try {
+			assertFalse(db.edgeExists("helloworld"));
+
+			Map<String,String> newEdge = new HashMap<>();
+			newEdge.put("EDGEID","helloworld");
+			newEdge.put("STARTNODE", "aPARK024GG");
+			newEdge.put("ENDNODE", "aWALK012GG");
+
+			db.addEdge(newEdge);
+			assertTrue(db.edgeExists("helloworld"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+	}
+
+	@Test
+	void addEdgeDupEdge() {
+		try {
+			assertTrue(db.edgeExists("aPARK001GG_aWALK001GG"));
+
+			Map<String,String> newEdge = new HashMap<>();
+			newEdge.put("EDGEID","aPARK001GG_aWALK001GG");
+			newEdge.put("STARTNODE", "aPARK001GG");
+			newEdge.put("ENDNODE", "aWALK001GG");
+
+			assertThrows(SQLException.class, () -> db.addEdge(newEdge));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+	}
+
+	@Test
+	void deleteEdge() {
+		try {
+			assertTrue(db.edgeExists("aPARK022GG_aWALK009GG"));
+			db.deleteEdge("aPARK022GG_aWALK009GG");
+			assertFalse(db.edgeExists("aPARK022GG_aWALK009GG"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void deleteEdgeDNE() {
+		try {
+			assertFalse(db.edgeExists("Test1_Test2"));
+			db.deleteEdge("Test1_Test2");
+			assertFalse(db.edgeExists("Test1_Test2"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void editEdge() {
+		try {
+			Map<String,String> before = db.getEdge("aWALK004GG_aEXIT00201");
+			assertEquals("aWALK004GG", before.get("STARTNODE"));
+			assertEquals("aEXIT00201", before.get("ENDNODE"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+		Map<String,String> newEdge = new HashMap<>();
+		newEdge.put("EDGEID","title");
+		newEdge.put("STARTNODE", "aPARK009GG");
+		newEdge.put("ENDNODE", "aEXIT00201");
+
+		try{
+			db.editEdge("aWALK004GG_aEXIT00201", newEdge);
+			assertTrue(db.edgeExists("title"));
+			assertFalse(db.edgeExists("aWALK004GG_aEXIT00201"));
+
+			Map<String,String> edited = db.getEdge("title");
+			assertEquals("aPARK009GG", edited.get("STARTNODE")); // changed value
+			assertEquals("aEXIT00201", edited.get("ENDNODE")); // changed value
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void addEditEdge() {
+		try {
+			Map<String,String> newEdge = new HashMap<>();
+			newEdge.put("EDGEID","title");
+			newEdge.put("STARTNODE", "aPARK009GG");
+			newEdge.put("ENDNODE", "aEXIT00201");
+			db.addEdge(newEdge);
+			assertTrue(db.edgeExists("title"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+		Map<String,String> newEdit = new HashMap<>();
+		newEdit.put("EDGEID","title2");
+		newEdit.put("ENDNODE", "aEXIT00101");
+
+		try{
+			db.editEdge("title", newEdit);
+			assertTrue(db.edgeExists("title2"));
+			assertFalse(db.edgeExists("title"));
+
+			Map<String,String> edited = db.getEdge("title2");
+			assertEquals("aPARK009GG", edited.get("STARTNODE")); // changed value
+			assertEquals("aEXIT00101", edited.get("ENDNODE")); // changed value
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void getEdge() {
+		try {
+			Map<String,String> edge = db.getEdge("aPARK010GG_aWALK012GG");
+			assertEquals("aPARK010GG", edge.get("STARTNODE"));
+			assertEquals("aWALK012GG", edge.get("ENDNODE"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
+
+	@Test
+	void getEdgeDNE() {
+		try {
+			assertNull(db.getEdge("Test1_Test5"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+	}
+
+	@Test
+	void emptyEdgeTable() {
+		try {
+			List<Map<String,String>> edges = db.getEdges();
+			assertTrue(edges.size() != 0);
+			db.emptyNodeTable();
+			assertNull(db.getEdges());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
+
+
+	}
+
+	@Test
 	void connectedEdges() {
-		Map<String,String> newNode1 = new HashMap<String,String>();
+		Map<String,String> newNode1 = new HashMap<>();
 		newNode1.put("NODEID","TEST1");
 		newNode1.put("XCOORD","420");
 		newNode1.put("YCOORD","69");
 
-		Map<String,String> newNode2 = new HashMap<String,String>();
+		Map<String,String> newNode2 = new HashMap<>();
 		newNode2.put("NODEID","TEST2");
 		newNode2.put("XCOORD","69");
 		newNode2.put("YCOORD","420");
 
-		Map<String,String> newNode3 = new HashMap<String,String>();
+		Map<String,String> newNode3 = new HashMap<>();
 		newNode3.put("NODEID","TEST3");
 		newNode3.put("XCOORD","100");
 		newNode3.put("YCOORD","100");
 
-		Map<String,String> newEdge1 = new HashMap<String,String>();
+		Map<String,String> newEdge1 = new HashMap<>();
 		newEdge1.put("EDGEID","TEST1_TEST2");
 		newEdge1.put("STARTNODE","TEST1");
 		newEdge1.put("ENDNODE","TEST2");
 
-		Map<String,String> newEdge2 = new HashMap<String,String>();
+		Map<String,String> newEdge2 = new HashMap<>();
 		newEdge2.put("EDGEID","TEST1_TEST3");
 		newEdge2.put("STARTNODE","TEST1");
 		newEdge2.put("ENDNODE","TEST3");
+
 		try {
 			db.addNode(newNode1);
 			db.addNode(newNode2);
@@ -200,8 +483,9 @@ class DatabaseControllerTest {
 			db.addEdge(newEdge2);
 
 			List<Map<String,String>> edges = db.getEdgesConnectedToNode("TEST1");
-			assertEquals(edges.get(0), newEdge1);
-			assertEquals(edges.get(1), newEdge2);
+			assertEquals(2, edges.size());
+			assertEquals("TEST1_TEST2", edges.get(0).get("EDGEID"));
+			assertEquals("TEST1_TEST3", edges.get(1).get("EDGEID"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -210,21 +494,20 @@ class DatabaseControllerTest {
 
 	@Test
 	void editEdgeChangeStart() {
-		Map<String, String> newEdge = new HashMap<String, String>();
-		newEdge.put("EDGEID", "WELEV00HL1_CHALL002L1");
-		newEdge.put("STARTNODE", "WELEV00HL1");
-		newEdge.put("ENDNODE", "CHALL002L1");
+		Map<String,String> newEdge = new HashMap<>();
+		newEdge.put("STARTNODE", "aWALK001GG");
+		newEdge.put("ENDNODE", "aPARK001GG");
 
-		try{
-			db.editEdge("CCONF002L1_WELEV00HL1", newEdge);
-			assertTrue(db.edgeExists("WELEV00HL1_CHALL002L1"));
-			assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+		try {
+			Map<String,String> edge = db.getEdge("aPARK001GG_aWALK001GG");
+			assertEquals("aPARK001GG", edge.get("STARTNODE"));
+			assertEquals("aWALK001GG", edge.get("ENDNODE"));
 
-			Map<String, String> edge = db.getEdge("WELEV00HL1_CHALL002L1");
-			assertEquals(edge.get("STARTNODE"), "WELEV00HL1");
-			assertEquals(edge.get("ENDNODE"), "CHALL002L1");
-		}
-		catch(SQLException e){
+			db.editEdge("aPARK001GG_aWALK001GG", newEdge);
+			edge = db.getEdge("aPARK001GG_aWALK001GG");
+			assertEquals("aWALK001GG", edge.get("STARTNODE"));
+			assertEquals("aPARK001GG", edge.get("ENDNODE"));
+		} catch(SQLException e){
 			e.printStackTrace();
 			fail();
 		}
@@ -232,27 +515,39 @@ class DatabaseControllerTest {
 
 	@Test
 	void deleteEdgeExists() {
-		try{
-			db.deleteEdge("CDEPT004L1_CHALL002L1");
-			assertFalse(db.edgeExists("CDEPT004L1_CHALL002L1"));
-		}
-		catch(SQLException e){
+		try {
+			assertTrue(db.edgeExists("aPARK001GG_aWALK001GG"));
+			db.deleteEdge("aPARK001GG_aWALK001GG");
+			assertFalse(db.edgeExists("aPARK001GG_aWALK001GG"));
+		} catch (SQLException e){
 			e.printStackTrace();
 			fail();
 		}
 	}
 
 	@Test
-	void cascadeDownTest() throws SQLException {
-		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
-		db.deleteNode("CCONF002L1");
-		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+	void cascadeDownTest() {
+		try {
+			assertTrue(db.edgeExists("aPARK001GG_aWALK001GG"));
+			db.deleteNode("aPARK001GG");
+			assertFalse(db.edgeExists("aPARK001GG_aWALK001GG"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@Test
-	void cascadeUpTest() throws SQLException {
-		assertTrue(db.nodeExists("CCONF002L1"));
-		db.deleteEdge("CCONF002L1_WELEV00HL1");
-		assertTrue(db.nodeExists("CCONF002L1"));
+	void noCascadeUp() {
+		try {
+			assertTrue(db.nodeExists("aPARK001GG"));
+			db.deleteEdge("aPARK001GG_aWALK001GG");
+			assertTrue(db.nodeExists("aPARK001GG"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
+
+	//TODO: TEST EDITING PRIMARY AND FOREIGN KEYS MORE
 }
