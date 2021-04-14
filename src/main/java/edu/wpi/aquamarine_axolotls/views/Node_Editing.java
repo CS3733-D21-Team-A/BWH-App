@@ -26,55 +26,23 @@ import java.util.Map;
 
 
 public class Node_Editing {
-    @FXML
-    public JFXButton deleteButton;
-
-    @FXML
-    private JFXButton addButton;
-
-    @FXML
-    private JFXButton editButton;
-
-    @FXML
-    private ComboBox nodeDropdown;
-
-    @FXML
-    private Label label;
-
-    @FXML
-    private Label submissionlabel;
-
-    @FXML
-    private JFXTextField longName;
-
-    @FXML
-    private JFXTextField shortName;
-
-    @FXML
-    private JFXTextField xCoor;
-
-    @FXML
-    private JFXTextField yCoor;
-
-    @FXML
-    private JFXTextField nodeType;
-
-    @FXML
-    private JFXTextField nodeID;
-    @FXML
-    private JFXTextField floor;
-
-    @FXML
-    private JFXTextField building;
-
-    @FXML
-    private JFXButton export_button;
-
-    @FXML
-    private JFXButton import_button;
-
-    @FXML
-    private JFXButton findPathButton2;
+    @FXML public JFXButton deleteButton;
+    @FXML private JFXButton addButton;
+    @FXML private JFXButton editButton;
+    @FXML private ComboBox nodeDropdown;
+    @FXML private Label label;
+    @FXML private Label submissionlabel;
+    @FXML private JFXTextField longName;
+    @FXML private JFXTextField shortName;
+    @FXML private JFXTextField xCoor;
+    @FXML private JFXTextField yCoor;
+    @FXML private JFXTextField nodeType;
+    @FXML private JFXTextField nodeID;
+    @FXML private JFXTextField floor;
+    @FXML private JFXTextField building;
+    @FXML private JFXButton export_button;
+    @FXML private JFXButton import_button;
+    @FXML private JFXButton findPathButton2;
 
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
