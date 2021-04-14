@@ -156,13 +156,11 @@ class Table {
 	 * @return List of maps representing the full table. Null if the table is empty.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
-		List<Map<String, String>> res;
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName)) { // gets everything from table
 			try (ResultSet rs = smnt.executeQuery()) {
-				res = resultSetToList(rs);
+				return resultSetToList(rs); // gets sql result and convert rs to List of maps
 			}
 		}
-		return res; // gets sql result and convert rs to List of maps
 	}
 
 	/**
@@ -171,20 +169,20 @@ class Table {
 	 * @return Map representing the entry to query for or null if entry not present.
 	 */
 	Map<String,String> getEntry(String entryID) throws SQLException {
-		Map<String, String> entry = new HashMap<>();
-
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + primaryKey + " = ?")) { // gets row from table
 			smnt.setString(1, entryID);
 
 			try (ResultSet rs = smnt.executeQuery()) { // gets sql result
-				if (!rs.next()) return null;
-
+				if (!rs.next()) {
+					return null;
+				}
+				Map<String, String> entry = new HashMap<>();
 				for (String column : columns.keySet()) { // starting from first row in table iterate thru until the end
 					entry.put(column, rs.getString(column)); // put the value at that column into our new row vector
 				}
+				return entry;
 			}
 		}
-		return entry;
 	}
 
 	/**
@@ -194,14 +192,12 @@ class Table {
 	 * @return List of maps containing the results of the query.
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
-		List<Map<String, String>> res;
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?")) { // gets row/rows that have column name with value
 			smnt.setString(1, value);
 			try (ResultSet rs = smnt.executeQuery()) {
-				res = resultSetToList(rs); // gets sql result and convert RS to List of maps
+				return resultSetToList(rs); // gets sql result and convert RS to List of maps
 			}
 		}
-		return res;
 	}
 
 	/**

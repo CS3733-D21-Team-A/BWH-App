@@ -27,10 +27,15 @@ class DatabaseControllerTest {
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
 	}
-	
+
 	@AfterEach
-	void closeDB() {
-		db.shutdown();
+	void closeDB() throws SQLException {
+		db.close();
+	}
+	
+	@AfterAll
+	static void shutdownDB() {
+		assertTrue(DatabaseController.shutdownDB());
 	}
 
 	@Test
@@ -68,7 +73,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void nodeColumnValidTypes() {
-		Map<String, Boolean> colName = db.getNodeColumns();
+		Map<String,Boolean> colName = db.getNodeColumns();
 		assertTrue(colName.get("NODEID")); // String
 		assertFalse(colName.get("XCOORD")); // not String
 		assertFalse(colName.get("YCOORD"));
@@ -81,7 +86,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNodeAllValues() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "12");
 		newNode.put("YCOORD", "300");
@@ -102,7 +107,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNodeSomeValues() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test2");
 		newNode.put("XCOORD", "20");
 		newNode.put("BUILDING", "FS");
@@ -120,7 +125,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNodeNoPKEY() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("XCOORD", "20");
 		newNode.put("BUILDING", "Empire State");
 		newNode.put("NODETYPE", "BUILDING");
@@ -130,7 +135,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNodeDupKeys() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "CCONF001L1");
 
 		assertThrows(SQLException.class, () -> db.addNode(newNode));
@@ -138,7 +143,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void editNodeIDFails() {
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test");
 
 		assertThrows(SQLException.class, () -> db.editNode("CCONF001L1", newNode));
@@ -147,7 +152,7 @@ class DatabaseControllerTest {
 	@Test
 	void editNodeSomeValues() {
 		try {
-			Map<String, String> before = db.getNode("CCONF001L1");
+			Map<String,String> before = db.getNode("CCONF001L1");
 			assertEquals(before.get("XCOORD"),"2255");
 			assertEquals(before.get("FLOOR"),"L1");
 		} catch (SQLException e) {
@@ -155,13 +160,13 @@ class DatabaseControllerTest {
 			fail();
 		}
 
-		Map<String, String> newNode = new HashMap<String, String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("XCOORD", "13");
 		newNode.put("FLOOR", "2");
 
 		try{
 			db.editNode("CCONF001L1", newNode);
-			Map<String, String> editted = db.getNode("CCONF001L1");
+			Map<String,String> editted = db.getNode("CCONF001L1");
 			assertEquals(editted.get("XCOORD"), "13"); // changed value
 			assertEquals(editted.get("FLOOR"), "2"); // changed value
 		}
@@ -173,27 +178,27 @@ class DatabaseControllerTest {
 
 	@Test
 	void connectedEdges() {
-		Map<String,String> newNode1 = new HashMap<String,String>();
+		Map<String,String> newNode1 = new HashMap<>();
 		newNode1.put("NODEID","TEST1");
 		newNode1.put("XCOORD","420");
 		newNode1.put("YCOORD","69");
 
-		Map<String,String> newNode2 = new HashMap<String,String>();
+		Map<String,String> newNode2 = new HashMap<>();
 		newNode2.put("NODEID","TEST2");
 		newNode2.put("XCOORD","69");
 		newNode2.put("YCOORD","420");
 
-		Map<String,String> newNode3 = new HashMap<String,String>();
+		Map<String,String> newNode3 = new HashMap<>();
 		newNode3.put("NODEID","TEST3");
 		newNode3.put("XCOORD","100");
 		newNode3.put("YCOORD","100");
 
-		Map<String,String> newEdge1 = new HashMap<String,String>();
+		Map<String,String> newEdge1 = new HashMap<>();
 		newEdge1.put("EDGEID","TEST1_TEST2");
 		newEdge1.put("STARTNODE","TEST1");
 		newEdge1.put("ENDNODE","TEST2");
 
-		Map<String,String> newEdge2 = new HashMap<String,String>();
+		Map<String,String> newEdge2 = new HashMap<>();
 		newEdge2.put("EDGEID","TEST1_TEST3");
 		newEdge2.put("STARTNODE","TEST1");
 		newEdge2.put("ENDNODE","TEST3");
@@ -215,7 +220,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void editEdgeChangeStart() {
-		Map<String, String> newEdge = new HashMap<String, String>();
+		Map<String, String> newEdge = new HashMap<>();
 		newEdge.put("EDGEID", "WELEV00HL1_CHALL002L1");
 		newEdge.put("STARTNODE", "WELEV00HL1");
 		newEdge.put("ENDNODE", "CHALL002L1");

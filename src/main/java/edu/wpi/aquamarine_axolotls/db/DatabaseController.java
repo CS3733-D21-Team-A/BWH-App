@@ -35,7 +35,7 @@ public class DatabaseController implements AutoCloseable {
 		if (!dbExists) {
 			System.out.println("No database found. Creating new one...");
 			createDB();
-		} else System.out.println("Database found!");
+		}
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(DatabaseInfo.TABLES.NODES);
@@ -50,9 +50,6 @@ public class DatabaseController implements AutoCloseable {
 	public void close() throws SQLException {
 		if (!connection.isClosed()) {
 			connection.close();
-			System.out.println("Connection closed successfully!");
-		} else {
-			System.out.println("Connection already closed.");
 		}
 	}
 
@@ -64,12 +61,13 @@ public class DatabaseController implements AutoCloseable {
 	/**
 	 * Shuts down the database connection.
 	 * Note: This will shut down the connection for all currently running DatabaseControllers!
+	 * @return If shutdown was successful.
 	 */
-	public void shutdown() {
+	public static boolean shutdownDB() {
 		try (Connection shutdown = DriverManager.getConnection("jdbc:derby:BWH;shutdown=true", "admin", "admin")) {
-			System.out.println("Database shutdown failed?");
+			return false; // Shutting down a database should throw an exception. If it doesn't, something went wrong!
 		} catch (SQLException e) {
-			System.out.println("Database shutdown successful!");
+			return true; // Shutting down a database throws an exception!
 		}
 	}
 

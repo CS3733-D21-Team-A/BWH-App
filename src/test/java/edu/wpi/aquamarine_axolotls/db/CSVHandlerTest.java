@@ -30,7 +30,7 @@ public class CSVHandlerTest {
 
 	@AfterAll
 	void cleanup() {
-		db.shutdown();
+		assertTrue(DatabaseController.shutdownDB());
 	}
 
 
@@ -44,10 +44,21 @@ public class CSVHandlerTest {
 	}
 
 	@Test
+	void importNodesTest() throws SQLException, IOException {
+		assertNotNull(db.getNodes());
+		db.emptyNodeTable();
+		assertNull(db.getNodes());
+		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
+		assertNotNull(db.getNodes());
+	}
+
+	@Test
 	void exportEdgesTest() {
 		try {
 			File file = new File("edgeTest.csv");
-			file.delete();
+			if (file.exists()) {
+				assertTrue(file.delete());
+			}
 			assertTrue(file.createNewFile());
 			assertEquals(file.length(), 0);
 
@@ -65,7 +76,9 @@ public class CSVHandlerTest {
 	void exportNodesTest() {
 		try {
 			File file = new File("nodeTest.csv");
-			file.delete();
+			if (file.exists()) {
+				assertTrue(file.delete());
+			}
 			assertTrue(file.createNewFile());
 			assertEquals(file.length(), 0);
 
