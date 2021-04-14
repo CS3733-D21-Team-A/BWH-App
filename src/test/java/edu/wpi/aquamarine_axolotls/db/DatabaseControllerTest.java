@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,19 +16,26 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private final DatabaseController db = new DatabaseController();
-	private final CSVHandler csvHandler = new CSVHandler(db);
+	private DatabaseController db;
 	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
 	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
-	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+	DatabaseControllerTest() throws URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException {
+	void resetDB() throws IOException, SQLException, URISyntaxException {
+		db = new DatabaseController();
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
+
+		CSVHandler csvHandler = new CSVHandler(db);
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+	}
+
+	@AfterEach
+	void closeDB() throws SQLException {
+		db.close();
 	}
 
 	@Test

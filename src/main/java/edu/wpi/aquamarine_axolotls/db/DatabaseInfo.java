@@ -27,12 +27,12 @@ public class DatabaseInfo {
 	/**
 	 * Path to default node CSV resource.
 	 */
-	static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv";
+	static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv";
 
 	/**
 	 * Path to default edge CSV resource.
 	 */
-	static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Edges.csv";
+	static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/MapAedges.csv";
 
 	/**
 	 * Map associating TABLES enum to usable table names.
