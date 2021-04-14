@@ -2,7 +2,6 @@ package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import org.apache.derby.iapi.db.Database;
-import sun.awt.AWTAccessor;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
