@@ -3,13 +3,17 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -258,5 +262,15 @@ public class EdgeEditing {
                 submissionlabel.setText("Invalid submission");
         }
         initialize();
+    }
+    @FXML
+    public void return_home(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Admin_Main_Page.fxml"));
+            Aapp.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 }

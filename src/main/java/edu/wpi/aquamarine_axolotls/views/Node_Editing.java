@@ -3,13 +3,17 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -305,6 +309,15 @@ public class Node_Editing {
 
         return;
     }
+    @FXML
+    public void return_home(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Admin_Main_Page.fxml"));
+            Aapp.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
+    }
 
 }

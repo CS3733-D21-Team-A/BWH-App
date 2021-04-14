@@ -49,7 +49,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXButton fx:id="homeButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;">
+                        <JFXButton fx:id="homeButton" mnemonicParsing="false" onAction="#return_home" style="-fx-background-color: #ffffff00;" text=" ">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -61,7 +61,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="helpButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;">
+                        <JFXButton fx:id="helpButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
                            <graphic>
                               <ImageView>
                                  <image>

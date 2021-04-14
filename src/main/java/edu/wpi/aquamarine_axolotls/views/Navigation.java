@@ -148,6 +148,15 @@ public class Navigation {
                 prevY = scaledY;
             }
     }
+    @FXML
+    public void return_home(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
+            Aapp.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
+    }
 
 }

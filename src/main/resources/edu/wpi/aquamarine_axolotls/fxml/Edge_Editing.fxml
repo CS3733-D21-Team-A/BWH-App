@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.EdgeEditing">
     <children>
@@ -42,7 +52,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                             <children>
-                                <JFXButton fx:id="homeButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;">
+                                <JFXButton fx:id="homeButton" mnemonicParsing="false" onAction="#return_home" style="-fx-background-color: #ffffff00;" text=" ">
                                     <graphic>
                                         <ImageView>
                                             <image>
@@ -54,7 +64,7 @@
                                         <Insets right="5.0" />
                                     </HBox.margin>
                                 </JFXButton>
-                                <JFXButton fx:id="helpButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;">
+                                <JFXButton fx:id="helpButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
                                     <graphic>
                                         <ImageView>
                                             <image>
