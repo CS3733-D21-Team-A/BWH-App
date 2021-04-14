@@ -1,12 +1,13 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import com.jfoenix.animation.alert.JFXAlertAnimation;
 import com.jfoenix.controls.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import java.util.Optional;
 import javafx.scene.layout.AnchorPane;
@@ -24,31 +25,31 @@ import edu.wpi.aquamarine_axolotls.Aapp;
 public class Floral_Delivery extends Service_Request{
 
     @FXML
-    private Button back_button;
+    private JFXButton back_button;
 
     @FXML
-    private TextField firstName;
+    private JFXTextField firstName;
 
     @FXML
-    private TextField lastName;
+    private JFXTextField lastName;
 
     @FXML
-    private TextField deliveryTime;
+    private JFXTextField deliveryTime;
 
     @FXML
-    private TextField roomNumber;
+    private JFXTextField roomNumber;
 
     @FXML
-    private TextField persMessage;
+    private JFXTextField persMessage;
 
     @FXML
     private AnchorPane myAnchorPane;
 
     @FXML
-    private Button submitButton;
+    private JFXButton submitButton;
 
     @FXML
-    private Button helpButton;
+    private JFXButton helpButton;
 
     @FXML
     private StackPane stackPane;
@@ -57,57 +58,38 @@ public class Floral_Delivery extends Service_Request{
 
 
     @FXML
-    public void handleButtonAction(javafx.event.ActionEvent actionEvent) {
+    public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
+        JFXDialogLayout content = new JFXDialogLayout();
 
-        Stage stage = (Stage) myAnchorPane.getScene().getWindow();
+        JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+        content.setHeading(new Text("Submission Success!"));
+        content.setBody(new Text("Your information has successfully been submitted."));
 
-        Alert.AlertType type = Alert.AlertType.CONFIRMATION;
+        JFXButton exit_button = new JFXButton("Close");
+        exit_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                help.close();
+                try {
+                    Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
+                    Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }        }
+        });
 
-        Alert alert = new Alert(type, "");
-
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(stage);
-        alert.getDialogPane().setContentText("Click OK to confirm submission");
-
-        alert.getDialogPane().setHeaderText("Are you sure you would like to submit?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.get() == ButtonType.OK)
-        {
-            try {
-                Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
-                Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }        }
-
+        content.setActions(exit_button);
+        help.show();
     }
 
     @FXML
     public void return_home(javafx.event.ActionEvent actionEvent) {
-
-        Stage stage = (Stage) myAnchorPane.getScene().getWindow();
-
-        Alert.AlertType type = Alert.AlertType.CONFIRMATION;
-
-        Alert alert = new Alert(type, "");
-
-        alert.initModality(Modality.APPLICATION_MODAL);
-        alert.initOwner(stage);
-        alert.getDialogPane().setContentText("Your changes will not be saved.");
-
-        alert.getDialogPane().setHeaderText("Are you sure you would like to return to the previous screen?");
-
-        Optional result = alert.showAndWait();
-        if(result.get() == ButtonType.OK)
-        {
             try {
                 Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
                 Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
             } catch (IOException ex) {
                 ex.printStackTrace();
-            }        }
-
+            }
     }
     @FXML
     public void loadHelp(javafx.event.ActionEvent event){
@@ -127,7 +109,7 @@ public class Floral_Delivery extends Service_Request{
 
     content.setActions(exit_button);
     help.show();
-}
+    }
 
 
 

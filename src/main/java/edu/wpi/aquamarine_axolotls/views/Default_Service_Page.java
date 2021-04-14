@@ -1,11 +1,15 @@
 package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -45,6 +49,12 @@ public class Default_Service_Page {
     @FXML
     private JFXButton back_button;
 
+    @FXML
+    private JFXButton shutDownButton;
+
+    @FXML
+    private StackPane stackPane;
+
 
     // Button Presses for Default Service Page, each button leads to its service request form
     // NOTE: code feels redundant, maybe make method?
@@ -63,13 +73,14 @@ public class Default_Service_Page {
     @FXML
     public void return_home(ActionEvent actionEvent) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Admin_Main_Page.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Start_Page.fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
     }
+
     public void language_interpreter_b(ActionEvent actionEvent) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Language_Interpreter.fxml"));
@@ -161,5 +172,5 @@ public class Default_Service_Page {
             ex.printStackTrace();
         }
     }
-
 }
+
