@@ -29,8 +29,13 @@ class DatabaseControllerTest {
 	}
 
 	@AfterEach
-	void closeDB() throws SQLException {
-		db.close();
+	void closeDB() {
+		try {
+			db.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 
 	@AfterAll
@@ -86,7 +91,7 @@ class DatabaseControllerTest {
 
 	@Test
 	void addNode() {
-		Map<String,String> newNode = new HashMap<String,String>();
+		Map<String,String> newNode = new HashMap<>();
 		newNode.put("NODEID", "Test1");
 		newNode.put("XCOORD", "12");
 		newNode.put("YCOORD", "300");
@@ -488,7 +493,7 @@ class DatabaseControllerTest {
 	}
 
 	@Test
-	void editEdgeChangeStart() throws SQLException {
+	void editEdgeChangeStart() {
 		Map<String,String> newEdge = new HashMap<>();
 		newEdge.put("STARTNODE", "aWALK001GG");
 		newEdge.put("ENDNODE", "aPARK001GG");
@@ -533,9 +538,16 @@ class DatabaseControllerTest {
 	}
 
 	@Test
-	void noCascadeUp() throws SQLException {
-		assertTrue(db.nodeExists("aPARK001GG"));
-		db.deleteEdge("aPARK001GG_aWALK001GG");
-		assertTrue(db.nodeExists("aPARK001GG"));
+	void noCascadeUp() {
+		try {
+			assertTrue(db.nodeExists("aPARK001GG"));
+			db.deleteEdge("aPARK001GG_aWALK001GG");
+			assertTrue(db.nodeExists("aPARK001GG"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
+
+	//TODO: TEST EDITING PRIMARY AND FOREIGN KEYS MORE
 }

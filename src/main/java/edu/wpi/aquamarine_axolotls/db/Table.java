@@ -16,6 +16,7 @@ class Table {
 	 * Table contructor
 	 * @param connection Database connection to use.
 	 * @param tableName Name of table in database to represent.
+	 * @throws SQLException Something went wrong.
 	 */
 	Table(Connection connection, String tableName) throws SQLException {
 		this.connection = connection;
@@ -47,6 +48,7 @@ class Table {
 	/**
 	 * Add an entry to the database (assumes entry with provided primary key doesn't already exist).
 	 * @param values Values to enter into the database. Key is column name, value is value to enter.
+	 * @throws SQLException Something went wrong.
 	 */
 	void addEntry(Map<String,String> values) throws SQLException {
 		Set<String> addColumns = values.keySet(); // gets all columns
@@ -91,6 +93,7 @@ class Table {
 	 * Edit an existing entry in the database (assumines entry with provided primary key exists).
 	 * @param key Primary key representing entry to edit.
 	 * @param values Values to edit for the entry. Key is attribute to change, value is new value.
+	 * @throws SQLException Something went wrong.
 	 */
 	void editEntry(String key, Map<String,String> values) throws SQLException {
 
@@ -125,8 +128,9 @@ class Table {
 	/**
 	 * Deletes an in the database (assumes entry with provided primary key exists).
 	 * @param entryID Primary key representing entry to delete.
+	 * @throws SQLException Something went wrong.
 	 */
-	void deleteEntry(String entryID) throws SQLException{
+	void deleteEntry(String entryID) throws SQLException {
 		try (PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName + " WHERE " + primaryKey + " = ?")) {
 			smnt.setString(1, entryID);
 			smnt.executeUpdate();
@@ -154,6 +158,7 @@ class Table {
 	/**
 	 * Get the full SQL table as a ResultSet.
 	 * @return List of maps representing the full table. Null if the table is empty.
+	 * @throws SQLException Something went wrong.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName)) { // gets everything from table
@@ -167,6 +172,7 @@ class Table {
 	 * Query the SQL table for an entry with the provided primary key.
 	 * @param entryID Primary key representing entry to look for.
 	 * @return Map representing the entry to query for or null if entry not present.
+	 * @throws SQLException Something went wrong.
 	 */
 	Map<String,String> getEntry(String entryID) throws SQLException {
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + primaryKey + " = ?")) { // gets row from table
@@ -190,6 +196,7 @@ class Table {
 	 * @param columnName Name of column to filter by.
 	 * @param value Value to query for.
 	 * @return List of maps containing the results of the query.
+	 * @throws SQLException Something went wrong.
 	 */
 	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?")) { // gets row/rows that have column name with value
@@ -202,6 +209,7 @@ class Table {
 
 	/**
 	 * Empties the table by deleting all entries.
+	 * @throws SQLException Something went wrong.
 	 */
 	void emptyTable() throws SQLException {
 		try (PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName)) {
