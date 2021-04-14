@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
@@ -50,106 +49,106 @@
                     <opaqueInsets>
                         <Insets left="10.0" />
                     </opaqueInsets>
-                    <children>
-                        <VBox prefHeight="358.0" prefWidth="267.0" />
-                        <VBox prefHeight="244.0" prefWidth="299.0">
-                            <children>
-                                <VBox prefHeight="646.0" prefWidth="221.0">
-                                    <children>
-                                        <GridPane prefHeight="274.0" prefWidth="221.0">
-                                            <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                            <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" wrappingWidth="229.21630859375">
-                                                    <font>
-                                                        <Font name="Times Roman" size="30.0" />
-                                                    </font>
-                                                </Text>
-                                                <Line endX="128.2928924560547" endY="-0.7071067690849304" startX="-100.0" stroke="#003da6" strokeWidth="2.0">
-                                                    <GridPane.margin>
-                                                        <Insets top="40.0" />
-                                                    </GridPane.margin>
-                                                </Line>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in using your account credentials" wrappingWidth="239.44921875">
-                                                    <font>
-                                                        <Font name="Times New Roman" size="13.0" />
-                                                    </font>
-                                                    <GridPane.margin>
-                                                        <Insets top="70.0" />
-                                                    </GridPane.margin>
-                                                </Text>
-                                                <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0" />
-                                                <VBox prefHeight="73.0" prefWidth="221.0" GridPane.rowIndex="2">
-                                                    <children>
-                                                        <JFXTextField fx:id="username" prefHeight="25.0" prefWidth="197.0" promptText="Username">
-                                                            <font>
-                                                                <Font name="Times New Roman" size="13.0" />
-                                                            </font>
-                                                            <VBox.margin>
-                                                                <Insets left="10.0" right="10.0" top="20.0" />
-                                                            </VBox.margin>
-                                                        </JFXTextField>
-                                                        <JFXPasswordField fx:id="password" promptText="Password">
-                                                            <VBox.margin>
-                                                                <Insets left="10.0" right="10.0" top="20.0" />
-                                                            </VBox.margin>
-                                                            <font>
-                                                                <Font name="Times Roman" size="13.0" />
-                                                            </font>
-                                                        </JFXPasswordField>
-                                                        <JFXComboBox fx:id="emp_or_pat" prefHeight="27.0" prefWidth="222.0" promptText="Type">
-                                                            <VBox.margin>
-                                                                <Insets left="15.0" right="15.0" top="10.0" />
-                                                            </VBox.margin>
-                                                        </JFXComboBox>
-                                                        <JFXButton fx:id="submit" minHeight="30.0" onAction="#submit_button" prefHeight="14.0" prefWidth="181.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
-                                                            <font>
-                                                                <Font name="Times New Roman" size="18.0" />
-                                                            </font>
-                                                            <VBox.margin>
-                                                                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
-                                                            </VBox.margin>
-                                                        </JFXButton>
-                                                        <JFXButton fx:id="submit1" minHeight="25.0" onAction="#cancel" prefHeight="20.0" prefWidth="181.0" style="-fx-background-radius: 7; -fx-background-color: #90a9cc;" text="Cancel" textFill="WHITE">
-                                                            <font>
-                                                                <Font name="Times New Roman" size="15.0" />
-                                                            </font>
-                                                            <VBox.margin>
-                                                                <Insets left="20.0" right="20.0" />
-                                                            </VBox.margin>
-                                                        </JFXButton>
-                                                        <Hyperlink alignment="CENTER" prefHeight="23.0" prefWidth="221.0" style="-fx-underline: true;" text="Forgot Password?">
-                                                            <font>
-                                                                <Font name="Times New Roman" size="12.0" />
-                                                            </font>
-                                                            <VBox.margin>
-                                                                <Insets top="5.0" />
-                                                            </VBox.margin>
-                                                        </Hyperlink>
-                                                        <Hyperlink alignment="CENTER" prefHeight="25.0" prefWidth="225.0" style="-fx-underline: true;" text="Create an Account" textAlignment="CENTER">
-                                                            <font>
-                                                                <Font name="Times Roman" size="12.0" />
-                                                            </font>
-                                                        </Hyperlink>
-                                                    </children>
-                                                </VBox>
-                                            </children>
-                                        </GridPane>
-                                    </children>
-                                </VBox>
-                                <HBox prefHeight="145.0" prefWidth="233.0" />
-                                <HBox prefHeight="300.0" prefWidth="300.0" />
-                                <HBox prefHeight="100.0" prefWidth="200.0" />
-                            </children>
+               <children>
+                  <VBox prefHeight="358.0" prefWidth="267.0" />
+                  <VBox prefHeight="244.0" prefWidth="299.0">
+                     <children>
+                        <VBox prefHeight="646.0" prefWidth="221.0">
+                           <children>
+                              <GridPane prefHeight="274.0" prefWidth="221.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" wrappingWidth="229.21630859375">
+                                       <font>
+                                          <Font name="Times Roman" size="30.0" />
+                                       </font>
+                                    </Text>
+                                    <Line endX="128.2928924560547" endY="-0.7071067690849304" startX="-100.0" stroke="#003da6" strokeWidth="2.0">
+                                       <GridPane.margin>
+                                          <Insets top="40.0" />
+                                       </GridPane.margin>
+                                    </Line>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in using your account credentials" wrappingWidth="239.44921875">
+                                       <font>
+                                          <Font name="Times New Roman" size="13.0" />
+                                       </font>
+                                       <GridPane.margin>
+                                          <Insets top="70.0" />
+                                       </GridPane.margin>
+                                    </Text>
+                                    <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0" />
+                                    <VBox prefHeight="73.0" prefWidth="221.0" GridPane.rowIndex="2">
+                                       <children>
+                                          <JFXTextField fx:id="username" prefHeight="25.0" prefWidth="197.0" promptText="Username">
+                                             <font>
+                                                <Font name="Times New Roman" size="13.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" top="20.0" />
+                                             </VBox.margin>
+                                          </JFXTextField>
+                                          <JFXPasswordField fx:id="password" promptText="Password">
+                                             <VBox.margin>
+                                                <Insets left="10.0" right="10.0" top="20.0" />
+                                             </VBox.margin>
+                                             <font>
+                                                <Font name="Times Roman" size="13.0" />
+                                             </font>
+                                          </JFXPasswordField>
+                                          <JFXComboBox fx:id="emp_or_pat" prefHeight="27.0" prefWidth="222.0" promptText="Type">
+                                             <VBox.margin>
+                                                <Insets left="15.0" right="15.0" top="10.0" />
+                                             </VBox.margin>
+                                          </JFXComboBox>
+                                          <JFXButton fx:id="submit" minHeight="30.0" onAction="#submit_button" prefHeight="14.0" prefWidth="181.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman" size="18.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="10.0" left="20.0" right="20.0" top="20.0" />
+                                             </VBox.margin>
+                                          </JFXButton>
+                                          <JFXButton fx:id="submit1" minHeight="25.0" onAction="#cancel" prefHeight="20.0" prefWidth="181.0" style="-fx-background-radius: 7; -fx-background-color: #90a9cc;" text="Cancel" textFill="WHITE">
+                                             <font>
+                                                <Font name="Times New Roman" size="15.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets left="20.0" right="20.0" />
+                                             </VBox.margin>
+                                          </JFXButton>
+                                          <Hyperlink alignment="CENTER" prefHeight="23.0" prefWidth="221.0" style="-fx-underline: true;" text="Forgot Password?">
+                                             <font>
+                                                <Font name="Times New Roman" size="12.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
+                                          </Hyperlink>
+                                          <Hyperlink alignment="CENTER" prefHeight="25.0" prefWidth="225.0" style="-fx-underline: true;" text="Create an Account" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="Times Roman" size="12.0" />
+                                             </font>
+                                          </Hyperlink>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </GridPane>
+                           </children>
                         </VBox>
-                        <VBox prefHeight="358.0" prefWidth="267.0" />
-                    </children>
+                        <HBox prefHeight="145.0" prefWidth="233.0" />
+                        <HBox prefHeight="300.0" prefWidth="300.0" />
+                        <HBox prefHeight="100.0" prefWidth="200.0" />
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="358.0" prefWidth="267.0" />
+               </children>
                 </HBox>
             </children>
         </VBox>
