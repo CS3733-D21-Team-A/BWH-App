@@ -27,23 +27,50 @@ public class DatabaseInfo {
 	/**
 	 * Path to default node CSV resource.
 	 */
-	public static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv";
+	static final String nodeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Nodes.csv";
 
 	/**
 	 * Path to default edge CSV resource.
 	 */
-	public static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Edges.csv";
+	static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/L1Edges.csv";
 
 	/**
 	 * Map associating TABLES enum to usable table names.
 	 */
 	public static final Map<TABLES,String> TABLE_NAMES;
 	static {
-		Map<TABLES,String> aMap = new EnumMap<TABLES,String>(TABLES.class);
+		Map<TABLES,String> aMap = new EnumMap<>(TABLES.class);
 		aMap.put(TABLES.NODES, "NODES");
 		aMap.put(TABLES.EDGES, "EDGES");
 		TABLE_NAMES = Collections.unmodifiableMap(aMap);
 	}
+
+	/**
+	 * SQL for building the NODES table.
+	 */
+	static final String NODE_TABLE_SQL =
+		"CREATE TABLE NODES (" +
+			"NODEID VARCHAR(25) PRIMARY KEY," +
+			"XCOORD NUMERIC(5)," +
+			"YCOORD NUMERIC(5)," +
+			"FLOOR VARCHAR(3)," +
+			"BUILDING VARCHAR(30)," +
+			"NODETYPE VARCHAR(5)," +
+			"LONGNAME VARCHAR(50)," +
+			"SHORTNAME VARCHAR(30)" +
+		")";
+
+	/**
+	 * SQL for building the EDGES table.
+	 */
+	static final String EDGE_TABLE_SQL =
+	   "CREATE TABLE EDGES (" +
+		   "EDGEID VARCHAR(51) PRIMARY KEY," +
+			"STARTNODE VARCHAR(25)," +
+			"ENDNODE VARCHAR(25)," +
+			"CONSTRAINT FK_STARTNODE FOREIGN KEY (STARTNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+			"CONSTRAINT FK_ENDNODE FOREIGN KEY (ENDNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+		")";
 
 	/**
 	 * Convert resource path string to File.

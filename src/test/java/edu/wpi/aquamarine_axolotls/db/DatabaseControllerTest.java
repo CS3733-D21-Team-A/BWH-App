@@ -1,7 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,19 +11,26 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private final DatabaseController db = new DatabaseController();
-	private final CSVHandler csvHandler = new CSVHandler(db);
+	private DatabaseController db;
 	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
 	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
 
-	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+	DatabaseControllerTest() throws URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException {
+	void resetDB() throws IOException, SQLException, URISyntaxException {
+		db = new DatabaseController();
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
+
+		CSVHandler csvHandler = new CSVHandler(db);
 		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
 		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+	}
+	
+	@AfterEach
+	void closeDB() throws SQLException {
+		db.close();
 	}
 
 	@Test
@@ -243,9 +249,9 @@ class DatabaseControllerTest {
 
 	@Test
 	void cascadeDownTest() throws SQLException {
-		assertTrue(db.edgeExists("CCONF002L1_WELEV00HL1"));
-		db.deleteNode("CCONF002L1");
-		assertFalse(db.edgeExists("CCONF002L1_WELEV00HL1"));
+		assertTrue(db.edgeExists("CCONF003L1_CHALL002L1"));
+		db.deleteNode("CCONF003L1");
+		assertFalse(db.edgeExists("CCONF003L1_CHALL002L1"));
 	}
 
 	@Test
