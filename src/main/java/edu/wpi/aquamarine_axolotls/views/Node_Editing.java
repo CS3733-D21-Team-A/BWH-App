@@ -287,16 +287,15 @@ public class Node_Editing {
 
     @FXML
     public void submitfunction() throws SQLException {
-        String current_nodeID = nodeDropdown.getSelectionModel().getSelectedItem().toString();
         switch (state){
             case "delete":
-                delete(current_nodeID);
+                delete(nodeDropdown.getSelectionModel().getSelectedItem().toString());
                 break;
             case "add":
                 add(nodeID.getText());
                 break;
             case "edit":
-                edit(current_nodeID);
+                edit(nodeDropdown.getSelectionModel().getSelectedItem().toString());
                 break;
             case "":
                 submissionlabel.setText("Invalid submission");
