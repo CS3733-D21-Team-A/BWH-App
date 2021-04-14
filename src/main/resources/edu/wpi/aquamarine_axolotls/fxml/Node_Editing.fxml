@@ -53,7 +53,7 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                             <children>
-                                <JFXButton fx:id="homeButtons" mnemonicParsing="false" onAction="#return_home" style="-fx-background-color: #ffffff00;" text=" ">
+                                <JFXButton fx:id="homeButtons" mnemonicParsing="false" onAction="#return_admin_home" style="-fx-background-color: #ffffff00;" text=" ">
                                     <graphic>
                                         <ImageView onDragDetected="#return_home">
                                             <image>

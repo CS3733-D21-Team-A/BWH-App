@@ -13,6 +13,6 @@
             <Font size="27.0" />
          </font>
       </Label>
-      <Button layoutX="274.0" layoutY="242.0" mnemonicParsing="false" onAction="#return_home" text="return" />
+      <Button layoutX="274.0" layoutY="242.0" mnemonicParsing="false" onAction="#return_servicePg" text="return" />
    </children>
 </AnchorPane>

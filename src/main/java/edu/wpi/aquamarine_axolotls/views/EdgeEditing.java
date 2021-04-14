@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EdgeEditing {
+public class EdgeEditing extends Default_Page{
     @FXML private JFXButton homeButton;
     @FXML private JFXButton helpButton;
     @FXML public JFXButton deleteButton;
