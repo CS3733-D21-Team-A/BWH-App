@@ -20,9 +20,9 @@ public class Admin_Main_Page {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
+        } catch (IOException ex)  {
             ex.printStackTrace();
         }
 
-    }
+     }
 }

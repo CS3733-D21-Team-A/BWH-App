@@ -57,6 +57,16 @@ public class Start_Page {
         }
 
     }
+    @FXML
+    public void navigation_Page(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Navigation.fxml"));
+            Aapp.getPrimaryStage().getScene().setRoot(root);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+    }
 
 
     public void stop(javafx.event.ActionEvent event){
