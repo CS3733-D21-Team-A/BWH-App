@@ -55,8 +55,20 @@ public class CSVHandler {
 	 * @throws SQLException Something went wrong.
 	 */
 	public void importCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
-		try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-			switch (table) { //Clear the database on import
+		importCSV(new FileInputStream(file), table);
+	}
+
+	/**
+	 * Import a CSV into the database (assumes no conflicts will occur).
+	 * Note: This will also close the provided InputStream.
+	 * @param inputStream InputStream to import with.
+	 * @param table identifer for table import CSV into.
+	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
+	 * @throws SQLException Something went wrong.
+	 */
+	void importCSV(InputStream inputStream, DatabaseInfo.TABLES table) throws IOException, SQLException {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
+			switch (table) {
 				case NODES:
 					insertValues(br, databaseController::addNode);
 					break;

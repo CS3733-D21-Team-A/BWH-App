@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.EnumMap;
@@ -78,7 +79,7 @@ public class DatabaseInfo {
 	 * @return File for corresponding resource.
 	 * @throws URISyntaxException Something went wrong.
 	 */
-	static File resourcePathToFile(String resourcePath) throws URISyntaxException {
-		return new File(DatabaseInfo.class.getClassLoader().getResource(resourcePath).toURI());
+	static InputStream resourceAsStream(String resourcePath) throws URISyntaxException {
+		return DatabaseInfo.class.getClassLoader().getResourceAsStream(resourcePath);
 	}
 }

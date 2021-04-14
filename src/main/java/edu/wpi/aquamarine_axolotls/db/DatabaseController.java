@@ -1,11 +1,10 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import org.apache.derby.jdbc.EmbeddedDriver;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +23,8 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws URISyntaxException Something went wrong.
 	 */
 	public DatabaseController() throws SQLException, IOException, URISyntaxException {
+		DriverManager.registerDriver(new EmbeddedDriver());
+
 		boolean dbExists;
 		try (Connection cTest = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin")) { //TODO: login credentials
 			dbExists = true;
@@ -268,7 +269,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	private void populateDB() throws URISyntaxException, IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
-		csvHandler.importCSV(DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
 	}
 }

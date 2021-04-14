@@ -3,8 +3,8 @@ package edu.wpi.aquamarine_axolotls.db;
 import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.junit.jupiter.api.*;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
@@ -12,21 +12,18 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private DatabaseController db;
-	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
-	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
+	private final DatabaseController db = new DatabaseController();
 
-	DatabaseControllerTest() throws URISyntaxException {}
+	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException, URISyntaxException {
-		db = new DatabaseController();
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
 		CSVHandler csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
 	}
 
 	@AfterEach

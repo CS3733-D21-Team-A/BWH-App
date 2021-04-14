@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
@@ -13,19 +14,25 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CSVHandlerTest {
 	private final DatabaseController db = new DatabaseController();
 	private CSVHandler csvHandler;
-	private final File nodeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.nodeResourcePath);
-	private final File edgeFile = DatabaseInfo.resourcePathToFile(DatabaseInfo.edgeResourcePath);
+	private InputStream nodeStream;
+	private InputStream edgeStream;
 
 	public CSVHandlerTest() throws URISyntaxException, SQLException, IOException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException {
+	void resetDB() throws IOException, SQLException, URISyntaxException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
+
 		csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
+
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
 	}
 
 	@AfterAll
@@ -40,7 +47,7 @@ public class CSVHandlerTest {
 		assertNotNull(db.getEdges());
 		db.emptyEdgeTable();
 		assertNull(db.getEdges());
-		csvHandler.importCSV(edgeFile, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
 		assertNotNull(db.getEdges());
 	}
 
@@ -49,7 +56,7 @@ public class CSVHandlerTest {
 		assertNotNull(db.getNodes());
 		db.emptyNodeTable();
 		assertNull(db.getNodes());
-		csvHandler.importCSV(nodeFile, DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
 		assertNotNull(db.getNodes());
 	}
 
