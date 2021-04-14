@@ -62,7 +62,6 @@ public class Node_Editing {
     @FXML
     public void initialize() {
         ObservableList<String> options = FXCollections.observableArrayList();
-        submissionlabel.setText("");
         submissionlabel.setVisible(true);
 
         table.setEditable(false);

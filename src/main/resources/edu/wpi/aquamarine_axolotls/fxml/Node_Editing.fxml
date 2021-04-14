@@ -191,7 +191,7 @@
                         </ScrollPane>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="6">
                            <children>
-                              <Label fx:id="submissionlabel" prefHeight="19.0" prefWidth="122.0" text="Submit label" textAlignment="CENTER" textOverrun="CLIP">
+                              <Label fx:id="submissionlabel" prefHeight="19.0" prefWidth="122.0" textAlignment="CENTER" textOverrun="CLIP">
                                  <font>
                                     <Font name="Times New Roman" size="8.0" />
                                  </font>
