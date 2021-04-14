@@ -126,7 +126,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getNodes() throws SQLException {
-		return nodeTable.getEntries();
+		return nodeTable.getNodes();
 	}
 
 	/**
@@ -173,6 +173,8 @@ public class DatabaseController implements AutoCloseable {
 	 * @param values Map whose keys are the column names and values are the entry values.
 	 * @throws SQLException Something went wrong (likely edge already exists or malformed input).
 	 */
+
+	// DONE
 	public void addEdge(Map<String,String> values) throws SQLException {
 		edgeTable.addEntry(values);
 	}
@@ -202,7 +204,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getEdges() throws SQLException  {
-		return edgeTable.getEntries();
+		return edgeTable.getEdges();
 	}
 
 	/**
