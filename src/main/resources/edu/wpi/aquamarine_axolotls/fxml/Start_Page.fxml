@@ -136,7 +136,7 @@
                               </VBox>
                         <ImageView fitHeight="361.0" fitWidth="455.0" GridPane.columnIndex="1">
                            <image>
-                              <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/Brigham-Womens-TO-USE.jpeg" />
+                              <Image url="@./img/Brigham-Womens-TO-USE.jpeg" />
                            </image>
                         </ImageView>
                         <StackPane fx:id="stackPane" prefHeight="361.0" prefWidth="475.0" GridPane.columnIndex="1" />

@@ -19,7 +19,7 @@
                     <children>
                         <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/logo.png" />
+                                <Image url="@../img/logo.png" />
                             </image>
                         </ImageView>
                         <Label fx:id="text" prefHeight="54.0" prefWidth="543.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
@@ -119,7 +119,7 @@
                         </VBox>
                         <ImageView fitHeight="360.0" fitWidth="471.0">
                             <image>
-                                <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/Brigham-Womens-TO-USE.jpeg" />
+                                <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
                             </image>
                         </ImageView>
                     </children>

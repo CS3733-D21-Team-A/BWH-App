@@ -24,7 +24,7 @@
                <children>
                   <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/logo.png" />
+                        <Image url="@../img/logo.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="text" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
@@ -47,7 +47,7 @@
                      <graphic>
                         <ImageView fitHeight="20.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" scaleY="0.7">
                            <image>
-                              <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
+                              <Image url="@../img/back icon.jpg" />
                            </image>
                         </ImageView>
                      </graphic>
