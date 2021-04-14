@@ -29,8 +29,8 @@ public class CSVHandlerTest {
 	}
 
 	@AfterAll
-	void cleanup() throws SQLException {
-		db.close();
+	void cleanup() {
+		db.shutdown();
 	}
 
 

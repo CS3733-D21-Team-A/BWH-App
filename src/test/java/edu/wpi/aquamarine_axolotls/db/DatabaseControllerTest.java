@@ -29,8 +29,8 @@ class DatabaseControllerTest {
 	}
 	
 	@AfterEach
-	void closeDB() throws SQLException {
-		db.close();
+	void closeDB() {
+		db.shutdown();
 	}
 
 	@Test

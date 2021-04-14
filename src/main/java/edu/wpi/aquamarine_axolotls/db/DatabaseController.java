@@ -51,11 +51,6 @@ public class DatabaseController implements AutoCloseable {
 		if (!connection.isClosed()) {
 			connection.close();
 			System.out.println("Connection closed successfully!");
-			try (Connection shutdown = DriverManager.getConnection("jdbc:derby:BWH;shutdown=true", "admin", "admin")) {
-				System.out.println("Database shutdown failed.");
-			} catch (SQLException e) {
-				System.out.println("Database shutdown successful!");
-			}
 		} else {
 			System.out.println("Connection already closed.");
 		}
@@ -64,6 +59,18 @@ public class DatabaseController implements AutoCloseable {
 	@Override
 	protected void finalize() throws SQLException {
 		this.close();
+	}
+
+	/**
+	 * Shuts down the database connection.
+	 * Note: This will shut down the connection for all currently running DatabaseControllers!
+	 */
+	public void shutdown() {
+		try (Connection shutdown = DriverManager.getConnection("jdbc:derby:BWH;shutdown=true", "admin", "admin")) {
+			System.out.println("Database shutdown failed?");
+		} catch (SQLException e) {
+			System.out.println("Database shutdown successful!");
+		}
 	}
 
 	// ===== NODES =====

@@ -18,11 +18,25 @@ class DatabaseControllerTest2 {
 		}
 		try (DatabaseController db = new DatabaseController()) {
 			assertTrue(dir.exists());
+			db.shutdown();
 		} catch (SQLException | IOException | URISyntaxException e) {
 			e.printStackTrace();
 			fail();
 		}
 
 		assertTrue(FileUtil.removeDirectory(dir));
+	}
+
+	@Test
+	void multipleDatabases() {
+		try (DatabaseController db1 = new DatabaseController()) {
+			try (DatabaseController db2 = new DatabaseController()) {
+				assertTrue(db2.getNodes().size() > 0);
+			}
+			assertTrue(db1.getNodes().size() > 0);
+		} catch (SQLException | IOException | URISyntaxException e) {
+			e.printStackTrace();
+			fail();
+		}
 	}
 }
