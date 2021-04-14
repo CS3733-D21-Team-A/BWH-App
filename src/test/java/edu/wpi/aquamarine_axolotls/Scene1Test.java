@@ -22,10 +22,5 @@ public class Scene1Test extends ApplicationTest {
     primaryStage.show();
   }
 
-  @Test
-  public void testButton() {
-    verifyThat("Scene 1", Node::isVisible);
-    clickOn("Advance Scene");
-    verifyThat("Scene 2", Node::isVisible);
-  }
+
 }
