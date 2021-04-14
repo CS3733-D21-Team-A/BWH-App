@@ -223,10 +223,26 @@ public class AStarTest {
         //Node goal = Node.getNode("C",nodes);
         System.out.println("Running database integration test 1");
 
-        List<Node> testPath = aStarDB.getPath("CCONF002L1", "WELEV00HL1");
+        List<Node> testPath = aStarDB.getPath("aPARK009GG", "aWALK011GG");
         List<Node> expectedPath = new ArrayList<>();
-        expectedPath.add(aStarDB.getNode("CCONF002L1"));
-        expectedPath.add(aStarDB.getNode("WELEV00HL1"));
+        expectedPath.add(aStarDB.getNode("aPARK009GG"));
+        expectedPath.add(aStarDB.getNode("aWALK011GG"));
+
+        System.out.println(expectedPath);
+        System.out.println(testPath);
+
+        Assertions.assertEquals(expectedPath,testPath);
+    }
+
+    @Test
+    public void oneNodeTestDB() {
+        //Node start = Node.getNode("A",nodes);
+        //Node goal = Node.getNode("C",nodes);
+        System.out.println("Running database integration test 1");
+
+        List<Node> testPath = aStarDB.getPath("aPARK004GG", "aPARK004GG");
+        List<Node> expectedPath = new ArrayList<>();
+        expectedPath.add(aStarDB.getNode("aPARK004GG"));
 
         System.out.println(expectedPath);
         System.out.println(testPath);
@@ -240,14 +256,13 @@ public class AStarTest {
         //Node goal = Node.getNode("C",nodes);
         System.out.println("Running database integration test 1");
 
-        List<Node> testPath = aStarDB.getPath("GEXIT001L1", "GELEV00QL1");
+        List<Node> testPath = aStarDB.getPath("aPARK025GG", "aWALK003GG");
         List<Node> expectedPath = new ArrayList<>();
-        expectedPath.add(aStarDB.getNode("GEXIT001L1"));
-        expectedPath.add(aStarDB.getNode("GHALL002L1"));
-        expectedPath.add(aStarDB.getNode("GHALL003L1"));
-        expectedPath.add(aStarDB.getNode("GHALL005L1"));
-        expectedPath.add(aStarDB.getNode("GHALL006L1"));
-        expectedPath.add(aStarDB.getNode("GELEV00QL1"));
+        expectedPath.add(aStarDB.getNode("aPARK025GG"));
+        expectedPath.add(aStarDB.getNode("aWALK010GG"));
+        expectedPath.add(aStarDB.getNode("aWALK007GG"));
+        expectedPath.add(aStarDB.getNode("aWALK005GG"));
+        expectedPath.add(aStarDB.getNode("aWALK003GG"));
 
         System.out.println(expectedPath);
         System.out.println(testPath);
@@ -261,14 +276,13 @@ public class AStarTest {
         //Node goal = Node.getNode("C",nodes);
         System.out.println("Running database integration test 1");
 
-        List<Node> testPath = aStarDB.getPath("Fenwood Road Exit MapNode 1 Floor L1", "Elevator Q MapNode 7 Floor L1");
+        List<Node> testPath = aStarDB.getPath("Parking Spot 10 80 Francis Parking", "Walkway from Right parking 2");
         List<Node> expectedPath = new ArrayList<>();
-        expectedPath.add(aStarDB.getNode("GEXIT001L1"));
-        expectedPath.add(aStarDB.getNode("GHALL002L1"));
-        expectedPath.add(aStarDB.getNode("GHALL003L1"));
-        expectedPath.add(aStarDB.getNode("GHALL005L1"));
-        expectedPath.add(aStarDB.getNode("GHALL006L1"));
-        expectedPath.add(aStarDB.getNode("GELEV00QL1"));
+        expectedPath.add(aStarDB.getNode("aPARK025GG"));
+        expectedPath.add(aStarDB.getNode("aWALK010GG"));
+        expectedPath.add(aStarDB.getNode("aWALK007GG"));
+        expectedPath.add(aStarDB.getNode("aWALK005GG"));
+        expectedPath.add(aStarDB.getNode("aWALK003GG"));
 
         System.out.println(expectedPath);
         System.out.println(testPath);
@@ -282,14 +296,13 @@ public class AStarTest {
         //Node goal = Node.getNode("C",nodes);
         System.out.println("Running database integration test 1");
 
-        List<Node> testPath = aStarDB.getPath("Fenwood Road Exit MapNode 1 Floor L1", "GELEV00QL1");
+        List<Node> testPath = aStarDB.getPath("Parking Spot 10 80 Francis Parking", "aWALK003GG");
         List<Node> expectedPath = new ArrayList<>();
-        expectedPath.add(aStarDB.getNode("GEXIT001L1"));
-        expectedPath.add(aStarDB.getNode("GHALL002L1"));
-        expectedPath.add(aStarDB.getNode("GHALL003L1"));
-        expectedPath.add(aStarDB.getNode("GHALL005L1"));
-        expectedPath.add(aStarDB.getNode("GHALL006L1"));
-        expectedPath.add(aStarDB.getNode("GELEV00QL1"));
+        expectedPath.add(aStarDB.getNode("aPARK025GG"));
+        expectedPath.add(aStarDB.getNode("aWALK010GG"));
+        expectedPath.add(aStarDB.getNode("aWALK007GG"));
+        expectedPath.add(aStarDB.getNode("aWALK005GG"));
+        expectedPath.add(aStarDB.getNode("aWALK003GG"));
 
         System.out.println(expectedPath);
         System.out.println(testPath);
@@ -303,14 +316,13 @@ public class AStarTest {
         //Node goal = Node.getNode("C",nodes);
         System.out.println("Running database integration test 1");
 
-        List<Node> testPath = aStarDB.getPath("GEXIT001L1", "Elevator Q MapNode 7 Floor L1");
+        List<Node> testPath = aStarDB.getPath("aPARK025GG", "Walkway from Right parking 2");
         List<Node> expectedPath = new ArrayList<>();
-        expectedPath.add(aStarDB.getNode("GEXIT001L1"));
-        expectedPath.add(aStarDB.getNode("GHALL002L1"));
-        expectedPath.add(aStarDB.getNode("GHALL003L1"));
-        expectedPath.add(aStarDB.getNode("GHALL005L1"));
-        expectedPath.add(aStarDB.getNode("GHALL006L1"));
-        expectedPath.add(aStarDB.getNode("GELEV00QL1"));
+        expectedPath.add(aStarDB.getNode("aPARK025GG"));
+        expectedPath.add(aStarDB.getNode("aWALK010GG"));
+        expectedPath.add(aStarDB.getNode("aWALK007GG"));
+        expectedPath.add(aStarDB.getNode("aWALK005GG"));
+        expectedPath.add(aStarDB.getNode("aWALK003GG"));
 
         System.out.println(expectedPath);
         System.out.println(testPath);
