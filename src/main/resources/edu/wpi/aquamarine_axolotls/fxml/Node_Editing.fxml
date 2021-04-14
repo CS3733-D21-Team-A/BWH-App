@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Node_Editing">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Node_Editing">
     <children>
         <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -53,9 +53,9 @@
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                             <children>
-                                <JFXButton mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
+                                <JFXButton fx:id="homeButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
                                     <graphic>
-                                        <ImageView fx:id="homeButton">
+                                        <ImageView>
                                             <image>
                                                 <Image url="@../img/homeBlue.png" />
                                             </image>
@@ -65,9 +65,9 @@
                                         <Insets right="5.0" />
                                     </HBox.margin>
                                 </JFXButton>
-                                <JFXButton mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
+                                <JFXButton fx:id="helpButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
                                     <graphic>
-                                        <ImageView fx:id="helpButton">
+                                        <ImageView>
                                             <image>
                                                 <Image url="@../img/helpBlue.png" />
                                             </image>
@@ -102,7 +102,6 @@
                         <RowConstraints maxHeight="104.66666412353516" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="129.3333282470703" minHeight="10.0" prefHeight="20.666671752929688" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="97.33332824707031" minHeight="10.0" prefHeight="95.33332824707031" vgrow="SOMETIMES" />
-                      <RowConstraints maxHeight="35.0" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="47.666656494140625" minHeight="10.0" prefHeight="47.666656494140625" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
@@ -111,7 +110,7 @@
                               <Insets top="5.0" />
                            </GridPane.margin>
                         </JFXButton>
-                        <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="25.0" minHeight="20.0" onAction="#PressdeleteButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Delete" textAlignment="CENTER" textFill="WHITE">
+                        <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="25.0" minHeight="20.0" onAction="#pressDeleteButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Delete" textAlignment="CENTER" textFill="WHITE">
                            <GridPane.margin>
                               <Insets top="5.0" />
                            </GridPane.margin>
@@ -143,7 +142,7 @@
                         </HBox>
                                 <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="13.0" prefHeight="13.0" prefWidth="132.0" promptText="Node Dropdown" style="-fx-font-size: 8;" GridPane.rowIndex="4" />
                         <JFXTextField fx:id="nodeID" maxHeight="15.0" minHeight="15.0" promptText="Node ID" style="-fx-font-size: 9;" GridPane.rowIndex="4" />
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
+                        <ScrollPane fx:id="otherFields" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="5">
                           <content>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="113.0">
                                  <children>
@@ -190,20 +189,26 @@
                               </AnchorPane>
                           </content>
                         </ScrollPane>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="7">
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="6">
                            <children>
-                                      <JFXButton fx:id="findPathButton2" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="3.0" prefWidth="102.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                              <Label fx:id="submissionlabel" prefHeight="19.0" prefWidth="122.0" text="Submit label" textAlignment="CENTER" textOverrun="CLIP">
+                                 <font>
+                                    <Font name="Times New Roman" size="8.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                                      <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="3.0" prefWidth="102.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
                                           <font>
                                               <Font size="10.0" />
                                           </font>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
                                       </JFXButton>
                            </children>
                         </VBox>
-                        <Label fx:id="submissionlabel" prefHeight="19.0" prefWidth="122.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.rowIndex="6">
-                           <font>
-                              <Font name="Times New Roman" size="8.0" />
-                           </font>
-                        </Label>
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" />
@@ -211,16 +216,16 @@
                   </GridPane>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
                      <children>
-                        <TableView prefHeight="311.0" prefWidth="441.0">
+                        <TableView fx:id="table" prefHeight="311.0" prefWidth="441.0">
                           <columns>
-                            <TableColumn prefWidth="59.0" text="Node ID" />
-                              <TableColumn prefWidth="91.0" text="Long Name" />
-                              <TableColumn prefWidth="75.0" text="Short Name" />
-                            <TableColumn prefWidth="53.666656494140625" text="X Coord" />
-                              <TableColumn prefWidth="54.33331298828125" text="Y Coord" />
-                              <TableColumn prefWidth="66.0" text="Floor" />
-                              <TableColumn prefWidth="81.66668701171875" text="Building" />
-                              <TableColumn prefWidth="120.33331298828125" text="Node Type" />
+                            <TableColumn fx:id="nodeIDCol" prefWidth="59.0" text="Node ID" />
+                              <TableColumn fx:id="lNameCol" prefWidth="91.0" text="Long Name" />
+                              <TableColumn fx:id="sNameCol" prefWidth="75.0" text="Short Name" />
+                            <TableColumn prefWidth="53.666656494140625" text="X Coord" fx:id="xCol" />
+                              <TableColumn fx:id="yCol" prefWidth="54.33331298828125" text="Y Coord" />
+                              <TableColumn fx:id="floorCol" prefWidth="66.0" text="Floor" />
+                              <TableColumn fx:id="buildingCol" prefWidth="81.66668701171875" text="Building" />
+                              <TableColumn fx:id="typeCol" prefWidth="120.33331298828125" text="Node Type" />
                           </columns>
                         </TableView>
                      </children>

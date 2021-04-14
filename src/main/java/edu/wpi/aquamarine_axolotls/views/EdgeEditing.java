@@ -9,14 +9,11 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -46,7 +43,7 @@ public class EdgeEditing {
     @FXML private TableColumn<Edge,String> startNodeCol;
     @FXML private TableColumn<Edge,String> endNodeCol;
 
-    int label = 3; // 0 means delete, 1 means add, 2 means edit, 3 means invalid
+    String state = "";
 
     DatabaseController db;
     CSVHandler csvHandler;
@@ -54,6 +51,7 @@ public class EdgeEditing {
     @FXML
     public void initialize() {
         table.setEditable(false);
+        table.getItems().clear();
 
         ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
@@ -109,7 +107,7 @@ public class EdgeEditing {
         addButton.setStyle("-fx-background-color: #003da6; ");
         editButton.setStyle("-fx-background-color: #003da6; ");
 
-        label = 0;
+        state = "delete";
     }
 
     public void pressAddButton() {
@@ -122,7 +120,7 @@ public class EdgeEditing {
         addButton.setStyle("-fx-background-color: #91b7fa; ");
         editButton.setStyle("-fx-background-color: #003da6; ");
 
-        label = 1;
+        state = "add";
     }
 
     public void pressEditButton() {
@@ -135,12 +133,38 @@ public class EdgeEditing {
         addButton.setStyle("-fx-background-color: #003da6; ");
         editButton.setStyle("-fx-background-color: #91b7fa; ");
 
-        table.setEditable(true);
-        edgeIdCol.setCellFactory(TextFieldTableCell.<Edge>forTableColumn());
-        startNodeCol.setCellFactory(TextFieldTableCell.<Edge>forTableColumn());
-        endNodeCol.setCellFactory(TextFieldTableCell.<Edge>forTableColumn());
+        state = "edit";
+    }
 
-        label = 2;
+    public void loadCSV() { //still in the works
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
+        try{
+            db.emptyEdgeTable();
+            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
+    }
+
+    public void exportCSV() { //still in the works
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showSaveDialog(exportButton.getScene().getWindow());
+        try{
+            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.EDGES);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
     }
 
     public void delete(){
@@ -219,52 +243,20 @@ public class EdgeEditing {
     }
 
     public void submitfunction() {
-        switch(label){
-            case 0:
+        switch(state){
+            case "delete":
                 delete();
                 break;
-            case 1:
+            case "add":
                 add();
-                edgeIDtextbox.clear();
                 break;
-            case 2:
+            case "edit":
                 edit();
-                edgeIDtextbox.clear();
                 break;
-            case 3:
+            case "":
+                edgeIDtextbox.clear();
                 submissionlabel.setText("Invalid submission");
         }
         initialize();
-    }
-
-    public void loadCSV() { //still in the works
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-        );
-        File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
-        try{
-            db.emptyEdgeTable();
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES);
-        }catch(IOException ie){
-            ie.printStackTrace();
-        }catch(SQLException sq){
-            sq.printStackTrace();
-        }
-    }
-
-    public void exportCSV() { //still in the works
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-        );
-        File csv = fileChooser.showSaveDialog(exportButton.getScene().getWindow());
-        try{
-            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.EDGES);
-        }catch(IOException ie){
-            ie.printStackTrace();
-        }catch(SQLException sq){
-            sq.printStackTrace();
-        }
     }
 }
