@@ -84,9 +84,7 @@ public class EdgeEditing extends Default_Page{
                 table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
             }
             for (Map<String, String> node : nodes) {
-                if (node.get("NODETYPE").equals("EXIT") || node.get("NODETYPE").equals("PARK")) {
-                    nodeOptions.add(node.get("NODEID"));
-                }
+                nodeOptions.add(node.get("NODEID"));
             }
             edgeDropdown.setItems(edgeOptions);
             startNodeDropdown.setItems(nodeOptions);
