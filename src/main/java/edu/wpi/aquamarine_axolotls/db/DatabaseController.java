@@ -127,7 +127,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getNodes() throws SQLException {
-		return nodeTable.getNodes();
+		return nodeTable.getEntries();
 	}
 
 	/**
@@ -205,7 +205,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getEdges() throws SQLException  {
-		return edgeTable.getEdges();
+		return edgeTable.getEntries();
 	}
 
 	/**

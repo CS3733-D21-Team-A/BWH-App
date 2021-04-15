@@ -152,7 +152,7 @@ class Table {
 			}
 			entries.add(entry); // add this row to the list
 		} // increment the row
-		return entries.size() != 0 ? entries : null;
+		return entries;
 	}
 
 	/**
@@ -160,19 +160,12 @@ class Table {
 	 * @return List of maps representing the full table. Null if the table is empty.
 	 * @throws SQLException Something went wrong.
 	 */
-	List<Map<String,String>> getNodes() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM Nodes"); // gets everything from table
-		ResultSet rs = smnt.executeQuery();
-		return resultSetToList(rs); // gets sql result and convert rs to List of maps
-	}
-
-	List<Map<String,String>> getEdges() throws SQLException {
-		PreparedStatement smnt = connection.prepareStatement("SELECT * FROM Edges"); // gets everything from table
-		ResultSet rs = smnt.executeQuery();
-		List<Map<String,String>> res = resultSetToList(rs);
-		rs.close();
-		smnt.close();
-		return res; // gets sql result and convert rs to List of maps
+	List<Map<String,String>> getEntries() throws SQLException {
+		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName)) {
+			try (ResultSet rs = smnt.executeQuery()) {
+				return resultSetToList(rs); // gets sql result and convert rs to List of maps
+			}
+		}
 	}
 
 	/**

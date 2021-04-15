@@ -180,13 +180,15 @@ public class Node_Editing extends Default_Page {
         );
         File csv = fileChooser.showOpenDialog(import_button.getScene().getWindow());
         try{
-            db.emptyEdgeTable();
+            db.emptyNodeTable();
             csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){
             sq.printStackTrace();
         }
+
+        initialize(); //REFRESH TABLE
     }
 
     public void delete(String current_nodeID){
@@ -250,7 +252,7 @@ public class Node_Editing extends Default_Page {
                     ycoord = db.getNode(current_nodeID).get("YCOORD");
                 }
                 if (fl.equals("")){
-                    fl = db.getNode(current_nodeID).get("FLORR");
+                    fl = db.getNode(current_nodeID).get("FLOOR");
                 }
                 if (b.equals("")){
                     b = db.getNode(current_nodeID).get("BUILDING");
@@ -268,8 +270,8 @@ public class Node_Editing extends Default_Page {
                 int x = Integer.parseInt(xcoord);
                 int y = Integer.parseInt(ycoord);
 
-                if ((x<5000 &&  x>0)&&(y<3400 && y>0)) {
-                    submissionlabel.setText(  "Invalid submission: cannot add node.");
+                if (!(x<5000 && x>0 && y<3400 && y>0)) {
+                    submissionlabel.setText(  "Invalid submission: cannot edit node.");
                     return;
                 }
 

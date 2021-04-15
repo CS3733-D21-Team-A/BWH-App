@@ -154,6 +154,8 @@ public class EdgeEditing extends Default_Page{
         }catch(SQLException sq){
             sq.printStackTrace();
         }
+
+        initialize(); //REFRESH TABLE
     }
 
     public void exportCSV() { //still in the works
@@ -235,7 +237,7 @@ public class EdgeEditing extends Default_Page{
                 edge.put("ENDNODE", endNode);
 
                 db.editEdge(edgeID, edge);
-                submissionlabel.setText("You have edit "+ edgeID);
+                submissionlabel.setText("You have edited "+ edgeID);
             }else{
                 submissionlabel.setText("Edge does not exist");
             }
