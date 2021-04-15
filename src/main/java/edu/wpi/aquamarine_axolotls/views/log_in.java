@@ -24,6 +24,9 @@ public class log_in {
 
     @FXML
     private StackPane stackPane;
+
+    @FXML
+    private JFXButton back_button;
     @FXML
     private JFXComboBox emp_or_pat;
     ObservableList<String> emp_patList = FXCollections
@@ -32,7 +35,7 @@ public class log_in {
     @FXML
     public void submit_button(ActionEvent actionEvent) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Admin_Main_Page.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Start_Page.fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -46,7 +49,7 @@ public class log_in {
     }
 
 
-    public void cancel(javafx.event.ActionEvent event){
+    public void return_servicePg(javafx.event.ActionEvent event){
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Start_Page.fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
