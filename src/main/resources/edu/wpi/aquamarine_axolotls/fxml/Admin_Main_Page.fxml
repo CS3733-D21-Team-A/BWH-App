@@ -30,6 +30,11 @@
                                 <Insets left="5.0" />
                             </HBox.margin>
                         </Label>
+                  <JFXButton fx:id="shutDownButton" onAction="#stop" text="X" textFill="#888d86">
+                     <font>
+                        <Font name="Times New Roman Bold Italic" size="20.0" />
+                     </font>
+                  </JFXButton>
                     </children>
                     <padding>
                         <Insets left="10.0" top="5.0" />

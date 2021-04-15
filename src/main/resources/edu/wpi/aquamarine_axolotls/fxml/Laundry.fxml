@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,14 +12,12 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-<?import com.jfoenix.controls.JFXButton?>
 
-<?import com.jfoenix.controls.JFXTextField?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Laundry">
    <children>
       <VBox alignment="CENTER" layoutX="257.0" layoutY="79.0" prefHeight="200.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox prefHeight="41.0" prefWidth="600.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="600.0">
                <children>
                   <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -40,16 +38,21 @@
                </padding>
             </HBox>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" VBox.vgrow="ALWAYS" />
-            <HBox maxHeight="27.0" prefHeight="100.0" prefWidth="600.0">
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="600.0">
                <children>
-                  <JFXButton fx:id="back_button" mnemonicParsing="false" onAction="#return_servicePg" prefHeight="13.0" prefWidth="30.0">
+                  <JFXButton fx:id="back_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#return_servicePg" prefHeight="35.0" prefWidth="30.0" text=" ">
                      <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" scaleY="0.7">
+                        <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../../../../../../../Desktop/untitled folder/resources copy/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
+                              <Image url="@../img/back icon.jpg" />
                            </image>
                         </ImageView>
                      </graphic>
+                  </JFXButton>
+                  <JFXButton prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="475.0" />
+                     </HBox.margin>
                   </JFXButton>
                </children>
                <opaqueInsets>
@@ -121,7 +124,7 @@
                <children>
                   <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                      <HBox.margin>
-                        <Insets left="360.0" />
+                        <Insets left="400.0" />
                      </HBox.margin>
                   </JFXButton>
                </children>
