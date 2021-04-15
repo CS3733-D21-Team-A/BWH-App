@@ -6,7 +6,11 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -16,116 +20,135 @@
         <VBox alignment="CENTER" prefHeight="403.0" prefWidth="600.0" AnchorPane.bottomAnchor="-3.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox prefHeight="41.0" prefWidth="600.0">
-                    <children>
-                        <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/logo.png" />
-                            </image>
-                        </ImageView>
-                        <Label fx:id="text" prefHeight="54.0" prefWidth="543.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                            <font>
-                                <Font name="Times New Roman" size="14.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets left="5.0" />
-                            </HBox.margin>
-                        </Label>
-                    </children>
+                    <children />
+                    <ImageView fitHeight="33.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../img/logo.png" />
+                        </image>
+                    </ImageView>
+                    <Label fx:id="text" prefHeight="54.0" prefWidth="543.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                        <font>
+                            <Font name="Times New Roman" size="14.0" />
+                        </font>
+                        <HBox.margin>
+                            <Insets left="5.0" />
+                        </HBox.margin>
+                    </Label>
+                    <JFXButton fx:id="shutDownButton" onAction="#stop" prefHeight="37.0" prefWidth="36.0" text="X" textFill="#888d86">
+                        <font>
+                            <Font name="Times New Roman Bold Italic" size="20.0" />
+                        </font>
+                    </JFXButton>
                     <padding>
                         <Insets left="10.0" top="5.0" />
                     </padding>
                 </HBox>
-                <HBox prefHeight="358.0" prefWidth="600.0">
+                <HBox prefHeight="387.0" prefWidth="621.0">
                     <children>
-                        <VBox prefHeight="359.0" prefWidth="151.0" style="-fx-background-color: #003DA6;">
+                        <GridPane prefHeight="361.0" prefWidth="1055.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="148.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="457.0" minWidth="10.0" prefWidth="452.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
                             <children>
-                                <HBox prefHeight="40.0" prefWidth="151.0">
+                                <VBox prefHeight="361.0" prefWidth="439.0" style="-fx-background-color: #003DA6;">
                                     <children>
-                                        <Label fx:id="text1" prefHeight="31.0" prefWidth="106.0" text="Welcome" textFill="#fff9f9" wrapText="true">
-                                            <font>
-                                                <Font name="Times New Roman" size="20.0" />
-                                            </font>
-                                            <HBox.margin>
-                                                <Insets left="35.0" top="10.0" />
-                                            </HBox.margin>
-                                        </Label>
-                                    </children>
-                                </HBox>
-                                <HBox alignment="CENTER" prefHeight="34.0" prefWidth="141.0">
-                                    <children>
-                                        <Label fx:id="text11" alignment="CENTER" prefHeight="14.0" prefWidth="138.0" text="ADMIN" textFill="#fff9f9" wrapText="true">
-                                            <font>
-                                                <Font name="Times New Roman" size="12.0" />
-                                            </font>
-                                            <HBox.margin>
+                                        <HBox prefHeight="40.0" prefWidth="151.0">
+                                            <children>
+                                                <Label fx:id="text1" alignment="CENTER" prefHeight="31.0" prefWidth="151.0" text="Welcome" textFill="#fff9f9" wrapText="true">
+                                                    <font>
+                                                        <Font name="Times New Roman" size="20.0" />
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets top="10.0" />
+                                                    </HBox.margin>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                        <HBox prefHeight="34.0" prefWidth="151.0">
+                                            <children>
+                                                <Label fx:id="text11" alignment="CENTER" prefHeight="14.0" prefWidth="150.0" text="ADMIN" textAlignment="CENTER" textFill="#fff9f9" wrapText="true">
+                                                    <font>
+                                                        <Font name="Times New Roman" size="12.0" />
+                                                    </font>
+                                                    <HBox.margin>
+                                                        <Insets bottom="10.0" top="10.0" />
+                                                    </HBox.margin>
+                                                </Label>
+                                            </children>
+                                            <VBox.margin>
+                                                <Insets />
+                                            </VBox.margin>
+                                        </HBox>
+                                        <Line endX="62.29289245605469" endY="-1.303553581237793E-4" startX="-100.0" stroke="WHITE" />
+                                        <JFXButton fx:id="sign_in_button" onAction="#Sign_In_Button" prefHeight="34.0" prefWidth="151.0" text="Sign-In" textFill="WHITE">
+                                            <VBox.margin>
                                                 <Insets bottom="10.0" top="10.0" />
-                                            </HBox.margin>
-                                        </Label>
+                                            </VBox.margin>
+                                            <font>
+                                                <Font name="Times New Roman" size="13.0" />
+                                            </font>
+                                        </JFXButton>
+                                        <Line endX="56.29289245605469" endY="0.8284767270088196" startX="-100.0" stroke="WHITE" />
+                                        <JFXButton fx:id="map_button" onAction="#Map_Button" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font name="Times New Roman" size="13.0" />
+                                            </font>
+                                        </JFXButton>
+                                        <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE">
+                                            <VBox.margin>
+                                                <Insets />
+                                            </VBox.margin>
+                                        </Line>
+                                        <JFXButton fx:id="service_req" onAction="#service_request_page" prefHeight="34.0" prefWidth="151.0" text="Service Requests" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font name="Times New Roman" size="13.0" />
+                                            </font>
+                                        </JFXButton>
+                                        <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
+                                        <JFXButton fx:id="node_editing_button" onAction="#Node_Page" prefHeight="34.0" prefWidth="151.0" text="Node Editing" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font name="Times New Roman" size="13.0" />
+                                            </font>
+                                        </JFXButton>
+                                        <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
+                                        <JFXButton fx:id="edge_editing" onAction="#Edge_Page" prefHeight="34.0" prefWidth="151.0" text="Edge Editing" textFill="WHITE">
+                                            <VBox.margin>
+                                                <Insets bottom="10.0" top="10.0" />
+                                            </VBox.margin>
+                                            <font>
+                                                <Font name="Times New Roman" size="13.0" />
+                                            </font>
+                                        </JFXButton>
                                     </children>
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" />
-                                    </VBox.margin>
-                                </HBox>
-                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton onAction="#Sign_In_Button" prefHeight="34.0" prefWidth="151.0" text="Sign In" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
-                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="map_button" onAction="#Map_Page" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
-                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE">
-                                    <VBox.margin>
-                                        <Insets />
-                                    </VBox.margin>
-                                </Line>
-                                <JFXButton fx:id="service_req" onAction="#service_comp" prefHeight="34.0" prefWidth="151.0" text="Service Request Page" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
-                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="nodes_button" onAction="#Node_Page" prefHeight="34.0" prefWidth="151.0" text="Nodes Map" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
-                                <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="edges_button" onAction="#Edge_Page" prefHeight="34.0" prefWidth="151.0" text="Edges Map" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
+                                </VBox>
+                                <ImageView fitHeight="361.0" fitWidth="455.0" GridPane.columnIndex="1">
+                                    <image>
+                                        <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
+                                    </image>
+                                </ImageView>
+                                <StackPane fx:id="stackPane" prefHeight="361.0" prefWidth="475.0" GridPane.columnIndex="1" />
                             </children>
-                        </VBox>
-                        <ImageView fitHeight="360.0" fitWidth="471.0">
-                            <image>
-                                <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
-                            </image>
-                        </ImageView>
+                        </GridPane>
                     </children>
                     <opaqueInsets>
                         <Insets left="10.0" />
                     </opaqueInsets>
+                    <VBox.margin>
+                        <Insets />
+                    </VBox.margin>
                 </HBox>
             </children>
         </VBox>
