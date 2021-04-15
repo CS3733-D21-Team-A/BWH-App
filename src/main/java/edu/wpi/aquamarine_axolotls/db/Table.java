@@ -157,7 +157,7 @@ class Table {
 
 	/**
 	 * Get the full SQL table as a ResultSet.
-	 * @return List of maps representing the full table. Null if the table is empty.
+	 * @return List of maps representing the full table.
 	 * @throws SQLException Something went wrong.
 	 */
 	List<Map<String,String>> getEntries() throws SQLException {

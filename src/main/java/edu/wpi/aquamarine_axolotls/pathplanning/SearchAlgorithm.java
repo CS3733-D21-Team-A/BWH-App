@@ -1,15 +1,11 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import org.apache.derby.iapi.db.Database;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
-
-//import static edu.wpi.aquamarine_axolotls.pathplanning.PathBuilder.buildPath;
-//import static edu.wpi.aquamarine_axolotls.pathplanning.PathBuilder.checkPath;
 
 public class SearchAlgorithm {
 
