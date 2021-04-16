@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -8,12 +9,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Laundry">
+<AnchorPane fx:id="myAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.FoodDelivery">
    <children>
       <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
          <children>
@@ -70,7 +72,7 @@
                <padding>
                   <Insets bottom="10.0" left="10.0" />
                </padding></HBox>
-            <Label fx:id="formName" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="600.0" text="Laundry Service" textAlignment="RIGHT">
+            <Label fx:id="formName" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="600.0" text="Food Delivery Service" textAlignment="RIGHT">
                <font>
                   <Font name="Times New Roman" size="36.0" />
                </font>
@@ -78,12 +80,13 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Label>
+            <StackPane fx:id="stackPane" prefHeight="24.0" prefWidth="600.0" />
             <HBox alignment="CENTER" maxHeight="27.0" prefHeight="2.0" prefWidth="600.0">
                <children>
                   <Line endX="450.0" startX="-100.0" stroke="#c4c4c4" strokeWidth="4.0" />
                </children>
             </HBox>
-            <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please leave your laundry outside of your room and a worker will retreive it." textAlignment="CENTER" wrapText="true">
+            <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
                <font>
                   <Font name="Calibri" size="14.0" />
                </font>
@@ -108,14 +111,14 @@
                   <Insets bottom="5.0" top="20.0" />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="600.0">
+            <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
                <children>
-                  <JFXTextField fx:id="roomNumber" maxWidth="-Infinity" prefHeight="27.0" prefWidth="250.0" promptText="Room Number">
+                  <JFXTextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery TIme">
                      <HBox.margin>
-                        <Insets left="1.0" right="10.0" />
+                        <Insets right="10.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXTextField fx:id="specialInstruct" maxWidth="-Infinity" prefHeight="46.0" prefWidth="254.0" promptText="Insert Special Instructions">
+                  <JFXTextField fx:id="roomNumber" maxWidth="-Infinity" prefWidth="250.0" promptText="Room Number">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -125,10 +128,14 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0" />
+            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
+               <children>
+                  <JFXComboBox fx:id="foodOptions" prefHeight="25.0" prefWidth="250.0" promptText="Food Options" />
+               </children>
+            </HBox>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
                <children>
-                  <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                  <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="400.0" />
                      </HBox.margin>

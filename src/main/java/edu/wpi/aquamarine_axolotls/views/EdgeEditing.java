@@ -28,9 +28,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EdgeEditing extends Default_Page{
+public class EdgeEditing extends SEditing{
     @FXML private JFXButton homeButton;
-    @FXML private JFXButton helpButton;
+    @FXML private JFXButton helpB;
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
@@ -263,14 +263,5 @@ public class EdgeEditing extends Default_Page{
         }
         initialize();
     }
-    @FXML
-    public void return_home(ActionEvent actionEvent) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Admin_Main_Page.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
 
-    }
 }

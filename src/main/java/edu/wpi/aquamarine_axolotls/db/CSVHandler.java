@@ -40,7 +40,7 @@ public class CSVHandler {
 		while ((line = br.readLine()) != null) {
 			inp = line.split(","); //split entries by column
 			for (int i = 0; i < inp.length; i++) {
-				values.put(columns[i],inp[i]); //add value to map indexed by column
+				values.put(columns[i],inp[i]); //add value to mapP indexed by column
 			}
 			tableAdder.accept(values);
 		}

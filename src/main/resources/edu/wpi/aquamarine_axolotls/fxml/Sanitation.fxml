@@ -47,7 +47,7 @@
          <children>
             <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0">
                <children>
-                  <JFXButton fx:id="back_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#return_servicePg" prefHeight="35.0" prefWidth="30.0" text=" ">
+                  <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="35.0" prefWidth="30.0" text=" ">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -162,7 +162,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
                                  <children>
-                                    <ComboBox fx:id="serviceRequests" prefHeight="25.0" prefWidth="250.0" promptText="Service Request Type">
+                                    <ComboBox fx:id="sanitationL" prefHeight="25.0" prefWidth="250.0" promptText="Service Request Type">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" />
                                        </HBox.margin>
@@ -200,11 +200,11 @@
             </ScrollPane>
             <HBox alignment="CENTER" prefHeight="49.0" prefWidth="600.0">
                <children>
-                  <Button fx:id="submitButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                  <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="34.0" prefWidth="154.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Submit" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="400.0" />
                      </HBox.margin>
-                  </Button>
+                  </JFXButton>
                </children>
             </HBox>
          </children>

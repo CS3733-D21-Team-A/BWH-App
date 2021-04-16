@@ -73,7 +73,7 @@ public class AStarTest {
         }
     }
 
-    /*Test for the map with only one node in it, the start is the same as the goal*/
+    /*Test for the mapP with only one node in it, the start is the same as the goal*/
 
     @Test
     public void oneNodeTest() {
@@ -94,7 +94,7 @@ public class AStarTest {
         assertEquals(testPath, expectedPath);
     }
 
-    /*Test for the map with only two node in it*/
+    /*Test for the mapP with only two node in it*/
 
     @Test
     public void twoNodeTest() {
@@ -120,7 +120,7 @@ public class AStarTest {
         assertEquals(expectedPath,testPath);
     }
 
-    /*Test general search with input map*/
+    /*Test general search with input mapP*/
 
     @Test
     public void generalNodeTest1() {
@@ -139,7 +139,7 @@ public class AStarTest {
         assertEquals(expectedPath,testPath);
     }
 
-    /*Test general search with input map*/
+    /*Test general search with input mapP*/
 
     @Test
     public void generalNodeTest2() {

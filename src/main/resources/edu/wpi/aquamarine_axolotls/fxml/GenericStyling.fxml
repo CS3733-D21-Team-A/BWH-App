@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="myAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
+            <children>
+                <ImageView fitHeight="36.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../img/logo.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+                    </HBox.margin>
+                </ImageView>
+                <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                    <font>
+                        <Font name="Times New Roman" size="12.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets bottom="12.0" left="5.0" top="20.0" />
+                    </HBox.margin>
+                    <padding>
+                        <Insets bottom="5.0" />
+                    </padding>
+                </Label>
+            <JFXButton maxWidth="-Infinity" prefHeight="26.0" prefWidth="26.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/homeBlue.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets left="200.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton text=" ">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/helpBlue.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton layoutX="375.0" layoutY="-41.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/settings_blue.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <JFXButton layoutX="551.0" layoutY="21.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/Blue_X.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            </children>
+        </HBox>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
+        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.topAnchor="60.0">
+            <children>
+                <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="30.0" text=" ">
+                    <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/back icon.jpg" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets top="5.0" />
+                    </HBox.margin>
+                </JFXButton>
+                <JFXButton prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets left="475.0" top="5.0" />
+                    </HBox.margin>
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+                </JFXButton>
+            </children>
+            <opaqueInsets>
+                <Insets />
+            </opaqueInsets>
+            <padding>
+                <Insets left="10.0" top="5.0" />
+            </padding>
+        </HBox>
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+            <children>
+                <Label alignment="CENTER" text="Times New Roman 36pt">
+                    <font>
+                        <Font name="Times New Roman" size="36.0" />
+                    </font>
+                </Label>
+                <Line endX="400.0" stroke="#c4c4c4" strokeWidth="4.0" />
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

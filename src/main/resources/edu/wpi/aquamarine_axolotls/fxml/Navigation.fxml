@@ -49,7 +49,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXButton fx:id="homeButton" mnemonicParsing="false" onAction="#return_home" style="-fx-background-color: #ffffff00;" text=" ">
+                        <JFXButton fx:id="homeButton" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: #ffffff00;" text=" ">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -61,7 +61,7 @@
                               <Insets right="5.0" />
                            </HBox.margin>
                         </JFXButton>
-                        <JFXButton fx:id="helpButton" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
+                        <JFXButton fx:id="helpB" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
                            <graphic>
                               <ImageView>
                                  <image>
@@ -120,7 +120,7 @@
                      <children>
                         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
                            <children>
-                              <ImageView fx:id="map" fitHeight="327.0" fitWidth="438.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../img/groundFloor.png" />
                                  </image>

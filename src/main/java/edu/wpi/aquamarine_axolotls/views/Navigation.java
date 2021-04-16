@@ -2,22 +2,17 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
-import javax.print.attribute.standard.Destination;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -25,14 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Navigation extends Default_Page {
+public class Navigation  extends SPage{
 
     @FXML
     private AnchorPane anchor;
     @FXML
     private JFXButton homeButton;
     @FXML
-    private JFXButton helpButton;
+    private JFXButton helpB;
     @FXML
     private JFXComboBox startLocation;
     @FXML
@@ -109,7 +104,7 @@ public class Navigation extends Default_Page {
         }
 
 
-        Double prevX = xScale(pathNodes.get(0).getXcoord());
+        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
         Double prevY = yScale(pathNodes.get(0).getYcoord());
 
 

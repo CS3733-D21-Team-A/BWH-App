@@ -37,19 +37,19 @@ public class AappTest extends FxRobot {
   }
   @Test
   public void testSignInButton() {
-    clickOn("#sign_in_button");
+    clickOn("#signInB");
   }
   @Test
   public void testMapButton(){
-    clickOn("#map_button");
+    clickOn("#mapB");
   }
   @Test
   public void testServiceRequests(){
-    clickOn("#service_req");
+    clickOn("#serviceReqB");
   }
   @Test
   public void testSettingsButton(){
-    clickOn("#settings_button");
+    clickOn("#settingsB");
   }
 
 

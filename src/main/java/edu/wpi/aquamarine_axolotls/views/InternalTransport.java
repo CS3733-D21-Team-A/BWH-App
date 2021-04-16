@@ -8,9 +8,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-public class Security extends SServiceRequest {
-	ObservableList<String> secList = FXCollections
-			  .observableArrayList("High", "Medium", "Low", "Other (enter special instructions)");
+public class InternalTransport extends SServiceRequest {
+	ObservableList<String> urgencyList = FXCollections
+			  .observableArrayList("Critical", "High", "Medium", "Low");
 
 	@FXML
 	private Label text;
@@ -34,16 +34,16 @@ public class Security extends SServiceRequest {
 	private TextField newRoomNum;
 
 	@FXML
-	private TextField reason;
+	private TextField moveReason;
 
 	@FXML
-	private ComboBox secLevel;
+	private ComboBox urgencyL;
 
 	@FXML
 	private TextField specInstruct;
 
 	@FXML
 	public void initialize(){
-		secLevel.setItems(secList);
+		urgencyL.setItems(urgencyList);
 	}
 }
