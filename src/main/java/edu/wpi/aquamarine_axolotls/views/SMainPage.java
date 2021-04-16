@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
-public class SMainPage extends SPage{
+public abstract class SMainPage extends SPage{
     @FXML
     private JFXButton signInB;
 

@@ -50,9 +50,7 @@ public class DefaultServicePage extends SPage{
     // NOTE: code feels redundant, maybe make method?
 
     @FXML
-    public void foodDelivery(ActionEvent actionEvent) {
-        sceneSwitch("FoodDelivery");
-    }
+    public void foodDelivery(ActionEvent actionEvent) { sceneSwitch("FoodDelivery"); }
 
     public void languageInterpP(ActionEvent actionEvent) {
         sceneSwitch("LanguageInterpreter");

@@ -9,7 +9,7 @@ import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
-public class SPage {
+public abstract class SPage {
 
     @FXML
     public StackPane stackPane;

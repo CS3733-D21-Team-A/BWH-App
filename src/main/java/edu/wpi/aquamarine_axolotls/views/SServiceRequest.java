@@ -14,7 +14,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class SServiceRequest extends SPage{
+public abstract class SServiceRequest extends SPage{
     @FXML
     public JFXButton backB;
     
