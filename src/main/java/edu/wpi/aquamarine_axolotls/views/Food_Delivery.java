@@ -85,15 +85,7 @@ public class Food_Delivery extends Service_Request {
         help.show();
     }
 
-    @FXML
-    public void return_home(javafx.event.ActionEvent actionEvent) {
-        try {
-            Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/Default_Service_Page.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
+
 
     @FXML
     public void loadHelp(javafx.event.ActionEvent event) {
