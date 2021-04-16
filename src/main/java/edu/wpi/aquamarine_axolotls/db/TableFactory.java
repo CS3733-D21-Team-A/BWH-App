@@ -28,7 +28,7 @@ class TableFactory {
 	 */
 	Table getTable(DatabaseInfo.TABLES table) {
 		try {
-			return new Table(connection, DatabaseInfo.TABLE_NAMES.get(table));
+			return new Table(connection, table.name());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

@@ -17,7 +17,7 @@ class DatabaseControllerTest {
 	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException, URISyntaxException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 

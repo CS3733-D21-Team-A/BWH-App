@@ -20,7 +20,7 @@ public class CSVHandlerTest {
 	public CSVHandlerTest() throws URISyntaxException, SQLException, IOException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException, URISyntaxException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
