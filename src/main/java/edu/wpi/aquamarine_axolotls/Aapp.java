@@ -12,7 +12,6 @@ public class Aapp extends Application {
   private static Stage primaryStage;
 
 
-
   @Override
   public void init() {
     System.out.println("Starting Up");
@@ -22,7 +21,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/Scene1.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
@@ -39,6 +38,7 @@ public class Aapp extends Application {
   public static Stage getPrimaryStage(){
     return primaryStage;
   }
+
 
 
   @Override

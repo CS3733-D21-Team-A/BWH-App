@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.DefaultServicePage">
+   <children>
+      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="36.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/logo.png" />
+               </image>
+               <HBox.margin>
+                  <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="text" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+               <font>
+                  <Font name="Times New Roman" size="12.0" />
+               </font>
+               <HBox.margin>
+                  <Insets bottom="12.0" left="5.0" top="20.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
+      <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.topAnchor="60.0">
+         <children>
+            <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="35.0" prefWidth="30.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/back icon.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets top="5.0" />
+               </HBox.margin>
+            </JFXButton>
+            <JFXButton prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="475.0" top="5.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets left="10.0" top="5.0" />
+         </padding>
+      </HBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="600.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="80.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="40.0" prefWidth="200.0" text="Services">
+               <font>
+                  <Font name="Times New Roman" size="36.0" />
+               </font>
+            </Label>
+            <Line endX="400.0" stroke="#c4c4c4" strokeWidth="4.0" />
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="257.0" layoutY="62.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="338.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="140.0">
+         <children>
+
+            <HBox prefHeight="71.0" prefWidth="473.0">
+               <children>
+
+                  <JFXButton fx:id="foodDeliveryB" maxWidth="234.0" mnemonicParsing="false" onAction="#foodDelivery" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Food Delivery" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" right="30.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="languageInterpretersB" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" onAction="#languageInterpP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Language Interpreters" textAlignment="RIGHT" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="giftDeliveryButton" maxWidth="234.0" mnemonicParsing="false" onAction="#giftDelivP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" right="10.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="69.0" prefWidth="607.0">
+               <children>
+                  <JFXButton fx:id="sanitationB" maxWidth="234.0" mnemonicParsing="false" onAction="#sanitationP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Sanitation" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" right="30.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="laundryB" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" onAction="#laundryP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Laundry" textAlignment="RIGHT" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="medicineB" contentDisplay="BOTTOM" maxWidth="183.0" mnemonicParsing="false" onAction="#medicineDelivP" prefWidth="183.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Medicine Delivery" textAlignment="RIGHT" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" right="10.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="69.0" prefWidth="607.0">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <children>
+                  <JFXButton fx:id="floralDeliveryB" maxWidth="234.0" mnemonicParsing="false" onAction="#floralDelivP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" right="30.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="religiousReqB" contentDisplay="BOTTOM" maxWidth="234.0" mnemonicParsing="false" onAction="#religiousReqP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Religious Request" textAlignment="RIGHT" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton fx:id="internalTranB" alignment="CENTER" maxWidth="234.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#internalTranP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Internal Transport" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" right="10.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox prefHeight="72.0" prefWidth="380.0">
+               <children>
+                  <JFXButton fx:id="externalTranB" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" maxWidth="234.0" mnemonicParsing="false" onAction="#externalTranP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="External Tranport" textAlignment="RIGHT" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="90.0" right="40.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton contentDisplay="BOTTOM" maxWidth="234.0" mnemonicParsing="false" onAction="#securityP" prefWidth="200.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="Security" textAlignment="RIGHT" textFill="WHITE">
+                     <font>
+                        <Font name="Optima Regular" size="14.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="40.0" right="90.0" />
+                     </HBox.margin>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
