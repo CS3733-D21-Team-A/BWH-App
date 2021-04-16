@@ -22,7 +22,11 @@ public class DatabaseInfo {
 		/**
 		 * Edge table.
 		 */
-		EDGES
+		EDGES,
+		/**
+		 * Service Requests table.
+		 */
+		SERVICEREQUESTS
 	}
 
 	/**
@@ -36,21 +40,10 @@ public class DatabaseInfo {
 	static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/MapAedges.csv";
 
 	/**
-	 * Map associating TABLES enum to usable table names.
-	 */
-	public static final Map<TABLES,String> TABLE_NAMES;
-	static {
-		Map<TABLES,String> aMap = new EnumMap<>(TABLES.class);
-		aMap.put(TABLES.NODES, "NODES");
-		aMap.put(TABLES.EDGES, "EDGES");
-		TABLE_NAMES = Collections.unmodifiableMap(aMap);
-	}
-
-	/**
 	 * SQL for building the NODES table.
 	 */
 	static final String NODE_TABLE_SQL =
-		"CREATE TABLE NODES (" +
+		"CREATE TABLE " + TABLES.NODES.name() + " (" +
 			"NODEID VARCHAR(25) PRIMARY KEY," +
 			"XCOORD NUMERIC(5)," +
 			"YCOORD NUMERIC(5)," +
@@ -59,18 +52,36 @@ public class DatabaseInfo {
 			"NODETYPE VARCHAR(5)," +
 			"LONGNAME VARCHAR(50)," +
 			"SHORTNAME VARCHAR(30)" +
-		")";
+		")"; //TODO: FIGURE OUT TAGS
 
 	/**
 	 * SQL for building the EDGES table.
 	 */
 	static final String EDGE_TABLE_SQL =
-	   "CREATE TABLE EDGES (" +
+	   "CREATE TABLE " + TABLES.EDGES.name() + " (" +
 		   "EDGEID VARCHAR(51) PRIMARY KEY," +
 			"STARTNODE VARCHAR(25)," +
 			"ENDNODE VARCHAR(25)," +
-			"CONSTRAINT FK_STARTNODE FOREIGN KEY (STARTNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
-			"CONSTRAINT FK_ENDNODE FOREIGN KEY (ENDNODE) REFERENCES Nodes(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+			"CONSTRAINT FK_STARTNODE FOREIGN KEY (STARTNODE) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+			"CONSTRAINT FK_ENDNODE FOREIGN KEY (ENDNODE) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+		")"; //TODO: FIGURE OUT TAGS
+
+	/**
+	 * SQL for building the SERVICEREQUESTS table.
+	 */
+	static final String SERVICE_REQUESTS_TABLE_SQL =
+		"CREATE TABLE " + TABLES.SERVICEREQUESTS.name() + " (" +
+			"REQUESTID VARCHAR(25) PRIMARY KEY," +
+			"STATUS ENUM('Unassigned','Assigned','In Progress','Done','Canceled') DEFAULT 'Unassigned'," +
+			"EMPLOYEEID VARCHAR(30)," + //TODO: THIS IS A FOREIGN KEY TO THE USER TABLE
+			"FIRSTNAME VARCHAR(30)," +
+			"LASTNAME VARCHAR(50)," +
+			"LOCATIONID VARCHAR(25)," +
+			"REQUESTTYPE VARCHAR(50))," +
+			"NOTE VARCHAR(300))," +
+			"DIETARYRESTRICTIONS VARCHAR(100)," + // Food Delivery //TODO: FIGURE OUT WHAT TO USE HERE
+			"DELIVERYTIME TIME(0)," + // Food Delivery, Floral Delivery
+			"CONSTRAINT FK_LOCATIONID FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID)," +
 		")";
 
 	/**
