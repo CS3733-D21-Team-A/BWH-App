@@ -46,7 +46,7 @@ public class CSVHandlerTest {
 	void importEdgesTest() throws SQLException, IOException {
 		assertNotNull(db.getEdges());
 		db.emptyEdgeTable();
-		assertNull(db.getEdges());
+		assertEquals(0, db.getEdges().size());
 		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
 		assertNotNull(db.getEdges());
 	}
@@ -55,7 +55,7 @@ public class CSVHandlerTest {
 	void importNodesTest() throws SQLException, IOException {
 		assertNotNull(db.getNodes());
 		db.emptyNodeTable();
-		assertNull(db.getNodes());
+		assertEquals(0, db.getNodes().size());
 		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
 		assertNotNull(db.getNodes());
 	}

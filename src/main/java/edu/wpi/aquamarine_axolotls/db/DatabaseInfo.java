@@ -63,10 +63,8 @@ public class DatabaseInfo {
 	static final String EDGE_TABLE_SQL =
 	   "CREATE TABLE " + TABLES.EDGES.name() + " (" +
 		   "EDGEID VARCHAR(51) PRIMARY KEY," +
-			"STARTNODE VARCHAR(25)," +
-			"ENDNODE VARCHAR(25)," +
-			"CONSTRAINT FK_STARTNODE FOREIGN KEY (STARTNODE) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," + //TODO: wanna keep on update restrict?
-			"CONSTRAINT FK_ENDNODE FOREIGN KEY (ENDNODE) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" + //TODO: wanna keep on update restrict?
+			"STARTNODE VARCHAR(25)REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," + //TODO: wanna keep on update restrict?
+			"ENDNODE VARCHAR(25) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" + //TODO: wanna keep on update restrict?
 		")"; //TODO: FIGURE OUT TAGS
 
 	/**
@@ -77,11 +75,10 @@ public class DatabaseInfo {
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"STATUS ENUM('Unassigned','Assigned','In Progress','Done','Canceled') DEFAULT 'Unassigned'," +
 			"EMPLOYEEID VARCHAR(30)," + //TODO: THIS IS A FOREIGN KEY TO THE USER TABLE (NOT YET IMPLEMENTED)
-			"LOCATIONID VARCHAR(25)," +
+			"LOCATIONID VARCHAR(25) REFERENCES " + TABLES.NODES.name() + "(NODEID)," + //TODO: what to do on delete or update?
 			"FIRSTNAME VARCHAR(30)," +
 			"LASTNAME VARCHAR(50)," +
 			"REQUESTTYPE ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') NOT NULL," +
-			"CONSTRAINT FK_LOCATIONID FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID)," + //TODO: what to do on delete or update?
 		")";
 
 	/**
@@ -89,11 +86,10 @@ public class DatabaseInfo {
 	 */
 	static final String FOOD_DELIVERY_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
-			"REQUESTID VARCHAR(25) PRIMARY KEY," +
+			"REQUESTID VARCHAR(25) PRIMARY KEY REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID)," + //TODO: what to do on delete or update? +
 			"DELIVERYTIME TIME(0)," +
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
-			"CONSTRAINT FK_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID)," + //TODO: what to do on delete or update?
 		")";
 
 	/**

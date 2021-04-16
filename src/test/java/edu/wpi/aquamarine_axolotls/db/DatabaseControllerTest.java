@@ -238,7 +238,7 @@ class DatabaseControllerTest {
 		try {
 			assertTrue(db.getNodes().size() != 0);
 			db.emptyNodeTable();
-			assertNull(db.getNodes());
+			assertEquals(0, db.getNodes().size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -438,7 +438,7 @@ class DatabaseControllerTest {
 			List<Map<String,String>> edges = db.getEdges();
 			assertTrue(edges.size() != 0);
 			db.emptyNodeTable();
-			assertNull(db.getEdges());
+			assertEquals(0, db.getEdges().size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
