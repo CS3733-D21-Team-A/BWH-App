@@ -18,6 +18,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+
+import java.io.IOException;
 
 public abstract class SServiceRequest extends SPage{
     @FXML
@@ -40,7 +44,7 @@ public abstract class SServiceRequest extends SPage{
     }
 
     @FXML
-    public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
+    public void submit(javafx.event.ActionEvent actionEvent) throws IOException {
         JFXDialogLayout content = new JFXDialogLayout();
 
         JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
