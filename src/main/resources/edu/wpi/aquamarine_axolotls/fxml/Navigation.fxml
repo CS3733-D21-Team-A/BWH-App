@@ -120,12 +120,12 @@
                      <children>
                         <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
                            <children>
-                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#getNearestNode">
                                  <image>
                                     <Image url="@../img/groundFloor.png" />
                                  </image>
                               </ImageView>
-                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" pickOnBounds="true" onMouseClicked="#getNearestNode"/>
                            </children>
                         </AnchorPane>
                      </children>

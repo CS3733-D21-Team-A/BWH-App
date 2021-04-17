@@ -7,12 +7,16 @@ import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -22,6 +26,8 @@ public class Navigation  extends SPage{
 
     @FXML
     private AnchorPane anchor;
+    @FXML
+    private ImageView mapP;
     @FXML
     private JFXButton homeButton;
     @FXML
@@ -57,7 +63,7 @@ public class Navigation  extends SPage{
             e.printStackTrace();
         }
     }
-
+    
     /**
      * Scales the x coordinate from table for image (5000,3400)
      *
@@ -102,6 +108,7 @@ public class Navigation  extends SPage{
         }
 
 
+
         Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
         Double prevY = yScale(pathNodes.get(0).getYcoord());
 
@@ -130,13 +137,23 @@ public class Navigation  extends SPage{
             }
     }
 
+
+
+
     /**
      * Gets the closest node to the mouse cursor when clicked
-     * @param x The x-coord of the mouse, passed as a double so we can do trigonometry with it
-     * @param y The y-coord of the mouse
-     * @param radius The radius in which to search -- nodes beyond that distance will not be considered
      */
-    public String getNearestNode(double x, double y, double radius) {
+    public String getNearestNode(javafx.scene.input.MouseEvent event) {
+
+        System.out.println("Clicked map");
+        
+        //double x = xScale((int) event.getX());
+        //double y = yScale((int) event.getY());
+        double x = event.getX();
+        double y = event.getY();
+
+        System.out.println(x + " " + y);
+        double radius = 30;
         List<Map<String, String>> nodes = new ArrayList<>();
 
         //Get nodes from database
@@ -154,8 +171,8 @@ public class Navigation  extends SPage{
         //Loop through nodes
         for (Map<String, String> n : nodes) {
             //Get the x and y of that node
-            double currNodeX = Double.parseDouble(n.get("XCOORD"));
-            double currNodeY = Double.parseDouble(n.get("YCOORD"));
+            double currNodeX = xScale(Integer.parseInt(n.get("XCOORD")));
+            double currNodeY = yScale(Integer.parseInt(n.get("YCOORD")));
 
             //Get the difference in x and y between input coords and current node coords
             double xOff = Math.abs(x - currNodeX);
@@ -172,6 +189,8 @@ public class Navigation  extends SPage{
             }
         }
 
+        System.out.println(currClosest.get("LONGNAME"));
+        
         //Return the long name of this node
         return currClosest.get("LONGNAME");
     }
