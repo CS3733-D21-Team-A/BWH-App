@@ -34,4 +34,18 @@ class TableFactory {
 			return null;
 		}
 	}
+
+	/**
+	 * Create and return an object representing the table with the corresponding name.
+	 * @param table identifier for table to link to.
+	 * @return Table object representing the corresponding table in the database.
+	 */
+	Table getTable(DatabaseInfo.TABLES.SERVICEREQUESTS table) {
+		try {
+			return new Table(connection, table.name());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

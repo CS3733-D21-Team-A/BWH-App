@@ -5,8 +5,10 @@ import org.apache.derby.jdbc.EmbeddedDriver;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
 
 /**
  * Controller class for working with the BWH database.
@@ -15,6 +17,14 @@ public class DatabaseController implements AutoCloseable {
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
+	final private Table serviceRequestsTable;
+	/*
+	 * Map for getting service request tables.
+	 * Key: Service Request enumeration.
+	 * Value: Table for corresponding service request type.
+	 */
+	final private Map<TABLES.SERVICEREQUESTS,Table> requestsTables;
+
 
 	/**
 	 * DatabaseController constructor. Creates and populates new database if one is not found.
@@ -39,8 +49,14 @@ public class DatabaseController implements AutoCloseable {
 		}
 
 		TableFactory tableFactory = new TableFactory(connection);
-		nodeTable = tableFactory.getTable(DatabaseInfo.TABLES.NODES);
-		edgeTable = tableFactory.getTable(DatabaseInfo.TABLES.EDGES);
+		nodeTable = tableFactory.getTable(TABLES.NODES);
+		edgeTable = tableFactory.getTable(TABLES.EDGES);
+		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+
+		requestsTables = new HashMap<>();
+		for (TABLES.SERVICEREQUESTS table : TABLES.SERVICEREQUESTS.values()) {
+			requestsTables.put(table, tableFactory.getTable(table));
+		}
 
 		if (!dbExists) {
 			populateDB();
@@ -255,8 +271,10 @@ public class DatabaseController implements AutoCloseable {
 		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.NODE_TABLE_SQL)) {
 			smnt.execute();
 		}
-
 		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.EDGE_TABLE_SQL)) { //TODO: Make the column names available as static variables?
+			smnt.execute();
+		}
+		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.SERVICE_REQUESTS_TABLE_SQL)) {
 			smnt.execute();
 		}
 	}
@@ -269,7 +287,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	private void populateDB() throws URISyntaxException, IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), TABLES.NODES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), TABLES.EDGES);
 	}
 }
