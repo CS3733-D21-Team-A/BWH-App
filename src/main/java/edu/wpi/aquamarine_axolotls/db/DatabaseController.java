@@ -280,26 +280,24 @@ public class DatabaseController implements AutoCloseable {
 	// ===== SERVICE REQUESTS =====
 
 	public void addServiceRequest(TABLES.SERVICEREQUESTS requestType, Map<String,String> sharedValues, Map<String,String> requestValues) throws SQLException {
-		Map<String, String> values = new HashMap<String, String>();
+		Map<String, String> values = new HashMap<>();
 		values.putAll(sharedValues);
 		values.putAll(requestValues);
-		values.put("REQUESTTYPE", requestType.toString());
+		values.put("REQUESTTYPE", requestType.text);
 		serviceRequestsTable.addEntry(values);
 		//TODO: IMPLEMENT THIS
 	}
 
 	public void changeStatus(String requestID, TABLES.SERVICEREQUESTS.STATUSES newStatus) throws SQLException {
 		//TODO: IMPLEMENT THIS
-		Map<String, String> values = new HashMap<String, String>();
-		values = serviceRequestsTable.getEntry(requestID);
-		values.replace("STATUS", newStatus.toString());
+		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
+		values.replace("STATUS", newStatus.text);
 		serviceRequestsTable.editEntry(requestID, values);
 	}
 
 	public void changeEmployee(String requestID, String employeeID) throws SQLException {
 		//TODO: IMPLEMENT THIS
-		Map<String, String> values = new HashMap<String, String>();
-		values = serviceRequestsTable.getEntry(requestID);
+		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
 		values.replace("EMPLOYEE", employeeID);
 		serviceRequestsTable.editEntry(requestID, values);
 	}

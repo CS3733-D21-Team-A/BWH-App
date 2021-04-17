@@ -49,7 +49,7 @@ public class DatabaseInfo {
 				SERVICEREQUESTS_SQL.put(FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
 			}
 
-			public String text;
+			public final String text;
 
 			SERVICEREQUESTS(String text) {
 				this.text = text;
@@ -62,7 +62,7 @@ public class DatabaseInfo {
 				DONE("Done"),
 				CANCELED("Canceled");
 
-				public String text;
+				public final String text;
 
 				STATUSES(String text) {
 					this.text = text;
