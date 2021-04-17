@@ -10,11 +10,11 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -29,13 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 public class EdgeEditing extends SEditing{
-    @FXML private JFXButton homeButton;
-    @FXML private JFXButton helpB;
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
-    @FXML public JFXButton importButton;
-    @FXML public JFXButton exportButton;
+    @FXML public MenuItem importButton;
+    @FXML public MenuItem exportButton;
     @FXML private JFXComboBox edgeDropdown;
     @FXML private JFXTextField edgeIDtextbox;
     @FXML private JFXComboBox startNodeDropdown;
@@ -54,15 +52,15 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
-        table.setEditable(false);
-        table.getItems().clear();
+        //table.setEditable(false);
+        //table.getItems().clear();
 
         ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
 
-        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
-        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
-        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
+        //edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
+        //startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
+        //endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
 
         edgeDropdown.setVisible(false);         //making fields invisible
         edgeIDtextbox.setVisible(false);
@@ -81,7 +79,7 @@ public class EdgeEditing extends SEditing{
 
             for (Map<String, String> edge : edges) {
                 edgeOptions.add(edge.get("EDGEID"));    //getting edge options
-                table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
+             //   table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
             }
             for (Map<String, String> node : nodes) {
                 nodeOptions.add(node.get("NODEID"));
@@ -143,7 +141,7 @@ public class EdgeEditing extends SEditing{
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
+        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
             db.emptyEdgeTable();
             csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES);
@@ -161,7 +159,7 @@ public class EdgeEditing extends SEditing{
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showSaveDialog(exportButton.getScene().getWindow());
+        File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
         try{
             csvHandler.exportCSV(csv, DatabaseInfo.TABLES.EDGES);
         }catch(IOException ie){
@@ -264,4 +262,6 @@ public class EdgeEditing extends SEditing{
         initialize();
     }
 
+    public void pressNodeButton() {
+    }
 }
