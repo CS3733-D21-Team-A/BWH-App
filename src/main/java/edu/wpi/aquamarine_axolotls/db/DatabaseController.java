@@ -293,14 +293,15 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.NODE_TABLE_SQL)) {
-			smnt.execute();
+		for (TABLES table : TABLES.values()) {
+			try (PreparedStatement smnt = connection.prepareStatement(table.SQL)) {
+				smnt.execute();
+			}
 		}
-		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.EDGE_TABLE_SQL)) { //TODO: Make the column names available as static variables?
-			smnt.execute();
-		}
-		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.SERVICE_REQUESTS_TABLE_SQL)) {
-			smnt.execute();
+		for (TABLES.SERVICEREQUESTS serviceRequest : TABLES.SERVICEREQUESTS.values()) {
+			try (PreparedStatement smnt = connection.prepareStatement(serviceRequest.SQL)) {
+				smnt.execute();
+			}
 		}
 	}
 

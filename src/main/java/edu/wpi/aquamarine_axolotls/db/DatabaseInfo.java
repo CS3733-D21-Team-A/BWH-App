@@ -10,30 +10,38 @@ public class DatabaseInfo {
 	 * Enum for database tables.
 	 */
 	public enum TABLES {
-		NODES,
-		EDGES,
-		SERVICE_REQUESTS;
+		NODES(NODE_TABLE_SQL),
+		EDGES(EDGE_TABLE_SQL),
+		SERVICE_REQUESTS(SERVICE_REQUESTS_TABLE_SQL);
+
+		String SQL;
+
+		TABLES(String SQL) {
+			this.SQL = SQL;
+		}
 
 		/**
 		 * Enum for service request tables
 		 */
 		public enum SERVICEREQUESTS {
-			EXTERNAL_TRANSPORT("External Transport"),
-			FLORAL_DELIVERY("Floral Delivery"),
-			FOOD_DELIVERY("Food Delivery"),
-			GIFT_DELIVERY("Gift Delivery"),
-			INTERNAL_TRANSPORT("Internal Transport"),
-			LANGUAGE_INTERPRETER("Language Interpreter"),
-			LAUNDRY("Laundry"),
-			MEDICINE_DELIVERY("Medicine Delivery"),
-			RELIGIOUS_REQUEST("Religious Request"),
-			SANITATION("Sanitation"),
-			SECURITY("Security");
+			EXTERNAL_TRANSPORT("External Transport", null),
+			FLORAL_DELIVERY("Floral Delivery", FLORAL_DELIVERY_TABLE_SQL),
+			FOOD_DELIVERY("Food Delivery", FOOD_DELIVERY_TABLE_SQL),
+			GIFT_DELIVERY("Gift Delivery", null),
+			INTERNAL_TRANSPORT("Internal Transport", null),
+			LANGUAGE_INTERPRETER("Language Interpreter", null),
+			LAUNDRY("Laundry", null),
+			MEDICINE_DELIVERY("Medicine Delivery", null),
+			RELIGIOUS_REQUEST("Religious Request", null),
+			SANITATION("Sanitation", null),
+			SECURITY("Security", null);
 
 			public String text;
+			String SQL;
 
-			SERVICEREQUESTS(String text) {
+			SERVICEREQUESTS(String text, String SQL) {
 				this.text = text;
+				this.SQL = SQL;
 			}
 
 			public enum STATUSES {
@@ -63,9 +71,18 @@ public class DatabaseInfo {
 	static final String edgeResourcePath = "edu/wpi/aquamarine_axolotls/csv/MapAedges.csv";
 
 	/**
+	 * Convert resource path string to File.
+	 * @param resourcePath path to resource in app structure.
+	 * @return File for corresponding resource.
+	 */
+	static InputStream resourceAsStream(String resourcePath) {
+		return DatabaseInfo.class.getClassLoader().getResourceAsStream(resourcePath);
+	}
+
+	/**
 	 * SQL for building the NODES table.
 	 */
-	static final String NODE_TABLE_SQL =
+	private static final String NODE_TABLE_SQL =
 		"CREATE TABLE " + TABLES.NODES.name() + " (" +
 			"NODEID VARCHAR(25) PRIMARY KEY," +
 			"XCOORD NUMERIC(5)," +
@@ -80,7 +97,7 @@ public class DatabaseInfo {
 	/**
 	 * SQL for building the EDGES table.
 	 */
-	static final String EDGE_TABLE_SQL =
+	private static final String EDGE_TABLE_SQL =
 	   "CREATE TABLE " + TABLES.EDGES.name() + " (" +
 		   "EDGEID VARCHAR(51) PRIMARY KEY," +
 			"STARTNODE VARCHAR(25)REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," + //TODO: wanna keep on update restrict?
@@ -90,7 +107,7 @@ public class DatabaseInfo {
 	/**
 	 * SQL for building the SERVICE_REQUESTS table.
 	 */
-	static final String SERVICE_REQUESTS_TABLE_SQL =
+	private static final String SERVICE_REQUESTS_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICE_REQUESTS.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"STATUS ENUM('Unassigned','Assigned','In Progress','Done','Canceled') DEFAULT 'Unassigned'," +
@@ -104,7 +121,7 @@ public class DatabaseInfo {
 	/**
 	 * SQL for building the FOOD_DELIVERY table.
 	 */
-	static final String FOOD_DELIVERY_TABLE_SQL =
+	private static final String FOOD_DELIVERY_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID)," + //TODO: what to do on delete or update? +
 			"DELIVERYTIME TIME(0)," +
@@ -115,20 +132,11 @@ public class DatabaseInfo {
 	/**
 	 * SQL for building the FLORAL_DELIVERY table.
 	 */
-	static final String FLORAL_DELIVERY_TABLE_SQL =
+	private static final String FLORAL_DELIVERY_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"DELIVERYTIME TIME(0)," +
 			"NOTE VARCHAR(300)," +
 			"CONSTRAINT FK_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID)," + //TODO: what to do on delete or update?
 		")";
-
-	/**
-	 * Convert resource path string to File.
-	 * @param resourcePath path to resource in app structure.
-	 * @return File for corresponding resource.
-	 */
-	static InputStream resourceAsStream(String resourcePath) {
-		return DatabaseInfo.class.getClassLoader().getResourceAsStream(resourcePath);
-	}
 }
