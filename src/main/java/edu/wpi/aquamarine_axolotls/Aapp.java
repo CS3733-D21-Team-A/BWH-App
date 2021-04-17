@@ -1,6 +1,10 @@
 package edu.wpi.aquamarine_axolotls;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +14,8 @@ import javafx.stage.Stage;
 public class Aapp extends Application {
 
   private static Stage primaryStage;
+
+  public static List<Map<String,String>> serviceRequests = new ArrayList<>();
 
 
   @Override
@@ -21,7 +27,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/DefaultServicePage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
@@ -38,6 +44,7 @@ public class Aapp extends Application {
   public static Stage getPrimaryStage(){
     return primaryStage;
   }
+
 
 
 
