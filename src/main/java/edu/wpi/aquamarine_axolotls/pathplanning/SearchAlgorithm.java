@@ -431,4 +431,21 @@ public class SearchAlgorithm{
         System.out.println("pathiscorrect: " + (startNodeisEqual && goalNodeisEqual));
         return startNodeisEqual && goalNodeisEqual;
     }
+
+    private double getETASingleEdge(Node start, Node goal){
+        double walkingSpeed = 176; //2 miles/h
+        double distance = getCostTo(start,goal);
+        double ETASingleEdge;
+
+        ETASingleEdge = distance/walkingSpeed;
+        return ETASingleEdge;
+    }
+
+    private double getETA(List<Node> path){
+        double ETASoFar = 0.0;
+        for(int i = 0; i< path.size()-1;i++){
+            ETASoFar += getETASingleEdge(path.get(i), path.get(i+1));
+        }
+        return ETASoFar;
+    }
 }
