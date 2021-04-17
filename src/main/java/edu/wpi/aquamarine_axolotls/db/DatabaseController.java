@@ -260,6 +260,31 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 
+	// ===== SERVICE REQUESTS =====
+
+	public void addServiceRequest(TABLES.SERVICEREQUESTS requestType, Map<String,String> sharedValues, Map<String,String> requestValues) {
+		//TODO: IMPLEMENT THIS
+	}
+
+	public void changeStatus(String requestID, TABLES.SERVICEREQUESTS.STATUSES newStatus) {
+		//TODO: IMPLEMENT THIS
+	}
+
+	public void changeEmployee(String requestID, String employeeID) {
+		//TODO: IMPLEMENT THIS
+	}
+
+	public void setEmployee(String requestID, String employeeID) {
+		//TODO: does this need changing?
+		changeEmployee(requestID, employeeID);
+		changeStatus(requestID, TABLES.SERVICEREQUESTS.STATUSES.ASSIGNED);
+	}
+
+	public List<Map<String,String>> getServiceRequestsWithStatus(TABLES.SERVICEREQUESTS.STATUSES status) {
+		return null; //TODO: IMPLEMENT THIS
+	}
+
+
 	// ===== DATABASE CREATION =====
 
 

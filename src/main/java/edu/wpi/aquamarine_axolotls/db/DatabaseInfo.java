@@ -18,17 +18,37 @@ public class DatabaseInfo {
 		 * Enum for service request tables
 		 */
 		public enum SERVICEREQUESTS {
-			EXTERNAL_TRANSPORT,
-			FLORAL_DELIVERY,
-			FOOD_DELIVERY,
-			GIFT_DELIVERY,
-			INTERNAL_TRANSPORT,
-			LANGUAGE_INTERPRETER,
-			LAUNDRY,
-			MEDICINE_DELIVERY,
-			RELIGIOUS_REQUEST,
-			SANITATION,
-			SECURITY
+			EXTERNAL_TRANSPORT("External Transport"),
+			FLORAL_DELIVERY("Floral Delivery"),
+			FOOD_DELIVERY("Food Delivery"),
+			GIFT_DELIVERY("Gift Delivery"),
+			INTERNAL_TRANSPORT("Internal Transport"),
+			LANGUAGE_INTERPRETER("Language Interpreter"),
+			LAUNDRY("Laundry"),
+			MEDICINE_DELIVERY("Medicine Delivery"),
+			RELIGIOUS_REQUEST("Religious Request"),
+			SANITATION("Sanitation"),
+			SECURITY("Security");
+
+			public String text;
+
+			SERVICEREQUESTS(String text) {
+				this.text = text;
+			}
+
+			public enum STATUSES {
+				UNASSIGNED("Unassigned"),
+				ASSIGNED("Assigned"),
+				IN_PROGRESS("In Progress"),
+				DONE("Done"),
+				CANCELED("Canceled");
+
+				public String text;
+
+				STATUSES(String text) {
+					this.text = text;
+				}
+			}
 		}
 	}
 
