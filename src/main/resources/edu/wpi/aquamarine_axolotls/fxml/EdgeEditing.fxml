@@ -2,11 +2,12 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,173 +16,222 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.EdgeEditing">
     <children>
-        <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <GridPane alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="600.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                    <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="291.0">
-                            <padding>
-                                <Insets left="10.0" top="7.0" />
-                            </padding>
-                            <children>
-                                <ImageView fitHeight="42.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../img/logo.png" />
-                                    </image>
-                                </ImageView>
-                                <Label fx:id="text" prefHeight="27.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                                    <font>
-                                        <Font name="Times New Roman" size="12.0" />
-                                    </font>
-                                    <HBox.margin>
-                                        <Insets left="5.0" />
-                                    </HBox.margin>
-                                </Label>
-                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                            <children>
-                                <JFXButton fx:id="homeButton" mnemonicParsing="false" onAction="#adminHome" style="-fx-background-color: #ffffff00;" text=" ">
-                                    <graphic>
-                                        <ImageView>
-                                            <image>
-                                                <Image url="@../img/homeBlue.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                    <HBox.margin>
-                                        <Insets right="5.0" />
-                                    </HBox.margin>
-                                </JFXButton>
-                                <JFXButton fx:id="helpB" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
-                                    <graphic>
-                                        <ImageView>
-                                            <image>
-                                                <Image url="@../img/helpBlue.png" />
-                                            </image>
-                                        </ImageView>
-                                    </graphic>
-                                    <HBox.margin>
-                                        <Insets />
-                                    </HBox.margin>
-                                </JFXButton>
-                            </children>
-                        </HBox>
-                    </children>
-                </GridPane>
-                <HBox prefHeight="11.0" prefWidth="600.0" style="-fx-background-color: #003da6;" />
-            <GridPane prefHeight="329.0" prefWidth="580.0">
+          <GridPane alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="600.0">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="285.0" minWidth="10.0" prefWidth="140.0" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="453.0" minWidth="10.0" prefWidth="440.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
+              <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="291.0">
+                      <padding>
+                          <Insets left="10.0" top="7.0" />
+                      </padding>
+                      <children>
+                          <ImageView fitHeight="42.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                  <Image url="@../img/logo.png" />
+                              </image>
+                          </ImageView>
+                          <Label fx:id="text" prefHeight="27.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                              <font>
+                                  <Font name="Times New Roman" size="12.0" />
+                              </font>
+                              <HBox.margin>
+                                  <Insets left="5.0" />
+                              </HBox.margin>
+                          </Label>
+                      </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                        <GridPane alignment="TOP_CENTER">
+                  <JFXHamburger prefHeight="64.0" prefWidth="30.0">
+                     <HBox.margin>
+                        <Insets right="10.0" />
+                     </HBox.margin>
+                  </JFXHamburger>
+               </children>
+                  </HBox>
+              </children>
+          </GridPane>
+      <Rectangle arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" width="600.0" AnchorPane.topAnchor="64.0" />
+      <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="74.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="296.66668701171875" minWidth="10.0" prefWidth="175.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="432.6666564941406" minWidth="10.0" prefWidth="424.6666564941406" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <AnchorPane prefHeight="326.0" prefWidth="175.0" style="-fx-background-color: ffffff;">
+               <children>
+                  <Rectangle arcWidth="5.0" fill="#003da6" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="175.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <GridPane alignment="BOTTOM_CENTER" prefWidth="165.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints maxHeight="31.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="46.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="52.0" minHeight="10.0" prefHeight="32.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="48.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="78.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="67.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                <RowConstraints maxHeight="89.0" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="27.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="48.666656494140625" minHeight="40.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="40.0" minHeight="22.666671752929688" prefHeight="20.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" minHeight="40.0" prefHeight="20.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXButton fx:id="deleteButton" onAction="#pressDeleteButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Delete" textFill="WHITE" />
-                                <JFXButton fx:id="addButton" onAction="#pressAddButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Add" textAlignment="CENTER" textFill="WHITE" GridPane.rowIndex="1" />
-                                <JFXButton fx:id="editButton" onAction="#pressEditButton" prefHeight="27.0" prefWidth="124.0" style="-fx-background-color: #003da6;" text="Edit" textFill="WHITE" GridPane.rowIndex="2">
-                                    <font>
-                                        <Font name="Times New Roman" size="13.0" />
-                                    </font>
-                                </JFXButton>
-                                <JFXComboBox fx:id="edgeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="137.0" promptText="Edge Dropdown" style="-fx-font-size: 8;" GridPane.rowIndex="4" />
-                                <JFXTextField fx:id="edgeIDtextbox" promptText="Edge ID" GridPane.rowIndex="4">
-                                    <font>
-                                        <Font size="10.0" />
-                                    </font>
-                                </JFXTextField>
-                                <JFXComboBox fx:id="startNodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="137.0" promptText="Start Node" style="-fx-font-size: 8;" GridPane.rowIndex="5" />
-                                <JFXComboBox fx:id="endNodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="137.0" promptText="End Node" style="-fx-font-size: 8;" GridPane.rowIndex="6" />
-                                <VBox prefHeight="335.0" prefWidth="156.0" GridPane.rowIndex="7">
-                                    <children>
-                                        <Label fx:id="submissionlabel" prefHeight="21.0" prefWidth="141.0" textAlignment="CENTER" textOverrun="CLIP">
-                                            <VBox.margin>
-                                                <Insets top="10.0" />
-                                            </VBox.margin>
-                                            <font>
-                                                <Font name="Times New Roman" size="8.0" />
-                                            </font>
-                                        </Label>
-                                        <JFXButton fx:id="submissionButton" contentDisplay="CENTER" layoutX="30.0" layoutY="233.0" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
-                                            <font>
-                                                <Font size="10.0" />
-                                            </font>
-                                            <VBox.margin>
-                                                <Insets bottom="20.0" top="10.0" />
-                                            </VBox.margin>
-                                        </JFXButton>
-                                    </children>
-                                    <padding>
-                                        <Insets left="10.0" right="10.0" top="10.0" />
-                                    </padding>
-                                </VBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="150.0">
                            <children>
-                              <JFXButton fx:id="importButton" onAction="#loadCSV" prefHeight="20.0" prefWidth="55.0" style="-fx-background-color: #e0e0e0;" text="Import">
+                              <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="42.0" style="-fx-background-color: f0f0f0;" text="File" textFill="#8b8b8b">
+                                <items>
+                                  <MenuItem fx:id="importButton" mnemonicParsing="false" onAction="#loadCSV" text="Import" />
+                                  <MenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
+                                </items>
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
                                  <HBox.margin>
-                                    <Insets right="5.0" />
+                                    <Insets right="2.0" />
                                  </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="-4.0" left="-3.0" right="-3.0" top="-4.0" />
+                                 </padding>
+                              </MenuButton>
+                              <JFXButton fx:id="nodeButton" onAction="#pressNodeButton" prefHeight="18.0" prefWidth="37.0" style="-fx-background-color: f0f0f0;" text="Nodes" textFill="#8b8b8b">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="2.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="-3.0" left="-3.0" right="-3.0" top="-3.0" />
+                                 </padding>
                               </JFXButton>
-                              <JFXButton fx:id="exportButton" onAction="#exportCSV" prefHeight="20.0" prefWidth="55.0" style="-fx-background-color: #e0e0e0;" text="Export">
+                              <JFXButton fx:id="editButton" onAction="#pressEditButton" prefHeight="18.0" prefWidth="28.0" style="-fx-background-color: f0f0f0;" text="Edit" textFill="#8b8b8b">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
                                  <HBox.margin>
-                                    <Insets left="5.0" right="5.0" />
+                                    <Insets right="2.0" />
                                  </HBox.margin>
+                                 <padding>
+                                    <Insets bottom="-3.0" left="-3.0" right="-3.0" top="-3.0" />
+                                 </padding>
+                              </JFXButton>
+                              <JFXButton fx:id="addButton" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" minHeight="-Infinity" onAction="#pressAddButton" prefHeight="18.0" prefWidth="24.0" style="-fx-background-color: f0f0f0;" text="add" textFill="#8b8b8b">
+                                 <graphic>
+                                    <ImageView fitHeight="11.0" fitWidth="11.0">
+                                       <image>
+                                          <Image url="@../img/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="2.0" />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets top="-1.0" />
+                                 </padding>
+                              </JFXButton>
+                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" onAction="#pressDeleteButton" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
+                                 <graphic>
+                                    <ImageView fitHeight="13.0" fitWidth="11.0">
+                                       <image>
+                                          <Image url="@../img/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets top="-1.0" />
+                                 </padding>
                               </JFXButton>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
+                           <children>
+                                      <JFXComboBox fx:id="endNodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="End Node" style="-fx-font-size: 8;" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+                           <children>
+                                      <JFXComboBox fx:id="startNodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Start Node" style="-fx-font-size: 8;" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                                      <JFXTextField fx:id="edgeIDtextbox" maxWidth="-Infinity" prefHeight="23.0" prefWidth="130.0" promptText="Edge ID">
+                                          <font>
+                                              <Font size="8.0" />
+                                          </font>
+                                      </JFXTextField>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                                      <JFXComboBox fx:id="edgeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Edge Dropdown" style="-fx-font-size: 8;" />
+                           </children>
+                        </HBox>
                             </children>
-                     <GridPane.margin>
-                        <Insets left="10.0" top="10.0" />
-                     </GridPane.margin>
                         </GridPane>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1">
-                            <children>
-                        <TableView fx:id="table" prefHeight="309.0" prefWidth="440.0">
-                          <columns>
-                            <TableColumn fx:id="edgeIdCol" prefWidth="145.0" text="Edge ID" />
-                            <TableColumn fx:id="startNodeCol" prefWidth="135.0" text="Start Node" />
-                              <TableColumn fx:id="endNodeCol" minWidth="7.0" prefWidth="135.0" text="End Node" />
-                          </columns>
-                           <VBox.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </VBox.margin>
-                        </TableView>
-                            </children>
+                  <AnchorPane prefHeight="80.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0">
+                     <children>
+                        <VBox prefHeight="80.0" prefWidth="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="77.0" prefWidth="175.0">
+                                 <children>
+                                              <Label fx:id="submissionlabel" prefHeight="21.0" prefWidth="141.0" textAlignment="CENTER" textOverrun="CLIP">
+                                                  <font>
+                                                      <Font name="Times New Roman" size="8.0" />
+                                                  </font>
+                                              </Label>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="175.0" style="-fx-background-color: f0f0f0;">
+                                 <children>
+                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                                  <font>
+                                                      <Font size="10.0" />
+                                                  </font>
+                                       <HBox.margin>
+                                          <Insets top="10.0" />
+                                       </HBox.margin>
+                                              </JFXButton>
+                                 </children>
+                              </HBox>
+                           </children>
                         </VBox>
+                     </children>
+                  </AnchorPane>
                </children>
-            </GridPane>
-            </children>
-        </VBox>
+            </AnchorPane>
+            <AnchorPane prefHeight="326.0" prefWidth="425.0" GridPane.columnIndex="1">
+               <children>
+                  <ImageView fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <image>
+                        <Image url="@../img/groundFloor.png" />
+                     </image>
+                  </ImageView>
+                  <MenuButton layoutX="304.0" layoutY="254.0" mnemonicParsing="false" popupSide="TOP" text="Change Floor" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
+                    <items>
+                      <MenuItem fx:id="groundFloorView" mnemonicParsing="false" text="Ground Floor" />
+                      <MenuItem fx:id="floor1View" mnemonicParsing="false" text="Floor1" />
+                    </items>
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                  </MenuButton>
+               </children>
+            </AnchorPane>
+         </children>
+      </GridPane>
     </children>
-    <padding>
-        <Insets left="10.0" right="10.0" />
-    </padding>
 </AnchorPane>
