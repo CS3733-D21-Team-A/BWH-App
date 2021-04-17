@@ -16,9 +16,7 @@ import javafx.scene.shape.Line;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Navigation  extends SPage{
 
@@ -132,4 +130,49 @@ public class Navigation  extends SPage{
             }
     }
 
+    /**
+     * Gets the closest node to the mouse cursor when clicked
+     * @param x The x-coord of the mouse, passed as a double so we can do trigonometry with it
+     * @param y The y-coord of the mouse
+     * @param radius The radius in which to search -- nodes beyond that distance will not be considered
+     */
+    public String getNearestNode(double x, double y, double radius) {
+        List<Map<String, String>> nodes = new ArrayList<>();
+
+        //Get nodes from database
+        try {
+            nodes = db.getNodes();
+        }
+        catch(SQLException se) {
+            se.printStackTrace();
+        }
+
+        //Establish current closest recorded node and current least distance
+        Map<String, String> currClosest = new HashMap<>();
+        double currLeastDist = 100000;
+
+        //Loop through nodes
+        for (Map<String, String> n : nodes) {
+            //Get the x and y of that node
+            double currNodeX = Double.parseDouble(n.get("XCOORD"));
+            double currNodeY = Double.parseDouble(n.get("YCOORD"));
+
+            //Get the difference in x and y between input coords and current node coords
+            double xOff = Math.abs(x - currNodeX);
+            double yOff = Math.abs(y - currNodeY);
+
+            //Give 'em the ol' pythagoras maneuver
+            double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+            dist = Math.sqrt(dist);
+
+            //If the distance is LESS than the given radius...
+            if (dist < radius) {
+                //...AND the distance is less than the current min, update current closest node
+                if (dist < currLeastDist) currClosest = n;
+            }
+        }
+
+        //Return the long name of this node
+        return currClosest.get("LONGNAME");
+    }
 }
