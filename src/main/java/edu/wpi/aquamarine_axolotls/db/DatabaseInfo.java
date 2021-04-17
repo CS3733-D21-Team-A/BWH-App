@@ -14,6 +14,7 @@ public class DatabaseInfo {
 	public enum TABLES {
 		NODES,
 		EDGES,
+		ATTRIBUTES,
 		SERVICE_REQUESTS;
 
 		static final Map<TABLES,String> TABLE_SQL;
@@ -21,6 +22,7 @@ public class DatabaseInfo {
 			TABLE_SQL = new EnumMap<>(TABLES.class);
 			TABLE_SQL.put(NODES, NODE_TABLE_SQL);
 			TABLE_SQL.put(EDGES, EDGE_TABLE_SQL);
+			TABLE_SQL.put(ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
 			TABLE_SQL.put(SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		}
 
@@ -149,4 +151,17 @@ public class DatabaseInfo {
 			"DELIVERYTIME TIME(0)," +
 			"NOTE VARCHAR(300)," +
 		")";
+
+	/**
+	 * SQL for building the ATTRIBUTES table.
+	 */
+	private static final String ATTRIBUTES_TABLE_SQL =
+		"CREATE TABLE " + TABLES.ATTRIBUTES.name() + " (" +
+			"ATTID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
+			"NODEID VARCHAR(25) CONSTRAINT FK_NODEID REFERENCES " + TABLES.NODES.name() + "," + //TODO: what to do on delete or update?
+			"EDGEID VARCHAR(51) CONSTRAINT FK_EDGEID REFERENCES " + TABLES.EDGES.name() + "," + //TODO: what to do on delete or update?
+			"ATTRIBUTE VARCHAR(30)" +
+		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
+
+
 }

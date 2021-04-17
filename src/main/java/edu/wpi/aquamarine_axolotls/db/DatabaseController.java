@@ -17,6 +17,7 @@ public class DatabaseController implements AutoCloseable {
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
+	final private Table attrTable;
 	final private Table serviceRequestsTable;
 	/*
 	 * Map for getting service request tables.
@@ -51,6 +52,7 @@ public class DatabaseController implements AutoCloseable {
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
 		edgeTable = tableFactory.getTable(TABLES.EDGES);
+		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
 
 		requestsTables = new HashMap<>();
@@ -287,6 +289,37 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 
+	// ===== NODE / EDGE ATTRIBUTES =====
+
+	public void deleteAttribute(String id, String attribute, boolean isNode) { //TODO: make attribute enum?
+		//TODO: IMPLEMENT THIS
+	}
+
+	public void addAttribute(String id, String attribute, boolean isNode) { //TODO: make attribute enum?
+		//TODO: IMPLEMENT THIS
+	}
+
+	public void clearAttributes(String id, boolean isNode) {
+		/*List<Map<String,String>> entries = attrTable.getEntriesByValue(isNode ? "NODEID" : "EDGEID", id);
+		for (Map<String,String> entry : entries) {
+			nodeTable.deleteEntry(entry.get("ATTID"));
+		}*/
+		//TODO: IMPLEMENT THIS
+	}
+
+	public List<String> getAttributes(String id, boolean isNode) { //TODO: make attribute enum?
+		return null; //TODO: IMPLEMENT THIS
+	}
+
+	public boolean hasAttribute(String id, String attribute, boolean isNode) { //TODO: make attribute enum?
+		return false; //TODO: IMPLEMENT THIS
+	}
+
+	public List<String> getByAttribute(String attribute, boolean isNode) { //TODO: make attribute enum?
+		return null; //TODO: IMPLEMENT THIS
+	}
+
+
 	// ===== DATABASE CREATION =====
 
 
@@ -295,14 +328,14 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		for (TABLES table : TABLES.values()) {
-			try (PreparedStatement smnt = connection.prepareStatement(TABLES.TABLE_SQL.get(table))) {
+		for (String SQL : TABLES.TABLE_SQL.values()) {
+			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 				smnt.execute();
 			}
 		}
-		for (TABLES.SERVICEREQUESTS serviceRequest : TABLES.SERVICEREQUESTS.values()) {
-			if (TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(serviceRequest) != null) {
-				try (PreparedStatement smnt = connection.prepareStatement(TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(serviceRequest))) {
+		for (String SQL : TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.values()) {
+			if (SQL != null) {
+				try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 					smnt.execute();
 				}
 			}
