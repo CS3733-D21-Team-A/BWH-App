@@ -208,6 +208,37 @@ class Table {
 	}
 
 	/**
+	 * Query the SQL table for entries with the provided value in the provided column.
+	 * @param filters Map of column names and values to filter by.
+	 * @return List of maps containing the results of the query.
+	 * @throws SQLException Something went wrong.
+	 */
+	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException {
+		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
+		for (String columnName : filters.keySet()) {
+			sb.append(columnName);
+			sb.append(" = ? AND ");
+		}
+		sb.delete(sb.length() - " AND ".length(), sb.length()); //get rid of hanging AND
+
+		try (PreparedStatement smnt = connection.prepareStatement(sb.toString())) {
+			int i = 0;
+			for (String columnName : filters.keySet()) {
+				for (String value : filters.get(columnName)) {
+					smnt.setString(i++, value);
+				}
+			}
+			try (ResultSet rs = smnt.executeQuery()) {
+				return resultSetToList(rs);
+			}
+		}
+	}
+
+
+
+
+
+	/**
 	 * Empties the table by deleting all entries.
 	 * @throws SQLException Something went wrong.
 	 */

@@ -5,9 +5,8 @@ import org.apache.derby.jdbc.EmbeddedDriver;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
 
 /**
@@ -160,6 +159,13 @@ public class DatabaseController implements AutoCloseable {
 		return nodeTable.getEntry(nodeID);
 	}
 
+	public List<Map<String,String>> getNodes(List<String> nodeIDs) throws SQLException {
+		Map<String,List<String>> idMap = new HashMap<>();
+		idMap.put("NODEID", nodeIDs);
+
+		return nodeTable.getEntriesByValues(idMap);
+	}
+
 	/**
 	 * Empties the node table by deleting all entries.
 	 * @throws SQLException Something went wrong.
@@ -238,6 +244,13 @@ public class DatabaseController implements AutoCloseable {
 		return edgeTable.getEntry(edgeID);
 	}
 
+	public List<Map<String,String>> getEdges(List<String> edgeIDs) throws SQLException {
+		Map<String,List<String>> idMap = new HashMap<>();
+		idMap.put("EDGEID", edgeIDs);
+
+		return nodeTable.getEntriesByValues(idMap);
+	}
+
 	/**
 	 * Get edges connected to the node with the provided ID
 	 * @param nodeID ID of node to find edges connected to.
@@ -291,32 +304,64 @@ public class DatabaseController implements AutoCloseable {
 
 	// ===== NODE / EDGE ATTRIBUTES =====
 
-	public void deleteAttribute(String id, String attribute, boolean isNode) { //TODO: make attribute enum?
-		//TODO: IMPLEMENT THIS
+	private String idColumn(boolean isNode) {
+		return isNode ? "NODEID" : "EDGEID";
 	}
 
-	public void addAttribute(String id, String attribute, boolean isNode) { //TODO: make attribute enum?
-		//TODO: IMPLEMENT THIS
+	public void deleteAttribute(String id, String attribute, boolean isNode) throws SQLException { //TODO: make attribute enum?
+		Map<String,List<String>> filters = new HashMap<>();
+		filters.put(idColumn(isNode), Collections.singletonList(id));
+		filters.put("ATTRIBUTE", Collections.singletonList(attribute));
+
+		for (Map<String,String> entry : attrTable.getEntriesByValues(filters)) { //TODO: this only ever returns one value, simplify?
+			attrTable.deleteEntry(entry.get("ATTRID"));
+		}
 	}
 
-	public void clearAttributes(String id, boolean isNode) {
-		/*List<Map<String,String>> entries = attrTable.getEntriesByValue(isNode ? "NODEID" : "EDGEID", id);
+	public void addAttribute(String id, String attribute, boolean isNode) throws SQLException { //TODO: make attribute enum?
+		Map<String,String> values = new HashMap<>();
+		values.put(idColumn(isNode), id);
+		values.put("ATTRIBUTE", attribute);
+
+		attrTable.addEntry(values);
+	}
+
+	public void clearAttributes(String id, boolean isNode) throws SQLException {
+		List<Map<String,String>> entries = attrTable.getEntriesByValue(idColumn(isNode), id);
 		for (Map<String,String> entry : entries) {
 			nodeTable.deleteEntry(entry.get("ATTID"));
-		}*/
+		}
 		//TODO: IMPLEMENT THIS
 	}
 
-	public List<String> getAttributes(String id, boolean isNode) { //TODO: make attribute enum?
-		return null; //TODO: IMPLEMENT THIS
+	public List<String> getAttributes(String id, boolean isNode) throws SQLException { //TODO: make attribute enum?
+		List<String> attributes = new ArrayList<>();
+		for (Map<String,String> attr : attrTable.getEntriesByValue(idColumn(isNode), id)) {
+			attributes.add(attr.get("ATTRIBUTE"));
+		}
+
+		return attributes;
 	}
 
-	public boolean hasAttribute(String id, String attribute, boolean isNode) { //TODO: make attribute enum?
-		return false; //TODO: IMPLEMENT THIS
+	public boolean hasAttribute(String id, String attribute, boolean isNode) throws SQLException { //TODO: make attribute enum?
+		Map<String,List<String>> filters = new HashMap<>();
+		filters.put(idColumn(isNode), Collections.singletonList(id));
+		filters.put("ATTRIBUTE", Collections.singletonList(attribute));
+
+		return attrTable.getEntriesByValues(filters).size() > 0; //TODO: this only ever returns one value, simplify?
 	}
 
-	public List<String> getByAttribute(String attribute, boolean isNode) { //TODO: make attribute enum?
-		return null; //TODO: IMPLEMENT THIS
+	public List<String> getByAttribute(String attribute, boolean isNode) throws SQLException { //TODO: make attribute enum?
+		Map<String,List<String>> filters = new HashMap<>();
+		filters.put(idColumn(!isNode), Collections.singletonList(null));
+		filters.put("ATTRIBUTE", Collections.singletonList(attribute));
+
+		List<String> ids = new ArrayList<>();
+		for (Map<String,String> entry : attrTable.getEntriesByValues(filters)) { //TODO: this only ever returns one value, simplify?
+			ids.add(entry.get(idColumn(isNode)));
+		}
+
+		return ids;
 	}
 
 
