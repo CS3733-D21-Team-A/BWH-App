@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import java.io.InputStream;
+import java.util.EnumMap;
+import java.util.Map;
 
 /**
  * Class containing static info for reference when working with the database.
@@ -10,38 +12,45 @@ public class DatabaseInfo {
 	 * Enum for database tables.
 	 */
 	public enum TABLES {
-		NODES(NODE_TABLE_SQL),
-		EDGES(EDGE_TABLE_SQL),
-		SERVICE_REQUESTS(SERVICE_REQUESTS_TABLE_SQL);
+		NODES,
+		EDGES,
+		SERVICE_REQUESTS;
 
-		String SQL;
-
-		TABLES(String SQL) {
-			this.SQL = SQL;
+		static final Map<TABLES,String> TABLE_SQL;
+		static {
+			TABLE_SQL = new EnumMap<>(TABLES.class);
+			TABLE_SQL.put(NODES, NODE_TABLE_SQL);
+			TABLE_SQL.put(EDGES, EDGE_TABLE_SQL);
+			TABLE_SQL.put(SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		}
 
 		/**
 		 * Enum for service request tables
 		 */
 		public enum SERVICEREQUESTS {
-			EXTERNAL_TRANSPORT("External Transport", null),
-			FLORAL_DELIVERY("Floral Delivery", FLORAL_DELIVERY_TABLE_SQL),
-			FOOD_DELIVERY("Food Delivery", FOOD_DELIVERY_TABLE_SQL),
-			GIFT_DELIVERY("Gift Delivery", null),
-			INTERNAL_TRANSPORT("Internal Transport", null),
-			LANGUAGE_INTERPRETER("Language Interpreter", null),
-			LAUNDRY("Laundry", null),
-			MEDICINE_DELIVERY("Medicine Delivery", null),
-			RELIGIOUS_REQUEST("Religious Request", null),
-			SANITATION("Sanitation", null),
-			SECURITY("Security", null);
+			EXTERNAL_TRANSPORT("External Transport"),
+			FLORAL_DELIVERY("Floral Delivery"),
+			FOOD_DELIVERY("Food Delivery"),
+			GIFT_DELIVERY("Gift Delivery"),
+			INTERNAL_TRANSPORT("Internal Transport"),
+			LANGUAGE_INTERPRETER("Language Interpreter"),
+			LAUNDRY("Laundry"),
+			MEDICINE_DELIVERY("Medicine Delivery"),
+			RELIGIOUS_REQUEST("Religious Request"),
+			SANITATION("Sanitation"),
+			SECURITY("Security");
+
+			static final Map<SERVICEREQUESTS,String> SERVICEREQUESTS_SQL;
+			static {
+				SERVICEREQUESTS_SQL = new EnumMap<>(SERVICEREQUESTS.class);
+				SERVICEREQUESTS_SQL.put(FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
+				SERVICEREQUESTS_SQL.put(FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
+			}
 
 			public String text;
-			String SQL;
 
-			SERVICEREQUESTS(String text, String SQL) {
+			SERVICEREQUESTS(String text) {
 				this.text = text;
-				this.SQL = SQL;
 			}
 
 			public enum STATUSES {
@@ -100,8 +109,8 @@ public class DatabaseInfo {
 	private static final String EDGE_TABLE_SQL =
 	   "CREATE TABLE " + TABLES.EDGES.name() + " (" +
 		   "EDGEID VARCHAR(51) PRIMARY KEY," +
-			"STARTNODE VARCHAR(25)REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," + //TODO: wanna keep on update restrict?
-			"ENDNODE VARCHAR(25) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT" + //TODO: wanna keep on update restrict?
+			"STARTNODE VARCHAR(25) CONSTRAINT FK_STARTNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," + //TODO: wanna keep on update restrict?
+			"ENDNODE VARCHAR(25) CONSTRAINT FK_ENDNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT" + //TODO: wanna keep on update restrict?
 		")"; //TODO: FIGURE OUT TAGS
 
 	/**
@@ -110,12 +119,14 @@ public class DatabaseInfo {
 	private static final String SERVICE_REQUESTS_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICE_REQUESTS.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
-			"STATUS ENUM('Unassigned','Assigned','In Progress','Done','Canceled') DEFAULT 'Unassigned'," +
+			"STATUS VARCHAR(11) DEFAULT 'Unassigned'," +
 			"EMPLOYEEID VARCHAR(30)," + //TODO: THIS IS A FOREIGN KEY TO THE USER TABLE (NOT YET IMPLEMENTED)
-			"LOCATIONID VARCHAR(25) REFERENCES " + TABLES.NODES.name() + "(NODEID)," + //TODO: what to do on delete or update?
+			"LOCATIONID VARCHAR(25) CONSTRAINT FK_LOCATIONID REFERENCES " + TABLES.NODES.name() + "," + //TODO: what to do on delete or update?
 			"FIRSTNAME VARCHAR(30)," +
 			"LASTNAME VARCHAR(50)," +
-			"REQUESTTYPE ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') NOT NULL," +
+			"REQUESTTYPE VARCHAR(20) NOT NULL" + //TODO: MAKE THIS USE ENUM
+				  //TODO: Constraint to replace ENUM('Unassigned','Assigned','In Progress','Done','Canceled') for STATUS
+				  //TODO: Constraint to replace ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') for REQUESTTYPE
 		")";
 
 	/**
@@ -123,7 +134,7 @@ public class DatabaseInfo {
 	 */
 	private static final String FOOD_DELIVERY_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
-			"REQUESTID VARCHAR(25) PRIMARY KEY REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID)," + //TODO: what to do on delete or update? +
+			"REQUESTID VARCHAR(25) PRIMARY KEY CONSTRAINT FK_REQUESTID REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "," + //TODO: what to do on delete or update? +
 			"DELIVERYTIME TIME(0)," +
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
@@ -134,9 +145,8 @@ public class DatabaseInfo {
 	 */
 	private static final String FLORAL_DELIVERY_TABLE_SQL =
 		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.name() + " (" +
-			"REQUESTID VARCHAR(25) PRIMARY KEY," +
+			"REQUESTID VARCHAR(25) PRIMARY KEY CONSTRAINT FK_REQUESTID REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "," + //TODO: what to do on delete or update? +
 			"DELIVERYTIME TIME(0)," +
 			"NOTE VARCHAR(300)," +
-			"CONSTRAINT FK_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID)," + //TODO: what to do on delete or update?
 		")";
 }

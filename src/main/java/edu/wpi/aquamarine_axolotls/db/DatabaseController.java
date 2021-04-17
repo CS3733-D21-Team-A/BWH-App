@@ -55,7 +55,9 @@ public class DatabaseController implements AutoCloseable {
 
 		requestsTables = new HashMap<>();
 		for (TABLES.SERVICEREQUESTS table : TABLES.SERVICEREQUESTS.values()) {
-			requestsTables.put(table, tableFactory.getTable(table));
+			if (TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(table) != null) {
+				requestsTables.put(table, tableFactory.getTable(table));
+			}
 		}
 
 		if (!dbExists) {
@@ -294,13 +296,15 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	private void createDB() throws SQLException {
 		for (TABLES table : TABLES.values()) {
-			try (PreparedStatement smnt = connection.prepareStatement(table.SQL)) {
+			try (PreparedStatement smnt = connection.prepareStatement(TABLES.TABLE_SQL.get(table))) {
 				smnt.execute();
 			}
 		}
 		for (TABLES.SERVICEREQUESTS serviceRequest : TABLES.SERVICEREQUESTS.values()) {
-			try (PreparedStatement smnt = connection.prepareStatement(serviceRequest.SQL)) {
-				smnt.execute();
+			if (TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(serviceRequest) != null) {
+				try (PreparedStatement smnt = connection.prepareStatement(TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(serviceRequest))) {
+					smnt.execute();
+				}
 			}
 		}
 	}
