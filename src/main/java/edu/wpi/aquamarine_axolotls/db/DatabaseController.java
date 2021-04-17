@@ -306,13 +306,12 @@ public class DatabaseController implements AutoCloseable {
 
 	/**
 	 * Populate the database with default nodes and edges (assumes database is fresh and empty)
-	 * @throws URISyntaxException Something went wrong.
 	 * @throws IOException Something went wrong.
 	 * @throws SQLException Something went wrong.
 	 */
-	private void populateDB() throws URISyntaxException, IOException, SQLException {
+	private void populateDB() throws IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), TABLES.NODES);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), TABLES.EDGES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), TABLES.NODES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), TABLES.EDGES, true);
 	}
 }

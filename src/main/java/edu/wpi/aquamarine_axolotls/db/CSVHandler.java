@@ -8,10 +8,69 @@ import java.util.*;
  * Class for handling importing and exporting CSVs to and from the database.
  */
 public class CSVHandler {
-	@FunctionalInterface
-	private interface SQLConsumer<T> { //need this because normal Consumers can't throw exceptions
-		void accept(T input) throws SQLException;
+
+	private interface ValueInsertionStrategy {
+		String getPrimaryKey();
+		void add(Map<String,String> values) throws SQLException;
+		boolean exists(String id) throws SQLException;
+		void delete(String id) throws SQLException;
+		void empty() throws SQLException;
 	}
+
+	private final ValueInsertionStrategy nodeInsertionStrategy = new ValueInsertionStrategy() {
+		@Override
+		public String getPrimaryKey() {
+			return "NODEID"; //TODO: MAKE THIS REFERENCE DATABASEINFO
+		}
+
+		@Override
+		public void add(Map<String, String> values) throws SQLException {
+			databaseController.addNode(values);
+		}
+
+		@Override
+		public boolean exists(String id) throws SQLException {
+			return databaseController.nodeExists(id);
+		}
+
+		@Override
+		public void delete(String id) throws SQLException {
+			databaseController.deleteNode(id);
+		}
+
+		@Override
+		public void empty() throws SQLException {
+			databaseController.emptyNodeTable();
+		}
+	};
+
+	private final ValueInsertionStrategy edgeInsertionStrategy = new ValueInsertionStrategy() {
+		@Override
+		public String getPrimaryKey() {
+			return "EDGEID"; //TODO: MAKE THIS REFERENCE DATABASEINFO
+		}
+
+		@Override
+		public void add(Map<String, String> values) throws SQLException {
+			databaseController.addEdge(values);
+		}
+
+		@Override
+		public boolean exists(String id) throws SQLException {
+			return databaseController.edgeExists(id);
+		}
+
+		@Override
+		public void delete(String id) throws SQLException {
+			databaseController.deleteEdge(id);
+		}
+
+		@Override
+		public void empty() throws SQLException {
+			databaseController.emptyEdgeTable();
+		}
+	};
+
 
 	final DatabaseController databaseController;
 
@@ -26,11 +85,15 @@ public class CSVHandler {
 	/**
 	 * Inserts values from the provided reader based on the provided methods.
 	 * @param br BufferedReader for input.
-	 * @param tableAdder Method for adding new entries to the table.
+	 * @param insertionStrategy Strategy used for checking the existence of, deleting and inserting into a table.
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
 	 * @throws SQLException Something went wrong.
 	 */
-	private void insertValues(BufferedReader br, SQLConsumer<Map<String,String>> tableAdder) throws IOException, SQLException {
+	private void insertValues(BufferedReader br, boolean deleteAllOld, ValueInsertionStrategy insertionStrategy) throws IOException, SQLException { //TODO: USE STRATEGIES INSTEAD OF FUNCTIONAL INTERFACES
+		if (deleteAllOld) {
+			insertionStrategy.empty();
+		}
+
 		Map<String,String> values = new HashMap<>();
 
 		String line = br.readLine();
@@ -42,7 +105,10 @@ public class CSVHandler {
 			for (int i = 0; i < inp.length; i++) {
 				values.put(columns[i],inp[i]); //add value to mapP indexed by column
 			}
-			tableAdder.accept(values);
+			if (!deleteAllOld && insertionStrategy.exists(values.get(insertionStrategy.getPrimaryKey()))) {
+				insertionStrategy.delete(values.get(insertionStrategy.getPrimaryKey()));
+			}
+			insertionStrategy.add(values);
 		}
 	}
 
@@ -54,8 +120,8 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
 	 * @throws SQLException Something went wrong.
 	 */
-	public void importCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
-		importCSV(new FileInputStream(file), table);
+	public void importCSV(File file, DatabaseInfo.TABLES table, boolean deleteAllOld) throws IOException, SQLException {
+		importCSV(new FileInputStream(file), table, deleteAllOld);
 	}
 
 	/**
@@ -66,14 +132,14 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
 	 * @throws SQLException Something went wrong.
 	 */
-	void importCSV(InputStream inputStream, DatabaseInfo.TABLES table) throws IOException, SQLException {
+	void importCSV(InputStream inputStream, DatabaseInfo.TABLES table, boolean deleteAllOld) throws IOException, SQLException {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			switch (table) {
 				case NODES:
-					insertValues(br, databaseController::addNode);
+					insertValues(br, deleteAllOld, nodeInsertionStrategy);
 					break;
 				case EDGES:
-					insertValues(br, databaseController::addEdge);
+					insertValues(br, deleteAllOld, edgeInsertionStrategy);
 					break;
 				default:
 					System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
