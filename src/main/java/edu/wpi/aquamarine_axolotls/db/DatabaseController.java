@@ -279,26 +279,40 @@ public class DatabaseController implements AutoCloseable {
 
 	// ===== SERVICE REQUESTS =====
 
-	public void addServiceRequest(TABLES.SERVICEREQUESTS requestType, Map<String,String> sharedValues, Map<String,String> requestValues) {
+	public void addServiceRequest(TABLES.SERVICEREQUESTS requestType, Map<String,String> sharedValues, Map<String,String> requestValues) throws SQLException {
+		Map<String, String> values = new HashMap<String, String>();
+		values.putAll(sharedValues);
+		values.putAll(requestValues);
+		values.put("REQUESTTYPE", requestType.toString());
+		serviceRequestsTable.addEntry(values);
 		//TODO: IMPLEMENT THIS
 	}
 
-	public void changeStatus(String requestID, TABLES.SERVICEREQUESTS.STATUSES newStatus) {
+	public void changeStatus(String requestID, TABLES.SERVICEREQUESTS.STATUSES newStatus) throws SQLException {
 		//TODO: IMPLEMENT THIS
+		Map<String, String> values = new HashMap<String, String>();
+		values = serviceRequestsTable.getEntry(requestID);
+		values.replace("STATUS", newStatus.toString());
+		serviceRequestsTable.editEntry(requestID, values);
 	}
 
-	public void changeEmployee(String requestID, String employeeID) {
+	public void changeEmployee(String requestID, String employeeID) throws SQLException {
 		//TODO: IMPLEMENT THIS
+		Map<String, String> values = new HashMap<String, String>();
+		values = serviceRequestsTable.getEntry(requestID);
+		values.replace("EMPLOYEE", employeeID);
+		serviceRequestsTable.editEntry(requestID, values);
 	}
 
-	public void setEmployee(String requestID, String employeeID) {
+	public void setEmployee(String requestID, String employeeID) throws SQLException {
 		//TODO: does this need changing?
 		changeEmployee(requestID, employeeID);
 		changeStatus(requestID, TABLES.SERVICEREQUESTS.STATUSES.ASSIGNED);
 	}
 
-	public List<Map<String,String>> getServiceRequestsWithStatus(TABLES.SERVICEREQUESTS.STATUSES status) {
-		return null; //TODO: IMPLEMENT THIS
+	public List<Map<String,String>> getServiceRequestsWithStatus(TABLES.SERVICEREQUESTS.STATUSES status) throws SQLException {
+		return serviceRequestsTable.getEntriesByValue("STATUS", status.toString());
+		//TODO: IMPLEMENT THIS
 	}
 
 
