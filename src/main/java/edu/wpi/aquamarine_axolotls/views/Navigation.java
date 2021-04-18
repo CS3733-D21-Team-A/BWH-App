@@ -276,10 +276,10 @@ public class Navigation  extends SPage{
 
         System.out.println("Clicked map");
         
-        //double x = xScale((int) event.getX());
-        //double y = yScale((int) event.getY());
-        double x = event.getX();
-        double y = event.getY();
+        double x = xScale((int) event.getX());
+        double y = yScale((int) event.getY());
+        //double x = event.getX();
+        //double y = event.getY();
 
         System.out.println(x + " " + y);
         double radius = 30;
