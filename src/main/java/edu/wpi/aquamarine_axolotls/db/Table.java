@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Class acting as an entity representing/working on a SQL table.
@@ -213,17 +214,28 @@ class Table {
 	 * @return List of maps containing the results of the query.
 	 * @throws SQLException Something went wrong.
 	 */
-	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException { //TODO: handler multiple filters in same column
+	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException {
 		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
-		for (String columnName : filters.keySet()) {
-			sb.append(columnName);
-			sb.append(" = ? AND ");
+		String[] filterColumns = Arrays.copyOf(filters.keySet().toArray(), filters.keySet().size(), String[].class);
+
+		for (String columnName : filterColumns) { //TODO: Refactor this somehow / use better iteration
+			sb.append("(");
+
+			filters.get(columnName).forEach((i) -> {
+				sb.append(columnName);
+				sb.append(" = ? OR ");
+			});
+
+			sb.delete(sb.length() - " or ".length(), sb.length()); //get rid of hanging OR
+
+			sb.append(") AND ");
+			// (ID = ? OR ID = ? OR ID = ?) AND (STATUS = ? OR STATUS = ? OR STATUS = ?)
 		}
 		sb.delete(sb.length() - " AND ".length(), sb.length()); //get rid of hanging AND
 
 		try (PreparedStatement smnt = connection.prepareStatement(sb.toString())) {
 			int i = 0;
-			for (String columnName : filters.keySet()) {
+			for (String columnName : filterColumns) {
 				for (String value : filters.get(columnName)) {
 					smnt.setString(i++, value);
 				}
@@ -233,9 +245,6 @@ class Table {
 			}
 		}
 	}
-
-
-
 
 
 	/**
