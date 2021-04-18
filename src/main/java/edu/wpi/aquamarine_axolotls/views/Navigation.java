@@ -56,6 +56,8 @@ public class Navigation  extends SPage{
 
             }
 
+            drawNodes();
+
             startLocation.setItems(options);
             destination.setItems(options);
         } catch (SQLException e) {
@@ -262,4 +264,57 @@ public class Navigation  extends SPage{
             else this.firstNode = currCloseName;
         }
     }
+
+
+    public void drawNodes() {
+        anchor.getChildren().clear();
+        int count = 0;
+        try {
+            List<Map<String, String>> edges = db.getEdges();
+            List<String> nodesList = new ArrayList<>();
+            for (Map<String, String> edge : edges) {
+                Circle circ1 = new Circle();
+                Circle circ2 = new Circle();
+
+                String startNode = edge.get("STARTNODE");
+                String endNode = edge.get("ENDNODE");
+                String bothNodes = startNode.concat(endNode);
+                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
+                    try {
+                        Map<String, String> snode = db.getNode(startNode);
+                        Map<String, String> enode = db.getNode(endNode);
+                        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
+                        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
+                        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
+                        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
+
+                        circ1.setCenterX(startX);
+                        circ1.setCenterY(startY);
+                        circ2.setCenterX(endX);
+                        circ2.setCenterY(endY);
+                        circ1.setRadius(2);
+                        circ2.setRadius(2);
+                        circ1.setFill(Color.RED);
+                        circ2.setFill(Color.RED);
+
+                        Line line = new Line();
+                        line.setStartX(startX);
+                        line.setStartY(startY);
+                        line.setEndX(endX);
+                        line.setEndY(endY);
+                        line.setStroke(Color.WHITE);
+                        anchor.getChildren().addAll(circ1, circ2, line);
+                        nodesList.add(startNode + endNode);
+                        count++;
+                    } catch (SQLException sq) {
+                        sq.printStackTrace();
+                    }
+                }
+            }
+        }catch (SQLException sq) {
+            sq.printStackTrace();
+        } System.out.println(count);
+    }
 }
+
+
