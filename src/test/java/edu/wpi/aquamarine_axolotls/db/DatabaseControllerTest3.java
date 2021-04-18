@@ -2,24 +2,29 @@ package edu.wpi.aquamarine_axolotls.db;
 
 public class DatabaseControllerTest3 {
     // Tests for iteration 1
-    // ***Be sure to break up tests by method***
-    //  Test every functionally different case that differs from each other
-    //  (testing functionality)
-    // don't hard code, you need to write the tests including every case
-    // test for functionality not for place holders
 
-    // N'yoma testing CSV Handler
+    // Try to write tests for every functionally unique case of a method.
+    // Test for alternate versions of the same case to make sure your tests don't pass as flukes.
+    // Each method must have an absolute minimum of two tests, should have more.
+    // If you're unsure if a method is sufficiently tested, run the tests with code coverage to see if you're missing any cases.
+
+    // Reminders:
+    //  - You can use assertThrows to test expected errors.
+    //  - If you're testing a state change, ensure the state before AND after the state change.
+    //  - Be careful using @BeforeEach, @AfterEach, @AfterALl, or @BeforeAll. These annotations will affect everyone's tests. If you need them, communicate with the team or make a new test file.
 
 
-    // CJ and Sean testing service requests
+    // N'yoma testing CSV Handler:
 
-    // Chris and Zhongchuan testing attributes
 
-    // Emily testing getNodes and getEdges
-    public void getNodesTesting(){
 
-    }
-    public void getEdgesTesting(){
+    // CJ and Sean testing service requests:
 
-    }
+
+
+    // Chris and Zhongchuan testing attributes:
+
+
+
+    // Emily testing getNodes and getEdges:
 }
