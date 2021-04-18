@@ -397,7 +397,9 @@ public class DatabaseController implements AutoCloseable {
 		filters.put(idColumn(isNode), Collections.singletonList(id));
 		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
 
-		attrTable.deleteEntry(attrTable.getEntriesByValues(filters).get(0).get("ATTRID"));
+		for (Map<String, String> entry : attrTable.getEntriesByValues(filters)){
+			attrTable.deleteEntry(entry.get("ATTRID"));
+		}
 	}
 
 	/**
@@ -430,7 +432,7 @@ public class DatabaseController implements AutoCloseable {
 	public void clearAttributes(String id, boolean isNode) throws SQLException {
 		List<Map<String,String>> entries = attrTable.getEntriesByValue(idColumn(isNode), id);
 		for (Map<String,String> entry : entries) {
-			nodeTable.deleteEntry(entry.get("ATTRID"));
+			attrTable.deleteEntry(entry.get("ATTRID"));
 		}
 	}
 
