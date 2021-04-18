@@ -233,7 +233,7 @@ class Table {
 		sb.delete(sb.length() - " AND ".length(), sb.length()); //get rid of hanging AND
 
 		try (PreparedStatement smnt = connection.prepareStatement(sb.toString())) {
-			int i = 0;
+			int i = 1;
 			for (String columnName : filterColumns) {
 				for (String value : filters.get(columnName)) {
 					smnt.setString(i++, value);
