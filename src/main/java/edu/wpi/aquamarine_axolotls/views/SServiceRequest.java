@@ -9,8 +9,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,26 +45,22 @@ public abstract class SServiceRequest extends SPage{
 
     @FXML
     public void submit(javafx.event.ActionEvent actionEvent) throws IOException {
-        JFXDialogLayout content = new JFXDialogLayout();
-
-        JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-        content.setHeading(new Text("Submission Success!"));
-        content.setBody(new Text("Your information has successfully been submitted."));
-
-        JFXButton exit_button = new JFXButton("Close");
-        exit_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
-                try {
-                    Object root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/DefaultServicePage.fxml"));
-                    Aapp.getPrimaryStage().getScene().setRoot((Parent) root);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }        }
-        });
-
-        content.setActions(exit_button);
-        help.show();
+        popUp(actionEvent,"Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
+        sceneSwitch("DefaultServicePage");
     }
+
+    @FXML
+    public void popUp(javafx.event.ActionEvent event, String title, String disp){
+        final Stage myDialog = new Stage();
+        myDialog.initModality(Modality.APPLICATION_MODAL);
+        myDialog.centerOnScreen();
+        myDialog.setTitle(title);
+        Text text1 = new Text(disp);
+        text1.setStyle("-fx-font-size: 20; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
+        TextFlow textFlow = new TextFlow(text1);
+        textFlow.setTextAlignment(TextAlignment.CENTER);
+        myDialog.setScene(new Scene(textFlow, 400, 300));
+        myDialog.show();
+    }
+
 }

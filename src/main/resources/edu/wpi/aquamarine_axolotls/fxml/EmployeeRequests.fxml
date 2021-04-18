@@ -57,7 +57,7 @@
                <Insets top="10.0" />
             </VBox.margin>
          </Label>
-         <JFXComboBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Filter" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+         <JFXComboBox fx:id="filterD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Filter" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
             <VBox.margin>
                <Insets top="15.0" />
             </VBox.margin>
@@ -67,12 +67,12 @@
          </JFXComboBox>
          <HBox alignment="CENTER">
             <children>
-               <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Assign" textFill="WHITE">
+               <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Assign" textFill="WHITE">
                   <HBox.margin>
                      <Insets right="10.0" />
                   </HBox.margin>
                </JFXButton>
-               <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="95.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE" />
+               <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="28.0" prefWidth="95.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE" />
             </children>
             <VBox.margin>
                <Insets top="20.0" />
@@ -83,7 +83,7 @@
                <Insets top="20.0" />
             </VBox.margin>
          </Line>
-         <JFXComboBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+         <JFXComboBox fx:id="assignD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
             <padding>
                <Insets left="10.0" />
             </padding>
@@ -91,7 +91,7 @@
                <Insets top="20.0" />
             </VBox.margin>
          </JFXComboBox>
-         <JFXComboBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+         <JFXComboBox fx:id="statusD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
             <padding>
                <Insets left="10.0" />
             </padding>
@@ -103,7 +103,7 @@
    </VBox>
    <JFXScrollPane style="-fx-background-color: #F4F4F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
       <children>
-         <TableView fx:id="srTable" prefHeight="200.0" prefWidth="200.0">
+         <TableView fx:id="srTable" onMouseClicked="#testF" prefHeight="200.0" prefWidth="200.0">
             <columns>
                <TableColumn fx:id="assignedColumn" prefWidth="75.0" text="Assigned" />
                <TableColumn fx:id="assigneeColumn" prefWidth="75.0" text="Assignee" />

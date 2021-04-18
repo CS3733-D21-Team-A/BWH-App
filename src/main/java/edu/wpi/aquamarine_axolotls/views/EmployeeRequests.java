@@ -1,11 +1,11 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.TreeTableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.ArrayList;
@@ -34,10 +34,28 @@ public class EmployeeRequests extends SServiceRequest{
     @FXML
     TableColumn<EmployeeRequest, String> locationColumn;
 
+    @FXML
+    JFXButton assignB;
+
+    @FXML
+    JFXButton changeStatusB;
+
+    @FXML
+    JFXComboBox assignD;
+
+    @FXML
+    JFXComboBox statusD;
+
+    @FXML
+    JFXComboBox filterD;
 
 
     @FXML
     public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
+        assignD.setItems(FXCollections
+                .observableArrayList("Sai", "Samantha", "Imani"));
+        statusD.setItems(FXCollections
+                .observableArrayList("Not Assigned", "In Progress", "Complete"));
         assignedColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assigned"));
         assigneeColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assignee"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("status"));
@@ -52,6 +70,31 @@ public class EmployeeRequests extends SServiceRequest{
     @FXML
     public void goToService() {
         sceneSwitch("DefaultServicePage");
+    }
+
+    @FXML
+    public void testF(){
+        System.out.println(srTable.getSelectionModel().getFocusedIndex());
+    }
+
+    @FXML
+    public void assign(){
+        if(assignD.getSelectionModel() == null) return;
+        int index = srTable.getSelectionModel().getFocusedIndex();
+        if(index == -1) return;
+        srTable.getItems().get(index).setAssigned(assignD.getSelectionModel().getSelectedItem().toString());
+        assignD.getSelectionModel().clearSelection();
+        srTable.refresh();
+    }
+
+    @FXML
+    public void changeStatus(){
+        if(statusD.getSelectionModel() == null) return;
+        int index = srTable.getSelectionModel().getFocusedIndex();
+        if(index == -1) return;
+        srTable.getItems().get(index).setStatus(statusD.getSelectionModel().getSelectedItem().toString());
+        statusD.getSelectionModel().clearSelection();
+        srTable.refresh();
     }
 
 }

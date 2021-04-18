@@ -23,9 +23,6 @@ import java.util.Map;
 
 public class FoodDelivery extends SServiceRequest {
 
-    ObservableList<String> foodOptionList = FXCollections
-            .observableArrayList("Mac and Cheese", "Salad", "Pizza");
-
     @FXML
     private TextField firstName;
 
@@ -47,7 +44,8 @@ public class FoodDelivery extends SServiceRequest {
 
     @FXML
     public void initialize() {
-        foodOptions.setItems(foodOptionList);
+        foodOptions.setItems(FXCollections
+                .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
     }
 
 
