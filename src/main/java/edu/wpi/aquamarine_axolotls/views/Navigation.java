@@ -114,6 +114,26 @@ public class Navigation  extends SPage{
     }
 
 
+    public Double xScaleDouble(double xCoord) {
+        Double imgWidth = 438.0;
+        Double proportion = imgWidth / 5000;
+
+        Double newXCoord = xCoord * proportion; //may need to add margins depending on how it's placed on
+
+        return newXCoord;
+    }
+
+
+    public Double yScaleDouble(double yCoord) {
+        Double imgWidth = 298.0;
+        Double proportion = imgWidth / 3400;
+
+        Double newYCoord = yCoord * proportion; //may need to add margins depending on how it's placed on
+
+        return newYCoord;
+    }
+
+
     public void findPath() {
         anchor.getChildren().clear();
         int count = 0;
@@ -131,10 +151,10 @@ public class Navigation  extends SPage{
                     try {
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
-                        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
-                        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
-                        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
-                        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
+                        Double startX = xScaleDouble(Double.parseDouble(snode.get("XCOORD")));
+                        Double startY = yScaleDouble(Double.parseDouble(snode.get("YCOORD")));
+                        Double endX = xScaleDouble(Double.parseDouble(enode.get("XCOORD")));
+                        Double endY = yScaleDouble(Double.parseDouble(enode.get("YCOORD")));
 
                         circ1.setCenterX(startX);
                         circ1.setCenterY(startY);
@@ -237,8 +257,8 @@ public class Navigation  extends SPage{
 
 
 
-        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScale(pathNodes.get(0).getYcoord());
+        Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
+        Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
 
 
         for (Node node : pathNodes) {
@@ -275,14 +295,14 @@ public class Navigation  extends SPage{
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
 
         System.out.println("Clicked map");
-        
-        //double x = xScale((int) event.getX());
-        //double y = yScale((int) event.getY());
+
+        //double x = xScaleDouble(event.getX());
+        //double y = yScaleDouble(event.getY());
         double x = event.getX();
         double y = event.getY();
 
         System.out.println(x + " " + y);
-        double radius = 30;
+        double radius = 20;
         List<Map<String, String>> nodes = new ArrayList<>();
 
         //Get nodes from database
@@ -300,12 +320,12 @@ public class Navigation  extends SPage{
         //Loop through nodes
         for (Map<String, String> n : nodes) {
             //Get the x and y of that node
-            double currNodeX = xScale(Integer.parseInt(n.get("XCOORD")));
-            double currNodeY = yScale(Integer.parseInt(n.get("YCOORD")));
+            double currNodeX = xScaleDouble(Double.parseDouble(n.get("XCOORD")));
+            double currNodeY = yScaleDouble(Double.parseDouble(n.get("YCOORD")));
 
             //Get the difference in x and y between input coords and current node coords
-            double xOff = Math.abs(x - currNodeX);
-            double yOff = Math.abs(y - currNodeY);
+            double xOff = x - currNodeX;
+            double yOff = y - currNodeY;
 
             //Give 'em the ol' pythagoras maneuver
             double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
@@ -314,7 +334,10 @@ public class Navigation  extends SPage{
             //If the distance is LESS than the given radius...
             if (dist < radius) {
                 //...AND the distance is less than the current min, update current closest node
-                if (dist < currLeastDist) currClosest = n;
+                if (dist < currLeastDist) {
+                    currClosest = n;
+                    currLeastDist = dist;
+                }
             }
         }
 
@@ -332,7 +355,6 @@ public class Navigation  extends SPage{
                 firstNodeSelect = 0;
                 findPath(this.firstNode, currCloseName);
             }
-            else if (currCloseName != null) this.firstNode = currCloseName;
         }
     }
 
