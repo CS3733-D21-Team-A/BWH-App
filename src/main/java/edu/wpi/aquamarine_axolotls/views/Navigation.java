@@ -40,6 +40,9 @@ public class Navigation  extends SPage{
     private JFXButton findPathButton;
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
+    private int firstNodeSelect = 0;
+    private String firstNode;
+
 
     @FXML
     public void initialize() {
@@ -135,6 +138,59 @@ public class Navigation  extends SPage{
                 prevX = scaledX;
                 prevY = scaledY;
             }
+            firstNodeSelect = 0;
+    }
+
+
+    /**
+     * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
+     * @param start
+     * @param end
+     */
+    public void findPath(String start, String end) {
+        anchor.getChildren().clear();
+        SearchAlgorithm searchAlgorithm;
+        List<Node> pathNodes = new ArrayList<>();
+        try {
+            searchAlgorithm = new SearchAlgorithm();
+            pathNodes = searchAlgorithm.getPath(start, end);
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        } catch (URISyntaxException ue) {
+            ue.printStackTrace();
+        } catch (SQLException sq) {
+            sq.printStackTrace();
+        }
+
+
+
+        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
+        Double prevY = yScale(pathNodes.get(0).getYcoord());
+
+
+        for (Node node : pathNodes) {
+            Circle circ = new Circle();
+            Line line = new Line();
+            Double scaledX = xScale(node.getXcoord());
+            Double scaledY = yScale(node.getYcoord());
+
+            circ.setCenterX(scaledX);
+            circ.setCenterY(scaledY);
+            circ.setRadius(2);
+            circ.setFill(Color.RED);
+
+            line.setStartX(scaledX);
+            line.setStartY(scaledY);
+            line.setEndX(prevX);
+            line.setEndY(prevY);
+            line.setStroke(Color.RED);
+
+
+            anchor.getChildren().addAll(circ,line);
+            prevX = scaledX;
+            prevY = scaledY;
+        }
+        firstNodeSelect = 0;
     }
 
 
@@ -143,7 +199,7 @@ public class Navigation  extends SPage{
     /**
      * Gets the closest node to the mouse cursor when clicked
      */
-    public String getNearestNode(javafx.scene.input.MouseEvent event) {
+    public void getNearestNode(javafx.scene.input.MouseEvent event) {
 
         System.out.println("Clicked map");
         
@@ -189,9 +245,21 @@ public class Navigation  extends SPage{
             }
         }
 
+        String currCloseName = currClosest.get("LONGNAME");
         System.out.println(currClosest.get("LONGNAME"));
         
         //Return the long name of this node
-        return currClosest.get("LONGNAME");
+        //return currClosest.get("LONGNAME");
+        if (this.firstNodeSelect == 0) {
+            firstNodeSelect = 1;
+            this.firstNode = currCloseName;
+        }
+        else if (this.firstNodeSelect == 1) {
+            if (this.firstNode != null && currCloseName != null) {
+                firstNodeSelect = 0;
+                findPath(this.firstNode, currCloseName);
+            }
+            else this.firstNode = currCloseName;
+        }
     }
 }
