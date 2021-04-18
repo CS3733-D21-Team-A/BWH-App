@@ -33,6 +33,8 @@ public class Navigation  extends SPage{
     @FXML
     private AnchorPane anchor;
     @FXML
+    private AnchorPane nodeGridAnchor;
+    @FXML
     private ImageView mapP;
     @FXML
     private JFXButton homeButton;
@@ -111,53 +113,6 @@ public class Navigation  extends SPage{
         return newYCoord;
     }
 
-    /*
-//adds all nodes
-
-    public void findPath() {
-        anchor.getChildren().clear();
-        try {
-            List<Map<String, String>> nodes = db.getNodes();
-
-            for (Map<String, String> node : nodes) {
-                Double scaledX = xScale((int) Double.parseDouble(node.get("XCOORD")));
-                Double scaledY = yScale((int) Double.parseDouble(node.get("YCOORD")));
-                String nodeID = node.get("NODEID");
-                Circle circ = new Circle();
-                circ.setCenterX(scaledX);
-                circ.setCenterY(scaledY);
-                circ.setRadius(2);
-                circ.setFill(Color.RED);
-
-
-                try{
-                    List<Map<String, String>> edges = db.getEdgesConnectedToNode(nodeID);
-                    for(Map<String,String> edge: edges) {
-
-                        Line line = new Line();
-                        line.setStartY(scaledY);
-                        line.setStartX(scaledX);
-                        line.setEndX(db.getNode(edge));
-                        line.setEndY(scaledY);
-
-                        prevScaledX = scaledX;
-                        prevScaledY = scaledY;
-                    }
-                }catch(SQLException sq){
-                    sq.printStackTrace();
-                ;}
-
-                anchor.getChildren().addAll(circ,line);
-
-
-                prevnode = node;
-            }
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
-    }
-
-*/
 
     public void findPath() {
         anchor.getChildren().clear();
@@ -383,7 +338,7 @@ public class Navigation  extends SPage{
 
 
     public void drawNodes() {
-        anchor.getChildren().clear();
+        nodeGridAnchor.getChildren().clear();
         int count = 0;
         try {
             List<Map<String, String>> edges = db.getEdges();
@@ -419,7 +374,7 @@ public class Navigation  extends SPage{
                         line.setEndX(endX);
                         line.setEndY(endY);
                         line.setStroke(Color.WHITE);
-                        anchor.getChildren().addAll(circ1, circ2, line);
+                        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
                         nodesList.add(startNode + endNode);
                         count++;
                     } catch (SQLException sq) {

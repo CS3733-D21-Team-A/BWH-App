@@ -103,6 +103,7 @@
                                     <Image url="@../img/groundFloor.png" />
                                  </image>
                               </ImageView>
+                              <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
                               <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" pickOnBounds="true" onMouseClicked="#getNearestNode"/>
                            </children>
                         </AnchorPane>
