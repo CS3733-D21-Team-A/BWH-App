@@ -102,8 +102,9 @@ public class Navigation  extends SPage{
         return newYCoord;
     }
 
+    /*
 //adds all nodes
-/*
+
     public void findPath() {
         anchor.getChildren().clear();
         try {
@@ -198,6 +199,8 @@ public class Navigation  extends SPage{
             sq.printStackTrace();
         } System.out.println(count);
     }
+
+
     public void findPaths2() {
         anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
