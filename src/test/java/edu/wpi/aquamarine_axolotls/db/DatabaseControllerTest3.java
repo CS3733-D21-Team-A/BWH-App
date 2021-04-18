@@ -21,15 +21,15 @@ public class DatabaseControllerTest3 {
     public DatabaseControllerTest3() throws SQLException, IOException, URISyntaxException {
     }
 
-//    @BeforeEach
-//    void resetDB() throws IOException, SQLException {
-//        db.emptyEdgeTable();
-//        db.emptyNodeTable();
-//
-//        CSVHandler csvHandler = new CSVHandler(db);
-//        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES, true);
-//        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES, true);
-//    }
+    @BeforeEach
+    void resetDB() throws IOException, SQLException {
+        db.emptyEdgeTable();
+        db.emptyNodeTable();
+
+        CSVHandler csvHandler = new CSVHandler(db);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES, true);
+    }
 
     @AfterEach
     void closeDB() {
@@ -299,6 +299,7 @@ public class DatabaseControllerTest3 {
             assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
             assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
 
+			  	assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
             assertTrue(db.addAttribute("aPARK020GG", COVID_SAFE, true));
             assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
 

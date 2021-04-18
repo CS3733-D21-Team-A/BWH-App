@@ -198,7 +198,7 @@ class Table {
 	 * @return List of maps containing the results of the query.
 	 * @throws SQLException Something went wrong.
 	 */
-	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
+	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException { //TODO: MAKE THIS HANDLE NULLS CORRECTLY
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?")) { // gets row/rows that have column name with value
 			smnt.setString(1, value);
 			try (ResultSet rs = smnt.executeQuery()) {
@@ -222,10 +222,15 @@ class Table {
 
 			filters.get(columnName).forEach((i) -> {
 				sb.append(columnName);
-				sb.append(" = ? OR ");
+				if (i == null) {
+					sb.append(" IS NULL");
+				} else {
+					sb.append(" = ?");
+				}
+				sb.append(" OR ");
 			});
 
-			sb.delete(sb.length() - " or ".length(), sb.length()); //get rid of hanging OR
+			sb.delete(sb.length() - " OR ".length(), sb.length()); //get rid of hanging OR
 
 			sb.append(") AND ");
 			// (ID = ? OR ID = ? OR ID = ?) AND (STATUS = ? OR STATUS = ? OR STATUS = ?)
@@ -236,7 +241,10 @@ class Table {
 			int i = 1;
 			for (String columnName : filterColumns) {
 				for (String value : filters.get(columnName)) {
-					smnt.setString(i++, value);
+					if (value != null) {
+						smnt.setString(i, value);
+					}
+					i++;
 				}
 			}
 			try (ResultSet rs = smnt.executeQuery()) {
