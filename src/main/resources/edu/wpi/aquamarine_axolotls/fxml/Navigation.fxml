@@ -96,15 +96,15 @@
                   </VBox>
                   <VBox alignment="CENTER" GridPane.columnIndex="1">
                      <children>
-                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
+                        <AnchorPane maxWidth="438.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
                            <children>
-                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#getNearestNode">
+                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../img/groundFloor.png" />
                                  </image>
                               </ImageView>
-                              <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
-                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" pickOnBounds="true" onMouseClicked="#getNearestNode"/>
+                              <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="298.0" prefWidth="438.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="298.0" prefWidth="438.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </children>
