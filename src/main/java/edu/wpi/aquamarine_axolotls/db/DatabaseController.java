@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.*;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.SERVICEREQUESTS.*;
 
 /**
  * Controller class for working with the BWH database.
@@ -138,6 +139,12 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void deleteNode(String nodeID) throws SQLException {
 		nodeTable.deleteEntry(nodeID);
+		Map<String, List<String>> filters = new HashMap<>();
+		filters.put("LOCATIONID", Collections.singletonList(nodeID));
+		filters.put("STATUS", Arrays.asList(STATUSES.UNASSIGNED.text, STATUSES.ASSIGNED.text, STATUSES.IN_PROGRESS.text));
+		for(Map<String,String> entry :serviceRequestsTable.getEntriesByValues(filters)){
+			changeStatus(entry.get("REQUESTID"),STATUSES.CANCELED);
+		}
 	}
 
 	/**

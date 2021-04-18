@@ -213,7 +213,7 @@ class Table {
 	 * @return List of maps containing the results of the query.
 	 * @throws SQLException Something went wrong.
 	 */
-	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException {
+	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException { //TODO: handler multiple filters in same column
 		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
 		for (String columnName : filters.keySet()) {
 			sb.append(columnName);
