@@ -9,8 +9,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -57,5 +62,21 @@ public abstract class SServiceRequest extends SPage{
 
         content.setActions(exit_button);
         help.show();
+    }
+
+
+    @FXML
+    public void loadHelp(javafx.event.ActionEvent event) {
+        final Stage myDialog = new Stage();
+        myDialog.initModality(Modality.APPLICATION_MODAL);
+        myDialog.centerOnScreen();
+        myDialog.setTitle("Help Page");
+        Text text1 = new Text("\nHelp Page Information:\n");
+        Text text2 = new Text("\n blahblahblah");
+        text1.setStyle("-fx-font-size: 20; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
+        TextFlow textFlow = new TextFlow(text1,text2);
+        textFlow.setTextAlignment(TextAlignment.CENTER);
+        myDialog.setScene(new Scene(textFlow, 400, 300));
+        myDialog.show();
     }
 }

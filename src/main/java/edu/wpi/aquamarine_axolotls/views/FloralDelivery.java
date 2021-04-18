@@ -35,25 +35,7 @@ public class FloralDelivery extends SServiceRequest {
     @FXML
     private AnchorPane myAnchorPane;
 
-    @FXML
-    public void loadHelp(javafx.event.ActionEvent event) {
-        JFXDialogLayout content = new JFXDialogLayout();
 
-    JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-    content.setHeading(new Text("Help Page"));
-    content.setBody(new Text("Help Page Information:"));
-
-        JFXButton exit_button = new JFXButton("Close");
-        exit_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
-            }
-        });
-
-    content.setActions(exit_button);
-    help.show();
-    }
 
 
 
