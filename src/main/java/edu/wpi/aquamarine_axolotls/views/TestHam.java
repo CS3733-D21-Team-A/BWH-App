@@ -31,19 +31,21 @@ public class TestHam  extends SPage {
     private JFXToggleButton toggleButton;
 
 
-
     @FXML
     public void hammy() {
         boolean isSelected = toggleButton.isSelected();
-
         if(isSelected){
             anchor1.setVisible(true);
-            TranslateTransition translateTransition = new TranslateTransition((Duration.seconds(0.5)), anchor1);
+            TranslateTransition translateTransition = new TranslateTransition((Duration.seconds(.25)), anchor1);
+            translateTransition.setFromX(150);
+            translateTransition.setToX(0);
+
             translateTransition.play();
         }
         if(!isSelected) {
-            anchor1.setVisible(false);
-            TranslateTransition translateTransition1 = new TranslateTransition((Duration.seconds(0.5)), anchor1);
+            TranslateTransition translateTransition1 = new TranslateTransition((Duration.seconds(1.5)), anchor1);
+            translateTransition1.setFromX(0);
+            translateTransition1.setToX(150);
             translateTransition1.play();
         }
     }
