@@ -271,6 +271,50 @@ public class DatabaseControllerTest3 {
             fail();
         }
     }
+    //getByAttribute
+
+    @Test
+    public void testGetByAttributeOneNode(){
+        try{
+            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+
+            List<String> expectedList = new ArrayList<>();
+            List<String> actualList = db.getByAttribute(COVID_SAFE,true);
+
+            expectedList.add("aPARK019GG");
+
+            assertEquals(expectedList, actualList);
+        } catch(SQLException e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetByAttributeTwoNode(){
+        try{
+            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+
+            assertTrue(db.addAttribute("aPARK020GG", COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+
+            List<String> expectedList = new ArrayList<>();
+            List<String> actualList = db.getByAttribute(COVID_SAFE,true);
+
+            expectedList.add("aPARK019GG");
+            expectedList.add("aPARK020GG");
+
+            assertEquals(expectedList, actualList);
+        } catch(SQLException e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
 
     // delete attribute
 
@@ -431,6 +475,7 @@ public class DatabaseControllerTest3 {
             fail();
         }
     }
+
 
 
     // Emily testing getNodes and getEdges:
