@@ -245,7 +245,6 @@ class Table {
 		}
 	}
 
-
 	/**
 	 * Empties the table by deleting all entries.
 	 * @throws SQLException Something went wrong.
@@ -255,4 +254,22 @@ class Table {
 			smnt.executeUpdate();
 		}
 	}
+
+
+
+
+	public class RequestTable extends Table {
+		RequestTable(Connection connection, String tableName) throws SQLException {
+			super(connection, tableName);
+		}
+
+		public List<Map<String,String>> getRequests() throws SQLException {
+			try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " JOIN " + DatabaseInfo.TABLES.SERVICE_REQUESTS.name() + " ON " + tableName + ".REQUESTID = " + DatabaseInfo.TABLES.SERVICE_REQUESTS.name() + ".REQUESTID")) {
+				try (ResultSet rs = smnt.executeQuery()) {
+					return resultSetToList(rs);
+				}
+			}
+		}
+	}
+
 }

@@ -294,7 +294,7 @@ public class DatabaseController implements AutoCloseable {
 		serviceRequestsTable.addEntry(values);
 	}
 
-	public void changeStatus(String requestID, TABLES.SERVICEREQUESTS.STATUSES newStatus) throws SQLException {
+	public void changeStatus(String requestID, STATUSES newStatus) throws SQLException {
 		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
 		values.replace("STATUS", newStatus.text);
 		serviceRequestsTable.editEntry(requestID, values);
@@ -308,15 +308,19 @@ public class DatabaseController implements AutoCloseable {
 
 	public void setEmployee(String requestID, String employeeID) throws SQLException {
 		changeEmployee(requestID, employeeID);
-		changeStatus(requestID, TABLES.SERVICEREQUESTS.STATUSES.ASSIGNED);
+		changeStatus(requestID, STATUSES.ASSIGNED);
 	}
 
-	public List<Map<String,String>> getServiceRequestsWithStatus(TABLES.SERVICEREQUESTS.STATUSES status) throws SQLException {
+	public List<Map<String,String>> getServiceRequestsWithStatus(STATUSES status) throws SQLException {
 		return serviceRequestsTable.getEntriesByValue("STATUS", status.toString());
 	}
 
 	public List<Map<String,String>> getServiceRequests() throws SQLException {
 		return serviceRequestsTable.getEntries();
+	}
+
+	public List<Map<String,String>> getServiceRequestsByType(TABLES.SERVICEREQUESTS requestType) throws SQLException {
+		return requestsTables.get(requestType).getEntries(); //TODO: THIS DOESN'T WORK RIGHT
 	}
 
 
