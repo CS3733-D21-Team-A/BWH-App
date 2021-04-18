@@ -2,7 +2,6 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import java.sql.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Class acting as an entity representing/working on a SQL table.

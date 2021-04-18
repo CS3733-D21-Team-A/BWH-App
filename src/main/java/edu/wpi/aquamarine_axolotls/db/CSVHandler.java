@@ -89,7 +89,7 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
 	 * @throws SQLException Something went wrong.
 	 */
-	private void insertValues(BufferedReader br, boolean deleteAllOld, ValueInsertionStrategy insertionStrategy) throws IOException, SQLException { //TODO: USE STRATEGIES INSTEAD OF FUNCTIONAL INTERFACES
+	private void insertValues(BufferedReader br, boolean deleteAllOld, ValueInsertionStrategy insertionStrategy) throws IOException, SQLException {
 		if (deleteAllOld) {
 			insertionStrategy.empty();
 		}
