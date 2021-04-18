@@ -1,6 +1,52 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.TestUtil;
+import org.apache.derby.iapi.services.io.FileUtil;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.function.Executable;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.*;
+
+import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.ATTRIBUTE.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class DatabaseControllerTest3 {
+
+    private final DatabaseController db = new DatabaseController();
+
+    public DatabaseControllerTest3() throws SQLException, IOException, URISyntaxException {
+    }
+
+    @BeforeEach
+    void resetDB() throws IOException, SQLException {
+        db.emptyEdgeTable();
+        db.emptyNodeTable();
+
+        CSVHandler csvHandler = new CSVHandler(db);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES, true);
+    }
+
+    @AfterEach
+    void closeDB() {
+        try {
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @AfterAll
+    @BeforeAll
+    static void cleanup() {
+        TestUtil.resetDB();
+    }
+
     // Tests for iteration 1
 
     // Try to write tests for every functionally unique case of a method.
@@ -23,6 +69,230 @@ public class DatabaseControllerTest3 {
 
 
     // Chris and Zhongchuan testing attributes:
+
+    // has attribute
+
+    @Test
+    public void testHasAttributeNodeFalse(){
+        try {
+            assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testHasAttributeEdgeFalse(){
+        try {
+            assertFalse(db.hasAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    // add attribute
+
+    @Test
+    public void testAddAttributeNode(){
+        try {
+            assertTrue(db.addAttribute("aPARK020GG", HANDICAPPED_ACCESSIBLE, true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAddAttributeEdge(){
+        try {
+            assertTrue(db.addAttribute("aWALK002GG_aWALK003GG", HANDICAPPED_ACCESSIBLE, false));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAddAttributeNodeDNE(){
+        assertThrows(SQLException.class, () -> {
+            db.addAttribute("aFakeNode", HANDICAPPED_ACCESSIBLE, true);
+        });
+    }
+
+    @Test
+    public void testAddAttributeEdgeDNE(){
+        assertThrows(SQLException.class, () -> {
+            db.addAttribute("aFakeEdge", HANDICAPPED_ACCESSIBLE, false);
+        });
+    }
+
+    // has attribute cont'd
+
+    @Test
+    public void testHasAttributeNodeTrue(){
+        try {
+            db.addAttribute("aPARK020GG", COVID_SAFE, true);
+            assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testHasAttributeEdgeTrue(){
+        try {
+            db.addAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false);
+            assertTrue(db.hasAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    // add attribute cont'd
+
+    @Test
+    public void testAddAttributeNode2(){
+        try {
+            assertFalse(db.hasAttribute("aPARK020GG", NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aPARK020GG", NOT_NAVIGABLE, true));
+            assertTrue(db.hasAttribute("aPARK020GG", NOT_NAVIGABLE, true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAddAttributeEdge2(){
+        try {
+            assertFalse(db.hasAttribute("aWALK002GG_aWALK003GG", NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK002GG_aWALK003GG", NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK002GG_aWALK003GG", NOT_NAVIGABLE, false));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    // get attributes
+
+    @Test
+    public void testGetAttributesNode(){
+        try {
+            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aWALK002GG",true);
+            assertEquals(expectedList, actualList);
+
+            assertTrue(db.addAttribute("aWALK002GG", NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aWALK002GG", COVID_SAFE, true));
+
+            expectedList.add(NOT_NAVIGABLE);
+            expectedList.add(COVID_SAFE);
+
+            actualList = db.getAttributes("aWALK002GG",true);
+
+            assertEquals(expectedList, actualList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetAttributesEdge(){
+        try {
+            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aPARK001GG_aWALK001GG",false);
+            assertEquals(expectedList, actualList);
+
+            assertTrue(db.addAttribute("aPARK001GG_aWALK001GG", HANDICAPPED_ACCESSIBLE, false));
+            assertTrue(db.addAttribute("aPARK001GG_aWALK001GG", COVID_SAFE, false));
+
+            expectedList.add(HANDICAPPED_ACCESSIBLE);
+            expectedList.add(COVID_SAFE);
+
+            actualList = db.getAttributes("aPARK001GG_aWALK001GG",false);
+
+            assertEquals(expectedList, actualList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetAttributesNodeDNE(){
+        try {
+            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeNode2",true);
+            assertEquals(expectedList, actualList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetAttributesEdgeDNE(){
+        try {
+            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeEdge2",false);
+            assertEquals(expectedList, actualList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    // delete attribute
+
+    @Test
+    public void testDeleteAttributesNode(){
+        try {
+            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            db.deleteAttribute("aPARK019GG", COVID_SAFE, true);
+            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+//
+//    @Test
+//    public void testDeleteAttributesEdge(){
+//        try {
+//            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+//            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+//            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+//            db.deleteAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false);
+//            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            fail();
+//        }
+//    }
+//
+//    @Test
+//    public void testDeleteAttributesNodeDNE(){
+//        assertThrows(SQLException.class, () -> {
+//            db.deleteAttribute("aFakeNode3", COVID_SAFE, true);
+//        });
+//    }
+//
+//    @Test
+//    public void testDeleteAttributesEdgeDNE(){
+//        assertThrows(SQLException.class, () -> {
+//            db.deleteAttribute("aFakeEdge3", COVID_SAFE, false);
+//        });
+//    }
 
 
 
