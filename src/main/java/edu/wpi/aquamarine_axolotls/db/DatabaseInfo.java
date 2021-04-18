@@ -14,7 +14,7 @@ public class DatabaseInfo {
 	public enum TABLES {
 		NODES,
 		EDGES,
-		ATTRIBUTES,
+		ATTRIBUTES, // not navigable, handicapped accessible, covid safe
 		SERVICE_REQUESTS;
 
 		static final Map<TABLES,String> TABLE_SQL;
@@ -26,6 +26,33 @@ public class DatabaseInfo {
 			TABLE_SQL.put(SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		}
 
+		public static ATTRIBUTE stringToAttribute(String attribute){
+			switch (attribute){
+				case NOT_NAVIGABLE_TEXT:
+					return ATTRIBUTE.NOT_NAVIGABLE;
+				case COVID_SAFE_TEXT:
+					return ATTRIBUTE.COVID_SAFE;
+				case HANDICAPPED_ACCESSIBLE_TEXT:
+					return ATTRIBUTE.HANDICAPPED_ACCESSIBLE;
+				default:
+					System.out.println("Not Implemented");
+					return null;
+			}
+		}
+		/**
+		 * Enum for Attributes table
+		 */
+		public enum ATTRIBUTE {
+			NOT_NAVIGABLE(NOT_NAVIGABLE_TEXT),
+			HANDICAPPED_ACCESSIBLE(HANDICAPPED_ACCESSIBLE_TEXT),
+			COVID_SAFE(COVID_SAFE_TEXT);
+
+			public final String text;
+
+			ATTRIBUTE(String text) {
+				this.text = text;
+			}
+		}
 		/**
 		 * Enum for service request tables
 		 */
@@ -103,7 +130,7 @@ public class DatabaseInfo {
 			"NODETYPE VARCHAR(5)," +
 			"LONGNAME VARCHAR(50)," +
 			"SHORTNAME VARCHAR(30)" +
-		")"; //TODO: FIGURE OUT TAGS
+		")";
 
 	/**
 	 * SQL for building the EDGES table.
@@ -113,7 +140,7 @@ public class DatabaseInfo {
 		   "EDGEID VARCHAR(51) PRIMARY KEY," +
 			"STARTNODE VARCHAR(25) CONSTRAINT FK_STARTNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," + //TODO: wanna keep on update restrict?
 			"ENDNODE VARCHAR(25) CONSTRAINT FK_ENDNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT" + //TODO: wanna keep on update restrict?
-		")"; //TODO: FIGURE OUT TAGS
+		")";
 
 	/**
 	 * SQL for building the SERVICE_REQUESTS table.
@@ -163,5 +190,7 @@ public class DatabaseInfo {
 			"ATTRIBUTE VARCHAR(30)" +
 		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
 
-
+	private static final String NOT_NAVIGABLE_TEXT = "Not Navigable";
+	private static final String HANDICAPPED_ACCESSIBLE_TEXT = "Handicapped Accessible";
+	private static final String COVID_SAFE_TEXT = "COVID Safe";
 }
