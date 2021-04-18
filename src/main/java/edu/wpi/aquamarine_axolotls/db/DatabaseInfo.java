@@ -14,9 +14,12 @@ public class DatabaseInfo {
 	public enum TABLES {
 		NODES,
 		EDGES,
-		ATTRIBUTES, // not navigable, handicapped accessible, covid safe
+		ATTRIBUTES,
 		SERVICE_REQUESTS;
 
+		/**
+		 * Map linking TABLES enum to the SQL code that builds the corresponding table.
+		 */
 		static final Map<TABLES,String> TABLE_SQL;
 		static {
 			TABLE_SQL = new EnumMap<>(TABLES.class);
@@ -26,8 +29,13 @@ public class DatabaseInfo {
 			TABLE_SQL.put(SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		}
 
-		public static ATTRIBUTE stringToAttribute(String attribute){
-			switch (attribute){
+		/**
+		 * Get the ATTRIBUTE enum corresponding to the provided string.
+		 * @param attribute String to get enum equivalent for.
+		 * @return ATTRIBUTE enum equivalent of provided string.
+		 */
+		public static ATTRIBUTE stringToAttribute(String attribute) {
+			switch (attribute) {
 				case NOT_NAVIGABLE_TEXT:
 					return ATTRIBUTE.NOT_NAVIGABLE;
 				case COVID_SAFE_TEXT:
@@ -39,6 +47,7 @@ public class DatabaseInfo {
 					return null;
 			}
 		}
+
 		/**
 		 * Enum for Attributes table
 		 */
@@ -53,22 +62,61 @@ public class DatabaseInfo {
 				this.text = text;
 			}
 		}
+
 		/**
-		 * Enum for service request tables
+		 * Get the SERVICEREQUESTS enum corresponding to the provided string.
+		 * @param serviceRequest String to get enum equivalent for.
+		 * @return SERVICEREQUESTS enum equivalent of provided string.
+		 */
+		public static SERVICEREQUESTS stringToServiceRequest(String serviceRequest) {
+			switch (serviceRequest) {
+				case EXTERNAL_TRANSPORT_TEXT:
+					return SERVICEREQUESTS.EXTERNAL_TRANSPORT;
+				case FLORAL_DELIVERY_TEXT:
+					return SERVICEREQUESTS.FLORAL_DELIVERY;
+				case FOOD_DELIVERY_TEXT:
+					return SERVICEREQUESTS.FOOD_DELIVERY;
+				case GIFT_DELIVERY_TEXT:
+					return SERVICEREQUESTS.GIFT_DELIVERY;
+				case INTERNAL_TRANSPORT_TEXT:
+					return SERVICEREQUESTS.INTERNAL_TRANSPORT;
+				case LANGUAGE_INTERPRETER_TEXT:
+					return SERVICEREQUESTS.LANGUAGE_INTERPRETER;
+				case LAUNDRY_TEXT:
+					return SERVICEREQUESTS.LAUNDRY;
+				case MEDICINE_DELIVERY_TEXT:
+					return SERVICEREQUESTS.MEDICINE_DELIVERY;
+				case RELIGIOUS_REQUEST_TEXT:
+					return SERVICEREQUESTS.RELIGIOUS_REQUEST;
+				case SANITATION_TEXT:
+					return SERVICEREQUESTS.SANITATION;
+				case SECURITY_TEXT:
+					return SERVICEREQUESTS.SECURITY;
+				default:
+					System.out.println("Not Implemented");
+					return null;
+			}
+		}
+
+		/**
+		 * Enum for service request tables.
 		 */
 		public enum SERVICEREQUESTS {
-			EXTERNAL_TRANSPORT("External Transport"),
-			FLORAL_DELIVERY("Floral Delivery"),
-			FOOD_DELIVERY("Food Delivery"),
-			GIFT_DELIVERY("Gift Delivery"),
-			INTERNAL_TRANSPORT("Internal Transport"),
-			LANGUAGE_INTERPRETER("Language Interpreter"),
-			LAUNDRY("Laundry"),
-			MEDICINE_DELIVERY("Medicine Delivery"),
-			RELIGIOUS_REQUEST("Religious Request"),
-			SANITATION("Sanitation"),
-			SECURITY("Security");
+			EXTERNAL_TRANSPORT(EXTERNAL_TRANSPORT_TEXT),
+			FLORAL_DELIVERY(FLORAL_DELIVERY_TEXT),
+			FOOD_DELIVERY(FOOD_DELIVERY_TEXT),
+			GIFT_DELIVERY(GIFT_DELIVERY_TEXT),
+			INTERNAL_TRANSPORT(INTERNAL_TRANSPORT_TEXT),
+			LANGUAGE_INTERPRETER(LANGUAGE_INTERPRETER_TEXT),
+			LAUNDRY(LAUNDRY_TEXT),
+			MEDICINE_DELIVERY(MEDICINE_DELIVERY_TEXT),
+			RELIGIOUS_REQUEST(RELIGIOUS_REQUEST_TEXT),
+			SANITATION(SANITATION_TEXT),
+			SECURITY(SECURITY_TEXT);
 
+			/**
+			 * Map linking SERVICEREQUESTS enum to the SQL code that builds the corresponding table.
+			 */
 			static final Map<SERVICEREQUESTS,String> SERVICEREQUESTS_SQL;
 			static {
 				SERVICEREQUESTS_SQL = new EnumMap<>(SERVICEREQUESTS.class);
@@ -82,6 +130,9 @@ public class DatabaseInfo {
 				this.text = text;
 			}
 
+			/**
+			 * Enum for statuses used with service requests.
+			 */
 			public enum STATUSES {
 				UNASSIGNED("Unassigned"),
 				ASSIGNED("Assigned"),
@@ -193,4 +244,16 @@ public class DatabaseInfo {
 	private static final String NOT_NAVIGABLE_TEXT = "Not Navigable";
 	private static final String HANDICAPPED_ACCESSIBLE_TEXT = "Handicapped Accessible";
 	private static final String COVID_SAFE_TEXT = "COVID Safe";
+
+	private static final String EXTERNAL_TRANSPORT_TEXT = "External Transport";
+	private static final String FLORAL_DELIVERY_TEXT = "Floral Delivery";
+	private static final String FOOD_DELIVERY_TEXT = "Food Delivery";
+	private static final String GIFT_DELIVERY_TEXT = "Gift Delivery";
+	private static final String INTERNAL_TRANSPORT_TEXT = "Internal Transport";
+	private static final String LANGUAGE_INTERPRETER_TEXT = "Language Interpreter";
+	private static final String LAUNDRY_TEXT = "Laundry";
+	private static final String MEDICINE_DELIVERY_TEXT = "Medicine Delivery";
+	private static final String RELIGIOUS_REQUEST_TEXT = "Religious Request";
+	private static final String SANITATION_TEXT = "Sanitation";
+	private static final String SECURITY_TEXT = "Security";
 }

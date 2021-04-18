@@ -9,11 +9,42 @@ import java.util.*;
  */
 public class CSVHandler {
 
+	/**
+	 * Strategy interface for use in CSV importing
+	 */
 	private interface ValueInsertionStrategy {
+		/**
+		 * Get the primary key corresponding to use in insertion.
+		 * @return the primary key column name corresponding to use in insertion.
+		 */
 		String getPrimaryKey();
+
+		/**
+		 * Add provided values into the corresponding table.
+		 * @param values Values of entry to add
+		 * @throws SQLException Something went wrong.
+		 */
 		void add(Map<String,String> values) throws SQLException;
+
+		/**
+		 * Checks if the entry with the provided ID exists.
+		 * @param id ID to check for the existance of.
+		 * @return Whether or not an entry with the provided ID exists.
+		 * @throws SQLException Something went wrong.
+		 */
 		boolean exists(String id) throws SQLException;
+
+		/**
+		 * Delete an entry from the database.
+		 * @param id ID of entry to delete.
+		 * @throws SQLException Something went wrong.
+		 */
 		void delete(String id) throws SQLException;
+
+		/**
+		 * Clears the table.
+		 * @throws SQLException Something went wrong.
+		 */
 		void empty() throws SQLException;
 	}
 
