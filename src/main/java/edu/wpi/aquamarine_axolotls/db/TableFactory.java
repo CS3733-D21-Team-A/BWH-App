@@ -34,4 +34,18 @@ class TableFactory {
 			return null;
 		}
 	}
+
+	/**
+	 * Create and return an object representing the service request table with the corresponding name.
+	 * @param requestType identifier for service request table to link to.
+	 * @return RequestTable object representing the corresponding table in the database.
+	 */
+	RequestTable getRequestTable(DatabaseInfo.TABLES.SERVICEREQUESTS requestType) {
+		try {
+			return new RequestTable(connection, requestType.name());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

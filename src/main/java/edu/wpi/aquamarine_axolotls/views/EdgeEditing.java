@@ -145,8 +145,7 @@ public class EdgeEditing extends SEditing{
         );
         File csv = fileChooser.showOpenDialog(importButton.getScene().getWindow());
         try{
-            db.emptyEdgeTable();
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES);
+            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES, true);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){

@@ -5,8 +5,10 @@ import org.apache.derby.jdbc.EmbeddedDriver;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.*;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.SERVICEREQUESTS.*;
 
 /**
  * Controller class for working with the BWH database.
@@ -15,6 +17,15 @@ public class DatabaseController implements AutoCloseable {
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
+	final private Table attrTable;
+	final private Table serviceRequestsTable;
+	/*
+	 * Map for getting service request tables.
+	 * Key: Service Request enumeration.
+	 * Value: Table for corresponding service request type.
+	 */
+	final private Map<TABLES.SERVICEREQUESTS,RequestTable> requestsTables;
+
 
 	/**
 	 * DatabaseController constructor. Creates and populates new database if one is not found.
@@ -39,8 +50,17 @@ public class DatabaseController implements AutoCloseable {
 		}
 
 		TableFactory tableFactory = new TableFactory(connection);
-		nodeTable = tableFactory.getTable(DatabaseInfo.TABLES.NODES);
-		edgeTable = tableFactory.getTable(DatabaseInfo.TABLES.EDGES);
+		nodeTable = tableFactory.getTable(TABLES.NODES);
+		edgeTable = tableFactory.getTable(TABLES.EDGES);
+		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
+		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+
+		requestsTables = new HashMap<>();
+		for (TABLES.SERVICEREQUESTS table : TABLES.SERVICEREQUESTS.values()) {
+			if (TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(table) != null) {
+				requestsTables.put(table, tableFactory.getRequestTable(table));
+			}
+		}
 
 		if (!dbExists) {
 			populateDB();
@@ -119,11 +139,17 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void deleteNode(String nodeID) throws SQLException {
 		nodeTable.deleteEntry(nodeID);
+		Map<String, List<String>> filters = new HashMap<>();
+		filters.put("LOCATIONID", Collections.singletonList(nodeID));
+		filters.put("STATUS", Arrays.asList(STATUSES.UNASSIGNED.text, STATUSES.ASSIGNED.text, STATUSES.IN_PROGRESS.text));
+		for(Map<String,String> entry :serviceRequestsTable.getEntriesByValues(filters)){
+			changeStatus(entry.get("REQUESTID"),STATUSES.CANCELED);
+		}
 	}
 
 	/**
-	 * Get the full Nodes table as a List of Maps
-	 * @return List of maps representing the full Nodes table.
+	 * Get the full NODES table as a List of Maps
+	 * @return List of maps representing the full NODES table.
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getNodes() throws SQLException {
@@ -131,13 +157,26 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	/**
-	 * Query the Nodes table for an entry with the provided primary key.
+	 * Query the NODES table for an entry with the provided primary key.
 	 * @param nodeID ID representing node to look for.
 	 * @return Map representing the node to query for.
 	 * @throws SQLException Something went wrong.
 	 */
 	public Map<String,String> getNode(String nodeID) throws SQLException {
 		return nodeTable.getEntry(nodeID);
+	}
+
+	/**
+	 * Query the NODES table for entries with the provided primary keys.
+	 * @param nodeIDs ID representing nodes to look for.
+	 * @return List of Maps representing the nodes found.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<Map<String,String>> getNodes(List<String> nodeIDs) throws SQLException {
+		Map<String,List<String>> idMap = new HashMap<>();
+		idMap.put("NODEID", nodeIDs);
+
+		return nodeTable.getEntriesByValues(idMap);
 	}
 
 	/**
@@ -191,8 +230,8 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	/**
-	 * Delete a edge from the database (assumes node with provided ID exists).
-	 * @param edgeID ID of node to delete.
+	 * Delete an edge from the database (assumes node with provided ID exists).
+	 * @param edgeID ID of edge to delete.
 	 * @throws SQLException Something went wrong (likely edge doesn't exist).
 	 */
 	public void deleteEdge(String edgeID) throws SQLException {
@@ -200,8 +239,8 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	/**
-	 * Get the full Edges table as a List of Maps
-	 * @return List of maps representing the full Nodes table.
+	 * Get the full EDGES table as a List of Maps
+	 * @return List of maps representing the full NODES table.
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getEdges() throws SQLException  {
@@ -209,13 +248,26 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	/**
-	 * Query the Edges table for an entry with the provided primary key.
+	 * Query the EDGES table for an entry with the provided primary key.
 	 * @param edgeID ID representing node to look for.
 	 * @return Map representing the node to query for.
 	 * @throws SQLException Something went wrong.
 	 */
 	public Map<String,String> getEdge(String edgeID) throws SQLException {
 		return edgeTable.getEntry(edgeID);
+	}
+
+	/**
+	 * Query the EDGES table for entries with the provided primary keys.
+	 * @param edgeIDs ID representing edges to look for.
+	 * @return List of Maps representing the edges found.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<Map<String,String>> getEdges(List<String> edgeIDs) throws SQLException {
+		Map<String,List<String>> idMap = new HashMap<>();
+		idMap.put("EDGEID", edgeIDs);
+
+		return nodeTable.getEntriesByValues(idMap);
 	}
 
 	/**
@@ -244,6 +296,197 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 
+	// ===== SERVICE REQUESTS =====
+
+	/**
+	 * Insert a new service request into the databse.
+	 * @param sharedValues Values shared among all service requests (goes into the SERVICE_REQUESTS table).
+	 * @param requestValues Values specific to the particular type of service request.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void addServiceRequest(Map<String,String> sharedValues, Map<String,String> requestValues) throws SQLException {
+		serviceRequestsTable.addEntry(sharedValues);
+		requestsTables.get(TABLES.stringToServiceRequest(sharedValues.get("REQUESTTYPE"))).addEntry(requestValues);
+	}
+
+	/**
+	 * Change the status of a service request.
+	 * @param requestID ID of the service request to change the status for.
+	 * @param newStatus New status of the service request.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void changeStatus(String requestID, STATUSES newStatus) throws SQLException {
+		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
+		values.replace("STATUS", newStatus.text);
+		serviceRequestsTable.editEntry(requestID, values);
+	}
+
+	/**
+	 * Change the employee assigned to a service request.
+	 * @param requestID ID of the service request to change the employee for.
+	 * @param employeeID ID of the employee to assign to the service request.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void changeEmployee(String requestID, String employeeID) throws SQLException {
+		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
+		values.replace("EMPLOYEE", employeeID);
+		serviceRequestsTable.editEntry(requestID, values);
+	}
+
+	/**
+	 * Assign an employee to a service request and set its status to Assigned.
+	 * @param requestID ID of the service request to assign the employee to.
+	 * @param employeeID ID of the employee to assign to the service request.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void assignEmployee(String requestID, String employeeID) throws SQLException {
+		changeEmployee(requestID, employeeID);
+		changeStatus(requestID, STATUSES.ASSIGNED);
+	}
+
+	/**
+	 * Get all service requests with the desired status.
+	 * @param status Status of service requests to filter for.
+	 * @return List of Maps representing the service requests.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<Map<String,String>> getServiceRequestsWithStatus(STATUSES status) throws SQLException {
+		return serviceRequestsTable.getEntriesByValue("STATUS", status.toString());
+	}
+
+	/**
+	 * Get all service requests.
+	 * @return List of Maps representing the service requests.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<Map<String,String>> getServiceRequests() throws SQLException {
+		return serviceRequestsTable.getEntries();
+	}
+
+	/**
+	 * Get all service requests of the desired type.
+	 * @param requestType Service request type to get.
+	 * @return List of Maps representing the service requests.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<Map<String,String>> getServiceRequestsByType(TABLES.SERVICEREQUESTS requestType) throws SQLException {
+		return requestsTables.get(requestType).getRequests();
+	}
+
+
+	// ===== NODE / EDGE ATTRIBUTES =====
+
+	/**
+	 * Get the name of the primary key of the node or edge table.
+	 * @param isNode Boolean indicating whether you want the NODES table or EDGES table primary key
+	 * @return Column of primary key for desired table.
+	 */
+	private String idColumn(boolean isNode) {
+		return isNode ? "NODEID" : "EDGEID"; //TODO: Make this pull from Table objects.
+	}
+
+	/**
+	 * Remove an attribute from the provided entry.
+	 * @param id ID of node or edge to remove attribute from.
+	 * @param attribute Attribute to remove.
+	 * @param isNode Boolean indicating whether attempting to remove an attribute of a node or an edge.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void deleteAttribute(String id, TABLES.ATTRIBUTE attribute, boolean isNode) throws SQLException {
+		Map<String,List<String>> filters = new HashMap<>();
+		filters.put(idColumn(isNode), Collections.singletonList(id));
+		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
+
+		attrTable.deleteEntry(attrTable.getEntriesByValues(filters).get(0).get("ATTRID"));
+	}
+
+	/**
+	 * Add an attribute to the provided entry.
+	 * @param id ID of node or edge to add attribute to.
+	 * @param attribute Attribute to add.
+	 * @param isNode Boolean indicating whether attempting to add an attribute to a node or an edge.
+	 * @return Boolean indicating if the addition was successful (false if the node already has the attribute)
+	 * @throws SQLException Something went wrong.
+	 */
+	public boolean addAttribute(String id, TABLES.ATTRIBUTE attribute, boolean isNode) throws SQLException {
+		Map<String,String> values = new HashMap<>();
+		values.put(idColumn(isNode), id);
+		values.put("ATTRIBUTE", attribute.text);
+
+		if(!(hasAttribute(id, attribute, isNode))){
+			attrTable.addEntry(values);
+			return true;
+		}
+		System.out.println("Entry already has attribute!");
+		return false;
+	}
+
+	/**
+	 * Removes all attributes from the provided entry.
+	 * @param id ID of node or edge to clear attributes from.
+	 * @param isNode Boolean indicating whether attempting to remove attributes of a node or an edge.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void clearAttributes(String id, boolean isNode) throws SQLException {
+		List<Map<String,String>> entries = attrTable.getEntriesByValue(idColumn(isNode), id);
+		for (Map<String,String> entry : entries) {
+			nodeTable.deleteEntry(entry.get("ATTRID"));
+		}
+	}
+
+	/**
+	 * Get all the attributes of the provided entry.
+	 * @param id ID of node or edge to get attributes for.
+	 * @param isNode Boolean indicating whether you're getting a node or an edge.
+	 * @return List of attributes the entry has.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<TABLES.ATTRIBUTE> getAttributes(String id, boolean isNode) throws SQLException {
+		List<TABLES.ATTRIBUTE> attributes = new ArrayList<>();
+		for (Map<String,String> attr : attrTable.getEntriesByValue(idColumn(isNode), id)) {
+			attributes.add(DatabaseInfo.TABLES.stringToAttribute(attr.get("ATTRIBUTE")));
+		}
+
+		return attributes;
+	}
+
+	/**
+	 * Check whether or not the desired entry has a certain attribute.
+	 * @param id ID of node or edge to check.
+	 * @param attribute Attribute to check for.
+	 * @param isNode Boolean indicating whether attempting to look for a node or an edge.
+	 * @return Boolean indicating if the desired entry has the specified attribute.
+	 * @throws SQLException Something went wrong.
+	 */
+	public boolean hasAttribute(String id, TABLES.ATTRIBUTE attribute, boolean isNode) throws SQLException {
+		Map<String,List<String>> filters = new HashMap<>();
+		filters.put(idColumn(isNode), Collections.singletonList(id));
+		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
+
+		return attrTable.getEntriesByValues(filters).size() > 0;
+	}
+
+	/**
+	 * Get all nodes or edges with the desired attribute.
+	 * @param attribute Attribute to filter by.
+	 * @param isNode Boolean indicating whether attempting to look for nodes or edges.
+	 * @return List of IDs corresponding to the associated entries in the NODES or EDGES table.
+	 * @throws SQLException Something went wrong.
+	 */
+	public List<String> getByAttribute(TABLES.ATTRIBUTE attribute, boolean isNode) throws SQLException {
+		Map<String,List<String>> filters = new HashMap<>();
+		filters.put(idColumn(!isNode), Collections.singletonList(null));
+		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
+
+		List<String> ids = new ArrayList<>();
+		for (Map<String,String> entry : attrTable.getEntriesByValues(filters)) {
+			ids.add(entry.get(idColumn(isNode)));
+		}
+
+		return ids;
+	}
+
+
 	// ===== DATABASE CREATION =====
 
 
@@ -252,24 +495,28 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.NODE_TABLE_SQL)) {
-			smnt.execute();
+		for (String SQL : TABLES.TABLE_SQL.values()) { // for each primary table
+			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
+				smnt.execute(); // create the table
+			}
 		}
-
-		try (PreparedStatement smnt = connection.prepareStatement(DatabaseInfo.EDGE_TABLE_SQL)) { //TODO: Make the column names available as static variables?
-			smnt.execute();
+		for (String SQL : TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.values()) { // for each service request table
+			if (SQL != null) { // if we have written SQL code for it
+				try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
+					smnt.execute(); // create the table
+				}
+			}
 		}
 	}
 
 	/**
 	 * Populate the database with default nodes and edges (assumes database is fresh and empty)
-	 * @throws URISyntaxException Something went wrong.
 	 * @throws IOException Something went wrong.
 	 * @throws SQLException Something went wrong.
 	 */
-	private void populateDB() throws URISyntaxException, IOException, SQLException {
+	private void populateDB() throws IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), TABLES.NODES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), TABLES.EDGES, true);
 	}
 }

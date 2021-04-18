@@ -28,8 +28,8 @@ public class CSVHandlerTest {
 		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
 
 		csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES, true);
+		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES, true);
 
 		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
 		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
@@ -44,19 +44,17 @@ public class CSVHandlerTest {
 
 	@Test
 	void importEdgesTest() throws SQLException, IOException {
-		assertNotNull(db.getEdges());
 		db.emptyEdgeTable();
 		assertEquals(0, db.getEdges().size());
-		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES, true);
 		assertNotNull(db.getEdges());
 	}
 
 	@Test
 	void importNodesTest() throws SQLException, IOException {
-		assertNotNull(db.getNodes());
 		db.emptyNodeTable();
 		assertEquals(0, db.getNodes().size());
-		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
+		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES, true);
 		assertNotNull(db.getNodes());
 	}
 
