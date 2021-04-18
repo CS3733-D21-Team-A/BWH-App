@@ -8,6 +8,7 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,9 +29,9 @@ public class NodeEditing extends SEditing {
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
+    @FXML private JFXButton edgesButton;
     @FXML private ComboBox nodeDropdown;
     @FXML private JFXTextField nodeID;
-    @FXML private ScrollPane otherFields;
     @FXML private JFXTextField longName;
     @FXML private JFXTextField shortName;
     @FXML private JFXTextField xCoor;
@@ -38,8 +39,8 @@ public class NodeEditing extends SEditing {
     @FXML private JFXTextField nodeType;
     @FXML private JFXTextField floor;
     @FXML private JFXTextField building;
-    @FXML private JFXButton export_button;
-    @FXML private JFXButton import_button;
+    @FXML private MenuItem exportButton;
+    @FXML private MenuItem importButton;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
     @FXML private TableView table;
@@ -62,20 +63,27 @@ public class NodeEditing extends SEditing {
         ObservableList<String> options = FXCollections.observableArrayList();
         submissionlabel.setVisible(true);
 
-        table.setEditable(false);
-        table.getItems().clear();
-        nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
-        lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
-        sNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
-        xCol.setCellValueFactory(new PropertyValueFactory<Node, String>("xcoord"));
-        yCol.setCellValueFactory(new PropertyValueFactory<Node, String>("ycoord"));
-        floorCol.setCellValueFactory(new PropertyValueFactory<Node, String>("floor"));
-        buildingCol.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
-        typeCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeType"));
+        //table.setEditable(false);
+        //table.getItems().clear();
+        //nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
+        //lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
+        //sNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
+        //xCol.setCellValueFactory(new PropertyValueFactory<Node, String>("xcoord"));
+        //yCol.setCellValueFactory(new PropertyValueFactory<Node, String>("ycoord"));
+        //floorCol.setCellValueFactory(new PropertyValueFactory<Node, String>("floor"));
+        //buildingCol.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
+        //typeCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeType"));
 
         nodeDropdown.setVisible(false);
         nodeID.setVisible(false);
-        otherFields.setVisible(false);
+        longName.setVisible(false);
+        shortName.setVisible(false);
+        xCoor.setVisible(false);
+        yCoor.setVisible(false);
+        nodeType.setVisible(false);
+        floor.setVisible(false);
+        building.setVisible(false);
+
 
         deleteButton.setStyle("-fx-background-color: #003da6; ");       //setting buttons to default color
         addButton.setStyle("-fx-background-color: #003da6; ");
@@ -87,10 +95,10 @@ public class NodeEditing extends SEditing {
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
                 options.add(node.get("NODEID"));
-                table.getItems().add(new Node(
+                /*table.getItems().add(new Node(
                         node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")),
                         node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"), node.get("LONGNAME"), node.get("SHORTNAME")
-                ));
+                ));*/
             }
             nodeDropdown.setItems(options);
         } catch (SQLException e) {
@@ -117,7 +125,13 @@ public class NodeEditing extends SEditing {
     public void pressDeleteButton(){
         nodeDropdown.setVisible(true);
         nodeID.setVisible(false);
-        otherFields.setVisible(false);
+        longName.setVisible(false);
+        shortName.setVisible(false);
+        xCoor.setVisible(false);
+        yCoor.setVisible(false);
+        nodeType.setVisible(false);
+        floor.setVisible(false);
+
 
         deleteButton.setStyle("-fx-background-color: #91b7fa; ");
         addButton.setStyle("-fx-background-color: #003da6; ");
@@ -130,7 +144,13 @@ public class NodeEditing extends SEditing {
     public void pressAddButton(){
         nodeDropdown.setVisible(false);
         nodeID.setVisible(true);
-        otherFields.setVisible(true);
+        longName.setVisible(true);
+        shortName.setVisible(true);
+        xCoor.setVisible(true);
+        yCoor.setVisible(true);
+        nodeType.setVisible(true);
+        floor.setVisible(true);
+        building.setVisible(true);
 
         deleteButton.setStyle("-fx-background-color: #003da6; ");
         addButton.setStyle("-fx-background-color: #91b7fa; ");
@@ -143,7 +163,13 @@ public class NodeEditing extends SEditing {
     public void pressEditButton(){
         nodeDropdown.setVisible(true);
         nodeID.setVisible(false);
-        otherFields.setVisible(true);
+        longName.setVisible(true);
+        shortName.setVisible(true);
+        xCoor.setVisible(true);
+        yCoor.setVisible(true);
+        nodeType.setVisible(true);
+        floor.setVisible(true);
+        building.setVisible(true);
 
         deleteButton.setStyle("-fx-background-color: #003da6; ");
         addButton.setStyle("-fx-background-color: #003da6; ");
@@ -152,12 +178,12 @@ public class NodeEditing extends SEditing {
         state = "edit";
     }
 
-    public void export_CSV() {
+    public void exportCSV() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showSaveDialog(export_button.getScene().getWindow());
+        File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
         try{
             csvHandler.exportCSV(csv, DatabaseInfo.TABLES.NODES);
         }catch(IOException ie){
@@ -167,12 +193,12 @@ public class NodeEditing extends SEditing {
         }
     }
 
-    public void import_CSV() { //still in the works
+    public void loadCSV() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(import_button.getScene().getWindow());
+        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
             db.emptyNodeTable();
             csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES);
@@ -199,7 +225,7 @@ public class NodeEditing extends SEditing {
         return;
     }
 
-    public void add(String current_nodeID){ //not working idk why
+    public void add(String current_nodeID){
         int x=Integer.parseInt(xCoor.getText());
         int y=Integer.parseInt(yCoor.getText());
         if (!(x<5000 &&  x>0)&&(y<3400 && y>0)){
@@ -307,4 +333,6 @@ public class NodeEditing extends SEditing {
     }
 
 
+    public void pressEdgeButton() {
+    }
 }
