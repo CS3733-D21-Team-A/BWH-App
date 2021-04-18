@@ -7,8 +7,8 @@ import java.util.*;
  * Class acting as an entity representing/working on a SQL table.
  */
 class Table {
-	final private Connection connection;
-	final private String tableName;
+	final protected Connection connection;
+	final protected String tableName;
 	final private String primaryKey; //this isn't absolutely necessary, but may simplify things.
 	final private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 
@@ -143,7 +143,7 @@ class Table {
 	 * @return List of Maps representing ResultSet.
 	 * @throws SQLException Something went wrong.
 	 */
-	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
+	protected List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
 		List<Map<String,String>> entries = new ArrayList<>();
 		while (rs.next()) {
 			Map<String,String> entry = new HashMap<>(); // new row to add
@@ -254,22 +254,4 @@ class Table {
 			smnt.executeUpdate();
 		}
 	}
-
-
-
-
-	public class RequestTable extends Table {
-		RequestTable(Connection connection, String tableName) throws SQLException {
-			super(connection, tableName);
-		}
-
-		public List<Map<String,String>> getRequests() throws SQLException {
-			try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " JOIN " + DatabaseInfo.TABLES.SERVICE_REQUESTS.name() + " ON " + tableName + ".REQUESTID = " + DatabaseInfo.TABLES.SERVICE_REQUESTS.name() + ".REQUESTID")) {
-				try (ResultSet rs = smnt.executeQuery()) {
-					return resultSetToList(rs);
-				}
-			}
-		}
-	}
-
 }

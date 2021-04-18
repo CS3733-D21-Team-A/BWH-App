@@ -40,9 +40,9 @@ class TableFactory {
 	 * @param table identifier for table to link to.
 	 * @return Table object representing the corresponding table in the database.
 	 */
-	Table getTable(DatabaseInfo.TABLES.SERVICEREQUESTS table) {
+	RequestTable getRequestTable(DatabaseInfo.TABLES.SERVICEREQUESTS table) {
 		try {
-			return new Table(connection, table.name());
+			return new RequestTable(connection, table.name());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

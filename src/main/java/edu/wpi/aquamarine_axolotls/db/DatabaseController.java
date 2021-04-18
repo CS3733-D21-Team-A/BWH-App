@@ -24,7 +24,7 @@ public class DatabaseController implements AutoCloseable {
 	 * Key: Service Request enumeration.
 	 * Value: Table for corresponding service request type.
 	 */
-	final private Map<TABLES.SERVICEREQUESTS,Table> requestsTables;
+	final private Map<TABLES.SERVICEREQUESTS,RequestTable> requestsTables;
 
 
 	/**
@@ -58,7 +58,7 @@ public class DatabaseController implements AutoCloseable {
 		requestsTables = new HashMap<>();
 		for (TABLES.SERVICEREQUESTS table : TABLES.SERVICEREQUESTS.values()) {
 			if (TABLES.SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(table) != null) {
-				requestsTables.put(table, tableFactory.getTable(table));
+				requestsTables.put(table, tableFactory.getRequestTable(table));
 			}
 		}
 
@@ -320,7 +320,7 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	public List<Map<String,String>> getServiceRequestsByType(TABLES.SERVICEREQUESTS requestType) throws SQLException {
-		return requestsTables.get(requestType).getEntries(); //TODO: THIS DOESN'T WORK RIGHT
+		return requestsTables.get(requestType).getRequests();
 	}
 
 
