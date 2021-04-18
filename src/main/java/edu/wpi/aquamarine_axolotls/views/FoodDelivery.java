@@ -17,6 +17,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FoodDelivery extends SServiceRequest {
@@ -68,5 +70,31 @@ public class FoodDelivery extends SServiceRequest {
         content.setActions(exit_button);
         help.show();
 
+    }
+
+    @FXML
+    public void handleButtonAction(ActionEvent actionEvent) throws IOException {
+
+        if(foodOptions.getSelectionModel().getSelectedItem() == null) return;
+        String fn = firstName.getText();
+        String ln = lastName.getText();
+        String dt = deliveryTime.getText();
+        String room = roomNumber.getText();
+        String food = foodOptions.getSelectionModel().getSelectedItem().toString();
+
+        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
+                || dt.isEmpty() || room.isEmpty()){
+            return;
+        }
+
+        Map<String, String> service = new HashMap<String, String>();
+        service.put("SERVICENAME", "Food Delivery");
+        service.put("FIRSTNAME", fn);
+        service.put("LASTNAME", ln);
+        service.put("DELIVERYTIME", dt);
+        service.put("ROOMID", room);
+        service.put("FOODOPTIONS", food);
+        Aapp.serviceRequests.add(service);
+        submit(actionEvent);
     }
 }
