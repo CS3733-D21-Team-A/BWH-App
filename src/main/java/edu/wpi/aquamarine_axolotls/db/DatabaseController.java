@@ -315,6 +315,10 @@ public class DatabaseController implements AutoCloseable {
 		return serviceRequestsTable.getEntriesByValue("STATUS", status.toString());
 	}
 
+	public List<Map<String,String>> getServiceRequests() throws SQLException {
+		return serviceRequestsTable.getEntries();
+	}
+
 
 	// ===== NODE / EDGE ATTRIBUTES =====
 
