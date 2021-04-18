@@ -44,13 +44,18 @@ public abstract class SServiceRequest extends SPage{
     }
 
     @FXML
-    public void submit(javafx.event.ActionEvent actionEvent) throws IOException {
-        popUp(actionEvent,"Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
+    public void submit() throws IOException {
+        popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
         sceneSwitch("DefaultServicePage");
     }
 
     @FXML
-    public void popUp(javafx.event.ActionEvent event, String title, String disp){
+    public void errorFields(String reqFields) throws IOException {
+        popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields.\n" + reqFields);
+    }
+
+    @FXML
+    public void popUp(String title, String disp){
         final Stage myDialog = new Stage();
         myDialog.initModality(Modality.APPLICATION_MODAL);
         myDialog.centerOnScreen();

@@ -77,6 +77,18 @@
                <Insets top="20.0" />
             </VBox.margin>
          </HBox>
+         <HBox alignment="CENTER">
+            <children>
+               <JFXButton fx:id="cancelB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#cancel" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Cancel" textFill="WHITE">
+                  <HBox.margin>
+                     <Insets right="10.0" />
+                  </HBox.margin>
+               </JFXButton>
+            </children>
+            <VBox.margin>
+               <Insets top="10.0" />
+            </VBox.margin>
+         </HBox>
          <Line endX="175.0" stroke="#c4c4c4">
             <VBox.margin>
                <Insets top="20.0" />
@@ -100,7 +112,7 @@
          </JFXComboBox>
       </children>
    </VBox>
-   <TableView fx:id="srTable" onMouseClicked="#testF" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+   <TableView fx:id="srTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
       <columns>
          <TableColumn fx:id="assignedColumn" prefWidth="75.0" text="Assigned" />
          <TableColumn fx:id="assigneeColumn" prefWidth="75.0" text="Assignee" />

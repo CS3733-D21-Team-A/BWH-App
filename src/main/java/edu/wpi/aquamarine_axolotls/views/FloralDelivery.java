@@ -69,17 +69,21 @@ public class FloralDelivery extends SServiceRequest {
         String pmsg = persMessage.getText();
 
         //TODO: make pop up here
-        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+") || dt.isEmpty()) return;
+        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+") || dt.isEmpty()){
+            errorFields("\n- FirstName\n- Last Name\n- Delivery Time");
+            return;
+        }
 
         Map<String, String> service = new HashMap<String, String>();
-        service.put("SERVICENAME", "Floral Delivery");
+        //service.put("REQUESTID", ""); // TODO: make request ID
+        service.put("REQUESTTYPE", "Floral Delivery");
         service.put("FIRSTNAME", fn);
         service.put("LASTNAME", ln);
         service.put("DELIVERYTIME", dt);
-        service.put("ROOMID", room);
+        service.put("LOCATIONID", room);
         service.put("NOTE", pmsg);
         Aapp.serviceRequests.add(service);
-        submit(actionEvent);
+        submit();
     }
 
 

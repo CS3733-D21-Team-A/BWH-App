@@ -73,7 +73,10 @@ public class FoodDelivery extends SServiceRequest {
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
-        if(foodOptions.getSelectionModel().getSelectedItem() == null) return;
+        if(foodOptions.getSelectionModel().getSelectedItem() == null){
+            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
+            return;
+        }
         String fn = firstName.getText();
         String ln = lastName.getText();
         String dt = deliveryTime.getText();
@@ -82,17 +85,18 @@ public class FoodDelivery extends SServiceRequest {
 
         if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
                 || dt.isEmpty() || room.isEmpty()){
+            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
             return;
         }
 
         Map<String, String> service = new HashMap<String, String>();
-        service.put("SERVICENAME", "Food Delivery");
+        service.put("REQUESTTYPE", "Food Delivery");
         service.put("FIRSTNAME", fn);
         service.put("LASTNAME", ln);
         service.put("DELIVERYTIME", dt);
-        service.put("ROOMID", room);
-        service.put("FOODOPTIONS", food);
+        service.put("LOCATIONID", room);
+        service.put("FOODOPTIONS", food); // TODO : add to db
         Aapp.serviceRequests.add(service);
-        submit(actionEvent);
+        submit();
     }
 }

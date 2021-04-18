@@ -39,10 +39,10 @@ public class EmployeeRequest {
     }
 
     public EmployeeRequest(Map<String, String> sr) {
-        this.assigned = ""; // TODO : maybe this should be left null?
+        this.assigned = "N/A"; // TODO : maybe this should be left null?
         this.assignee = sr.get("FIRSTNAME") + " " + sr.get("LASTNAME");
         this.status = "Not Assigned";
-        this.serviceRequest = sr.get("SERVICENAME");
-        this.location = sr.get("ROOMID");
+        this.serviceRequest = sr.get("REQUESTTYPE");
+        this.location = sr.get("LOCATIONID");
     }
 }

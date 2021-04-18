@@ -41,6 +41,9 @@ public class EmployeeRequests extends SServiceRequest{
     JFXButton changeStatusB;
 
     @FXML
+    JFXButton cancelB;
+
+    @FXML
     JFXComboBox assignD;
 
     @FXML
@@ -55,7 +58,7 @@ public class EmployeeRequests extends SServiceRequest{
         assignD.setItems(FXCollections
                 .observableArrayList("Sai", "Samantha", "Imani"));
         statusD.setItems(FXCollections
-                .observableArrayList("Not Assigned", "In Progress", "Complete"));
+                .observableArrayList("Unassigned", "Assigned","In Progress", "Done", "Canceled"));
         assignedColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assigned"));
         assigneeColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assignee"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("status"));
@@ -72,11 +75,7 @@ public class EmployeeRequests extends SServiceRequest{
         sceneSwitch("DefaultServicePage");
     }
 
-    @FXML
-    public void testF(){
-        System.out.println(srTable.getSelectionModel().getFocusedIndex());
-    }
-
+    // TODO: change all methods to use DB and update it and not the table
     @FXML
     public void assign(){
         if(assignD.getSelectionModel() == null) return;
@@ -92,8 +91,18 @@ public class EmployeeRequests extends SServiceRequest{
         if(statusD.getSelectionModel() == null) return;
         int index = srTable.getSelectionModel().getFocusedIndex();
         if(index == -1) return;
+       // Aapp.serviceRequests.get(index).replace();
         srTable.getItems().get(index).setStatus(statusD.getSelectionModel().getSelectedItem().toString());
         statusD.getSelectionModel().clearSelection();
+        srTable.refresh();
+    }
+
+    @FXML
+    public void cancel(){
+        int index = srTable.getSelectionModel().getFocusedIndex();
+        if(index == -1) return;
+        //Aapp.serviceRequests.remove(index);
+        srTable.getItems().remove(index);
         srTable.refresh();
     }
 
