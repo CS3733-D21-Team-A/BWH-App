@@ -46,50 +46,23 @@ public class DefaultServicePage extends SPage{
     @FXML
     private JFXButton shutDownB;
 
+    @FXML
+    private JFXButton viewReqB;
+
     // Button Presses for Default Service Page, each button leads to its service request form
     // NOTE: code feels redundant, maybe make method?
 
     @FXML
     public void foodDelivery(ActionEvent actionEvent) { sceneSwitch("FoodDelivery"); }
 
-    public void languageInterpP(ActionEvent actionEvent) {
-        sceneSwitch("LanguageInterpreter");
-    }
-
-    public void sanitationP(ActionEvent actionEvent) {
-        sceneSwitch("Sanitation");
-    }
-
-    public void laundryP(ActionEvent actionEvent) {
-        sceneSwitch("Laundry");
-    }
-
-    public void giftDelivP(ActionEvent actionEvent) {
-        sceneSwitch("GiftDelivery");
-    }
-
-    public void medicineDelivP(ActionEvent actionEvent) {
-        sceneSwitch("MedicineDelivery");
-    }
-
+    @FXML
     public void floralDelivP(ActionEvent actionEvent) {
         sceneSwitch("FloralDelivery");
     }
 
-    public void religiousReqP(ActionEvent actionEvent) {
-        sceneSwitch("ReligiousRequest");
-    }
-
-    public void internalTranP(ActionEvent actionEvent) {
-        sceneSwitch("InternalTransport");
-    }
-
-    public void externalTranP(ActionEvent actionEvent) {
-        sceneSwitch("ExternalTransport");
-    }
-
-    public void securityP(ActionEvent actionEvent) {
-        sceneSwitch("Security");
+    @FXML
+    public void viewReqP(ActionEvent actionEvent) {
+        sceneSwitch("EmployeeRequests");
     }
 }
 
