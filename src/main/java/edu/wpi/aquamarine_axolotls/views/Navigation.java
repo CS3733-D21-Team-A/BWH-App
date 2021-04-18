@@ -20,7 +20,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.util.Duration;
-import sun.font.FontConfigManager;
+//import sun.font.FontConfigManager;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -377,7 +377,7 @@ public class Navigation  extends SPage{
                 firstNodeSelect = 0;
                 findPath(this.firstNode, currCloseName);
             }
-            else this.firstNode = currCloseName;
+            else if (currCloseName != null) this.firstNode = currCloseName;
         }
     }
 

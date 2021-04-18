@@ -50,7 +50,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXHamburger fx:id="hamburger" onDragDetected="#hammy" />
+                        <JFXHamburger fx:id="hamburger" />
                      </children>
                   </HBox>
                </children>
