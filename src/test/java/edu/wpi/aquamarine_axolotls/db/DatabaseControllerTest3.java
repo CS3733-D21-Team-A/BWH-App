@@ -2,12 +2,14 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.apache.derby.iapi.services.io.FileUtil;
+import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.function.Executable;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.spec.ECField;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -293,13 +295,13 @@ public class DatabaseControllerTest3 {
     }
 
     @Test
-    public void testGetByAttributeTwoNode(){
+    public void testGetByAttributeTwoNodes(){
         try{
             assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
             assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
             assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
 
-			  	assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
             assertTrue(db.addAttribute("aPARK020GG", COVID_SAFE, true));
             assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
 
@@ -308,6 +310,72 @@ public class DatabaseControllerTest3 {
 
             expectedList.add("aPARK019GG");
             expectedList.add("aPARK020GG");
+
+            assertEquals(expectedList, actualList);
+        } catch(SQLException e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetByAttributeOneEdge(){
+        try{
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+
+
+
+            List<String> expectedList = new ArrayList<>();
+            List<String> actualList = db.getByAttribute(NOT_NAVIGABLE,false);
+
+            expectedList.add("aWALK008GG_aWALK009GG");
+
+            assertEquals(expectedList, actualList);
+        } catch(SQLException e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetByAttributeTwoEdges(){
+        try{
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+
+            assertFalse(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+
+            List<String> expectedList = new ArrayList<>();
+            List<String> actualList = db.getByAttribute(NOT_NAVIGABLE,false);
+
+            expectedList.add("aWALK008GG_aWALK009GG");
+            expectedList.add("aPARK020GG_aWALK009GG");
+
+            assertEquals(expectedList, actualList);
+        } catch(SQLException e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testGetByAttributeNoEdges(){
+        try{
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+
+            assertFalse(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+
+            List<String> expectedList = new ArrayList<>();
+            List<String> actualList = db.getByAttribute(COVID_SAFE,false);
 
             assertEquals(expectedList, actualList);
         } catch(SQLException e){
@@ -477,7 +545,56 @@ public class DatabaseControllerTest3 {
         }
     }
 
+    //Testing Cascading
 
+    @Test
+    public void testCascadingDeleteNode(){
+        try{
+            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aWALK008GG",true);
+            assertEquals(expectedList, actualList);
+
+            assertTrue(db.addAttribute("aWALK008GG", COVID_SAFE, true));
+            assertTrue(db.addAttribute("aWALK008GG", NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aWALK008GG", HANDICAPPED_ACCESSIBLE, true));
+
+            assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK020GG", COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+
+            expectedList.add(COVID_SAFE);
+            expectedList.add(NOT_NAVIGABLE);
+            expectedList.add(HANDICAPPED_ACCESSIBLE);
+
+            actualList = db.getAttributes("aWALK008GG",true);
+
+            assertEquals(expectedList, actualList);
+
+            List<String> expectedList2 = new ArrayList<>();
+            List<String> actualList2 = db.getByAttribute(COVID_SAFE,true);
+            expectedList2.add("aWALK008GG");
+            expectedList2.add("aPARK020GG");
+            assertEquals(expectedList2, actualList2);
+
+            db.deleteNode("aWALK008GG");
+            expectedList2.remove("aWALK008GG");
+            actualList2 = db.getByAttribute(COVID_SAFE,true);
+            assertEquals(expectedList2, actualList2);
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAddAttributeToNodeNotExist(){
+        Exception exception = assertThrows(DerbySQLIntegrityConstraintViolationException.class, ()
+                    -> db.addAttribute("aPARK030GG", COVID_SAFE, true));
+
+        assertTrue(exception.getMessage().contains("caused a violation of foreign key constraint"));
+    }
+    
 
     // Emily testing getNodes and getEdges:
 }
