@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -14,9 +15,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
+<AnchorPane fx:id="mainAnchor" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane alignment="CENTER_LEFT" prefHeight="68.0" prefWidth="600.0">
                <columnConstraints>
@@ -49,36 +50,13 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXButton fx:id="homeButton" mnemonicParsing="false" onAction="#goHome" style="-fx-background-color: #ffffff00;" text=" ">
-                           <graphic>
-                              <ImageView>
-                                 <image>
-                                    <Image url="@../img/homeBlue.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <HBox.margin>
-                              <Insets right="5.0" />
-                           </HBox.margin>
-                        </JFXButton>
-                        <JFXButton fx:id="helpB" mnemonicParsing="false" style="-fx-background-color: #ffffff00;" text=" ">
-                           <graphic>
-                              <ImageView>
-                                 <image>
-                                    <Image url="@../img/helpBlue.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </JFXButton>
+                        <JFXHamburger fx:id="hamburger" />
                      </children>
                   </HBox>
                </children>
             </GridPane>
             <HBox prefHeight="9.0" prefWidth="600.0" style="-fx-background-color: #003da6;" />
-            <GridPane prefHeight="323.0" prefWidth="592.0">
+            <GridPane prefHeight="323.0" prefWidth="630.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.0" minWidth="10.0" prefWidth="141.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="443.0" minWidth="10.0" prefWidth="439.0" />
@@ -87,14 +65,14 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <VBox prefHeight="400.0" prefWidth="162.0">
+                  <VBox prefHeight="323.0" prefWidth="73.0">
                      <children>
                         <JFXComboBox fx:id="startLocation" prefWidth="150.0" promptText="Start location">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="destination" prefWidth="150.0" promptText="Destination">
+                        <JFXComboBox fx:id="destination" prefWidth="121.0" promptText="Destination">
                            <VBox.margin>
                               <Insets top="5.0" />
                            </VBox.margin>
@@ -118,14 +96,15 @@
                   </VBox>
                   <VBox alignment="CENTER" GridPane.columnIndex="1">
                      <children>
-                        <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
+                        <AnchorPane maxWidth="438.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
                            <children>
-                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../img/groundFloor.png" />
                                  </image>
                               </ImageView>
-                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="298.0" prefWidth="438.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="298.0" prefWidth="438.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                      </children>
