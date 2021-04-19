@@ -60,6 +60,8 @@ public class Navigation  extends SPage{
     DatabaseController db;
     private int firstNodeSelect = 0;
     private String firstNode;
+    private List<String> pathList = new ArrayList<>();
+    private int activePath = 0;
 
 
     @FXML
@@ -135,7 +137,7 @@ public class Navigation  extends SPage{
 
 
     public void findPath() {
-        anchor.getChildren().clear();
+        if (activePath == 0) anchor.getChildren().clear();
         int count = 0;
         try {
             List<Map<String, String>> edges = db.getEdges();
@@ -186,7 +188,7 @@ public class Navigation  extends SPage{
 
 
     public void findPaths2() {
-        anchor.getChildren().clear();
+        if (activePath == 0) anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
         SearchAlgorithm searchAlgorithm;
@@ -237,11 +239,11 @@ public class Navigation  extends SPage{
 
     /**
      * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
-     * @param start
-     * @param end
+     * @param start String, long name of start node
+     * @param end String, long name of end node
      */
     public void findPath(String start, String end) {
-        anchor.getChildren().clear();
+        if(activePath == 0) anchor.getChildren().clear();
         SearchAlgorithm searchAlgorithm;
         List<Node> pathNodes = new ArrayList<>();
         try {
@@ -254,7 +256,6 @@ public class Navigation  extends SPage{
         } catch (SQLException sq) {
             sq.printStackTrace();
         }
-
 
 
         Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
@@ -343,19 +344,32 @@ public class Navigation  extends SPage{
 
         String currCloseName = currClosest.get("LONGNAME");
         System.out.println(currClosest.get("LONGNAME"));
-        
-        //Return the long name of this node
-        //return currClosest.get("LONGNAME");
-        if (this.firstNodeSelect == 0) {
-            firstNodeSelect = 1;
-            this.firstNode = currCloseName;
-        }
-        else if (this.firstNodeSelect == 1) {
-            if (this.firstNode != null && currCloseName != null) {
-                firstNodeSelect = 0;
-                findPath(this.firstNode, currCloseName);
+
+        if (activePath == 0) {
+            //Return the long name of this node
+            //return currClosest.get("LONGNAME");
+            if (this.firstNodeSelect == 0) {
+                firstNodeSelect = 1;
+                this.firstNode = currCloseName;
+            }
+            else if (this.firstNodeSelect == 1) {
+                if (this.firstNode != null && currCloseName != null) {
+                    firstNodeSelect = 0;
+                    pathList.add(this.firstNode);
+                    pathList.add(currCloseName);
+                    findPath(pathList.get(0), pathList.get(1));
+                    activePath = 1;
+                }
             }
         }
+        else if (activePath == 1) {
+            anchor.getChildren().clear();
+            pathList.add(pathList.size() - 1, currCloseName);
+            for (int i = 0; i < pathList.size() - 1; i++) {
+                findPath(pathList.get(i), pathList.get(i + 1));
+            }
+        }
+
     }
 
 
