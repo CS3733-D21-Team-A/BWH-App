@@ -332,7 +332,8 @@ public class NodeEditing extends SEditing {
         return;
     }
 
-
-    public void pressEdgeButton() {
+    @FXML
+    public void pressEdgeButton(ActionEvent actionEvent) {
+        sceneSwitch("EdgeEditing");
     }
 }
