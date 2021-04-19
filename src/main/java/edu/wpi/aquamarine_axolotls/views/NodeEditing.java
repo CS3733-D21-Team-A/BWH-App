@@ -6,13 +6,16 @@ import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,8 +41,10 @@ public class NodeEditing extends SEditing {
     @FXML private JFXTextField yCoor;
     @FXML private JFXTextField nodeType;
     @FXML private JFXTextField floor;
+    @FXML private ToggleButton toggleButton;
     @FXML private JFXTextField building;
     @FXML private MenuItem exportButton;
+    @FXML private AnchorPane anchor;
     @FXML private MenuItem importButton;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
@@ -62,6 +67,7 @@ public class NodeEditing extends SEditing {
     public void initialize() {
         ObservableList<String> options = FXCollections.observableArrayList();
         submissionlabel.setVisible(true);
+        anchor.setVisible(false);
 
         //table.setEditable(false);
         //table.getItems().clear();
@@ -331,7 +337,26 @@ public class NodeEditing extends SEditing {
 
         return;
     }
+    @FXML
+    public void chartAnchor() {
+        boolean isSelected = toggleButton.isSelected();
 
+        if(isSelected) {
+            anchor.setVisible(true);
+            TranslateTransition translateTransition = new TranslateTransition((Duration.seconds(.5)), anchor);
+            translateTransition.setFromY(450);
+            translateTransition.setToY(0);
+
+            translateTransition.play();
+        }
+        if(!isSelected) {
+            TranslateTransition translateTransition1 = new TranslateTransition((Duration.seconds(.5)), anchor);
+            translateTransition1.setFromY(0);
+            translateTransition1.setToY(450);
+            translateTransition1.play();
+
+        }
+    }
     @FXML
     public void pressEdgeButton(ActionEvent actionEvent) {
         sceneSwitch("EdgeEditing");
