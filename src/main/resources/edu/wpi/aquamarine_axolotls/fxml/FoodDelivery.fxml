@@ -119,11 +119,7 @@
                                         <Insets right="10.0" />
                                     </HBox.margin>
                                 </JFXTextField>
-                                <JFXTextField fx:id="roomNumber" maxWidth="-Infinity" prefWidth="250.0" promptText="Room Number">
-                                    <HBox.margin>
-                                        <Insets left="10.0" />
-                                    </HBox.margin>
-                                </JFXTextField>
+                        <JFXComboBox fx:id="roomNumber" prefHeight="25.0" prefWidth="250.0" promptText="Room Number" />
                             </children>
                         </HBox>
                         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="600.0" AnchorPane.topAnchor="90.0">
@@ -131,7 +127,7 @@
                                 <JFXComboBox fx:id="foodOptions" prefHeight="25.0" prefWidth="250.0" promptText="Food Options" />
                             </children>
                         </HBox>
-                        <JFXTextArea focusColor="#405aa800" prefHeight="69.0" prefWidth="528.0" promptText="Please list any dietary restrictions, alergies, or prefences here" style="-fx-border-color: #4d4d4d;" unFocusColor="#4d4d4d00" wrapText="true" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="140.0">
+                        <JFXTextArea fx:id="dietaryRestA" focusColor="#405aa800" prefHeight="69.0" prefWidth="528.0" promptText="Please list any dietary restrictions, alergies, or prefences here" style="-fx-border-color: #4d4d4d;" unFocusColor="#4d4d4d00" wrapText="true" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="37.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="140.0">
                             <padding>
                                 <Insets left="5.0" top="5.0" />
                             </padding></JFXTextArea>

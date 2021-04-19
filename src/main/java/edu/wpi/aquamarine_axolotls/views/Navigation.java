@@ -43,14 +43,18 @@ public class Navigation  extends SPage{
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if (node.get("NODETYPE").equals("EXIT") || node.get("NODETYPE").equals("PARK")) {
-                    options.add(node.get("LONGNAME"));
+                if (node.get("NODETYPE").equals("PARK")
+                        || ( node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
+                        || ( node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1")) ) {
+                    options.add(node.get("NODEID"));
                 }
 
             }
 
             startLocation.setItems(options);
             destination.setItems(options);
+
+            db.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -86,7 +90,40 @@ public class Navigation  extends SPage{
         return newYCoord;
     }
 
-    public void findPath() {
+    public void findPath(){
+        try {
+            db = new DatabaseController();
+            List<Map<String, String>> nodes = db.getNodes();
+
+            for(Map<String, String> node : nodes){
+                if ( (node.get("NODETYPE").equals("PARK")
+                        || ( node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
+                        || ( node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) && node.get("NODETYPE").equals("HALL")) {
+                    Circle circ = new Circle();
+                    Double scaledX = xScale(Integer.parseInt(node.get("XCOORD")));
+                    Double scaledY = xScale(Integer.parseInt(node.get("YCOORD")));
+
+                    circ.setCenterX(scaledX);
+                    circ.setCenterY(scaledY);
+                    circ.setRadius(2);
+                    circ.setFill(Color.RED);
+
+                    anchor.getChildren().add(circ);
+                }
+
+
+            }
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+/*    public void findPath() {
         anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
@@ -130,6 +167,6 @@ public class Navigation  extends SPage{
                 prevX = scaledX;
                 prevY = scaledY;
             }
-    }
+    }*/
 
 }

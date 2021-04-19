@@ -9,6 +9,7 @@ public class EmployeeRequest {
     private String status;
     private String serviceRequest;
     private String location;
+    private String id;
 
     public void setAssigned(String assigned) {
         this.assigned = assigned;
@@ -38,11 +39,16 @@ public class EmployeeRequest {
         return location;
     }
 
+    public String getReqId() {
+        return id;
+    }
+
     public EmployeeRequest(Map<String, String> sr) {
-        this.assigned = "N/A"; // TODO : maybe this should be left null?
+        this.assigned = "N/A"; // TODO : update when DB database is here
         this.assignee = sr.get("FIRSTNAME") + " " + sr.get("LASTNAME");
-        this.status = "Not Assigned";
+        this.status = sr.get("STATUS");
         this.serviceRequest = sr.get("REQUESTTYPE");
         this.location = sr.get("LOCATIONID");
+        this.id = sr.get("REQUESTID");
     }
 }
