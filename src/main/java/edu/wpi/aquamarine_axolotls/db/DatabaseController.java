@@ -267,7 +267,7 @@ public class DatabaseController implements AutoCloseable {
 		Map<String,List<String>> idMap = new HashMap<>();
 		idMap.put("EDGEID", edgeIDs);
 
-		return nodeTable.getEntriesByValues(idMap);
+		return edgeTable.getEntriesByValues(idMap);
 	}
 
 	/**
