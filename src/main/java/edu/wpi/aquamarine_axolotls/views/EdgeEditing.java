@@ -10,6 +10,7 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -262,6 +263,9 @@ public class EdgeEditing extends SEditing{
         initialize();
     }
 
-    public void pressNodeButton() {
+    @FXML
+    public void pressNodeButton(ActionEvent actionEvent) {
+        sceneSwitch("NodeEditing");
     }
+
 }
