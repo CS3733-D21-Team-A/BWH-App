@@ -597,4 +597,175 @@ public class DatabaseControllerTest3 {
     
 
     // Emily testing getNodes and getEdges:
+    @Test
+    public void testGetNodeExistingIDSingle() throws SQLException {
+        // declare lists and maps needed for testing
+        List<Map<String,String>> testingNodesList = new ArrayList<>();
+        Map<String,String> testingNodeExpectedValue = new HashMap<>();
+        List<String> nodeIDs = new ArrayList<>();
+
+        // add ids
+        nodeIDs.add("Test1");
+
+        // add elements of node to node map
+        testingNodeExpectedValue.put("NODEID", "Test1");
+        testingNodeExpectedValue.put("XCOORD", "12");
+        testingNodeExpectedValue.put("YCOORD", "300");
+        testingNodeExpectedValue.put("FLOOR", "G");
+        testingNodeExpectedValue.put("BUILDING", "Mars");
+        testingNodeExpectedValue.put("NODETYPE", "EXIT");
+        testingNodeExpectedValue.put("LONGNAME", "Its a made up place!");
+        testingNodeExpectedValue.put("SHORTNAME", "MRS");
+
+        // add map to list of map for final expected value
+        testingNodesList.add(testingNodeExpectedValue);
+        // create node with given map of elements
+        db.addNode(testingNodeExpectedValue);
+        // test that correct list is returned
+        assertEquals(testingNodesList,db.getNodes(nodeIDs));
+    }
+    @Test
+    public void testGetNodeExistingIDMultiple() throws SQLException {
+        List<Map<String,String>> testingNodesList = new ArrayList<>();
+
+        Map<String,String> testingNodeExpectedValue1 = new HashMap<>();
+        testingNodeExpectedValue1.put("NODEID", "Test1");
+        testingNodeExpectedValue1.put("XCOORD", "12");
+        testingNodeExpectedValue1.put("YCOORD", "300");
+        testingNodeExpectedValue1.put("FLOOR", "G");
+        testingNodeExpectedValue1.put("BUILDING", "Mars");
+        testingNodeExpectedValue1.put("NODETYPE", "EXIT");
+        testingNodeExpectedValue1.put("LONGNAME", "Its a made up place!");
+        testingNodeExpectedValue1.put("SHORTNAME", "MRS");
+
+        Map<String,String> testingNodeExpectedValue2 = new HashMap<>();
+        testingNodeExpectedValue2.put("NODEID", "Test2");
+        testingNodeExpectedValue2.put("XCOORD", "54");
+        testingNodeExpectedValue2.put("YCOORD", "99");
+        testingNodeExpectedValue2.put("FLOOR", "7");
+        testingNodeExpectedValue2.put("BUILDING", "Saturn");
+        testingNodeExpectedValue2.put("NODETYPE", "EXIT");
+        testingNodeExpectedValue2.put("LONGNAME", "Its a made up place!");
+        testingNodeExpectedValue2.put("SHORTNAME", "yeah");
+
+
+        Map<String,String> testingNodeExpectedValue3 = new HashMap<>();
+        testingNodeExpectedValue3.put("NODEID", "Test3");
+        testingNodeExpectedValue3.put("XCOORD", "3");
+        testingNodeExpectedValue3.put("YCOORD", "5");
+        testingNodeExpectedValue3.put("FLOOR", "4");
+        testingNodeExpectedValue3.put("BUILDING", "Jupiter");
+        testingNodeExpectedValue3.put("NODETYPE", "EXIT");
+        testingNodeExpectedValue3.put("LONGNAME", "Its a made up place!");
+        testingNodeExpectedValue3.put("SHORTNAME", "duh");
+
+        testingNodesList.add(testingNodeExpectedValue1);
+        testingNodesList.add(testingNodeExpectedValue2);
+        testingNodesList.add(testingNodeExpectedValue3);
+
+        db.addNode(testingNodeExpectedValue1);
+        db.addNode(testingNodeExpectedValue2);
+        db.addNode(testingNodeExpectedValue3);
+
+        List<String> nodeIDs = new ArrayList<>();
+        nodeIDs.add("Test1");
+        nodeIDs.add("MessupSomething");
+        nodeIDs.add("Test2");
+        nodeIDs.add("Test3");
+
+        assertEquals(testingNodesList,db.getNodes());
+    }
+
+    //arrays.asList()  don't hardcode use of arraylist
+    @Test
+    public void testGetNodeNonexistentID() throws SQLException { // if a value doesn't exist it should return an empty list
+        List<Map<String,String>> testingNodeExpectedValue = new ArrayList<>();
+        List<String> falseIDs = new ArrayList<>();
+        falseIDs.add("fakestuff");
+        falseIDs.add("somethingrandom");
+        falseIDs.add("           ");
+        assertEquals(testingNodeExpectedValue,db.getNodes(falseIDs));
+    }
+
+    @Test
+    public void testGetNodeBlankID() throws SQLException {
+        List<Map<String,String>> testingNodeExpectedValue = new ArrayList<>();
+        List<String> nodeIDs = new ArrayList<>();
+        assertEquals(nodeIDs,db.getNodes(nodeIDs));
+    }
+
+    @Test
+    public void testGetEdgeExistingIDSingle() throws SQLException {
+        // test lists
+        List<Map<String,String>> testingEdgeList = new ArrayList<>();
+        Map<String,String> testingEdgeExpectedValue = new HashMap<>();
+        // give edge elements to map
+        testingEdgeExpectedValue.put("EDGEID","helloworld");
+        testingEdgeExpectedValue.put("STARTNODE", "aPARK024GG");
+        testingEdgeExpectedValue.put("ENDNODE", "aWALK012GG");
+        // add map to list of map
+        testingEdgeList.add(testingEdgeExpectedValue);
+        // add edge id to list of edge ids
+        List<String> edgeIDs = new ArrayList<>();
+        edgeIDs.add("helloworld");
+
+        // create new db edge
+        db.addEdge(testingEdgeExpectedValue);
+
+        // test that returns correct values
+        assertEquals(testingEdgeList,db.getEdges(edgeIDs));
+    }
+
+    @Test
+    public void testGetEdgeExistingIDMultiple() throws SQLException {
+        List<Map<String,String>> testingEdgeList = new ArrayList<>();
+
+        Map<String,String> testingEdgeExpectedValue1 = new HashMap<>();
+        testingEdgeExpectedValue1.put("EDGEID","helloworld");
+        testingEdgeExpectedValue1.put("STARTNODE", "aPARK024GG");
+        testingEdgeExpectedValue1.put("ENDNODE", "aWALK012GG");
+
+        Map<String,String> testingEdgeExpectedValue2 = new HashMap<>();
+        testingEdgeExpectedValue2.put("EDGEID","HowAreYou");
+        testingEdgeExpectedValue2.put("STARTNODE", "ddd");
+        testingEdgeExpectedValue2.put("ENDNODE", "ssf");
+
+        Map<String,String> testingEdgeExpectedValue3 = new HashMap<>();
+        testingEdgeExpectedValue3.put("EDGEID","goodbyeworld");
+        testingEdgeExpectedValue3.put("STARTNODE", "gsag");
+        testingEdgeExpectedValue3.put("ENDNODE", "adf");
+
+        testingEdgeList.add(testingEdgeExpectedValue1);
+        testingEdgeList.add(testingEdgeExpectedValue2);
+        testingEdgeList.add(testingEdgeExpectedValue3);
+
+        List<String> edgeIDs = new ArrayList<>();
+        edgeIDs.add("helloworld");
+        edgeIDs.add("HowAreYou");
+        edgeIDs.add("goodbyeworld");
+
+        db.addEdge(testingEdgeExpectedValue1);
+        db.addEdge(testingEdgeExpectedValue2);
+        db.addEdge(testingEdgeExpectedValue3);
+        for(Map<String,String> oneNode: testingEdgeList) {
+            assertTrue(db.getEdges(edgeIDs).contains(oneNode));
+        }
+    }
+
+    @Test
+    public void testGetEdgeNonexistentID() throws SQLException {
+        List<Map<String,String>> testingEdgeExpectedValue = new ArrayList<>();
+        List<String> falseIDs = new ArrayList<>();
+        falseIDs.add("fakestuff");
+        falseIDs.add("somethingrandom");
+        falseIDs.add("           ");
+        assertEquals(testingEdgeExpectedValue,db.getEdges(falseIDs));
+    }
+
+    @Test
+    public void testGetEdgesBlankID() throws SQLException {
+        List<Map<String,String>> testingEdgeExpectedValue = new ArrayList<>();
+        List<String> edgeIDs = new ArrayList<>();
+        assertEquals(edgeIDs,db.getEdges(edgeIDs));
+    }
 }
