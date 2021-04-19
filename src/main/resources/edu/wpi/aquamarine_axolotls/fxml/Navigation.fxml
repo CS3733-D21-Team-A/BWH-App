@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -69,26 +70,38 @@
                <children>
                   <VBox prefHeight="323.0" prefWidth="73.0">
                      <children>
-                        <JFXComboBox fx:id="startLocation" prefHeight="27.0" prefWidth="101.0" promptText="Start location" style="-fx-font-size: 10; -fx-font-family: Times;">
+                        <Text fx:id="time" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="52.21630859375" />
+                        <JFXComboBox fx:id="startLocation" prefHeight="27.0" prefWidth="101.0" promptText="Start location" style="-fx-font-size: 8; -fx-font-family: Times;">
                            <VBox.margin>
-                              <Insets top="5.0" />
+                              <Insets />
                            </VBox.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="destination" prefHeight="21.0" prefWidth="100.0" promptText="Destination" style="-fx-font-size: 10; -fx-font-family: times;">
+                        <JFXComboBox fx:id="destination" prefHeight="21.0" prefWidth="100.0" promptText="Destination" style="-fx-font-size: 8; -fx-font-family: times;">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </JFXComboBox>
-                        <JFXButton fx:id="addStop" alignment="TOP_LEFT" prefHeight="14.0" prefWidth="84.0" style="-fx-font-family: Times; -fx-font-size: 8;" text="+ Add Stop" textFill="#003da6">
+                        <JFXButton fx:id="addStopbtn" alignment="TOP_LEFT" onAction="#addStop" prefHeight="14.0" prefWidth="84.0" style="-fx-font-family: Times; -fx-font-size: 8;" text="+ Add Stop" textFill="#003da6">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXComboBox fx:id="intermediate" prefHeight="0.0" prefWidth="84.0" promptText="Intermediate" style="-fx-font-size: 10; visibility: false;" />
+                        <JFXComboBox fx:id="intermediate" prefHeight="21.0" prefWidth="98.0" promptText="Intermediate" style="-fx-font-size: 8; -fx-font-style: Times;">
+                           <VBox.margin>
+                              <Insets bottom="2.0" top="2.0" />
+                           </VBox.margin></JFXComboBox>
+                        <Line endX="20.5" startX="-100.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Line>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time 0:00" wrappingWidth="107.3105354309082">
                            <font>
                               <Font name="Times New Roman" size="10.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
                         </Text>
                         <HBox alignment="TOP_CENTER" prefHeight="22.0" prefWidth="142.0">
                            <children>

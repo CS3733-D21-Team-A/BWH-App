@@ -7,8 +7,7 @@ import com.jfoenix.controls.JFXHamburger;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -19,6 +18,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 //import sun.font.FontConfigManager;
 
@@ -26,6 +26,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Navigation  extends SPage{
@@ -52,10 +53,17 @@ public class Navigation  extends SPage{
     private AnchorPane anchor1;
 
     @FXML
+    private JFXButton addStopbtn;
+
+    @FXML
+    private JFXComboBox intermediate;
+
+    @FXML
     private AnchorPane mainAnchor;
     @FXML
     private JFXHamburger hamburger;
-
+    @FXML
+    private Text time;
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
     private int firstNodeSelect = 0;
@@ -66,6 +74,20 @@ public class Navigation  extends SPage{
 
     @FXML
     public void initialize() {
+    intermediate.setVisible(false);
+        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+            LocalTime currentTime = LocalTime.now();
+            int hour = currentTime.getHour();
+            if(hour>12){
+                hour = currentTime.getHour()-12;
+            }
+            time.setText(hour + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
+        }),
+                new KeyFrame(Duration.seconds(1))
+        );
+        clock.setCycleCount(Animation.INDEFINITE);
+        clock.play();
+
         try {
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
@@ -80,6 +102,7 @@ public class Navigation  extends SPage{
 
             startLocation.setItems(options);
             destination.setItems(options);
+            intermediate.setItems(options);
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -213,7 +236,6 @@ public class Navigation  extends SPage{
         Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
         Double prevY = yScale(pathNodes.get(0).getYcoord());
 
-
             for (Node node : pathNodes) {
                 Circle circ = new Circle();
                 Line line = new Line();
@@ -230,6 +252,7 @@ public class Navigation  extends SPage{
                 line.setEndX(prevX);
                 line.setEndY(prevY);
                 line.setStroke(Color.RED);
+
 
 
                 anchor.getChildren().addAll(circ,line);
@@ -431,6 +454,16 @@ public class Navigation  extends SPage{
         anchor.getChildren().clear();
         activePath = 0;
     }
-}
+
+    public void addStop(){
+        if (!(startLocation.getSelectionModel().getSelectedItem() == null)&& (!(destination.getSelectionModel().getSelectedItem() == null))){
+            intermediate.setVisible(true);
+        }
+    }
+
+
+
+
+    }
 
 
