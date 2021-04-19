@@ -3,23 +3,24 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXToggleButton;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
+import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,6 +43,10 @@ public class EdgeEditing extends SEditing{
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
     @FXML private TableView table;
+
+    @FXML private AnchorPane anchor;
+    @FXML private JFXToggleButton toggleButton;
+
     @FXML private TableColumn<Edge,String> edgeIdCol;
     @FXML private TableColumn<Edge,String> startNodeCol;
     @FXML private TableColumn<Edge,String> endNodeCol;
@@ -55,7 +60,7 @@ public class EdgeEditing extends SEditing{
     public void initialize() {
         //table.setEditable(false);
         //table.getItems().clear();
-
+        anchor.setVisible(false);
         ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
 
@@ -266,6 +271,27 @@ public class EdgeEditing extends SEditing{
     @FXML
     public void pressNodeButton(ActionEvent actionEvent) {
         sceneSwitch("NodeEditing");
+    }
+
+    @FXML
+    public void chartAnchor() {
+        boolean isSelected = toggleButton.isSelected();
+
+        if(isSelected) {
+            anchor.setVisible(true);
+            TranslateTransition translateTransition = new TranslateTransition((Duration.seconds(.5)), anchor);
+            translateTransition.setFromY(450);
+            translateTransition.setToY(0);
+
+            translateTransition.play();
+        }
+        if(!isSelected) {
+            TranslateTransition translateTransition1 = new TranslateTransition((Duration.seconds(.5)), anchor);
+            translateTransition1.setFromY(0);
+            translateTransition1.setToY(450);
+            translateTransition1.play();
+
+        }
     }
 
 }
