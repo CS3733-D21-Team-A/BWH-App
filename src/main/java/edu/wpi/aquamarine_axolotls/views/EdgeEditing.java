@@ -64,7 +64,7 @@ public class EdgeEditing extends SEditing{
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
         submissionlabel.setVisible(true);
         anchor.setVisible(false);
-        groundFloor.setVisible(true);
+        //groundFloor.setVisible(true);
         floor1.setVisible(false);
 
         edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table

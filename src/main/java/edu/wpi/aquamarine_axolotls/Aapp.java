@@ -27,7 +27,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/NodeEditing.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/EdgeEditing.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
