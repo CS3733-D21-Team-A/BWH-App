@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="myAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Test">
     <children>
         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
             <children>
@@ -24,17 +25,6 @@
                         <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
                     </HBox.margin>
                 </ImageView>
-                <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                    <font>
-                        <Font name="Times New Roman" size="12.0" />
-                    </font>
-                    <HBox.margin>
-                        <Insets bottom="12.0" left="5.0" top="20.0" />
-                    </HBox.margin>
-                    <padding>
-                        <Insets bottom="5.0" />
-                    </padding>
-                </Label>
             <JFXButton maxWidth="-Infinity" prefHeight="26.0" prefWidth="26.0" text=" ">
                <graphic>
                   <ImageView fitHeight="26.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
@@ -79,18 +69,6 @@
         <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
         <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.topAnchor="60.0">
             <children>
-                <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="30.0" text=" ">
-                    <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/back icon.jpg" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <HBox.margin>
-                        <Insets top="5.0" />
-                    </HBox.margin>
-                </JFXButton>
                 <JFXButton prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
                     <HBox.margin>
                         <Insets left="475.0" top="5.0" />
@@ -117,14 +95,7 @@
                 <Line endX="400.0" stroke="#c4c4c4" strokeWidth="4.0" />
             </children>
         </VBox>
-        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0" AnchorPane.topAnchor="400.0">
-            <children>
-                <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
-                    <HBox.margin>
-                        <Insets left="400.0" />
-                    </HBox.margin>
-                </JFXButton>
-            </children>
-        </HBox>
+        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0" AnchorPane.topAnchor="400.0" />
+      <JFXHamburger fx:id="burger" layoutX="296.0" layoutY="238.0" onMouseClicked="#menu" prefHeight="55.0" prefWidth="59.0" />
     </children>
 </AnchorPane>
