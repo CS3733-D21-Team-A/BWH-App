@@ -7,7 +7,11 @@
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -21,10 +25,6 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.RadioMenuItem?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.EdgeEditing">
     <children>
           <GridPane alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="600.0">
@@ -58,7 +58,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7" />
+                  <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7" />
                   <JFXHamburger prefHeight="64.0" prefWidth="30.0">
                      <HBox.margin>
                         <Insets right="10.0" />
@@ -146,7 +146,7 @@
                                     <Insets top="-1.0" />
                                  </padding>
                               </JFXButton>
-                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" onAction="#pressDeleteButton" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
+                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
                                  <graphic>
                                     <ImageView fitHeight="13.0" fitWidth="11.0">
                                        <image>
@@ -204,7 +204,7 @@
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="175.0" style="-fx-background-color: f0f0f0;">
                                  <children>
-                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
                                                   <font>
                                                       <Font size="10.0" />
                                                   </font>
