@@ -56,7 +56,7 @@
                         <Insets top="5.0" />
                      </HBox.margin>
                   </JFXButton>
-                  <JFXButton maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
+                  <JFXButton maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
                      <HBox.margin>
                         <Insets left="475.0" top="5.0" />
                      </HBox.margin>

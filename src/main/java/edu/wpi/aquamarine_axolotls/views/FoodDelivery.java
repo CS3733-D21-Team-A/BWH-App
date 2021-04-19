@@ -4,6 +4,10 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import edu.wpi.aquamarine_axolotls.Aapp;
+import edu.wpi.aquamarine_axolotls.db.CSVHandler;
+import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,20 +15,30 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
+import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.net.URISyntaxException;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+import javafx.stage.Modality;
 
 public class FoodDelivery extends SServiceRequest {
-
     ObservableList<String> foodOptionList = FXCollections
-            .observableArrayList("Mac and Cheese", "Salad", "Pizza");
+            .observableArrayList("Vegetarian", "Salad", "Pizza");
+
+    DatabaseController db;
+    CSVHandler csvHandler;
 
     @FXML
     private TextField firstName;
@@ -42,34 +56,30 @@ public class FoodDelivery extends SServiceRequest {
     private ComboBox foodOptions;
 
     @FXML
+    private ComboBox locationDropdown;
+    @FXML
     private AnchorPane myAnchorPane;
-
 
     @FXML
     public void initialize() {
+        ObservableList<String> options = FXCollections.observableArrayList();
         foodOptions.setItems(foodOptionList);
-    }
 
-
-    @FXML
-    public void loadHelp(javafx.event.ActionEvent event) {
-        JFXDialogLayout content = new JFXDialogLayout();
-
-        JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-        content.setHeading(new Text("Help Page"));
-        content.setBody(new Text("Help Page Information:"));
-
-        JFXButton exit_button = new JFXButton("Close");
-        exit_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
+        try {
+            db = new DatabaseController();
+            csvHandler = new CSVHandler(db);
+            List<Map<String, String>> nodes = db.getNodes();
+            for (Map<String, String> node : nodes) {
+                options.add(node.get("LONGNAME"));
             }
-        });
-
-        content.setActions(exit_button);
-        help.show();
-
+            locationDropdown.setItems(options);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -98,3 +108,4 @@ public class FoodDelivery extends SServiceRequest {
         submit(actionEvent);
     }
 }
+

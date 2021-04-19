@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
+import edu.wpi.aquamarine_axolotls.views.Navigation;
 import javafx.scene.Node;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -51,7 +52,6 @@ public class AappTest extends FxRobot {
   public void testSettingsButton(){
     clickOn("#settingsB");
   }
-
 
 
 }
