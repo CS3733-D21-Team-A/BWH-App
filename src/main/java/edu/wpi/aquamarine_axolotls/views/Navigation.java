@@ -137,9 +137,12 @@ public class Navigation  extends SPage{
 
 
     public void findPath() {
-        anchor.getChildren().clear();
+        if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
+        anchor.getChildren().clear();
         pathList.clear();
         pathList.add(start);
         pathList.add(end);

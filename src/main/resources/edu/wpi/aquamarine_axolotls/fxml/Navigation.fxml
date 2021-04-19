@@ -105,7 +105,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </HBox>
-                        <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 8; -fx-background-color: D3D3D3; -fx-font-family: Times;" text="Cancel" textAlignment="CENTER">
+                        <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 8; -fx-background-color: D3D3D3; -fx-font-family: Times;" text="Cancel" textAlignment="CENTER">
                            <font>
                               <Font size="10.0" />
                            </font>
