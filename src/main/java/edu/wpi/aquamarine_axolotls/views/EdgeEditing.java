@@ -3,28 +3,26 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXToggleButton;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
-import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,19 +31,20 @@ public class EdgeEditing extends SEditing{
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
-    @FXML public MenuItem importButton;
-    @FXML public MenuItem exportButton;
+
     @FXML private JFXComboBox edgeDropdown;
     @FXML private JFXTextField edgeIDtextbox;
     @FXML private JFXComboBox startNodeDropdown;
     @FXML private JFXComboBox endNodeDropdown;
+
+    @FXML public RadioMenuItem importButton;
+    @FXML public RadioMenuItem exportButton;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
-    @FXML private TableView table;
 
     @FXML private AnchorPane anchor;
-    @FXML private JFXToggleButton toggleButton;
 
+    @FXML private TableView table;
     @FXML private TableColumn<Edge,String> edgeIdCol;
     @FXML private TableColumn<Edge,String> startNodeCol;
     @FXML private TableColumn<Edge,String> endNodeCol;
@@ -57,24 +56,24 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
-        //table.setEditable(false);
-        //table.getItems().clear();
-        anchor.setVisible(false);
+        table.setEditable(false);
+        table.getItems().clear();
+
         ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
+        submissionlabel.setVisible(true);
+        anchor.setVisible(false);
+        groundFloor.setVisible(true);
+        floor1.setVisible(false);
 
-        //edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
-        //startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
-        //endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
+        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
+        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
+        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
 
         edgeDropdown.setVisible(false);         //making fields invisible
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
-
-        deleteButton.setStyle("-fx-background-color: #003da6; ");       //setting buttons to default color
-        addButton.setStyle("-fx-background-color: #003da6; ");
-        editButton.setStyle("-fx-background-color: #003da6; ");
 
         try {
             db = new DatabaseController();
@@ -84,7 +83,7 @@ public class EdgeEditing extends SEditing{
 
             for (Map<String, String> edge : edges) {
                 edgeOptions.add(edge.get("EDGEID"));    //getting edge options
-             //   table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
+                table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
             }
             for (Map<String, String> node : nodes) {
                 nodeOptions.add(node.get("NODEID"));
@@ -92,6 +91,7 @@ public class EdgeEditing extends SEditing{
             edgeDropdown.setItems(edgeOptions);
             startNodeDropdown.setItems(nodeOptions);
             endNodeDropdown.setItems(nodeOptions);
+            drawNodes();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -108,10 +108,6 @@ public class EdgeEditing extends SEditing{
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
 
-        deleteButton.setStyle("-fx-background-color: #91b7fa; ");
-        addButton.setStyle("-fx-background-color: #003da6; ");
-        editButton.setStyle("-fx-background-color: #003da6; ");
-
         state = "delete";
     }
 
@@ -121,10 +117,6 @@ public class EdgeEditing extends SEditing{
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
 
-        deleteButton.setStyle("-fx-background-color: #003da6; ");
-        addButton.setStyle("-fx-background-color: #91b7fa; ");
-        editButton.setStyle("-fx-background-color: #003da6; ");
-
         state = "add";
     }
 
@@ -133,10 +125,6 @@ public class EdgeEditing extends SEditing{
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
-
-        deleteButton.setStyle("-fx-background-color: #003da6; ");
-        addButton.setStyle("-fx-background-color: #003da6; ");
-        editButton.setStyle("-fx-background-color: #91b7fa; ");
 
         state = "edit";
     }
@@ -270,24 +258,53 @@ public class EdgeEditing extends SEditing{
     public void pressNodeButton() {
     }
 
-    @FXML
-    public void chartAnchor() {
-        boolean isSelected = toggleButton.isSelected();
+    public void drawNodes() {
+        nodeGridAnchor.getChildren().clear();
+        int count = 0;
+        try {
+            List<Map<String, String>> edges = db.getEdges();
+            List<String> nodesList = new ArrayList<>();
+            for (Map<String, String> edge : edges) {
+                Circle circ1 = new Circle();
+                Circle circ2 = new Circle();
 
-        if(isSelected) {
-            anchor.setVisible(true);
-            TranslateTransition translateTransition = new TranslateTransition((Duration.seconds(.5)), anchor);
-            translateTransition.setFromY(450);
-            translateTransition.setToY(0);
+                String startNode = edge.get("STARTNODE");
+                String endNode = edge.get("ENDNODE");
+                String bothNodes = startNode.concat(endNode);
+                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
+                    try {
+                        Map<String, String> snode = db.getNode(startNode);
+                        Map<String, String> enode = db.getNode(endNode);
+                        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
+                        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
+                        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
+                        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
 
-            translateTransition.play();
-        }
-        if(!isSelected) {
-            TranslateTransition translateTransition1 = new TranslateTransition((Duration.seconds(.5)), anchor);
-            translateTransition1.setFromY(0);
-            translateTransition1.setToY(450);
-            translateTransition1.play();
+                        circ1.setCenterX(startX);
+                        circ1.setCenterY(startY);
+                        circ2.setCenterX(endX);
+                        circ2.setCenterY(endY);
+                        circ1.setRadius(2);
+                        circ2.setRadius(2);
+                        circ1.setFill(Color.RED);
+                        circ2.setFill(Color.RED);
 
-        }
+                        Line line = new Line();
+                        line.setStartX(startX);
+                        line.setStartY(startY);
+                        line.setEndX(endX);
+                        line.setEndY(endY);
+                        line.setStroke(Color.WHITE);
+                        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
+                        nodesList.add(startNode + endNode);
+                        count++;
+                    } catch (SQLException sq) {
+                        sq.printStackTrace();
+                    }
+                }
+            }
+        }catch (SQLException sq) {
+            sq.printStackTrace();
+        } System.out.println(count);
     }
 }
