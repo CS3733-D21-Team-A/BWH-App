@@ -211,13 +211,17 @@ class Table {
 	 * Query the SQL table for entries with the provided value in the provided column.
 	 * @param filters Map of column names and values to filter by.
 	 * @return List of maps containing the results of the query.
-	 * @throws SQLException Something went wrong.
+	 * @throws SQLException Filter with no values provided or something else went wrong.
 	 */
 	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException {
 		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
 		String[] filterColumns = Arrays.copyOf(filters.keySet().toArray(), filters.keySet().size(), String[].class);
 
 		for (String columnName : filterColumns) { //TODO: Refactor this somehow / use better iteration
+			if (filters.get(columnName).size() == 0) {
+				throw new SQLException("Invalid filter: Cannot filter by no values.");
+			}
+
 			sb.append("(");
 
 			filters.get(columnName).forEach((i) -> {

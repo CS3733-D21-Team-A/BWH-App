@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.security.spec.ECField;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.ATTRIBUTE.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -626,8 +627,6 @@ public class DatabaseControllerTest3 {
     }
     @Test
     public void testGetNodeExistingIDMultiple() throws SQLException {
-        List<Map<String,String>> testingNodesList = new ArrayList<>();
-
         Map<String,String> testingNodeExpectedValue1 = new HashMap<>();
         testingNodeExpectedValue1.put("NODEID", "Test1");
         testingNodeExpectedValue1.put("XCOORD", "12");
@@ -659,21 +658,13 @@ public class DatabaseControllerTest3 {
         testingNodeExpectedValue3.put("LONGNAME", "Its a made up place!");
         testingNodeExpectedValue3.put("SHORTNAME", "duh");
 
-        testingNodesList.add(testingNodeExpectedValue1);
-        testingNodesList.add(testingNodeExpectedValue2);
-        testingNodesList.add(testingNodeExpectedValue3);
+        List<Map<String,String>> testingNodesList = Arrays.asList(testingNodeExpectedValue1, testingNodeExpectedValue2, testingNodeExpectedValue3);
 
         db.addNode(testingNodeExpectedValue1);
         db.addNode(testingNodeExpectedValue2);
         db.addNode(testingNodeExpectedValue3);
 
-        List<String> nodeIDs = new ArrayList<>();
-        nodeIDs.add("Test1");
-        nodeIDs.add("MessupSomething");
-        nodeIDs.add("Test2");
-        nodeIDs.add("Test3");
-
-        assertEquals(testingNodesList,db.getNodes());
+        assertEquals(testingNodesList,db.getNodes(Arrays.asList("Test1","MessupSomething","Test2","Test3")));
     }
 
     //arrays.asList()  don't hardcode use of arraylist
@@ -688,10 +679,8 @@ public class DatabaseControllerTest3 {
     }
 
     @Test
-    public void testGetNodeBlankID() throws SQLException {
-        List<Map<String,String>> testingNodeExpectedValue = new ArrayList<>();
-        List<String> nodeIDs = new ArrayList<>();
-        assertEquals(nodeIDs,db.getNodes(nodeIDs));
+    public void testGetNodeNoIDsErrors() {
+        assertThrows(SQLException.class, () -> db.getNodes(new ArrayList<>()));
     }
 
     @Test
@@ -718,38 +707,21 @@ public class DatabaseControllerTest3 {
 
     @Test
     public void testGetEdgeExistingIDMultiple() throws SQLException {
-        List<Map<String,String>> testingEdgeList = new ArrayList<>();
+        List<String> edgeIDs = Arrays.asList("aPARK001GG_aWALK001GG","aPARK009GG_aWALK011GG","aWALK004GG_aEXIT00101","bogusEdge");
 
-        Map<String,String> testingEdgeExpectedValue1 = new HashMap<>();
-        testingEdgeExpectedValue1.put("EDGEID","helloworld");
-        testingEdgeExpectedValue1.put("STARTNODE", "aPARK024GG");
-        testingEdgeExpectedValue1.put("ENDNODE", "aWALK012GG");
+        List<Map<String,String>> testingEdgeList = edgeIDs.stream().map((id) -> {
+            try {
+                return db.getEdge(id);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+                return null;
+            }
+        }).collect(Collectors.toList());
 
-        Map<String,String> testingEdgeExpectedValue2 = new HashMap<>();
-        testingEdgeExpectedValue2.put("EDGEID","HowAreYou");
-        testingEdgeExpectedValue2.put("STARTNODE", "ddd");
-        testingEdgeExpectedValue2.put("ENDNODE", "ssf");
-
-        Map<String,String> testingEdgeExpectedValue3 = new HashMap<>();
-        testingEdgeExpectedValue3.put("EDGEID","goodbyeworld");
-        testingEdgeExpectedValue3.put("STARTNODE", "gsag");
-        testingEdgeExpectedValue3.put("ENDNODE", "adf");
-
-        testingEdgeList.add(testingEdgeExpectedValue1);
-        testingEdgeList.add(testingEdgeExpectedValue2);
-        testingEdgeList.add(testingEdgeExpectedValue3);
-
-        List<String> edgeIDs = new ArrayList<>();
-        edgeIDs.add("helloworld");
-        edgeIDs.add("HowAreYou");
-        edgeIDs.add("goodbyeworld");
-
-        db.addEdge(testingEdgeExpectedValue1);
-        db.addEdge(testingEdgeExpectedValue2);
-        db.addEdge(testingEdgeExpectedValue3);
-        for(Map<String,String> oneNode: testingEdgeList) {
-            assertTrue(db.getEdges(edgeIDs).contains(oneNode));
+        for(Map<String,String> edge : testingEdgeList.subList(0,2)) {
+            assertTrue(db.getEdges(edgeIDs).contains(edge));
         }
+        assertFalse(db.getEdges(edgeIDs).contains(testingEdgeList.get(3)));
     }
 
     @Test
@@ -763,9 +735,7 @@ public class DatabaseControllerTest3 {
     }
 
     @Test
-    public void testGetEdgesBlankID() throws SQLException {
-        List<Map<String,String>> testingEdgeExpectedValue = new ArrayList<>();
-        List<String> edgeIDs = new ArrayList<>();
-        assertEquals(edgeIDs,db.getEdges(edgeIDs));
+    public void testGetEdgesNoIDsError() throws SQLException {
+        assertThrows(SQLException.class, () -> db.getEdges(new ArrayList<>()));
     }
 }
