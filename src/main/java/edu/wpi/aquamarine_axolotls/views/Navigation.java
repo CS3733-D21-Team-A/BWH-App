@@ -137,53 +137,53 @@ public class Navigation  extends SPage{
 
 
     public void findPath() {
-        if (activePath == 0) anchor.getChildren().clear();
-        int count = 0;
+        anchor.getChildren().clear();
+        String start = startLocation.getSelectionModel().getSelectedItem().toString();
+        String end = destination.getSelectionModel().getSelectedItem().toString();
+        pathList.clear();
+        pathList.add(start);
+        pathList.add(end);
+        SearchAlgorithm searchAlgorithm;
+        List<Node> pathNodes = new ArrayList<>();
         try {
-            List<Map<String, String>> edges = db.getEdges();
-            List<String> nodesList = new ArrayList<String>();
-            for (Map<String, String> edge : edges) {
-                Circle circ1 = new Circle();
-                Circle circ2 = new Circle();
-
-                String startNode = edge.get("STARTNODE");
-                String endNode = edge.get("ENDNODE");
-                String bothNodes = startNode.concat(endNode);
-                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
-                    try {
-                        Map<String, String> snode = db.getNode(startNode);
-                        Map<String, String> enode = db.getNode(endNode);
-                        Double startX = xScaleDouble(Double.parseDouble(snode.get("XCOORD")));
-                        Double startY = yScaleDouble(Double.parseDouble(snode.get("YCOORD")));
-                        Double endX = xScaleDouble(Double.parseDouble(enode.get("XCOORD")));
-                        Double endY = yScaleDouble(Double.parseDouble(enode.get("YCOORD")));
-
-                        circ1.setCenterX(startX);
-                        circ1.setCenterY(startY);
-                        circ2.setCenterX(endX);
-                        circ2.setCenterY(endY);
-                        circ1.setRadius(2);
-                        circ2.setRadius(2);
-                        circ1.setFill(Color.RED);
-                        circ2.setFill(Color.RED);
-
-                        Line line = new Line();
-                        line.setStartX(startX);
-                        line.setStartY(startY);
-                        line.setEndX(endX);
-                        line.setEndY(endY);
-                        line.setStroke(Color.WHITE);
-                        anchor.getChildren().addAll(circ1, circ2, line);
-                        nodesList.add(startNode + endNode);
-                        count++;
-                    } catch (SQLException sq) {
-                        sq.printStackTrace();
-                    }
-                }
-            }
-        }catch (SQLException sq) {
+            searchAlgorithm = new SearchAlgorithm();
+            pathNodes = searchAlgorithm.getPath(start, end);
+        } catch (IOException ie) {
+            ie.printStackTrace();
+        } catch (URISyntaxException ue) {
+            ue.printStackTrace();
+        } catch (SQLException sq) {
             sq.printStackTrace();
-        } System.out.println(count);
+        }
+
+
+        Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
+        Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
+
+
+        for (Node node : pathNodes) {
+            Circle circ = new Circle();
+            Line line = new Line();
+            Double scaledX = xScale(node.getXcoord());
+            Double scaledY = yScale(node.getYcoord());
+
+            circ.setCenterX(scaledX);
+            circ.setCenterY(scaledY);
+            circ.setRadius(2);
+            circ.setFill(Color.RED);
+
+            line.setStartX(scaledX);
+            line.setStartY(scaledY);
+            line.setEndX(prevX);
+            line.setEndY(prevY);
+            line.setStroke(Color.RED);
+
+
+            anchor.getChildren().addAll(circ,line);
+            prevX = scaledX;
+            prevY = scaledY;
+        }
+        firstNodeSelect = 0;
     }
 
 
@@ -421,6 +421,12 @@ public class Navigation  extends SPage{
         }catch (SQLException sq) {
             sq.printStackTrace();
         } System.out.println(count);
+    }
+
+
+    public void clearNodes() {
+        anchor.getChildren().clear();
+        activePath = 0;
     }
 }
 
