@@ -113,16 +113,17 @@ public class FoodDelivery extends SServiceRequest {
             String id = String.valueOf(Math.abs(r.nextInt()));
             shared.put("REQUESTID", id);
             shared.put("STATUS", "Unassigned");
-            shared.put("EMPLOYEEID", "N/A");
+            shared.put("EMPLOYEEID", "");
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
             shared.put("REQUESTTYPE", "Food Delivery");
 
             Map<String, String> foodR = new HashMap<String, String>();
-            foodR.put("REQUESTID", id);
+            foodR.put("REQUESTIDFOOD", id);
             foodR.put("DELIVERYTIME", dt);
             foodR.put("DIETARYRESTRICTIONS", rest);
+            foodR.put("NOTE", rest);
             db.addServiceRequest(shared, foodR);
             db.close();
             submit();

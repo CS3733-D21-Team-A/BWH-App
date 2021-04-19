@@ -66,20 +66,23 @@ public class EmployeeRequests extends SServiceRequest{
                 .observableArrayList("Sai", "Samantha", "Imani"));
 
         statusD.setItems(FXCollections
-                .observableArrayList(DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.UNASSIGNED,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.ASSIGNED,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.IN_PROGRESS,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.DONE,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.CANCELED));
+                .observableArrayList(DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.IN_PROGRESS.text,
+                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.DONE.text,
+                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.CANCELED.text));
         assignedColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assigned"));
         assigneeColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assignee"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("status"));
         serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("serviceRequest"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("location"));
 
+        refresh();
+    }
+
+    public void refresh(){
         try {
             db = new DatabaseController();
             List<Map<String, String>> serviceRequests = db.getServiceRequests();
+            srTable.getItems().clear();
             for(Map<String, String> req : serviceRequests){
                 srTable.getItems().add(new EmployeeRequest(req));
             }
@@ -98,7 +101,6 @@ public class EmployeeRequests extends SServiceRequest{
         sceneSwitch("DefaultServicePage");
     }
 
-    // TODO: change all methods to use DB and update it and not the table
     @FXML
     public void assign(){
         try {
@@ -107,13 +109,9 @@ public class EmployeeRequests extends SServiceRequest{
             if(index == -1) return;
 
             db = new DatabaseController();
-            EmployeeRequest r = srTable.getItems().get(index);
-            String employee = assignD.getSelectionModel().getSelectedItem().toString();
-
-            r.setAssigned(employee);
-            db.changeEmployee(r.getReqId(), employee);
+            db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
+            refresh();
             db.close();
-            srTable.refresh();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -126,25 +124,24 @@ public class EmployeeRequests extends SServiceRequest{
 
     @FXML
     public void changeStatus(){
-        if(statusD.getSelectionModel() == null) return;
-        int index = srTable.getSelectionModel().getFocusedIndex();
-        if(index == -1) return;
-       // Aapp.serviceRequests.get(index).replace();
-        EmployeeRequest r = srTable.getItems().get(index);
-        r.setStatus(statusD.getSelectionModel().getSelectedItem().toString());
+        try {
+            if(statusD.getSelectionModel() == null) return;
+            int index = srTable.getSelectionModel().getFocusedIndex();
+            if(index == -1) return;
 
-        //b.changeStatus(r.getReqId(), statusD.getSelectionModel().getSelectedItem());
-        statusD.getSelectionModel().clearSelection();
-        srTable.refresh();
-    }
+            db = new DatabaseController();
+            String status = statusD.getSelectionModel().getSelectedItem().toString();
+            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseInfo.TABLES.stringToStatus(status));
+            refresh();
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
-    @FXML
-    public void cancel(){
-        int index = srTable.getSelectionModel().getFocusedIndex();
-        if(index == -1) return;
-        //Aapp.serviceRequests.remove(index);
-        srTable.getItems().remove(index);
-        srTable.refresh();
     }
 
 }

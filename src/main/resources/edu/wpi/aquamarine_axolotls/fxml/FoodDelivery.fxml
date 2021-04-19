@@ -116,7 +116,7 @@
                             <children>
                                 <JFXTextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery TIme">
                                     <HBox.margin>
-                                        <Insets right="10.0" />
+                                        <Insets right="20.0" />
                                     </HBox.margin>
                                 </JFXTextField>
                         <JFXComboBox fx:id="roomNumber" prefHeight="25.0" prefWidth="250.0" promptText="Room Number" />

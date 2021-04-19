@@ -235,7 +235,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong (likely edge doesn't exist).
 	 */
 	public void deleteEdge(String edgeID) throws SQLException {
-			edgeTable.deleteEntry(edgeID);
+		edgeTable.deleteEntry(edgeID);
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void changeEmployee(String requestID, String employeeID) throws SQLException {
 		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
-		values.replace("EMPLOYEE", employeeID);
+		values.replace("EMPLOYEEID", employeeID); // TODO: changed from EMPLOYEE
 		serviceRequestsTable.editEntry(requestID, values);
 	}
 

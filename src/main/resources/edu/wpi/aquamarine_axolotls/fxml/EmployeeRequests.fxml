@@ -77,18 +77,6 @@
                <Insets top="20.0" />
             </VBox.margin>
          </HBox>
-         <HBox alignment="CENTER">
-            <children>
-               <JFXButton fx:id="cancelB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#cancel" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Cancel" textFill="WHITE">
-                  <HBox.margin>
-                     <Insets right="10.0" />
-                  </HBox.margin>
-               </JFXButton>
-            </children>
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin>
-         </HBox>
          <Line endX="175.0" stroke="#c4c4c4">
             <VBox.margin>
                <Insets top="20.0" />

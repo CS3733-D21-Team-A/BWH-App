@@ -8,6 +8,7 @@ import java.util.Map;
  * Class containing static info for reference when working with the database.
  */
 public class DatabaseInfo {
+
 	/**
 	 * Enum for database tables.
 	 */
@@ -98,6 +99,25 @@ public class DatabaseInfo {
 			}
 		}
 
+		public static SERVICEREQUESTS.STATUSES stringToStatus(String status) {
+			switch (status) {
+				case UNASSIGNED_TEXT:
+					return SERVICEREQUESTS.STATUSES.UNASSIGNED;
+				case ASSIGNED_TEXT:
+					return SERVICEREQUESTS.STATUSES.ASSIGNED;
+				case IN_PROGRESS_TEXT:
+					return SERVICEREQUESTS.STATUSES.IN_PROGRESS;
+				case DONE_TEXT:
+					return SERVICEREQUESTS.STATUSES.DONE;
+				case CANCELED_TEXT:
+					return SERVICEREQUESTS.STATUSES.CANCELED;
+				default:
+					System.out.println("Not Implemented");
+					return null;
+			}
+
+		}
+
 		/**
 		 * Enum for service request tables.
 		 */
@@ -117,11 +137,25 @@ public class DatabaseInfo {
 			/**
 			 * Map linking SERVICEREQUESTS enum to the SQL code that builds the corresponding table.
 			 */
-			static final Map<SERVICEREQUESTS,String> SERVICEREQUESTS_SQL;
+			static final Map<SERVICEREQUESTS,String> SERVICEREQUESTS_SQL; //TODO : eddited here
+			private static String FOOD_DELIVERY_TABLE_SQL1 =
+					"CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
+							"REQUESTIDFOOD VARCHAR(25) PRIMARY KEY CONSTRAINT FK_REQUESTIDFOOD REFERENCES " + TABLES.SERVICE_REQUESTS.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
+							"DELIVERYTIME VARCHAR(20)," +
+							"DIETARYRESTRICTIONS VARCHAR(150)," +
+							"NOTE VARCHAR(300)" +
+							")";
+			// TODO: chaned from TIME -> VARCHAR and changed names of keys
+			private static String FLORAL_DELIVERY_TABLE_SQL1 =
+					"CREATE TABLE " + TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.name() + " (" +
+							"REQUESTIDFLORAL VARCHAR(25) PRIMARY KEY CONSTRAINT FK_REQUESTIDFLORAL REFERENCES " + TABLES.SERVICE_REQUESTS.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
+							"DELIVERYTIME VARCHAR(20)," +
+							"NOTE VARCHAR(300)" +
+							")";
 			static {
 				SERVICEREQUESTS_SQL = new EnumMap<>(SERVICEREQUESTS.class);
-				SERVICEREQUESTS_SQL.put(FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
-				SERVICEREQUESTS_SQL.put(FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
+				SERVICEREQUESTS_SQL.put(FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL1);
+				SERVICEREQUESTS_SQL.put(FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL1);
 			}
 
 			public final String text;
@@ -134,11 +168,11 @@ public class DatabaseInfo {
 			 * Enum for statuses used with service requests.
 			 */
 			public enum STATUSES {
-				UNASSIGNED("Unassigned"),
-				ASSIGNED("Assigned"),
-				IN_PROGRESS("In Progress"),
-				DONE("Done"),
-				CANCELED("Canceled");
+				UNASSIGNED(UNASSIGNED_TEXT),
+				ASSIGNED(ASSIGNED_TEXT),
+				IN_PROGRESS(IN_PROGRESS_TEXT),
+				DONE(DONE_TEXT),
+				CANCELED(CANCELED_TEXT);
 
 				public final String text;
 
@@ -209,26 +243,7 @@ public class DatabaseInfo {
 				  //TODO: Constraint to replace ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') for REQUESTTYPE
 		")";
 
-	/**
-	 * SQL for building the FOOD_DELIVERY table.
-	 */
-	private static final String FOOD_DELIVERY_TABLE_SQL =
-		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
-			"REQUESTID VARCHAR(25) PRIMARY KEY CONSTRAINT FK_REQUESTID REFERENCES " + TABLES.SERVICE_REQUESTS.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
-			"DELIVERYTIME TIME(0)," +
-			"DIETARYRESTRICTIONS VARCHAR(150)," +
-			"NOTE VARCHAR(300)," +
-		")";
 
-	/**
-	 * SQL for building the FLORAL_DELIVERY table.
-	 */
-	private static final String FLORAL_DELIVERY_TABLE_SQL =
-		"CREATE TABLE " + TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.name() + " (" +
-			"REQUESTID VARCHAR(25) PRIMARY KEY CONSTRAINT FK_REQUESTID REFERENCES " + TABLES.SERVICE_REQUESTS.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
-			"DELIVERYTIME TIME(0)," +
-			"NOTE VARCHAR(300)," +
-		")";
 
 	/**
 	 * SQL for building the ATTRIBUTES table.
@@ -240,6 +255,8 @@ public class DatabaseInfo {
 			"EDGEID VARCHAR(51) CONSTRAINT FK_EDGEID REFERENCES " + TABLES.EDGES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
 			"ATTRIBUTE VARCHAR(30)" +
 		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
+
+
 
 	private static final String NOT_NAVIGABLE_TEXT = "Not Navigable";
 	private static final String HANDICAPPED_ACCESSIBLE_TEXT = "Handicapped Accessible";
@@ -256,4 +273,11 @@ public class DatabaseInfo {
 	private static final String RELIGIOUS_REQUEST_TEXT = "Religious Request";
 	private static final String SANITATION_TEXT = "Sanitation";
 	private static final String SECURITY_TEXT = "Security";
+
+	private static final String UNASSIGNED_TEXT = "Unassigned";
+	private static final String ASSIGNED_TEXT = "Assigned";
+	private static final String IN_PROGRESS_TEXT = "In Progress";
+	private static final String DONE_TEXT = "Done";
+	private static final String CANCELED_TEXT = "Canceled";
+
 }

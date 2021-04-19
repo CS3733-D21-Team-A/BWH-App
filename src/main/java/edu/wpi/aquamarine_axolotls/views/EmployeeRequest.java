@@ -1,5 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
+
 import java.util.Map;
 
 public class EmployeeRequest {
@@ -9,7 +11,7 @@ public class EmployeeRequest {
     private String status;
     private String serviceRequest;
     private String location;
-    private String id;
+    private String requestID;
 
     public void setAssigned(String assigned) {
         this.assigned = assigned;
@@ -39,16 +41,16 @@ public class EmployeeRequest {
         return location;
     }
 
-    public String getReqId() {
-        return id;
+    public String getRequestID() {
+        return requestID;
     }
 
     public EmployeeRequest(Map<String, String> sr) {
-        this.assigned = "N/A"; // TODO : update when DB database is here
+        this.assigned = sr.get("EMPLOYEEID"); // TODO : update when DB database is here
         this.assignee = sr.get("FIRSTNAME") + " " + sr.get("LASTNAME");
         this.status = sr.get("STATUS");
         this.serviceRequest = sr.get("REQUESTTYPE");
         this.location = sr.get("LOCATIONID");
-        this.id = sr.get("REQUESTID");
+        this.requestID = sr.get("REQUESTID");
     }
 }
