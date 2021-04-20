@@ -120,7 +120,7 @@ public class NodeEditing extends SEditing {
                 ));
             }
             nodeDropdown.setItems(options);
-            drawNodes();
+            changeFloorNodes();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -133,12 +133,13 @@ public class NodeEditing extends SEditing {
     public void changeGroundFloor(){
         groundFloor.setVisible(true);
         floor1.setVisible(false);
+        changeFloorNodes();
     }
 
     public void changeFloor1(){
         groundFloor.setVisible(false);
         floor1.setVisible(true);
-        System.out.println("got floor 1");
+        changeFloorNodes();
     }
 
     public void clearfields(){
@@ -359,16 +360,13 @@ public class NodeEditing extends SEditing {
         sceneSwitch("EdgeEditing");
     }
 
-    public void drawNodes() {
+    public void changeFloorNodes(){
         nodeGridAnchor.getChildren().clear();
         int count = 0;
         try {
             List<Map<String, String>> edges = db.getEdges();
             List<String> nodesList = new ArrayList<>();
             for (Map<String, String> edge : edges) {
-                Circle circ1 = new Circle();
-                Circle circ2 = new Circle();
-
                 String startNode = edge.get("STARTNODE");
                 String endNode = edge.get("ENDNODE");
                 String bothNodes = startNode.concat(endNode);
@@ -377,37 +375,19 @@ public class NodeEditing extends SEditing {
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
 
-                        /*if (floor1.isVisible() && (
-                                ( snode.get("BUILDING").equals("45 Francis") && snode.get("FLOOR").equals("1"))
-                                        || ( snode.get("BUILDING").equals("Tower") && snode.get("FLOOR").equals("1")) ) &&
-                                ( enode.get("BUILDING").equals("45 Francis") && enode.get("FLOOR").equals("1"))
-                                || ( enode.get("BUILDING").equals("Tower") && enode.get("FLOOR").equals("1")) )){
+                        if (floor1.isVisible() && (
+                                ( snode.get("FLOOR").equals("1")) && enode.get("FLOOR").equals("1")) ){
+                            drawNodes(snode,enode);
+                            nodesList.add(startNode + endNode);
+                            count++;
+                        }else if (groundFloor.isVisible() && (
+                                ( snode.get("FLOOR").equals("G")) && enode.get("FLOOR").equals("G")) ){
+                            drawNodes(snode,enode);
+                            nodesList.add(startNode + endNode);
+                            count++;
 
-                        }*/
+                        }
 
-                        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
-                        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
-                        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
-                        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
-
-                        circ1.setCenterX(startX);
-                        circ1.setCenterY(startY);
-                        circ2.setCenterX(endX);
-                        circ2.setCenterY(endY);
-                        circ1.setRadius(2);
-                        circ2.setRadius(2);
-                        circ1.setFill(Color.RED);
-                        circ2.setFill(Color.RED);
-
-                        Line line = new Line();
-                        line.setStartX(startX);
-                        line.setStartY(startY);
-                        line.setEndX(endX);
-                        line.setEndY(endY);
-                        line.setStroke(Color.WHITE);
-                        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
-                        nodesList.add(startNode + endNode);
-                        count++;
                     } catch (SQLException sq) {
                         sq.printStackTrace();
                     }
@@ -416,5 +396,33 @@ public class NodeEditing extends SEditing {
         }catch (SQLException sq) {
             sq.printStackTrace();
         } System.out.println(count);
+    }
+
+    public void drawNodes(Map<String, String> snode, Map<String,String> enode) {
+        Circle circ1 = new Circle();
+        Circle circ2 = new Circle();
+
+        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
+        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
+        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
+        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
+
+        circ1.setCenterX(startX);
+        circ1.setCenterY(startY);
+        circ2.setCenterX(endX);
+        circ2.setCenterY(endY);
+        circ1.setRadius(2);
+        circ2.setRadius(2);
+        circ1.setFill(Color.RED);
+        circ2.setFill(Color.RED);
+
+        Line line = new Line();
+        line.setStartX(startX);
+        line.setStartY(startY);
+        line.setEndX(endX);
+        line.setEndY(endY);
+        line.setStroke(Color.WHITE);
+        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
+
     }
 }

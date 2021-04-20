@@ -10,8 +10,6 @@ import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -20,9 +18,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-//import sun.font.FontConfigManager;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -36,7 +32,9 @@ public class Navigation  extends SPage{
     @FXML
     private AnchorPane nodeGridAnchor;
     @FXML
-    private ImageView mapP;
+    private ImageView groundFloor;
+    @FXML
+    private ImageView floor1;
     @FXML
     private JFXButton homeButton;
     @FXML
@@ -97,8 +95,8 @@ public class Navigation  extends SPage{
                 }
 
             }
-
-            drawNodes();
+            floor1.setVisible(false);
+            changeFloorNodes();
 
             startLocation.setItems(options);
             destination.setItems(options);
@@ -315,7 +313,6 @@ public class Navigation  extends SPage{
 
 
 
-
     /**
      * Gets the closest node to the mouse cursor when clicked
      */
@@ -398,17 +395,25 @@ public class Navigation  extends SPage{
 
     }
 
+    public void changeGroundFloor(){
+        groundFloor.setVisible(true);
+        floor1.setVisible(false);
+        changeFloorNodes();
+    }
 
-    public void drawNodes() {
+    public void changeFloor1(){
+        groundFloor.setVisible(false);
+        floor1.setVisible(true);
+        changeFloorNodes();
+    }
+
+    public void changeFloorNodes(){
         nodeGridAnchor.getChildren().clear();
         int count = 0;
         try {
             List<Map<String, String>> edges = db.getEdges();
             List<String> nodesList = new ArrayList<>();
             for (Map<String, String> edge : edges) {
-                Circle circ1 = new Circle();
-                Circle circ2 = new Circle();
-
                 String startNode = edge.get("STARTNODE");
                 String endNode = edge.get("ENDNODE");
                 String bothNodes = startNode.concat(endNode);
@@ -416,29 +421,20 @@ public class Navigation  extends SPage{
                     try {
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
-                        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
-                        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
-                        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
-                        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
 
-                        circ1.setCenterX(startX);
-                        circ1.setCenterY(startY);
-                        circ2.setCenterX(endX);
-                        circ2.setCenterY(endY);
-                        circ1.setRadius(2);
-                        circ2.setRadius(2);
-                        circ1.setFill(Color.RED);
-                        circ2.setFill(Color.RED);
+                        if (floor1.isVisible() && (
+                                ( snode.get("FLOOR").equals("1")) && enode.get("FLOOR").equals("1")) ){
+                            drawNodes(snode,enode);
+                            nodesList.add(startNode + endNode);
+                            count++;
+                        }else if (groundFloor.isVisible() && (
+                                ( snode.get("FLOOR").equals("G")) && enode.get("FLOOR").equals("G")) ){
+                            drawNodes(snode,enode);
+                            nodesList.add(startNode + endNode);
+                            count++;
 
-                        Line line = new Line();
-                        line.setStartX(startX);
-                        line.setStartY(startY);
-                        line.setEndX(endX);
-                        line.setEndY(endY);
-                        line.setStroke(Color.WHITE);
-                        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
-                        nodesList.add(startNode + endNode);
-                        count++;
+                        }
+
                     } catch (SQLException sq) {
                         sq.printStackTrace();
                     }
@@ -447,6 +443,34 @@ public class Navigation  extends SPage{
         }catch (SQLException sq) {
             sq.printStackTrace();
         } System.out.println(count);
+    }
+
+    public void drawNodes(Map<String, String> snode, Map<String,String> enode) {
+        Circle circ1 = new Circle();
+        Circle circ2 = new Circle();
+
+        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
+        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
+        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
+        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
+
+        circ1.setCenterX(startX);
+        circ1.setCenterY(startY);
+        circ2.setCenterX(endX);
+        circ2.setCenterY(endY);
+        circ1.setRadius(2);
+        circ2.setRadius(2);
+        circ1.setFill(Color.RED);
+        circ2.setFill(Color.RED);
+
+        Line line = new Line();
+        line.setStartX(startX);
+        line.setStartY(startY);
+        line.setEndX(endX);
+        line.setEndY(endY);
+        line.setStroke(Color.WHITE);
+        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
+
     }
 
 

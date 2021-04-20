@@ -17,6 +17,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
 <AnchorPane fx:id="mainAnchor" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
@@ -135,13 +138,28 @@
                      <children>
                         <AnchorPane maxWidth="438.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
                            <children>
-                              <ImageView fx:id="mapP" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="groundFloor" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../img/groundFloor.png" />
                                  </image>
                               </ImageView>
+                              <ImageView fx:id="floor1" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/firstFloor.png" />
+                                 </image>
+                              </ImageView>
                               <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="298.0" prefWidth="438.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                               <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="298.0" prefWidth="438.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <MenuBar prefHeight="26.0" prefWidth="130.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
+                                 <menus>
+                                    <Menu mnemonicParsing="false" text="Change Floor">
+                                       <items>
+                                          <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                                          <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                                       </items>
+                                    </Menu>
+                                 </menus>
+                              </MenuBar>
                            </children>
                         </AnchorPane>
                      </children>
