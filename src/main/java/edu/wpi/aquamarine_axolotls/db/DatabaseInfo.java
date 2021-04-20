@@ -28,8 +28,8 @@ public class DatabaseInfo {
 				"FLOOR VARCHAR(3)," +
 				"BUILDING VARCHAR(30)," +
 				"NODETYPE VARCHAR(5)," +
-				"LONGNAME VARCHAR(50)," +
-				"SHORTNAME VARCHAR(30)" +
+				"LONGNAME VARCHAR(100)," +
+				"SHORTNAME VARCHAR(50)" +
 			")";
 
 		/**
@@ -286,12 +286,22 @@ public class DatabaseInfo {
 	/**
 	 * Path to default node CSV resource.
 	 */
-	static final String NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv";
+	static final String NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/bwAnodes.csv";
 
 	/**
 	 * Path to default edge CSV resource.
 	 */
-	static final String EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAedges.csv";
+	static final String EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/bwAedges.csv";
+
+	/**
+	 * Path to test node CSV resource.
+	 */
+	static final String TEST_NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv";
+
+	/**
+	 * Path to test edge CSV resource.
+	 */
+	static final String TEST_EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAedges.csv";
 
 	/**
 	 * Convert resource path string to File.
