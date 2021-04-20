@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -11,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import edu.wpi.aquamarine_axolotls.Aapp;
 
@@ -36,6 +38,17 @@ public class FloralDelivery extends SServiceRequest {
 
     @FXML
     private JFXTextField persMessage;
+    @FXML
+    JFXHamburger burger;
+
+    @FXML
+    JFXDrawer menuDrawer;
+
+    @FXML
+    VBox box;
+
+    HamburgerBasicCloseTransition transition;
+
 
     @FXML
     private AnchorPane myAnchorPane;
@@ -51,7 +64,11 @@ public class FloralDelivery extends SServiceRequest {
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
-    }
+            menuDrawer.setSidePane(box);
+            transition = new HamburgerBasicCloseTransition(burger);
+            transition.setRate(-1);
+            menuDrawer.close();
+        }
 
 
 
@@ -101,11 +118,14 @@ public class FloralDelivery extends SServiceRequest {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-
     }
 
-
+    public void menu(){
+        if(transition.getRate() == -1) menuDrawer.open();
+        else menuDrawer.close();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
+    }
 
 
 }

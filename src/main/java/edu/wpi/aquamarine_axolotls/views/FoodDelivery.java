@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -48,7 +50,19 @@ public class FoodDelivery extends SServiceRequest {
     @FXML
     private AnchorPane myAnchorPane;
 
+    @FXML
     private ArrayList<String> nodeIDS;
+    @FXML
+    JFXHamburger burger;
+
+    @FXML
+    JFXDrawer menuDrawer;
+
+    @FXML
+    VBox box;
+
+    HamburgerBasicCloseTransition transition;
+
 
 
     @FXML
@@ -61,7 +75,12 @@ public class FoodDelivery extends SServiceRequest {
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
+        menuDrawer.setSidePane(box);
+        transition = new HamburgerBasicCloseTransition(burger);
+        transition.setRate(-1);
+        menuDrawer.close();
     }
+
 
 
 
@@ -114,6 +133,12 @@ public class FoodDelivery extends SServiceRequest {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+    public void menu(){
+        if(transition.getRate() == -1) menuDrawer.open();
+        else menuDrawer.close();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
     }
 
 }

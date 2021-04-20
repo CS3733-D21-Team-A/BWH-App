@@ -1,5 +1,8 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -7,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
@@ -23,6 +27,16 @@ public abstract class SPage {
 
     @FXML
     public StackPane stackPane;
+    @FXML
+    JFXHamburger burger;
+
+    @FXML
+    JFXDrawer menuDrawer;
+
+    @FXML
+    VBox box;
+
+    HamburgerBasicCloseTransition transition;
 
     @FXML
     public void sceneSwitch(String target){
@@ -39,10 +53,23 @@ public abstract class SPage {
         sceneSwitch("AdminMainPage");
 
     }
+
+    @FXML
+    public void defaultServicePageP(ActionEvent actionEvent) {
+        sceneSwitch("DefaultServicePage");
+
+    }
     @FXML
     public void mapEditP(ActionEvent actionEvent) {
         sceneSwitch("NodeEditing");
     }
+
+    @FXML
+    public void mapP(ActionEvent actionEvent) {
+        sceneSwitch("Navigation");
+
+    }
+
 
     @FXML
     public void popUp(String title, String disp){

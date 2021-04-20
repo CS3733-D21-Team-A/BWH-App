@@ -116,7 +116,7 @@
                   <Insets />
                </VBox.margin>
             </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="134.0" text="Navigation">
+            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#mapP" prefHeight="50.0" prefWidth="134.0" text="Navigation">
                <font>
                   <Font name="Times New Roman" size="12.0" />
                </font>
@@ -124,30 +124,6 @@
                   <ImageView>
                      <image>
                         <Image url="@../img/map.PNG" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="134.0" text="Service Requests">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@../img/service.PNG" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="134.0" text="Map Editing">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@../img/wrench.PNG" />
                      </image>
                   </ImageView>
                </graphic>
@@ -163,18 +139,6 @@
                      </image>
                   </ImageView>
                </graphic>
-            </JFXButton>
-            <JFXButton fx:id="shutDownB" alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="134.0" text="Shut Down">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/Blue_X.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
             </JFXButton>
          </children>
       </VBox>
