@@ -148,7 +148,7 @@
                                     <Insets top="-1.0" />
                                  </padding>
                               </JFXButton>
-                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
+                                      <JFXButton fx:id="deleteButton" onAction="#pressDeleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
                                  <graphic>
                                     <ImageView fitHeight="13.0" fitWidth="11.0">
                                        <image>

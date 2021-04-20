@@ -91,18 +91,6 @@ public class Navigation  extends SPage{
         menuDrawer.close();
 
         intermediate.setVisible(false);
-        Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            LocalTime currentTime = LocalTime.now();
-            int hour = currentTime.getHour();
-            if(hour>12){
-                hour = currentTime.getHour()-12;
-            }
-            time.setText(hour + ":" + currentTime.getMinute() + ":" + currentTime.getSecond());
-        }),
-                new KeyFrame(Duration.seconds(1))
-        );
-        clock.setCycleCount(Animation.INDEFINITE);
-        clock.play();
 
         try {
             db = new DatabaseController();
