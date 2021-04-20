@@ -1,6 +1,6 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
-public class Edge{
+public class Edge {
 
     private String edgeID;
 

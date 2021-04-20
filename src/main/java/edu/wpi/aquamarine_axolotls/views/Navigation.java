@@ -90,8 +90,10 @@ public class Navigation  extends SPage{
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if (node.get("NODETYPE").equals("EXIT") || node.get("NODETYPE").equals("PARK")) {
-                    options.add(node.get("LONGNAME"));
+                if (node.get("NODETYPE").equals("PARK")
+                        || ( node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
+                        || ( node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1")) ) {
+                    options.add(node.get("NODEID"));
                 }
 
             }
