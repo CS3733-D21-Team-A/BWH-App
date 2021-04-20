@@ -210,7 +210,7 @@
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="175.0" style="-fx-background-color: f0f0f0;">
                                  <children>
-                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                              <JFXButton fx:id="submissionButton" onAction="#submitfunction" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
                                                   <font>
                                                       <Font size="10.0" />
                                                   </font>
