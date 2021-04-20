@@ -21,6 +21,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -173,20 +174,24 @@
                                       <JFXComboBox fx:id="startNodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Start Node" style="-fx-font-size: 8;" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                                      <JFXTextField fx:id="edgeIDtextbox" maxWidth="-Infinity" prefHeight="23.0" prefWidth="130.0" promptText="Edge ID">
-                                          <font>
-                                              <Font size="8.0" />
-                                          </font>
-                                      </JFXTextField>
+                              <HBox fx:id="edgeD" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                            <JFXComboBox fx:id="edgeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Edge Dropdown" style="-fx-font-size: 8;" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="edgeT" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                            <JFXTextField fx:id="edgeIDtextbox" maxWidth="-Infinity" prefHeight="23.0" prefWidth="130.0" promptText="Edge ID">
+                                                <font>
+                                                    <Font size="8.0" />
+                                                </font>
+                                            </JFXTextField>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                                      <JFXComboBox fx:id="edgeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Edge Dropdown" style="-fx-font-size: 8;" />
-                           </children>
-                        </HBox>
+                        </StackPane>
                             </children>
                         </GridPane>
                   <AnchorPane prefHeight="80.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0">

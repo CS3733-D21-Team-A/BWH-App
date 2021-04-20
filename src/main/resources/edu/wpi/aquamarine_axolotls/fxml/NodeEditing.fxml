@@ -21,6 +21,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -168,16 +169,20 @@
                                         </JFXButton>
                                     </children>
                                 </HBox>
-                                <HBox alignment="CENTER" prefHeight="26.0" prefWidth="175.0" GridPane.rowIndex="1">
-                                    <children>
-                                        <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Node Dropdown" style="-fx-font-size: 8;" />
-                                    </children>
-                                </HBox>
-                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                    <children>
-                                        <JFXTextField fx:id="nodeID" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Node ID" style="-fx-font-size: 9;" />
-                                    </children>
-                                </HBox>
+                        <StackPane fx:id="stack" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
+                           <children>
+                                      <HBox fx:id="nodeD" alignment="CENTER" prefHeight="26.0" prefWidth="175.0">
+                                          <children>
+                                              <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Node Dropdown" style="-fx-font-size: 8;" />
+                                          </children>
+                                      </HBox>
+                                      <HBox fx:id="nodeT" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                          <children>
+                                              <JFXTextField fx:id="nodeID" maxHeight="15.0" minHeight="15.0" prefWidth="135.0" promptText="Node ID" style="-fx-font-size: 9;" />
+                                          </children>
+                                      </HBox>
+                           </children>
+                        </StackPane>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                     <children>
                                               <JFXTextField fx:id="shortName" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Short Name" style="-fx-font-size: 9;" />

@@ -15,6 +15,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -35,6 +37,8 @@ public class NodeEditing extends SEditing {
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
 
+    @FXML private HBox nodeT;
+    @FXML private HBox nodeD;
     @FXML private JFXButton edgesButton;
     @FXML private JFXComboBox nodeDropdown;
     @FXML private JFXTextField nodeID;
@@ -66,7 +70,6 @@ public class NodeEditing extends SEditing {
     @FXML private TableColumn floorCol;
     @FXML private TableColumn buildingCol;
     @FXML private TableColumn typeCol;
-
 
     String state = "";
 
@@ -108,6 +111,7 @@ public class NodeEditing extends SEditing {
             db = new DatabaseController();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> nodes = db.getNodes();
+
             for (Map<String, String> node : nodes) {
                 options.add(node.get("NODEID"));
                 table.getItems().add(new Node(
@@ -150,6 +154,7 @@ public class NodeEditing extends SEditing {
 
     @FXML
     public void pressDeleteButton(){
+        nodeD.toFront();
         nodeDropdown.setVisible(true);
         nodeID.setVisible(false);
         longName.setVisible(false);
@@ -165,6 +170,7 @@ public class NodeEditing extends SEditing {
 
     @FXML
     public void pressAddButton(){
+        nodeT.toFront();
         nodeDropdown.setVisible(false);
         nodeID.setVisible(true);
         longName.setVisible(true);
@@ -180,6 +186,7 @@ public class NodeEditing extends SEditing {
 
     @FXML
     public void pressEditButton(){
+        nodeD.toFront();
         nodeDropdown.setVisible(true);
         nodeID.setVisible(false);
         longName.setVisible(true);

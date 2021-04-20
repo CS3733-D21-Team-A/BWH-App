@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -33,6 +34,8 @@ public class EdgeEditing extends SEditing{
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
 
+    @FXML private HBox edgeD;
+    @FXML private HBox edgeT;
     @FXML private JFXComboBox edgeDropdown;
     @FXML private JFXTextField edgeIDtextbox;
     @FXML private JFXComboBox startNodeDropdown;
@@ -86,7 +89,6 @@ public class EdgeEditing extends SEditing{
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
             List<Map<String, String>> nodes = db.getNodes();
-
             for (Map<String, String> edge : edges) {
                 edgeOptions.add(edge.get("EDGEID"));    //getting edge options
                 table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
@@ -119,6 +121,7 @@ public class EdgeEditing extends SEditing{
     }
 
     public void pressDeleteButton() {
+        edgeD.toFront();
         edgeDropdown.setVisible(true);
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
@@ -128,6 +131,7 @@ public class EdgeEditing extends SEditing{
     }
 
     public void pressAddButton() {
+        edgeT.toFront();
         edgeDropdown.setVisible(false);
         edgeIDtextbox.setVisible(true);
         startNodeDropdown.setVisible(true);
@@ -137,6 +141,7 @@ public class EdgeEditing extends SEditing{
     }
 
     public void pressEditButton() {
+        edgeD.toFront();
         edgeDropdown.setVisible(true);
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(true);
@@ -272,6 +277,7 @@ public class EdgeEditing extends SEditing{
     }
 
     public void pressNodeButton() {
+        sceneSwitch("NodeEditing");
     }
 
     public void drawNodes() {
