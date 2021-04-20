@@ -239,16 +239,16 @@ public class EdgeEditing extends SEditing{
     }
 
     public void edit(){
-        String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString();
-        String startNode = startNodeDropdown.getSelectionModel().getSelectedItem().toString();
-        String endNode = endNodeDropdown.getSelectionModel().getSelectedItem().toString();
+        String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString(); //TODO: GIVE WARNING ON NULL EDGEID
+        String startNode = startNodeDropdown.getSelectionModel().getSelectedItem() == null ? "" : startNodeDropdown.getSelectionModel().getSelectedItem().toString();
+        String endNode = endNodeDropdown.getSelectionModel().getSelectedItem() == null ? "" : endNodeDropdown.getSelectionModel().getSelectedItem().toString();
 
         try{
             if (startNode.equals("")){
-                startNode = db.getNode(edgeID).get("STARTNODE");
+                startNode = db.getEdge(edgeID).get("STARTNODE");
             }
             if (endNode.equals("")){
-                endNode = db.getNode(edgeID).get("ENDNODE");
+                endNode = db.getEdge(edgeID).get("ENDNODE");
             }
 
             if (db.edgeExists(edgeID)){
