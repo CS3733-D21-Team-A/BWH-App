@@ -7,7 +7,9 @@ import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -136,4 +138,12 @@ public class Navigation  extends SPage{
             }
     }
 
+    public void addStop(ActionEvent actionEvent) {
+    }
+
+    public void clearNodes(ActionEvent actionEvent) {
+    }
+
+    public void getNearestNode(MouseEvent mouseEvent) {
+    }
 }
