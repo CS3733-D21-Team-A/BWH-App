@@ -433,7 +433,7 @@ public class SearchAlgorithm{
     }
 
     private double getETASingleEdge(Node start, Node goal){
-        double walkingSpeed = 176; //2 miles/h
+        double walkingSpeed = 220 * 3.75; //2 miles/h
         double distance = getCostTo(start,goal);
         double ETASingleEdge;
 
