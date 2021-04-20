@@ -132,7 +132,6 @@ public class Navigation  extends SPage{
 
     /**
      * Scales the x coordinate from table for image (5000,3400)
-     *
      * @param xCoord x coordinate from table
      * @return scaled X coordinate
      */
@@ -228,6 +227,7 @@ public class Navigation  extends SPage{
             prevY = scaledY;
         }
         firstNodeSelect = 0;
+        activePath = 1;
     }
 
 
@@ -329,6 +329,7 @@ public class Navigation  extends SPage{
             prevY = scaledY;
         }
         firstNodeSelect = 0;
+        activePath = 1;
     }
 
 
@@ -491,7 +492,6 @@ public class Navigation  extends SPage{
         nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
 
     }
-
 
     public void clearNodes() {
         anchor.getChildren().clear();
