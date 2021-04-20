@@ -66,9 +66,9 @@ public class EmployeeRequests extends SServiceRequest{
                 .observableArrayList("Sai", "Samantha", "Imani"));
 
         statusD.setItems(FXCollections
-                .observableArrayList(DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.IN_PROGRESS.text,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.DONE.text,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUSES.CANCELED.text));
+                .observableArrayList(DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.IN_PROGRESS.text,
+                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.DONE.text,
+                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.CANCELED.text));
         assignedColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assigned"));
         assigneeColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assignee"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("status"));
@@ -131,7 +131,7 @@ public class EmployeeRequests extends SServiceRequest{
 
             db = new DatabaseController();
             String status = statusD.getSelectionModel().getSelectedItem().toString();
-            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseInfo.TABLES.stringToStatus(status));
+            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.stringToStatus(status));
             refresh();
             db.close();
         } catch (SQLException e) {
