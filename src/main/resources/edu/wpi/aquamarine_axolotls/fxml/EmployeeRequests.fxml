@@ -3,7 +3,6 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXScrollPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -47,7 +46,7 @@
         </children>
     </HBox>
     <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
-   <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="114.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="200.0" style="-fx-background-color: #F0F0F0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="380.0" AnchorPane.topAnchor="60.0">
+   <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="114.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="200.0" style="-fx-background-color: #F0F0F0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="400.0" AnchorPane.topAnchor="60.0">
       <children>
          <Label text="Service Requests">
             <font>
@@ -57,7 +56,7 @@
                <Insets top="10.0" />
             </VBox.margin>
          </Label>
-         <JFXComboBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Filter" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+         <JFXComboBox fx:id="filterD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Filter" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
             <VBox.margin>
                <Insets top="15.0" />
             </VBox.margin>
@@ -67,12 +66,12 @@
          </JFXComboBox>
          <HBox alignment="CENTER">
             <children>
-               <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Assign" textFill="WHITE">
+               <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Assign" textFill="WHITE">
                   <HBox.margin>
                      <Insets right="10.0" />
                   </HBox.margin>
                </JFXButton>
-               <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="95.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE" />
+               <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="28.0" prefWidth="95.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE" />
             </children>
             <VBox.margin>
                <Insets top="20.0" />
@@ -83,7 +82,7 @@
                <Insets top="20.0" />
             </VBox.margin>
          </Line>
-         <JFXComboBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+         <JFXComboBox fx:id="assignD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
             <padding>
                <Insets left="10.0" />
             </padding>
@@ -91,7 +90,7 @@
                <Insets top="20.0" />
             </VBox.margin>
          </JFXComboBox>
-         <JFXComboBox maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+         <JFXComboBox fx:id="statusD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
             <padding>
                <Insets left="10.0" />
             </padding>
@@ -101,17 +100,14 @@
          </JFXComboBox>
       </children>
    </VBox>
-   <JFXScrollPane style="-fx-background-color: #F4F4F4;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="220.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-      <children>
-         <TableView fx:id="srTable" prefHeight="200.0" prefWidth="200.0">
-            <columns>
-               <TableColumn fx:id="assignedColumn" prefWidth="75.0" text="Assigned" />
-               <TableColumn fx:id="assigneeColumn" prefWidth="75.0" text="Assignee" />
-               <TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" />
-               <TableColumn fx:id="serviceRequestColumn" prefWidth="75.0" text="Service Name" />
-               <TableColumn fx:id="locationColumn" prefWidth="75.0" text="Location" />
-            </columns></TableView>
-      </children>
-   </JFXScrollPane>
+   <TableView fx:id="srTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+      <columns>
+         <TableColumn fx:id="assignedColumn" prefWidth="75.0" text="Assigned" />
+         <TableColumn fx:id="assigneeColumn" prefWidth="75.0" text="Assignee" />
+         <TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" />
+         <TableColumn fx:id="serviceRequestColumn" prefWidth="100.0" text="Service Name" />
+         <TableColumn fx:id="locationColumn" prefWidth="75.0" text="Location" />
+      </columns>
+   </TableView>
 
 </AnchorPane>

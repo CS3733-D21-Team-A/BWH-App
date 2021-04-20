@@ -15,8 +15,8 @@ public class Aapp extends Application {
 
   private static Stage primaryStage;
 
-  public static List<Map<String,String>> serviceRequests = new ArrayList<>();
-
+  //public static List<Map<String,String>> serviceRequests = new ArrayList<>();
+  public static int num = 0;
 
   @Override
   public void init() {
@@ -40,6 +40,7 @@ public class Aapp extends Application {
   public static void setPrimaryStage(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
   }
+
 
   public static Stage getPrimaryStage(){
     return primaryStage;

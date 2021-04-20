@@ -206,8 +206,7 @@ public class NodeEditing extends SEditing {
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
-            db.emptyNodeTable();
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES);
+            csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES, true);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){

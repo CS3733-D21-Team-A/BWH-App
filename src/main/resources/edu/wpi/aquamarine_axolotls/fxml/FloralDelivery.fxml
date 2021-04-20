@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -118,14 +119,10 @@
                <children>
                   <JFXTextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery Time">
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="20.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXTextField fx:id="roomNumber" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient's Room Number">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </JFXTextField>
+                  <JFXComboBox fx:id="roomNumber" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" promptText="Patient Room Number" />
                </children>
                <VBox.margin>
                   <Insets />
