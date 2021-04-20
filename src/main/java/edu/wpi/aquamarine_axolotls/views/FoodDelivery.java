@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class FoodDelivery extends SServiceRequest {
     private TextField lastName;
 
     @FXML
-    private TextField deliveryTime;
+    private JFXTimePicker deliveryTime;
 
     @FXML
     private JFXComboBox roomNumber;
@@ -74,7 +75,7 @@ public class FoodDelivery extends SServiceRequest {
         }
         String fn = firstName.getText();
         String ln = lastName.getText();
-        String dt = deliveryTime.getText();
+        String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));;
         int room = roomNumber.getSelectionModel().getSelectedIndex();
         String food = foodOptions.getSelectionModel().getSelectedItem().toString();
         String rest = dietaryRestA.getText();
