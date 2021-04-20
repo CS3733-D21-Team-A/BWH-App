@@ -330,7 +330,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void changeEmployee(String requestID, String employeeID) throws SQLException {
 		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
-		values.replace("EMPLOYEE", employeeID);
+		values.replace("EMPLOYEEID", employeeID);
 		serviceRequestsTable.editEntry(requestID, values);
 	}
 
@@ -351,8 +351,8 @@ public class DatabaseController implements AutoCloseable {
 	 * @return List of Maps representing the service requests.
 	 * @throws SQLException Something went wrong.
 	 */
-	public List<Map<String,String>> getServiceRequestsWithStatus(STATUS status) throws SQLException {
-		return serviceRequestsTable.getEntriesByValue("STATUS", status.toString());
+	public List<Map<String,String>> getServiceRequestsWithStatus(String status) throws SQLException {
+		return serviceRequestsTable.getEntriesByValue("STATUS", status);
 	}
 
 	/**
@@ -372,6 +372,16 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public List<Map<String,String>> getServiceRequestsByType(SERVICEREQUESTS requestType) throws SQLException {
 		return requestsTables.get(requestType).getRequests();
+	}
+
+	/**
+	 * Empties the service requests tables by deleting all entries.
+	 */
+	public void emptyServiceRequestsTable() throws SQLException {
+		serviceRequestsTable.emptyTable();
+		for (TABLES.SERVICEREQUESTS requestType : TABLES.SERVICEREQUESTS.values()){
+			requestsTables.get(SERVICEREQUESTS.FOOD_DELIVERY).emptyTable();
+		}
 	}
 
 
@@ -522,4 +532,5 @@ public class DatabaseController implements AutoCloseable {
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH), TABLES.NODES, true);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 	}
+
 }
