@@ -11,8 +11,6 @@ import javafx.util.Duration;
 
 
 public abstract class SEditing extends SPage{
-    @FXML ImageView groundFloor;
-    @FXML ImageView floor1;
     @FXML MenuItem floor1View;
     @FXML MenuItem groundFloorView;
 
@@ -26,16 +24,7 @@ public abstract class SEditing extends SPage{
         sceneSwitch("AdminMainPage");
     }
 
-    public void changeGroundFloor(){
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
-    }
 
-    public void changeFloor1(){
-        groundFloor.setVisible(false);
-        floor1.setVisible(true);
-        System.out.println("got floor 1");
-    }
 
     @FXML
     public void chartAnchor() {
