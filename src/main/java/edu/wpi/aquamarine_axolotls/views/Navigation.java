@@ -441,20 +441,18 @@ public class Navigation  extends SPage{
                     try {
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
-
-                        if (floor1.isVisible() && (
-                                ( snode.get("FLOOR").equals("1")) && enode.get("FLOOR").equals("1")) ){
+                        if (floor1.isVisible() &&
+                                (( snode.get("FLOOR").equals("1")) && (snode.get("BUILDING").equals("Tower") || snode.get("BUILDING").equals("45 Francis")) ) &&
+                                (( enode.get("FLOOR").equals("1")) && (enode.get("BUILDING").equals("Tower") || enode.get("BUILDING").equals("45 Francis")) )) {
                             drawNodes(snode,enode);
                             nodesList.add(startNode + endNode);
                             count++;
-                        }else if (groundFloor.isVisible() && (
-                                ( snode.get("FLOOR").equals("G")) && enode.get("FLOOR").equals("G")) ){
+                        }else if (groundFloor.isVisible() &&
+                                (snode.get("FLOOR").equals("G") && enode.get("FLOOR").equals("G")) ){
                             drawNodes(snode,enode);
                             nodesList.add(startNode + endNode);
                             count++;
-
                         }
-
                     } catch (SQLException sq) {
                         sq.printStackTrace();
                     }
