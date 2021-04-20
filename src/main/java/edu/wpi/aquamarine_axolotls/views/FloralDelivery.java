@@ -64,11 +64,7 @@ public class FloralDelivery extends SServiceRequest {
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
-            menuDrawer.setSidePane(box);
-            transition = new HamburgerBasicCloseTransition(burger);
-            transition.setRate(-1);
-            menuDrawer.close();
-        }
+    }
 
 
 

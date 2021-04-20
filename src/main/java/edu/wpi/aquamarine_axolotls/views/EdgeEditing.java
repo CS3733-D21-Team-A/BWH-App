@@ -75,11 +75,6 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
-        menuDrawer.setSidePane(box);
-        transition = new HamburgerBasicCloseTransition(burger);
-        transition.setRate(-1);
-        menuDrawer.close();
-
         table.setEditable(false);
         table.getItems().clear();
 
