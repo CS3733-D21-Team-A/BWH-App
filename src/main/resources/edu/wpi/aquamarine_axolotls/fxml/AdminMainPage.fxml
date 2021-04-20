@@ -130,37 +130,6 @@
             </children>
         </VBox>
         <JFXDrawer fx:id="menuDrawer" direction="RIGHT" layoutX="473.0" layoutY="44.0" overLayVisible="false" prefHeight="225.0" prefWidth="134.0" AnchorPane.rightAnchor="-7.0" />
-        <VBox fx:id="box" layoutX="635.0" layoutY="44.0" prefHeight="225.0" prefWidth="134.0" style="-fx-background-color: #EBEBEB;">
-            <children>
-                <JFXButton fx:id="homeB" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="75.0" prefWidth="134.0" text="  Home">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/homeBlue.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <font>
-                        <Font name="Times New Roman" size="18.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
-                </JFXButton>
-                <JFXButton fx:id="helpB" alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" prefWidth="143.0" text="  Help">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/helpBlue.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <font>
-                        <Font name="Times New Roman" size="18.0" />
-                    </font>
-                </JFXButton>
-            </children>
-        </VBox>
       <StackPane fx:id="stackPane" layoutX="199.0" layoutY="141.0" prefHeight="142.0" prefWidth="273.0" />
       <VBox fx:id="box" layoutX="624.0" layoutY="55.0" prefHeight="350.0" prefWidth="134.0" style="-fx-background-color: #EBEBEB;">
          <children>

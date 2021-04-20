@@ -13,7 +13,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -70,6 +72,16 @@ public class Navigation  extends SPage{
     private List<String> pathList = new ArrayList<>();
     private int activePath = 0;
 
+    @FXML
+    private JFXHamburger burger;
+    @FXML
+    private JFXDrawer menuDrawer;
+
+    @FXML
+    private VBox box;
+
+    private HamburgerBasicCloseTransition transition;
+
 
     @FXML
     public void initialize() {
@@ -77,6 +89,7 @@ public class Navigation  extends SPage{
         transition = new HamburgerBasicCloseTransition(burger);
         transition.setRate(-1);
         menuDrawer.close();
+
         intermediate.setVisible(false);
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             LocalTime currentTime = LocalTime.now();
@@ -490,6 +503,13 @@ public class Navigation  extends SPage{
         if (!(startLocation.getSelectionModel().getSelectedItem() == null)&& (!(destination.getSelectionModel().getSelectedItem() == null))){
             intermediate.setVisible(true);
         }
+    }
+
+    public void menu(MouseEvent mouseEvent) {
+        if(transition.getRate() == -1) menuDrawer.open();
+        else menuDrawer.close();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
     }
 }
 
