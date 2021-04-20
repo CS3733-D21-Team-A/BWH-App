@@ -56,12 +56,10 @@ public class AdminMainPage extends SMainPage{
     public void nodeP(ActionEvent actionEvent) {
         sceneSwitch("NodeEditing");
     }
-    @FXML
-    public void edgeP(ActionEvent actionEvent) {
-        sceneSwitch("EdgeEditing");
+
+    public void requestP(ActionEvent actionEvent) {
+        sceneSwitch("EmployeeRequests");
     }
-
-
 
 
 }

@@ -96,7 +96,7 @@
                                         <Insets />
                                     </VBox.margin>
                                 </Line>
-                                <JFXButton fx:id="nodes_button" onAction="#nodeP" prefHeight="34.0" prefWidth="151.0" text="Nodes Map" textFill="WHITE">
+                                <JFXButton fx:id="nodes_button" onAction="#nodeP" prefHeight="34.0" prefWidth="151.0" text="Map Editing" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
@@ -105,7 +105,7 @@
                                     </font>
                                 </JFXButton>
                                 <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                <JFXButton fx:id="edges_button" onAction="#edgeP" prefHeight="34.0" prefWidth="151.0" text="Edges Map" textFill="WHITE">
+                                <JFXButton fx:id="edges_button" onAction="#requestP" prefHeight="34.0" prefWidth="151.0" text="Employee Requests" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets bottom="10.0" top="10.0" />
                                     </VBox.margin>
