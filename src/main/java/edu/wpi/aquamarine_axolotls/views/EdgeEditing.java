@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -49,6 +50,10 @@ public class EdgeEditing extends SEditing{
     @FXML private TableColumn<Edge,String> edgeIdCol;
     @FXML private TableColumn<Edge,String> startNodeCol;
     @FXML private TableColumn<Edge,String> endNodeCol;
+
+
+    @FXML ImageView groundFloor;
+    @FXML ImageView floor1;
 
     String state = "";
 
@@ -101,6 +106,17 @@ public class EdgeEditing extends SEditing{
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    public void changeGroundFloor(){
+        groundFloor.setVisible(true);
+        floor1.setVisible(false);
+    }
+
+    public void changeFloor1(){
+        groundFloor.setVisible(false);
+        floor1.setVisible(true);
+        System.out.println("got floor 1");
     }
 
     public void pressDeleteButton() {
