@@ -1,6 +1,6 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
-public class Node{
+public class Node {
 
     private String nodeID;
 

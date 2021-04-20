@@ -7,7 +7,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class SearchAlgorithm {
+public class SearchAlgorithm{
 
     private List<Node> nodes = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
