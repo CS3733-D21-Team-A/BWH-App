@@ -26,14 +26,6 @@ public class Test {
 
     // credit : https://www.youtube.com/watch?v=tgV8dDP9DtM
     public void initialize() throws IOException {
-/*        try {
-            transition = new HamburgerBasicCloseTransition(burger);
-            transition.setRate(-1);
-            //VBox box = FXMLLoader.load(getClass().getResource(""));
-            //menuDrawer.setSidePane(box);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
         menuDrawer.setSidePane(box);
         transition = new HamburgerBasicCloseTransition(burger);
         transition.setRate(-1);
@@ -46,9 +38,6 @@ public class Test {
         else menuDrawer.close();
         transition.setRate(transition.getRate() * -1);
         transition.play();
-
-
-
     }
 
 }

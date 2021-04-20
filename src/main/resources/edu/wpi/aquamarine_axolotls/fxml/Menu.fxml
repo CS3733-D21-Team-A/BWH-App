@@ -1,3 +1,4 @@
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
@@ -16,7 +17,7 @@
       <JFXDrawer fx:id="menuDrawer" direction="RIGHT" layoutX="473.0" layoutY="44.0" overLayVisible="false" prefHeight="225.0" prefWidth="134.0" AnchorPane.rightAnchor="-7.0" />
       <VBox fx:id="box" layoutX="635.0" layoutY="44.0" prefHeight="225.0" prefWidth="134.0" style="-fx-background-color: #EBEBEB;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
          <children>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="75.0" prefWidth="134.0" text="  Home">
+            <JFXButton fx:id="homeB" alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#home" prefHeight="75.0" prefWidth="134.0" text="  Home">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -31,7 +32,7 @@
                   <Insets />
                </VBox.margin>
             </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" prefWidth="134.0" text="  Settings">
+            <JFXButton fx:id="settingsB" alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#settings" prefHeight="75.0" prefWidth="134.0" text="  Settings">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -43,7 +44,7 @@
                   <Font name="Times New Roman" size="18.0" />
                </font>
             </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="75.0" prefWidth="143.0" text="  Help">
+            <JFXButton fx:id="helpB" alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#help" prefHeight="75.0" prefWidth="143.0" text="  Help">
                <graphic>
                   <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -55,7 +56,20 @@
                   <Font name="Times New Roman" size="18.0" />
                </font>
             </JFXButton>
+            <JFXButton fx:id="helpB1" alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#help" prefHeight="75.0" prefWidth="143.0" text="Shut Down">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/Blue_X.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="Times New Roman" size="18.0" />
+               </font>
+            </JFXButton>
          </children>
       </VBox>
    </children>
 </AnchorPane>
+-->

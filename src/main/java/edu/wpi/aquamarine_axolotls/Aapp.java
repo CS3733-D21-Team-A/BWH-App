@@ -27,7 +27,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/Menu.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/AdminMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
