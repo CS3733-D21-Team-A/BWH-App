@@ -4,7 +4,6 @@ import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
@@ -22,8 +21,8 @@ class DatabaseControllerTest {
 		db.emptyNodeTable();
 
 		CSVHandler csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES, true);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH), DatabaseInfo.TABLES.NODES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH), DatabaseInfo.TABLES.EDGES, true);
 	}
 
 	@AfterEach

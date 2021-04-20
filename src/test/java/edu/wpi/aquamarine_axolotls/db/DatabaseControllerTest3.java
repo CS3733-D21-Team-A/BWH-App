@@ -1,15 +1,11 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
-import org.apache.derby.iapi.services.io.FileUtil;
 import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.function.Executable;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.security.spec.ECField;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -30,8 +26,8 @@ public class DatabaseControllerTest3 {
         db.emptyNodeTable();
 
         CSVHandler csvHandler = new CSVHandler(db);
-        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES, true);
-        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH), DatabaseInfo.TABLES.NODES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH), DatabaseInfo.TABLES.EDGES, true);
     }
 
     @AfterEach
