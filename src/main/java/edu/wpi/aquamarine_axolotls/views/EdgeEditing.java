@@ -44,6 +44,7 @@ public class EdgeEditing extends SEditing{
     @FXML private JFXButton submissionButton;
 
     @FXML private AnchorPane anchor;
+    @FXML private AnchorPane nodeGridAnchor;
 
     @FXML private TableView table;
     @FXML private TableColumn<Edge,String> edgeIdCol;
@@ -115,7 +116,6 @@ public class EdgeEditing extends SEditing{
     public void changeFloor1(){
         groundFloor.setVisible(false);
         floor1.setVisible(true);
-        System.out.println("got floor 1");
     }
 
     public void pressDeleteButton() {
