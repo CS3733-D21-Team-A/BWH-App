@@ -94,7 +94,7 @@
                               <Insets top="10.0" />
                            </VBox.margin>
                         </JFXButton>
-                        <JFXComboBox fx:id="intermediate" prefHeight="21.0" prefWidth="98.0" promptText="Intermediate" style="-fx-font-size: 8; -fx-font-style: Times;">
+                        <JFXComboBox fx:id="intermediate" prefHeight="21.0" prefWidth="98.0" promptText="Intermediate" style="-fx-font-size: 8; -fx-font-family: Times;">
                            <VBox.margin>
                               <Insets bottom="2.0" top="2.0" />
                            </VBox.margin></JFXComboBox>
