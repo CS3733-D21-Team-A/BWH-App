@@ -211,6 +211,6 @@
             </JFXButton>
          </children>
       </VBox>
-      <JFXDrawer fx:id="menuDrawer" layoutX="627.0" layoutY="56.0" prefHeight="340.0" prefWidth="152.0" AnchorPane.rightAnchor="-158.0" AnchorPane.topAnchor="56.0" />
+      <JFXDrawer fx:id="menuDrawer" direction="RIGHT" layoutX="493.0" layoutY="64.0" overLayVisible="false" prefHeight="357.0" prefWidth="134.0" />
    </children>
 </AnchorPane>

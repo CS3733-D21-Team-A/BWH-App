@@ -208,7 +208,7 @@
             </JFXButton>
          </children>
       </VBox>
-      <JFXDrawer fx:id="menuDrawer" layoutX="620.0" layoutY="64.0" prefHeight="340.0" prefWidth="183.0" AnchorPane.rightAnchor="-203.0" />
       <JFXHamburger fx:id="burger" layoutX="609.0" layoutY="3.0" onMouseClicked="#menu" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="15.0" />
+      <JFXDrawer fx:id="menuDrawer" direction="RIGHT" layoutX="460.0" layoutY="60.0" overLayVisible="false" prefHeight="357.0" prefWidth="134.0" />
     </children>
 </AnchorPane>

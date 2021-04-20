@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
@@ -72,6 +73,10 @@ public class Navigation  extends SPage{
 
     @FXML
     public void initialize() {
+        menuDrawer.setSidePane(box);
+        transition = new HamburgerBasicCloseTransition(burger);
+        transition.setRate(-1);
+        menuDrawer.close();
         intermediate.setVisible(false);
         Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
             LocalTime currentTime = LocalTime.now();

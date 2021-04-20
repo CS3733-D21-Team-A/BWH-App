@@ -1,8 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.*;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
@@ -15,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -55,6 +55,16 @@ public class EdgeEditing extends SEditing{
     @FXML private TableColumn<Edge,String> endNodeCol;
 
 
+    @FXML
+    private JFXHamburger burger;
+
+    @FXML
+    private JFXDrawer menuDrawer;
+
+    @FXML
+    private VBox box;
+
+
     @FXML ImageView groundFloor;
     @FXML ImageView floor1;
 
@@ -65,6 +75,11 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
+        menuDrawer.setSidePane(box);
+        transition = new HamburgerBasicCloseTransition(burger);
+        transition.setRate(-1);
+        menuDrawer.close();
+
         table.setEditable(false);
         table.getItems().clear();
 
@@ -345,5 +360,12 @@ public class EdgeEditing extends SEditing{
         line.setStroke(Color.RED);
         nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
 
+    }
+
+    public void menu(){
+        if(transition.getRate() == -1) menuDrawer.open();
+        else menuDrawer.close();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
     }
 }
