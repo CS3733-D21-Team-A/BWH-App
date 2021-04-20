@@ -128,18 +128,6 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="133.0" text="External Help">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@../img/phone.PNG" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
          </children>
       </VBox>
       <JFXHamburger fx:id="burger" layoutX="585.0" layoutY="18.0" onMouseClicked="#menu" AnchorPane.leftAnchor="560.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="18.0" />
