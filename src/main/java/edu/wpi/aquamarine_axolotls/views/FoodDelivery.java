@@ -101,7 +101,7 @@ public class FoodDelivery extends SServiceRequest {
             shared.put("REQUESTTYPE", "Food Delivery");
 
             Map<String, String> foodR = new HashMap<String, String>();
-            foodR.put("REQUESTIDFOOD", id);
+            foodR.put("REQUESTID", id);
             foodR.put("DELIVERYTIME", dt);
             foodR.put("DIETARYRESTRICTIONS", rest);
             foodR.put("NOTE", rest);

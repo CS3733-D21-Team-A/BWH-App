@@ -91,7 +91,7 @@ public class FloralDelivery extends SServiceRequest {
 
             Map<String, String> floral = new HashMap<String, String>();
 
-            floral.put("REQUESTIDFLORAL", String.valueOf(id));
+            floral.put("REQUESTID", String.valueOf(id));
             floral.put("DELIVERYTIME", dt);
             floral.put("NOTE", pmsg);
             db.addServiceRequest(shared, floral);
