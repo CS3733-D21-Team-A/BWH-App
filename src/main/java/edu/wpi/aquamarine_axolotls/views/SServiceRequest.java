@@ -54,6 +54,11 @@ public abstract class SServiceRequest extends SPage{
         popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields.\n" + reqFields);
     }
 
+
+    @FXML
+    public void loadHelp() throws IOException{
+        popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, time you would like to receive the request patient's room number, and an optional message ");
+    }
     @FXML
     public void popUp(String title, String disp){
         final Stage myDialog = new Stage();

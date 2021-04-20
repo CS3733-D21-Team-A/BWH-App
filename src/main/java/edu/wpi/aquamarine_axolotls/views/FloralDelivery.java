@@ -53,26 +53,8 @@ public class FloralDelivery extends SServiceRequest {
         );
     }
 
-    // TODO: Filter out bad input
-    @FXML
-    public void loadHelp(javafx.event.ActionEvent event) {
-        JFXDialogLayout content = new JFXDialogLayout();
 
-        JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-        content.setHeading(new Text("Help Page"));
-        content.setBody(new Text("Help Page Information:"));
 
-        JFXButton exit_button = new JFXButton("Close");
-        exit_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
-            }
-        });
-
-        content.setActions(exit_button);
-        help.show();
-    }
 
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
@@ -123,6 +105,7 @@ public class FloralDelivery extends SServiceRequest {
 
 
     }
+
 
 
 
