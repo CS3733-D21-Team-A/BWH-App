@@ -7,8 +7,13 @@
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,6 +21,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -53,7 +59,7 @@
                 </HBox>
                 <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                     <children>
-                  <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7" />
+                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7" />
                         <JFXHamburger prefHeight="64.0" prefWidth="30.0">
                             <HBox.margin>
                                 <Insets right="10.0" />
@@ -85,19 +91,19 @@
                                 <RowConstraints maxHeight="48.666656494140625" minHeight="40.0" prefHeight="41.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="22.0" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
                                 <RowConstraints maxHeight="22.0" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="22.0" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="22.0" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="-Infinity" minHeight="22.0" prefHeight="22.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
                                 <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="150.0">
                                     <children>
                                         <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="42.0" style="-fx-background-color: f0f0f0;" text="File" textFill="#8b8b8b">
                                             <items>
-                                                <MenuItem fx:id="importButton" mnemonicParsing="false" onAction="#loadCSV" text="Import" />
-                                                <MenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
+                                                <RadioMenuItem fx:id="importButton" mnemonicParsing="false" onAction="#loadCSV" text="Import" />
+                                                <RadioMenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
                                             </items>
                                             <font>
                                                 <Font size="10.0" />
@@ -133,7 +139,7 @@
                                         </JFXButton>
                                         <JFXButton fx:id="addButton" contentDisplay="GRAPHIC_ONLY" maxHeight="-Infinity" minHeight="-Infinity" onAction="#pressAddButton" prefHeight="18.0" prefWidth="24.0" style="-fx-background-color: f0f0f0;" text="add" textFill="#8b8b8b">
                                             <graphic>
-                                                <ImageView fitHeight="11.0" fitWidth="11.0">
+                                                <ImageView fx:id="map" fitHeight="11.0" fitWidth="11.0">
                                                     <image>
                                                         <Image url="@../img/add.png" />
                                                     </image>
@@ -163,51 +169,55 @@
                                         </JFXButton>
                                     </children>
                                 </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                              <JFXTextField fx:id="nodeID" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Node ID" style="-fx-font-size: 9;" />
-                           </children>
-                        </HBox>
-                                <HBox alignment="CENTER" prefHeight="26.0" prefWidth="175.0" GridPane.rowIndex="1">
+                                <StackPane fx:id="stack" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
                                     <children>
-                                        <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Node Dropdown" style="-fx-font-size: 8;" />
+                                        <HBox fx:id="nodeD" alignment="CENTER" prefHeight="26.0" prefWidth="175.0">
+                                            <children>
+                                                <JFXComboBox fx:id="nodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Node Dropdown" style="-fx-font-size: 8;" />
+                                            </children>
+                                        </HBox>
+                                        <HBox fx:id="nodeT" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                            <children>
+                                                <JFXTextField fx:id="nodeID" maxHeight="15.0" minHeight="15.0" prefWidth="135.0" promptText="Node ID" style="-fx-font-size: 9;" />
+                                            </children>
+                                        </HBox>
                                     </children>
-                                </HBox>
+                                </StackPane>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                                     <children>
-                                              <JFXTextField fx:id="shortName" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Short Name" style="-fx-font-size: 9;" />
+                                        <JFXTextField fx:id="shortName" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Short Name" style="-fx-font-size: 9;" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                                     <children>
-                                              <JFXTextField fx:id="longName" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Long Name" style="-fx-font-size: 9;" />
+                                        <JFXTextField fx:id="longName" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Long Name" style="-fx-font-size: 9;" />
                                     </children>
                                 </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
-                           <children>
-                                              <JFXTextField maxHeight="15.0" maxWidth="1.7976931348623157E308" minHeight="15.0" prefWidth="130.0" promptText="x Coordiniate" style="-fx-font-size: 9;" fx:id="xCoor" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
-                           <children>
-                                              <JFXTextField fx:id="yCoor" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="y Coordinate" style="-fx-font-size: 9;" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6">
-                           <children>
-                                              <JFXTextField fx:id="floor" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Floor" style="-fx-font-size: 9;" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="7">
-                           <children>
-                                              <JFXTextField fx:id="building" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Building" style="-fx-font-size: 9;" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="8">
-                           <children>
-                                              <JFXTextField fx:id="nodeType" maxHeight="28.0" minHeight="15.0" prefWidth="130.0" promptText="Node Type" style="-fx-font-size: 9;" />
-                           </children>
-                        </HBox>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
+                                    <children>
+                                        <JFXTextField maxHeight="15.0" maxWidth="1.7976931348623157E308" minHeight="15.0" prefWidth="130.0" promptText="x Coordiniate" style="-fx-font-size: 9;" fx:id="xCoor" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="5">
+                                    <children>
+                                        <JFXTextField fx:id="yCoor" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="y Coordinate" style="-fx-font-size: 9;" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="6">
+                                    <children>
+                                        <JFXTextField fx:id="floor" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Floor" style="-fx-font-size: 9;" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="7">
+                                    <children>
+                                        <JFXTextField fx:id="building" maxHeight="15.0" minHeight="15.0" prefWidth="130.0" promptText="Building" style="-fx-font-size: 9;" />
+                                    </children>
+                                </HBox>
+                                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="8">
+                                    <children>
+                                        <JFXTextField fx:id="nodeType" maxHeight="28.0" minHeight="15.0" prefWidth="130.0" promptText="Node Type" style="-fx-font-size: 9;" />
+                                    </children>
+                                </HBox>
                             </children>
                         </GridPane>
                         <AnchorPane prefHeight="80.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0">
@@ -243,21 +253,43 @@
                 </AnchorPane>
                 <AnchorPane prefHeight="326.0" prefWidth="425.0" GridPane.columnIndex="1">
                     <children>
-                        <ImageView fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <ImageView fx:id="groundFloor" fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <image>
                                 <Image url="@../img/groundFloor.png" />
                             </image>
                         </ImageView>
-                        <MenuButton layoutX="304.0" layoutY="254.0" mnemonicParsing="false" popupSide="TOP" text="Change Floor" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
-                            <items>
-                                <MenuItem fx:id="groundFloorView" mnemonicParsing="false" text="Ground Floor" />
-                                <MenuItem fx:id="floor1View" mnemonicParsing="false" text="Floor1" />
-                            </items>
-                            <font>
-                                <Font size="10.0" />
-                            </font>
-                        </MenuButton>
-                  <AnchorPane fx:id="anchor" layoutX="-1.0" layoutY="56.0" prefHeight="276.0" prefWidth="426.0" style="-fx-background-color: white;" />
+                        <ImageView fx:id="floor1" fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <image>
+                                <Image url="@../img/firstFloor.png" />
+                            </image>
+                        </ImageView>
+                        <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="293.0" prefWidth="425.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <MenuBar prefHeight="26.0" prefWidth="130.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
+                            <menus>
+                                <Menu mnemonicParsing="false" text="Change Floor">
+                                    <items>
+                                        <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                                        <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                                    </items>
+                                </Menu>
+                            </menus>
+                        </MenuBar>
+                        <AnchorPane fx:id="anchor" layoutY="54.0" prefHeight="276.0" prefWidth="425.0" style="-fx-background-color: white;">
+                            <children>
+                                <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <columns>
+                                        <TableColumn fx:id="nodeIDCol" text="Node ID" />
+                                        <TableColumn fx:id="lNameCol" text="Long Name" />
+                                        <TableColumn fx:id="sNameCol" text="Short Name" />
+                                        <TableColumn text="X Coord" fx:id="xCol" />
+                                        <TableColumn fx:id="yCol" text="y Coord" />
+                                        <TableColumn fx:id="floorCol" text="Floor" />
+                                        <TableColumn fx:id="buildingCol" text="Building" />
+                                        <TableColumn fx:id="typeCol" text="Type" />
+                                    </columns>
+                                </TableView>
+                            </children>
+                        </AnchorPane>
                     </children>
                 </AnchorPane>
             </children>
