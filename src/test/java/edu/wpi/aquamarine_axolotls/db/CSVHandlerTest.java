@@ -24,15 +24,15 @@ public class CSVHandlerTest {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
-		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
-		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH);
 
 		csvHandler = new CSVHandler(db);
 		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES, true);
 		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES, true);
 
-		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
-		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH);
 	}
 
 	@AfterAll
