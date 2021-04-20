@@ -83,7 +83,6 @@ public class FloralDelivery extends SServiceRequest {
             int id = Math.abs(r.nextInt());
             shared.put("REQUESTID", String.valueOf(id));
             shared.put("STATUS", "Unassigned");
-            shared.put("EMPLOYEEID", "N/A");
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);

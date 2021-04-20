@@ -58,7 +58,7 @@ public class DatabaseController implements AutoCloseable {
 
 		requestsTables = new HashMap<>();
 		for (SERVICEREQUESTS table : SERVICEREQUESTS.values()) {
-			if (SERVICEREQUESTS.SERVICEREQUESTS_SQL.get(table) != null) {
+			if (TABLES.SERVICEREQUESTS_SQL.get(table) != null) {
 				requestsTables.put(table, tableFactory.getRequestTable(table));
 			}
 		}
@@ -506,12 +506,12 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		for (String SQL : TABLES.TABLE_SQL.values()) { // for each primary table
+		for (String SQL : DatabaseInfo.TABLE_SQL.values()) { // for each primary table
 			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 				smnt.execute(); // create the table
 			}
 		}
-		for (String SQL : SERVICEREQUESTS.SERVICEREQUESTS_SQL.values()) { // for each service request table
+		for (String SQL : TABLES.SERVICEREQUESTS_SQL.values()) { // for each service request table
 			if (SQL != null) { // if we have written SQL code for it
 				try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 					smnt.execute(); // create the table

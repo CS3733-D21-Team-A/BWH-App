@@ -10,6 +10,71 @@ import java.util.Map;
 public class DatabaseInfo {
 
 	/**
+	 * SQL for building the NODES table.
+	 */
+	private static final String NODE_TABLE_SQL =
+			  "CREATE TABLE " + TABLES.NODES.name() + " (" +
+						 "NODEID VARCHAR(25) PRIMARY KEY," +
+						 "XCOORD NUMERIC(5)," +
+						 "YCOORD NUMERIC(5)," +
+						 "FLOOR VARCHAR(3)," +
+						 "BUILDING VARCHAR(30)," +
+						 "NODETYPE VARCHAR(5)," +
+						 "LONGNAME VARCHAR(100)," +
+						 "SHORTNAME VARCHAR(50)" +
+						 ")";
+
+	/**
+	 * SQL for building the EDGES table.
+	 */
+	private static final String EDGE_TABLE_SQL =
+			  "CREATE TABLE " + TABLES.EDGES.name() + " (" +
+						 "EDGEID VARCHAR(51) PRIMARY KEY," +
+						 "STARTNODE VARCHAR(25) CONSTRAINT FK_STARTNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
+						 "ENDNODE VARCHAR(25) CONSTRAINT FK_ENDNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT" +
+						 ")";
+
+	/**
+	 * SQL for building the SERVICE_REQUESTS table.
+	 */
+	private static final String SERVICE_REQUESTS_TABLE_SQL =
+			  "CREATE TABLE " + TABLES.SERVICE_REQUESTS.name() + " (" +
+						 "REQUESTID VARCHAR(25) PRIMARY KEY," +
+						 "STATUS VARCHAR(11) DEFAULT 'Unassigned'," +
+						 "EMPLOYEEID VARCHAR(30)," + //TODO: THIS IS A FOREIGN KEY TO THE USER TABLE (NOT YET IMPLEMENTED)
+						 "LOCATIONID VARCHAR(25)," +
+						 "FIRSTNAME VARCHAR(30)," +
+						 "LASTNAME VARCHAR(50)," +
+						 "REQUESTTYPE VARCHAR(20) NOT NULL," + //TODO: MAKE THIS USE ENUM
+						 "CONSTRAINT FK_LOCATIONID FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT" +
+						 //TODO: Constraint to replace ENUM('Unassigned','Assigned','In Progress','Done','Canceled') for STATUS
+						 //TODO: Constraint to replace ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') for REQUESTTYPE
+						 ")";
+
+	/**
+	 * SQL for building the ATTRIBUTES table.
+	 */
+	private static final String ATTRIBUTES_TABLE_SQL =
+			  "CREATE TABLE " + TABLES.ATTRIBUTES.name() + " (" +
+						 "ATTRID INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
+						 "NODEID VARCHAR(25) CONSTRAINT FK_NODEID REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+						 "EDGEID VARCHAR(51) CONSTRAINT FK_EDGEID REFERENCES " + TABLES.EDGES.name() + "(EDGEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+						 "ATTRIBUTE VARCHAR(30)" +
+						 ")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
+
+	/**
+	 * Map linking TABLES enum to the SQL code that builds the corresponding table.
+	 */
+	static final Map<TABLES,String> TABLE_SQL;
+	static {
+		TABLE_SQL = new EnumMap<>(TABLES.class);
+		TABLE_SQL.put(TABLES.NODES, NODE_TABLE_SQL);
+		TABLE_SQL.put(TABLES.EDGES, EDGE_TABLE_SQL);
+		TABLE_SQL.put(TABLES.ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
+		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
+	}
+
+	/**
 	 * Enum for database tables.
 	 */
 	public enum TABLES {
@@ -17,72 +82,6 @@ public class DatabaseInfo {
 		EDGES,
 		ATTRIBUTES,
 		SERVICE_REQUESTS;
-
-		/**
-		 * SQL for building the NODES table.
-		 */
-		private static final String NODE_TABLE_SQL =
-			"CREATE TABLE " + TABLES.NODES.name() + " (" +
-				"NODEID VARCHAR(25) PRIMARY KEY," +
-				"XCOORD NUMERIC(5)," +
-				"YCOORD NUMERIC(5)," +
-				"FLOOR VARCHAR(3)," +
-				"BUILDING VARCHAR(30)," +
-				"NODETYPE VARCHAR(5)," +
-				"LONGNAME VARCHAR(100)," +
-				"SHORTNAME VARCHAR(50)" +
-			")";
-
-		/**
-		 * SQL for building the EDGES table.
-		 */
-		private static final String EDGE_TABLE_SQL =
-		   "CREATE TABLE " + TABLES.EDGES.name() + " (" +
-			   "EDGEID VARCHAR(51) PRIMARY KEY," +
-				"STARTNODE VARCHAR(25) CONSTRAINT FK_STARTNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
-				"ENDNODE VARCHAR(25) CONSTRAINT FK_ENDNODE REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT" +
-			")";
-
-		/**
-		 * SQL for building the SERVICE_REQUESTS table.
-		 */
-		private static final String SERVICE_REQUESTS_TABLE_SQL =
-			"CREATE TABLE " + TABLES.SERVICE_REQUESTS.name() + " (" +
-				"REQUESTID VARCHAR(25) PRIMARY KEY," +
-				"STATUS VARCHAR(11) DEFAULT 'Unassigned'," +
-				"EMPLOYEEID VARCHAR(30)," + //TODO: THIS IS A FOREIGN KEY TO THE USER TABLE (NOT YET IMPLEMENTED)
-				"LOCATIONID VARCHAR(25)," +
-				"FIRSTNAME VARCHAR(30)," +
-				"LASTNAME VARCHAR(50)," +
-				"REQUESTTYPE VARCHAR(20) NOT NULL," + //TODO: MAKE THIS USE ENUM
-				"CONSTRAINT FK_LOCATIONID FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT" +
-					  //TODO: Constraint to replace ENUM('Unassigned','Assigned','In Progress','Done','Canceled') for STATUS
-					  //TODO: Constraint to replace ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') for REQUESTTYPE
-			")";
-
-		/**
-		 * SQL for building the ATTRIBUTES table.
-		 */
-		private static final String ATTRIBUTES_TABLE_SQL =
-			"CREATE TABLE " + TABLES.ATTRIBUTES.name() + " (" +
-				"ATTRID INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY PRIMARY KEY," +
-				"NODEID VARCHAR(25) CONSTRAINT FK_NODEID REFERENCES " + TABLES.NODES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
-				"EDGEID VARCHAR(51) CONSTRAINT FK_EDGEID REFERENCES " + TABLES.EDGES.name() + " ON DELETE CASCADE ON UPDATE RESTRICT," +
-				"ATTRIBUTE VARCHAR(30)" +
-			")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
-
-		/**
-		 * Map linking TABLES enum to the SQL code that builds the corresponding table.
-		 */
-		static final Map<TABLES,String> TABLE_SQL;
-		static {
-			TABLE_SQL = new EnumMap<>(TABLES.class);
-			TABLE_SQL.put(NODES, NODE_TABLE_SQL);
-			TABLE_SQL.put(EDGES, EDGE_TABLE_SQL);
-			TABLE_SQL.put(ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
-			TABLE_SQL.put(SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
-		}
-
 
 
 		// ========== ATTRIBUTES ==========
@@ -131,6 +130,39 @@ public class DatabaseInfo {
 
 		// ========== SERVICE REQUESTS ==========
 
+
+		/**
+		 * SQL for building the FOOD_DELIVERY table.
+		 */
+		private static final String FOOD_DELIVERY_TABLE_SQL =
+				  "CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
+							 "REQUESTID VARCHAR(25) PRIMARY KEY," +
+							 "DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
+							 "DIETARYRESTRICTIONS VARCHAR(150)," +
+							 "NOTE VARCHAR(300)," +
+							 "CONSTRAINT FK_FOOD_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+							 ")";
+
+		/**
+		 * SQL for building the FLORAL_DELIVERY table.
+		 */
+		private static final String FLORAL_DELIVERY_TABLE_SQL =
+				  "CREATE TABLE " + TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.name() + " (" +
+							 "REQUESTID VARCHAR(25) PRIMARY KEY," +
+							 "DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
+							 "NOTE VARCHAR(300)," +
+							 "CONSTRAINT FK_FLORAL_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+							 ")";
+
+		/**
+		 * Map linking SERVICEREQUESTS enum to the SQL code that builds the corresponding table.
+		 */
+		static final Map<SERVICEREQUESTS,String> SERVICEREQUESTS_SQL;
+		static {
+			SERVICEREQUESTS_SQL = new EnumMap<>(SERVICEREQUESTS.class);
+			SERVICEREQUESTS_SQL.put(SERVICEREQUESTS.FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
+			SERVICEREQUESTS_SQL.put(SERVICEREQUESTS.FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
+		}
 
 
 		private static final String EXTERNAL_TRANSPORT_TEXT = "External Transport";
@@ -201,40 +233,6 @@ public class DatabaseInfo {
 			SERVICEREQUESTS(String text) {
 				this.text = text;
 			}
-
-			/**
-			 * SQL for building the FOOD_DELIVERY table.
-			 */
-			private static final String FOOD_DELIVERY_TABLE_SQL =
-				"CREATE TABLE " + TABLES.SERVICEREQUESTS.FOOD_DELIVERY.name() + " (" +
-					"REQUESTID VARCHAR(25) PRIMARY KEY," +
-					"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
-					"DIETARYRESTRICTIONS VARCHAR(150)," +
-					"NOTE VARCHAR(300)," +
-					"CONSTRAINT FK_FOOD_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
-				")";
-
-			/**
-			 * SQL for building the FLORAL_DELIVERY table.
-			 */
-			private static final String FLORAL_DELIVERY_TABLE_SQL =
-				"CREATE TABLE " + TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.name() + " (" +
-					"REQUESTID VARCHAR(25) PRIMARY KEY," +
-					"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
-					"NOTE VARCHAR(300)," +
-					"CONSTRAINT FK_FLORAL_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
-				")";
-
-			/**
-			 * Map linking SERVICEREQUESTS enum to the SQL code that builds the corresponding table.
-			 */
-			static final Map<SERVICEREQUESTS,String> SERVICEREQUESTS_SQL;
-			static {
-				SERVICEREQUESTS_SQL = new EnumMap<>(SERVICEREQUESTS.class);
-				SERVICEREQUESTS_SQL.put(FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
-				SERVICEREQUESTS_SQL.put(FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
-			}
-
 
 
 			// ========== STATUSES ==========

@@ -94,7 +94,6 @@ public class FoodDelivery extends SServiceRequest {
             String id = String.valueOf(Math.abs(r.nextInt()));
             shared.put("REQUESTID", id);
             shared.put("STATUS", "Unassigned");
-            shared.put("EMPLOYEEID", "");
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
