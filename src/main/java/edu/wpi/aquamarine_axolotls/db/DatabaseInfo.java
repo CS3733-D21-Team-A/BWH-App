@@ -111,7 +111,7 @@ public class DatabaseInfo {
 			 * @param attribute String to get enum equivalent for.
 			 * @return ATTRIBUTE enum equivalent of provided string.
 			 */
-			public static ATTRIBUTE stringToAttribute(String attribute) {
+			public static ATTRIBUTE stringToAttribute(String attribute) { //TODO: USE BIMAPS INSTEAD
 				switch (attribute) {
 					case NOT_NAVIGABLE_TEXT:
 						return ATTRIBUTE.NOT_NAVIGABLE;
@@ -165,7 +165,7 @@ public class DatabaseInfo {
 			 * @param serviceRequest String to get enum equivalent for.
 			 * @return SERVICEREQUESTS enum equivalent of provided string.
 			 */
-			public static SERVICEREQUESTS stringToServiceRequest(String serviceRequest) {
+			public static SERVICEREQUESTS stringToServiceRequest(String serviceRequest) { //TODO: USE BIMAPS INSTEAD
 				switch (serviceRequest) {
 					case EXTERNAL_TRANSPORT_TEXT:
 						return SERVICEREQUESTS.EXTERNAL_TRANSPORT;
@@ -262,7 +262,7 @@ public class DatabaseInfo {
 					this.text = text;
 				}
 
-				public static STATUS stringToStatus(String attribute) {
+				public static STATUS stringToStatus(String attribute) { //TODO: USE BIMAPS INSTEAD
 					switch (attribute) {
 						case UNASSIGNED_TEXT:
 							return STATUS.UNASSIGNED;
