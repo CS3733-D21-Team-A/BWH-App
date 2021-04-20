@@ -81,15 +81,6 @@ public class DefaultServicePage extends SPage {
         sceneSwitch("EmployeeRequests");
     }
 
-    public void initialize() throws IOException {
-        menuDrawer.setSidePane(box);
-        transition = new HamburgerBasicCloseTransition(burger);
-        transition.setRate(-1);
-        menuDrawer.close();
-
-    }
-
-
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
         else menuDrawer.close();

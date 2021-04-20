@@ -40,7 +40,7 @@ public abstract class SServiceRequest extends SPage{
     public StackPane stackPane;
     
     public void goHome(ActionEvent actionEvent) {
-        sceneSwitch("DefaultServicePage");
+        sceneSwitch("AdminMainPage");
     }
 
     @FXML

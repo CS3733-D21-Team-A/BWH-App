@@ -98,7 +98,7 @@ public class EmployeeRequests extends SServiceRequest{
 
     @FXML
     public void goToService() {
-        sceneSwitch("DefaultServicePage");
+        sceneSwitch("AdminMainPage");
     }
 
     @FXML

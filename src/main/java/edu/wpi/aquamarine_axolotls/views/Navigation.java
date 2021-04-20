@@ -85,13 +85,6 @@ public class Navigation  extends SPage{
 
     @FXML
     public void initialize() {
-        menuDrawer.setSidePane(box);
-        transition = new HamburgerBasicCloseTransition(burger);
-        transition.setRate(-1);
-        menuDrawer.close();
-
-        intermediate.setVisible(false);
-
         try {
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();

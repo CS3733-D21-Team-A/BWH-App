@@ -51,7 +51,6 @@ public abstract class SPage {
     @FXML
     public void goHome(ActionEvent actionEvent) {
         sceneSwitch("AdminMainPage");
-
     }
 
     @FXML
