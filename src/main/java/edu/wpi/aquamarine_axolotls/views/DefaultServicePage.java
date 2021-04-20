@@ -1,16 +1,21 @@
 package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class DefaultServicePage extends SPage{
+public class DefaultServicePage extends SPage {
     @FXML
     private JFXButton foodDeliveryB;
 
@@ -44,8 +49,18 @@ public class DefaultServicePage extends SPage{
     private JFXButton backB;
 
     @FXML
-    private JFXButton shutDownB;
+    private JFXHamburger burger;
 
+    @FXML
+    private JFXButton shutDownB;
+    @FXML
+    private VBox box;
+
+    @FXML
+    HamburgerBasicCloseTransition transition;
+
+    @FXML
+    private JFXDrawer menuDrawer;
     @FXML
     private JFXButton viewReqB;
 
@@ -63,6 +78,22 @@ public class DefaultServicePage extends SPage{
     @FXML
     public void viewReqP(ActionEvent actionEvent) {
         sceneSwitch("EmployeeRequests");
+    }
+
+    public void initialize() throws IOException {
+        menuDrawer.setSidePane(box);
+        transition = new HamburgerBasicCloseTransition(burger);
+        transition.setRate(-1);
+        menuDrawer.close();
+
+    }
+
+
+    public void menu(){
+        if(transition.getRate() == -1) menuDrawer.open();
+        else menuDrawer.close();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
     }
 }
 

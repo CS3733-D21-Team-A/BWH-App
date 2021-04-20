@@ -37,6 +37,7 @@ public abstract class SMainPage extends SPage{
 
     }
 
+
     @FXML
     public void serviceReqP(ActionEvent actionEvent) {
         sceneSwitch("DefaultServicePage");

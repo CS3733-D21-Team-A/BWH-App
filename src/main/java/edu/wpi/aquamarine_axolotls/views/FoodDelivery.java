@@ -88,7 +88,7 @@ public class FoodDelivery extends SServiceRequest {
 
         try {
             DatabaseController db = new DatabaseController();
-            Aapp.num++; // TODO: better way of establishing request ID
+         //   Aapp.num++; // TODO: better way of establishing request ID
             Map<String, String> shared = new HashMap<String, String>();
             Random r = new Random();
             String id = String.valueOf(Math.abs(r.nextInt()));

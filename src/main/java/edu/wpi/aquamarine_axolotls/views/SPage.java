@@ -39,6 +39,10 @@ public abstract class SPage {
         sceneSwitch("AdminMainPage");
 
     }
+    @FXML
+    public void mapEditP(ActionEvent actionEvent) {
+        sceneSwitch("NodeEditing");
+    }
 
     @FXML
     public void popUp(String title, String disp){
