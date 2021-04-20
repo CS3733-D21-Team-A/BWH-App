@@ -100,7 +100,8 @@
                            <children>
                               <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="42.0" style="-fx-background-color: f0f0f0;" text="File" textFill="#8b8b8b">
                                 <items>
-                                  <RadioMenuItem fx:id="importButton" mnemonicParsing="false" onAction="#loadCSV" text="Import" />
+                                  <RadioMenuItem fx:id="importButton" mnemonicParsing="false" onAction="#newCSV" text="Import and Overwrite" />
+                                    <RadioMenuItem fx:id="mergeButton" mnemonicParsing="false" onAction="#mergeCSV" text="Import and Merge" />
                                   <RadioMenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
                                 </items>
                                  <font>

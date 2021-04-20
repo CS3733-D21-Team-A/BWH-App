@@ -51,7 +51,8 @@ public class NodeEditing extends SEditing {
     @FXML private JFXTextField building;
 
     @FXML private RadioMenuItem exportButton;
-    @FXML private RadioMenuItem importButton;
+    @FXML private RadioMenuItem newCSVButton;
+    @FXML private RadioMenuItem mergeCSVButton;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
 
@@ -202,22 +203,7 @@ public class NodeEditing extends SEditing {
         state = "edit";
     }
 
-    public void exportCSV() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-        );
-        File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
-        try{
-            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.NODES);
-        }catch(IOException ie){
-            ie.printStackTrace();
-        }catch(SQLException sq){
-            sq.printStackTrace();
-        }
-    }
-
-    public void loadCSV() {
+    public void newCSV() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
@@ -233,6 +219,39 @@ public class NodeEditing extends SEditing {
         }
 
         initialize(); //REFRESH TABLE
+    }
+
+    public void mergeCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
+        try{
+            db.emptyNodeTable();
+            csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES, false);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
+
+        initialize(); //REFRESH TABLE
+    }
+
+    public void exportCSV() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
+        try{
+            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.NODES);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
     }
 
     public void delete(String current_nodeID){
@@ -395,4 +414,5 @@ public class NodeEditing extends SEditing {
         nodeGridAnchor.getChildren().addAll(circ1);
 
     }
+
 }

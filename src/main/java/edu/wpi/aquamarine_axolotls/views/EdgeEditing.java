@@ -162,7 +162,7 @@ public class EdgeEditing extends SEditing{
         state = "edit";
     }
 
-    public void loadCSV() { //still in the works
+    public void newCSV() { //still in the works
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
@@ -170,6 +170,23 @@ public class EdgeEditing extends SEditing{
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
             csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES, true);
+        }catch(IOException ie){
+            ie.printStackTrace();
+        }catch(SQLException sq){
+            sq.printStackTrace();
+        }
+
+        initialize(); //REFRESH TABLE
+    }
+
+    public void mergeCSV() { //still in the works
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
+        try{
+            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES, false);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){
