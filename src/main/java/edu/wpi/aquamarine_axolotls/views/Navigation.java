@@ -174,12 +174,21 @@ public class Navigation  extends SPage{
         }
         pathList.add(end);
         SearchAlgorithm searchAlgorithm;
+        double etaTotal;
+        double minutes;
+        double seconds;
         List<Node> pathNodes = new ArrayList<>();
         try {
             searchAlgorithm = new SearchAlgorithm();
             for (int i = 0; i < pathList.size() - 1; i++ ){
                 pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
             }
+            etaTotal = searchAlgorithm.getETA(pathNodes);
+            minutes = Math.floor(etaTotal);
+            seconds = Math.floor((etaTotal - minutes) * 60);
+
+
+
         } catch (IOException ie) {
             ie.printStackTrace();
         } catch (URISyntaxException ue) {
