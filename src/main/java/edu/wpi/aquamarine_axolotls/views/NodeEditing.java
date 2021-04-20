@@ -55,6 +55,7 @@ public class NodeEditing extends SEditing {
     @FXML ImageView floor1;
 
     @FXML private AnchorPane anchor;
+    @FXML private AnchorPane nodeGridAnchor;
 
     @FXML private TableView table;
     @FXML private TableColumn nodeIDCol;

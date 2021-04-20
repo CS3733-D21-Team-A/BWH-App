@@ -4,27 +4,18 @@ import com.jfoenix.controls.JFXToggleButton;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.MenuItem;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
 
 
 public abstract class SEditing extends SPage{
-    @FXML MenuItem floor1View;
-    @FXML MenuItem groundFloorView;
-
     @FXML AnchorPane anchor;
     @FXML JFXToggleButton toggleButton;
-
-    @FXML AnchorPane nodeGridAnchor;
 
     @FXML
     public void adminHome(ActionEvent actionEvent) {
         sceneSwitch("AdminMainPage");
     }
-
-
 
     @FXML
     public void chartAnchor() {
