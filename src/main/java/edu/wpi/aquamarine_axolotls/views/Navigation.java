@@ -12,6 +12,7 @@ import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -58,6 +59,9 @@ public class Navigation  extends SPage{
 
     @FXML
     private JFXComboBox intermediate;
+
+    @FXML
+    private Label etaLabel;
 
     @FXML
     private AnchorPane mainAnchor;
@@ -186,6 +190,7 @@ public class Navigation  extends SPage{
             etaTotal = searchAlgorithm.getETA(pathNodes);
             minutes = Math.floor(etaTotal);
             seconds = Math.floor((etaTotal - minutes) * 60);
+            etaLabel.setText((int) minutes + ":" + (int) seconds);
 
 
 
@@ -288,9 +293,21 @@ public class Navigation  extends SPage{
         if(activePath == 0) anchor.getChildren().clear();
         SearchAlgorithm searchAlgorithm;
         List<Node> pathNodes = new ArrayList<>();
+        double etaTotal;
+        double minutes;
+        double seconds;
         try {
             searchAlgorithm = new SearchAlgorithm();
-            pathNodes = searchAlgorithm.getPath(start, end);
+            for (int i = 0; i < pathList.size() - 1; i++ ){
+                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
+            }
+            etaTotal = searchAlgorithm.getETA(pathNodes);
+            minutes = Math.floor(etaTotal);
+            seconds = Math.floor((etaTotal - minutes) * 60);
+            etaLabel.setText((int) minutes + ":" + (int) seconds);
+
+
+
         } catch (IOException ie) {
             ie.printStackTrace();
         } catch (URISyntaxException ue) {

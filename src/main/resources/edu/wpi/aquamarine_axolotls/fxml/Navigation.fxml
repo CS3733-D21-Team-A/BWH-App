@@ -103,14 +103,19 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </Line>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time 0:00" wrappingWidth="107.3105354309082">
-                           <font>
-                              <Font name="Times New Roman" size="10.0" />
-                           </font>
+                        <HBox prefHeight="25.0" prefWidth="122.0">
+                           <children>
+                              <Text fx:id="te" strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time: " wrappingWidth="76.11052322387695">
+                                 <font>
+                                    <Font name="Times New Roman" size="10.0" />
+                                 </font>
+                              </Text>
+                              <Label fx:id="etaLabel" />
+                           </children>
                            <VBox.margin>
-                              <Insets top="20.0" />
+                              <Insets top="10.0" />
                            </VBox.margin>
-                        </Text>
+                        </HBox>
                         <HBox alignment="TOP_CENTER" prefHeight="22.0" prefWidth="142.0">
                            <children>
                               <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="22.0" prefWidth="95.0" style="-fx-font-family: Times;" text="Go" textAlignment="CENTER">
