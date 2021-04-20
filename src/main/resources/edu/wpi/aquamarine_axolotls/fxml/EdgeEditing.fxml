@@ -7,8 +7,13 @@
 <?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,6 +21,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -53,7 +59,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7" />
+                  <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7" />
                   <JFXHamburger prefHeight="64.0" prefWidth="30.0">
                      <HBox.margin>
                         <Insets right="10.0" />
@@ -91,8 +97,8 @@
                            <children>
                               <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="42.0" style="-fx-background-color: f0f0f0;" text="File" textFill="#8b8b8b">
                                 <items>
-                                  <MenuItem fx:id="importButton" mnemonicParsing="false" onAction="#loadCSV" text="Import" />
-                                  <MenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
+                                  <RadioMenuItem fx:id="importButton" mnemonicParsing="false" onAction="#loadCSV" text="Import" />
+                                  <RadioMenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
                                 </items>
                                  <font>
                                     <Font size="10.0" />
@@ -141,7 +147,7 @@
                                     <Insets top="-1.0" />
                                  </padding>
                               </JFXButton>
-                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" onAction="#pressDeleteButton" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
+                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
                                  <graphic>
                                     <ImageView fitHeight="13.0" fitWidth="11.0">
                                        <image>
@@ -168,20 +174,24 @@
                                       <JFXComboBox fx:id="startNodeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Start Node" style="-fx-font-size: 8;" />
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
+                        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
                            <children>
-                                      <JFXTextField fx:id="edgeIDtextbox" maxWidth="-Infinity" prefHeight="23.0" prefWidth="130.0" promptText="Edge ID">
-                                          <font>
-                                              <Font size="8.0" />
-                                          </font>
-                                      </JFXTextField>
+                              <HBox fx:id="edgeD" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                            <JFXComboBox fx:id="edgeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Edge Dropdown" style="-fx-font-size: 8;" />
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="edgeT" alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                            <JFXTextField fx:id="edgeIDtextbox" maxWidth="-Infinity" prefHeight="23.0" prefWidth="130.0" promptText="Edge ID">
+                                                <font>
+                                                    <Font size="8.0" />
+                                                </font>
+                                            </JFXTextField>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                           <children>
-                                      <JFXComboBox fx:id="edgeDropdown" maxHeight="15.0" minHeight="15.0" prefHeight="15.0" prefWidth="130.0" promptText="Edge Dropdown" style="-fx-font-size: 8;" />
-                           </children>
-                        </HBox>
+                        </StackPane>
                             </children>
                         </GridPane>
                   <AnchorPane prefHeight="80.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0">
@@ -199,7 +209,7 @@
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="175.0" style="-fx-background-color: f0f0f0;">
                                  <children>
-                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
                                                   <font>
                                                       <Font size="10.0" />
                                                   </font>
@@ -217,21 +227,38 @@
             </AnchorPane>
             <AnchorPane prefHeight="326.0" prefWidth="425.0" GridPane.columnIndex="1">
                <children>
-                  <ImageView fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <ImageView fx:id="groundFloor" fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
                         <Image url="@../img/groundFloor.png" />
                      </image>
                   </ImageView>
-                  <MenuButton layoutX="304.0" layoutY="254.0" mnemonicParsing="false" popupSide="TOP" text="Change Floor" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
-                    <items>
-                      <MenuItem fx:id="groundFloorView" mnemonicParsing="false" text="Ground Floor" />
-                      <MenuItem fx:id="floor1View" mnemonicParsing="false" text="Floor1" />
-                    </items>
-                     <font>
-                        <Font size="10.0" />
-                     </font>
-                  </MenuButton>
-                  <AnchorPane fx:id="anchor" layoutY="54.0" prefHeight="276.0" prefWidth="426.0" style="-fx-background-color: white;" />
+                   <ImageView fx:id="floor1" fitHeight="293.0" fitWidth="425.0" layoutX="22.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                       <image>
+                           <Image url="@../img/firstFloor.png" />
+                       </image>
+                   </ImageView>
+                   <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="293.0" prefWidth="425.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                   <MenuBar prefHeight="26.0" prefWidth="130.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
+                       <menus>
+                           <Menu mnemonicParsing="false" text="Change Floor">
+                               <items>
+                                   <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                                   <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                               </items>
+                           </Menu>
+                       </menus>
+                   </MenuBar>
+                  <AnchorPane fx:id="anchor" layoutY="54.0" prefHeight="276.0" prefWidth="425.0" style="-fx-background-color: white;">
+                     <children>
+                        <TableView fx:id="table" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <columns>
+                            <TableColumn fx:id="edgeIdCol" prefWidth="142.0" text="Edge ID" />
+                            <TableColumn fx:id="startNodeCol" prefWidth="142.0" text="Start Node" />
+                              <TableColumn fx:id="endNodeCol" prefWidth="142.0" text="End Node" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
                </children>
             </AnchorPane>
          </children>

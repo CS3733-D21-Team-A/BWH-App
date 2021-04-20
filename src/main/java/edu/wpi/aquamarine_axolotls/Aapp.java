@@ -15,8 +15,8 @@ public class Aapp extends Application {
 
   private static Stage primaryStage;
 
-  //public static List<Map<String,String>> serviceRequests = new ArrayList<>();
-  public static int num = 0;
+  public static List<Map<String,String>> serviceRequests = new ArrayList<>();
+
 
   @Override
   public void init() {
@@ -27,7 +27,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/AdminMainPage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/EdgeEditing.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.show();
@@ -40,7 +40,6 @@ public class Aapp extends Application {
   public static void setPrimaryStage(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
   }
-
 
   public static Stage getPrimaryStage(){
     return primaryStage;
