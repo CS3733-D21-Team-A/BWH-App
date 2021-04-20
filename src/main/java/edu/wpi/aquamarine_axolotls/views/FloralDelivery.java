@@ -19,6 +19,7 @@ import edu.wpi.aquamarine_axolotls.Aapp;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -31,7 +32,7 @@ public class FloralDelivery extends SServiceRequest {
     private JFXTextField lastName;
 
     @FXML
-    private JFXTextField deliveryTime;
+    private JFXTimePicker deliveryTime;
 
     @FXML
     private JFXComboBox roomNumber;
@@ -71,14 +72,14 @@ public class FloralDelivery extends SServiceRequest {
 
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-        if(roomNumber.getSelectionModel().getSelectedItem() == null){
+        if(roomNumber.getSelectionModel().getSelectedItem() == null || deliveryTime.getValue() == null){
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number");
             return;
         }
 
         String fn = firstName.getText();
         String ln = lastName.getText();
-        String dt = deliveryTime.getText();
+        String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
         int room = roomNumber.getSelectionModel().getSelectedIndex();
         String pmsg = persMessage.getText();
 
@@ -95,7 +96,7 @@ public class FloralDelivery extends SServiceRequest {
             int id = Math.abs(r.nextInt());
             shared.put("REQUESTID", String.valueOf(id));
             shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(room));
+            shared.put("LOCATIONID", String.valueOf(nodeIDS.get(room)));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
             shared.put("REQUESTTYPE", "Floral Delivery");

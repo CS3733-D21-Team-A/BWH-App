@@ -6,6 +6,7 @@ import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -17,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class EmployeeRequests extends SServiceRequest{
-
-
+public class EmployeeRequests extends SPage{
 
     @FXML
     private TableView<EmployeeRequest> srTable;
@@ -76,6 +75,10 @@ public class EmployeeRequests extends SServiceRequest{
         locationColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("location"));
 
         refresh();
+    }
+
+    public void goHome(ActionEvent actionEvent) {
+        sceneSwitch("AdminMainPage");
     }
 
     public void refresh(){

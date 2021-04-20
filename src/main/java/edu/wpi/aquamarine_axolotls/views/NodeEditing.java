@@ -118,6 +118,7 @@ public class NodeEditing extends SEditing {
                         node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")),
                         node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"), node.get("LONGNAME"), node.get("SHORTNAME")
                 ));
+                drawNodes(node);
             }
             nodeDropdown.setItems(options);
             changeFloorNodes();
@@ -342,9 +343,11 @@ public class NodeEditing extends SEditing {
                 break;
             case "add":
                 add(nodeID.getText());
+                drawNodes(db.getNode(nodeID.getText()));
                 break;
             case "edit":
                 edit(nodeDropdown.getSelectionModel().getSelectedItem().toString());
+                drawNodes(db.getNode(nodeDropdown.getSelectionModel().getSelectedItem().toString()));
                 break;
             case "":
                 submissionlabel.setText("Invalid submission");

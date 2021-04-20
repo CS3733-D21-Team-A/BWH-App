@@ -16,7 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="myAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.FloralDelivery">
+<AnchorPane fx:id="myAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.FloralDelivery">
    <children>
       <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
          <children>
@@ -118,12 +118,12 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
                <children>
-                  <JFXTextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery Time">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </JFXTextField>
                   <JFXComboBox fx:id="roomNumber" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="250.0" promptText="Patient Room Number" />
+                  <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefWidth="250.0" promptText="Delivery Time">
+                     <HBox.margin>
+                        <Insets left="25.0" />
+                     </HBox.margin>
+                  </JFXTimePicker>
                </children>
                <VBox.margin>
                   <Insets />
@@ -131,16 +131,11 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
                <children>
-                  <JFXTextField fx:id="persMessage" maxWidth="-Infinity" prefHeight="40.0" prefWidth="250.0" promptText="Insert Personalized Message">
+                  <JFXTextField fx:id="persMessage" maxWidth="-Infinity" prefHeight="40.0" prefWidth="398.0" promptText="Insert Personalized Message">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
                   </JFXTextField>
-                  <JFXTimePicker defaultColor="#003da6" prefWidth="250.0">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </JFXTimePicker>
                </children></HBox>
             <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
                <children>
