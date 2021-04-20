@@ -67,6 +67,7 @@ public class Navigation  extends SPage{
     private Text time;
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
+    List<Map<String, String>> validNodes = new ArrayList<>();
     private int firstNodeSelect = 0;
     private String firstNode;
     private List<String> pathList = new ArrayList<>();
@@ -89,10 +90,12 @@ public class Navigation  extends SPage{
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if (node.get("NODETYPE").equals("PARK")
+                if (( node.get("NODETYPE").equals("WALK"))
+                        || node.get("NODETYPE").equals("PARK")
                         || ( node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
-                        || ( node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1")) ) {
+                        || ( node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
                     options.add(node.get("NODEID"));
+                    validNodes.add(node);
                 }
 
             }
@@ -334,50 +337,44 @@ public class Navigation  extends SPage{
 
         System.out.println(x + " " + y);
         double radius = 20;
-        List<Map<String, String>> nodes = new ArrayList<>();
-
-        //Get nodes from database
-        try {
-            nodes = db.getNodes();
-        }
-        catch(SQLException se) {
-            se.printStackTrace();
-        }
 
         //Establish current closest recorded node and current least distance
         Map<String, String> currClosest = new HashMap<>();
         double currLeastDist = 100000;
 
         //Loop through nodes
-        for (Map<String, String> n : nodes) {
-            //Get the x and y of that node
-            double currNodeX = xScaleDouble(Double.parseDouble(n.get("XCOORD")));
-            double currNodeY = yScaleDouble(Double.parseDouble(n.get("YCOORD")));
+        for (Map<String, String> n : validNodes) {
+            if ((groundFloor.isVisible() && n.get("FLOOR").equals("G"))
+                || (floor1.isVisible() && n.get("FLOOR").equals("1"))) {
+                //Get the x and y of that node
+                double currNodeX = xScaleDouble(Double.parseDouble(n.get("XCOORD")));
+                double currNodeY = yScaleDouble(Double.parseDouble(n.get("YCOORD")));
 
-            //Get the difference in x and y between input coords and current node coords
-            double xOff = x - currNodeX;
-            double yOff = y - currNodeY;
+                //Get the difference in x and y between input coords and current node coords
+                double xOff = x - currNodeX;
+                double yOff = y - currNodeY;
 
-            //Give 'em the ol' pythagoras maneuver
-            double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
-            dist = Math.sqrt(dist);
+                //Give 'em the ol' pythagoras maneuver
+                double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                dist = Math.sqrt(dist);
 
-            //If the distance is LESS than the given radius...
-            if (dist < radius) {
-                //...AND the distance is less than the current min, update current closest node
-                if (dist < currLeastDist) {
-                    currClosest = n;
-                    currLeastDist = dist;
+                //If the distance is LESS than the given radius...
+                if (dist < radius) {
+                    //...AND the distance is less than the current min, update current closest node
+                    if (dist < currLeastDist) {
+                        currClosest = n;
+                        currLeastDist = dist;
+                    }
                 }
             }
         }
+
+        if (currClosest.isEmpty()) return;
 
         String currCloseName = currClosest.get("LONGNAME");
         System.out.println(currClosest.get("LONGNAME"));
 
         if (activePath == 0) {
-            //Return the long name of this node
-            //return currClosest.get("LONGNAME");
             if (this.firstNodeSelect == 0) {
                 firstNodeSelect = 1;
                 this.firstNode = currCloseName;
