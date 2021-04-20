@@ -166,12 +166,17 @@ public class Navigation  extends SPage{
         anchor.getChildren().clear();
         pathList.clear();
         pathList.add(start);
+        if (intermediate.getSelectionModel().getSelectedItem() != null) {
+            pathList.add(intermediate.getSelectionModel().getSelectedItem().toString());
+        }
         pathList.add(end);
         SearchAlgorithm searchAlgorithm;
         List<Node> pathNodes = new ArrayList<>();
         try {
             searchAlgorithm = new SearchAlgorithm();
-            pathNodes = searchAlgorithm.getPath(start, end);
+            for (int i = 0; i < pathList.size() - 1; i++ ){
+                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
+            }
         } catch (IOException ie) {
             ie.printStackTrace();
         } catch (URISyntaxException ue) {
