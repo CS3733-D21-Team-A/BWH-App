@@ -184,6 +184,39 @@ public class DatabaseControllerTest3 {
     }
 
     @Test
+    public void testAddServiceRequestAddingSameRequestTwice() {
+        try {
+            assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
+            Map<String, String> sharedValues = new HashMap<String, String>();
+            sharedValues.put("REQUESTID", "123");
+            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("LOCATIONID", "aPARK009GG");
+            sharedValues.put("FIRSTNAME", "Bob");
+            sharedValues.put("LASTNAME", "Jones");
+            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+
+            Map<String, String> requestValues = new HashMap<String, String>();
+            requestValues.put("REQUESTID", "123");
+            requestValues.put("DELIVERYTIME", "ASAP");
+            requestValues.put("DIETARYRESTRICTIONS", "MILK");
+            requestValues.put("NOTE", "TESTING");
+            db.addServiceRequest(sharedValues, requestValues);
+
+            List<Map<String, String>> expectedResult = new ArrayList<Map<String, String>>();
+            expectedResult.add(sharedValues);
+
+            assertEquals(expectedResult, db.getServiceRequests());
+
+            assertThrows(SQLException.class, () -> {
+                db.addServiceRequest(sharedValues, requestValues);
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testChangeStatus() {
         try {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
@@ -212,6 +245,22 @@ public class DatabaseControllerTest3 {
 
             expectedResult.remove(sharedValues);
             sharedValues.replace("STATUS", STATUS.IN_PROGRESS.text);
+            expectedResult.add(sharedValues);
+
+            assertEquals(expectedResult, db.getServiceRequests());
+
+            db.changeStatus("56789", STATUS.DONE);
+
+            expectedResult.remove(sharedValues);
+            sharedValues.replace("STATUS", STATUS.DONE.text);
+            expectedResult.add(sharedValues);
+
+            assertEquals(expectedResult, db.getServiceRequests());
+
+            db.changeStatus("56789", STATUS.CANCELED);
+
+            expectedResult.remove(sharedValues);
+            sharedValues.replace("STATUS", STATUS.CANCELED.text);
             expectedResult.add(sharedValues);
 
             assertEquals(expectedResult, db.getServiceRequests());
@@ -485,9 +534,10 @@ public class DatabaseControllerTest3 {
 
             assertEquals(expectedResult, db.getServiceRequests());
 
-            expectedResult.remove(sharedValues1);
+            expectedResult.remove(sharedValues2);
+            expectedResult.remove(sharedValues3);
 
-            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.IN_PROGRESS.text));
+            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.ASSIGNED.text));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -754,6 +804,11 @@ public class DatabaseControllerTest3 {
             expectedResult.add(requestValues3);
 
             assertEquals(expectedResult, db.getServiceRequestsByType(FLORAL_DELIVERY));
+
+            expectedResult = new ArrayList<Map<String, String>>();
+            expectedResult.add(requestValues1);
+
+            assertEquals(expectedResult, db.getServiceRequestsByType(FOOD_DELIVERY));
 
         } catch (SQLException e) {
             e.printStackTrace();
