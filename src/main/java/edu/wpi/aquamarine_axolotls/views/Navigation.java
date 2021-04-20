@@ -138,12 +138,15 @@ public class Navigation  extends SPage{
             }
     }
 
-    public void addStop(ActionEvent actionEvent) {
-    }
-
     public void clearNodes(ActionEvent actionEvent) {
     }
 
     public void getNearestNode(MouseEvent mouseEvent) {
+    }
+
+    public void addStop(){
+        if (!(startLocation.getSelectionModel().getSelectedItem() == null)&& (!(destination.getSelectionModel().getSelectedItem() == null))){
+            intermediate.setVisible(true);
+        }
     }
 }
