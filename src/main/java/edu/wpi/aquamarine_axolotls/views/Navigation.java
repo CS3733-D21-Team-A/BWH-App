@@ -412,7 +412,6 @@ public class Navigation  extends SPage{
                 findPath(pathList.get(i), pathList.get(i + 1));
             }
         }
-
     }
 
     public void changeGroundFloor(){
@@ -496,6 +495,10 @@ public class Navigation  extends SPage{
 
     public void clearNodes() {
         anchor.getChildren().clear();
+        pathList.clear();
+        startLocation.getSelectionModel().clearSelection();
+        destination.getSelectionModel().clearSelection();
+        intermediate.getSelectionModel().clearSelection();
         activePath = 0;
     }
 
