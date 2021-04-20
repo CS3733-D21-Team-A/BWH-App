@@ -537,7 +537,7 @@ public class DatabaseControllerTest3 {
             expectedResult.remove(sharedValues2);
             expectedResult.remove(sharedValues3);
 
-            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.ASSIGNED.text));
+            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.ASSIGNED));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -606,7 +606,7 @@ public class DatabaseControllerTest3 {
             expectedResult.remove(sharedValues2);
             expectedResult.remove(sharedValues3);
 
-            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.DONE.text));
+            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.DONE));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -674,7 +674,7 @@ public class DatabaseControllerTest3 {
 
             expectedResult.remove(sharedValues1);
 
-            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.IN_PROGRESS.text));
+            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.IN_PROGRESS));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -683,7 +683,7 @@ public class DatabaseControllerTest3 {
     }
 
     @Test
-    public void testGetServiceRequestsWithStatusDNE(){
+    public void testGetServiceRequestsWithStatusDNE(){ //this test kinda isn't necessary cuz the only DNE case is null, which should never happen
         try {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
@@ -732,7 +732,7 @@ public class DatabaseControllerTest3 {
             db.addServiceRequest(sharedValues3, requestValues3);
 
 
-            assertEquals(db.getServiceRequestsWithStatus("A_FAKE_STATUS"), new ArrayList<Map<String, String>>());
+            assertThrows(NullPointerException.class, () -> db.getServiceRequestsWithStatus(null));
         } catch (SQLException e){
             e.printStackTrace();
             fail();

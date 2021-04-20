@@ -351,8 +351,8 @@ public class DatabaseController implements AutoCloseable {
 	 * @return List of Maps representing the service requests.
 	 * @throws SQLException Something went wrong.
 	 */
-	public List<Map<String,String>> getServiceRequestsWithStatus(String status) throws SQLException {
-		return serviceRequestsTable.getEntriesByValue("STATUS", status);
+	public List<Map<String,String>> getServiceRequestsWithStatus(STATUS status) throws SQLException {
+		return serviceRequestsTable.getEntriesByValue("STATUS", status.text);
 	}
 
 	/**
@@ -379,9 +379,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void emptyServiceRequestsTable() throws SQLException {
 		serviceRequestsTable.emptyTable();
-		for (TABLES.SERVICEREQUESTS requestType : TABLES.SERVICEREQUESTS.values()){
-			requestsTables.get(SERVICEREQUESTS.FOOD_DELIVERY).emptyTable();
-		}
+		//Service requests cascade, so we don't need to clear request-specific tables
 	}
 
 
