@@ -27,8 +27,8 @@ public class DatabaseControllerTest3 {
         db.emptyServiceRequestsTable();
 
         CSVHandler csvHandler = new CSVHandler(db);
-        csvHandler.importCSV(DatabaseUtil.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
-        csvHandler.importCSV(DatabaseUtil.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
     }
 
     @AfterEach

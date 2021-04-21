@@ -3,32 +3,9 @@ package edu.wpi.aquamarine_axolotls.db;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumHashBiMap;
 
-import java.io.InputStream;
-import java.util.EnumMap;
-import java.util.Map;
-
 import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
 
 public class DatabaseUtil {
-
-	/**
-	 * Convert resource path string to File.
-	 * @param resourcePath path to resource in app structure.
-	 * @return File for corresponding resource.
-	 */
-	static InputStream resourceAsStream(String resourcePath) {
-		return DatabaseInfo.class.getClassLoader().getResourceAsStream(resourcePath);
-	}
-
-	/**
-	 * Map linking TABLES enum to the SQL code that builds the corresponding table.
-	 */
-	final static Map<TABLES,String> TABLE_SQL;
-
-	/**
-	 * Map linking SERVICEREQUEST enum to the SQL code that builds the corresponding table.
-	 */
-	final static Map<SERVICEREQUEST,String> SERVICEREQUEST_SQL;
 
 	/**
 	 * BiMap for associating SERVICEREQUEST enum with corresponding string representations.
@@ -46,16 +23,6 @@ public class DatabaseUtil {
 	public final static BiMap<ATTRIBUTE,String> ATTRIBUTE_NAMES;
 
 	static {
-		TABLE_SQL = new EnumMap<>(TABLES.class);
-		TABLE_SQL.put(TABLES.NODES, NODE_TABLE_SQL);
-		TABLE_SQL.put(TABLES.EDGES, EDGE_TABLE_SQL);
-		TABLE_SQL.put(TABLES.ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
-		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
-
-		SERVICEREQUEST_SQL = new EnumMap<>(SERVICEREQUEST.class);
-		SERVICEREQUEST_SQL.put(SERVICEREQUEST.FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
-		SERVICEREQUEST_SQL.put(SERVICEREQUEST.FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
-
 		SERVICEREQUEST_NAMES = EnumHashBiMap.create(SERVICEREQUEST.class);
 		SERVICEREQUEST_NAMES.put(SERVICEREQUEST.EXTERNAL_TRANSPORT,EXTERNAL_TRANSPORT_TEXT);
 		SERVICEREQUEST_NAMES.put(SERVICEREQUEST.FLORAL_DELIVERY,FLORAL_DELIVERY_TEXT);

@@ -56,7 +56,7 @@ public class DatabaseController implements AutoCloseable {
 
 		requestsTables = new HashMap<>();
 		for (SERVICEREQUEST table : SERVICEREQUEST.values()) {
-			if (SERVICEREQUEST_SQL.get(table) != null) {
+			if (DatabaseInfo.SERVICEREQUEST_SQL.get(table) != null) {
 				requestsTables.put(table, tableFactory.getRequestTable(table));
 			}
 		}
@@ -498,12 +498,12 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		for (String SQL : TABLE_SQL.values()) { // for each primary table
+		for (String SQL : DatabaseInfo.TABLE_SQL.values()) { // for each primary table
 			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 				smnt.execute(); // create the table
 			}
 		}
-		for (String SQL : SERVICEREQUEST_SQL.values()) { // for each service request table
+		for (String SQL : DatabaseInfo.SERVICEREQUEST_SQL.values()) { // for each service request table
 			if (SQL != null) { // if we have written SQL code for it
 				try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 					smnt.execute(); // create the table
@@ -519,8 +519,8 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	private void populateDB() throws IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
-		csvHandler.importCSV(DatabaseUtil.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
-		csvHandler.importCSV(DatabaseUtil.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 	}
 
 }
