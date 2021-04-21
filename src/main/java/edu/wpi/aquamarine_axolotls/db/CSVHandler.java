@@ -134,7 +134,7 @@ public class CSVHandler {
 		while ((line = br.readLine()) != null) {
 			inp = line.split(","); //split entries by column
 			for (int i = 0; i < inp.length; i++) {
-				values.put(columns[i],inp[i]); //add value to mapP indexed by column
+				values.put(columns[i].toUpperCase(),inp[i]); //add value to map indexed by column
 			}
 			if (!deleteAllOld && insertionStrategy.exists(values.get(insertionStrategy.getPrimaryKey()))) {
 				insertionStrategy.delete(values.get(insertionStrategy.getPrimaryKey())); //TODO: Change this to use edit so we only need to call one method.
