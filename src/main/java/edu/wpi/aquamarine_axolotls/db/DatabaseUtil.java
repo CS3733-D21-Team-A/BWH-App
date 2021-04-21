@@ -5,7 +5,12 @@ import com.google.common.collect.EnumHashBiMap;
 
 import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
 
-public class DatabaseUtil {
+/**
+ * Utility class for db package. Functionally static.
+ */
+public final class DatabaseUtil {
+
+	private DatabaseUtil() {} //NO CONSTRUCTION ALLOWED >:(
 
 	/**
 	 * BiMap for associating SERVICEREQUEST enum with corresponding string representations.

@@ -5,10 +5,11 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Class containing static info for reference when working with the database.
+ * Class containing static info for reference when working with the database. Functionally static.
  */
-class DatabaseInfo {
+final class DatabaseInfo {
 
+	private DatabaseInfo() {} //NO CONSTRUCTION ALLOWED >:(
 
 	// ========== PRIMARY TABLE SQL ==========
 
