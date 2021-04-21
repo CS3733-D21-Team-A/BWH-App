@@ -151,7 +151,7 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
 	 * @throws SQLException Something went wrong.
 	 */
-	public void importCSV(File file, DatabaseInfo.TABLES table, boolean deleteAllOld) throws IOException, SQLException {
+	public void importCSV(File file, TABLES table, boolean deleteAllOld) throws IOException, SQLException {
 		importCSV(new FileInputStream(file), table, deleteAllOld);
 	}
 
@@ -163,7 +163,7 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
 	 * @throws SQLException Something went wrong.
 	 */
-	void importCSV(InputStream inputStream, DatabaseInfo.TABLES table, boolean deleteAllOld) throws IOException, SQLException {
+	void importCSV(InputStream inputStream, TABLES table, boolean deleteAllOld) throws IOException, SQLException {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			switch (table) {
 				case NODES:
@@ -185,7 +185,7 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason.
 	 * @throws SQLException Something went wrong.
 	 */
-	public void exportCSV(File file, DatabaseInfo.TABLES table) throws IOException, SQLException {
+	public void exportCSV(File file, TABLES table) throws IOException, SQLException {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(file,false))) {
 			List<Map<String, String>> values;
 

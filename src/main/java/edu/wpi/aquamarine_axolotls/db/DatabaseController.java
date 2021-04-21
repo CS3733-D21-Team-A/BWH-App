@@ -7,9 +7,7 @@ import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.*;
 
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.*;
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.SERVICEREQUESTS.*;
+import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 /**
  * Controller class for working with the BWH database.
@@ -25,7 +23,7 @@ public class DatabaseController implements AutoCloseable {
 	 * Key: Service Request enumeration.
 	 * Value: Table for corresponding service request type.
 	 */
-	final private Map<SERVICEREQUESTS,RequestTable> requestsTables;
+	final private Map<SERVICEREQUEST,RequestTable> requestsTables;
 
 
 	/**
@@ -57,8 +55,8 @@ public class DatabaseController implements AutoCloseable {
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
 
 		requestsTables = new HashMap<>();
-		for (SERVICEREQUESTS table : SERVICEREQUESTS.values()) {
-			if (TABLES.SERVICEREQUESTS_SQL.get(table) != null) {
+		for (SERVICEREQUEST table : SERVICEREQUEST.values()) {
+			if (SERVICEREQUEST_SQL.get(table) != null) {
 				requestsTables.put(table, tableFactory.getRequestTable(table));
 			}
 		}
@@ -140,12 +138,6 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void deleteNode(String nodeID) throws SQLException {
 		nodeTable.deleteEntry(nodeID);
-		Map<String, List<String>> filters = new HashMap<>();
-		filters.put("LOCATIONID", Collections.singletonList(nodeID));
-		filters.put("STATUS", Arrays.asList(STATUS.UNASSIGNED.text, STATUS.ASSIGNED.text, STATUS.IN_PROGRESS.text));
-		for(Map<String,String> entry :serviceRequestsTable.getEntriesByValues(filters)){
-			changeStatus(entry.get("REQUESTID"),STATUS.CANCELED);
-		}
 	}
 
 	/**
@@ -307,7 +299,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void addServiceRequest(Map<String,String> sharedValues, Map<String,String> requestValues) throws SQLException {
 		serviceRequestsTable.addEntry(sharedValues);
-		requestsTables.get(SERVICEREQUESTS.stringToServiceRequest(sharedValues.get("REQUESTTYPE"))).addEntry(requestValues);
+		requestsTables.get(SERVICEREQUEST_NAMES.inverse().get(sharedValues.get("REQUESTTYPE"))).addEntry(requestValues);
 	}
 
 	/**
@@ -318,7 +310,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void changeStatus(String requestID, STATUS newStatus) throws SQLException {
 		Map<String, String> values = serviceRequestsTable.getEntry(requestID);
-		values.replace("STATUS", newStatus.text);
+		values.replace("STATUS", STATUS_NAMES.get(newStatus));
 		serviceRequestsTable.editEntry(requestID, values);
 	}
 
@@ -352,7 +344,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong.
 	 */
 	public List<Map<String,String>> getServiceRequestsWithStatus(STATUS status) throws SQLException {
-		return serviceRequestsTable.getEntriesByValue("STATUS", status.text);
+		return serviceRequestsTable.getEntriesByValue("STATUS", STATUS_NAMES.get(status));
 	}
 
 	/**
@@ -370,7 +362,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @return List of Maps representing the service requests.
 	 * @throws SQLException Something went wrong.
 	 */
-	public List<Map<String,String>> getServiceRequestsByType(SERVICEREQUESTS requestType) throws SQLException {
+	public List<Map<String,String>> getServiceRequestsByType(SERVICEREQUEST requestType) throws SQLException {
 		return requestsTables.get(requestType).getRequests();
 	}
 
@@ -404,7 +396,7 @@ public class DatabaseController implements AutoCloseable {
 	public void deleteAttribute(String id, ATTRIBUTE attribute, boolean isNode) throws SQLException {
 		Map<String,List<String>> filters = new HashMap<>();
 		filters.put(idColumn(isNode), Collections.singletonList(id));
-		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
+		filters.put("ATTRIBUTE", Collections.singletonList(ATTRIBUTE_NAMES.get(attribute)));
 
 		for (Map<String, String> entry : attrTable.getEntriesByValues(filters)){
 			attrTable.deleteEntry(entry.get("ATTRID"));
@@ -422,7 +414,7 @@ public class DatabaseController implements AutoCloseable {
 	public boolean addAttribute(String id, ATTRIBUTE attribute, boolean isNode) throws SQLException {
 		Map<String,String> values = new HashMap<>();
 		values.put(idColumn(isNode), id);
-		values.put("ATTRIBUTE", attribute.text);
+		values.put("ATTRIBUTE", ATTRIBUTE_NAMES.get(attribute));
 
 		if(!(hasAttribute(id, attribute, isNode))){
 			attrTable.addEntry(values);
@@ -455,7 +447,7 @@ public class DatabaseController implements AutoCloseable {
 	public List<ATTRIBUTE> getAttributes(String id, boolean isNode) throws SQLException {
 		List<ATTRIBUTE> attributes = new ArrayList<>();
 		for (Map<String,String> attr : attrTable.getEntriesByValue(idColumn(isNode), id)) {
-			attributes.add(ATTRIBUTE.stringToAttribute(attr.get("ATTRIBUTE")));
+			attributes.add(ATTRIBUTE_NAMES.inverse().get(attr.get("ATTRIBUTE")));
 		}
 
 		return attributes;
@@ -472,7 +464,7 @@ public class DatabaseController implements AutoCloseable {
 	public boolean hasAttribute(String id, ATTRIBUTE attribute, boolean isNode) throws SQLException {
 		Map<String,List<String>> filters = new HashMap<>();
 		filters.put(idColumn(isNode), Collections.singletonList(id));
-		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
+		filters.put("ATTRIBUTE", Collections.singletonList(ATTRIBUTE_NAMES.get(attribute)));
 
 		return attrTable.getEntriesByValues(filters).size() > 0;
 	}
@@ -487,7 +479,7 @@ public class DatabaseController implements AutoCloseable {
 	public List<String> getByAttribute(ATTRIBUTE attribute, boolean isNode) throws SQLException {
 		Map<String,List<String>> filters = new HashMap<>();
 		filters.put(idColumn(!isNode), Collections.singletonList(null));
-		filters.put("ATTRIBUTE", Collections.singletonList(attribute.text));
+		filters.put("ATTRIBUTE", Collections.singletonList(ATTRIBUTE_NAMES.get(attribute)));
 
 		List<String> ids = new ArrayList<>();
 		for (Map<String,String> entry : attrTable.getEntriesByValues(filters)) {
@@ -506,12 +498,12 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong
 	 */
 	private void createDB() throws SQLException {
-		for (String SQL : DatabaseInfo.TABLE_SQL.values()) { // for each primary table
+		for (String SQL : TABLE_SQL.values()) { // for each primary table
 			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 				smnt.execute(); // create the table
 			}
 		}
-		for (String SQL : TABLES.SERVICEREQUESTS_SQL.values()) { // for each service request table
+		for (String SQL : SERVICEREQUEST_SQL.values()) { // for each service request table
 			if (SQL != null) { // if we have written SQL code for it
 				try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 					smnt.execute(); // create the table
@@ -527,8 +519,8 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	private void populateDB() throws IOException, SQLException {
 		CSVHandler csvHandler = new CSVHandler(this);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH), TABLES.NODES, true);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH), TABLES.EDGES, true);
+		csvHandler.importCSV(DatabaseUtil.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
+		csvHandler.importCSV(DatabaseUtil.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 	}
 
 }

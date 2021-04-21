@@ -3,9 +3,7 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.db.CSVHandler;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
+import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,17 +14,14 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,11 +118,7 @@ public class NodeEditing extends SEditing {
             }
             nodeDropdown.setItems(options);
             changeFloorNodes();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -210,11 +201,9 @@ public class NodeEditing extends SEditing {
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES, true);
-        }catch(IOException ie){
+            csvHandler.importCSV(csv, TABLES.NODES, true);
+        }catch(IOException | SQLException ie){
             ie.printStackTrace();
-        }catch(SQLException sq){
-            sq.printStackTrace();
         }
 
         initialize(); //REFRESH TABLE
@@ -227,11 +216,9 @@ public class NodeEditing extends SEditing {
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.NODES, false);
-        }catch(IOException ie){
+            csvHandler.importCSV(csv, TABLES.NODES, false);
+        }catch(IOException | SQLException ie){
             ie.printStackTrace();
-        }catch(SQLException sq){
-            sq.printStackTrace();
         }
 
         initialize(); //REFRESH TABLE
@@ -244,11 +231,9 @@ public class NodeEditing extends SEditing {
         );
         File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
         try{
-            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.NODES);
-        }catch(IOException ie){
+            csvHandler.exportCSV(csv, TABLES.NODES);
+        }catch(IOException | SQLException ie){
             ie.printStackTrace();
-        }catch(SQLException sq){
-            sq.printStackTrace();
         }
     }
 
@@ -344,7 +329,7 @@ public class NodeEditing extends SEditing {
                 newNode.put("NODETYPE", type);
                 newNode.put("LONGNAME", longN);
                 newNode.put("SHORTNAME", shortN);
-                db.editNode(current_nodeID, newNode);
+                db.editNode(current_nodeID, newNode); //TODO: YOU DON'T NEED TO SET ALL OF THEM. YOU CAN JUST LEAVE THEM BLANK
                 submissionlabel.setText("You have edited " + current_nodeID);
             }
         }catch (SQLException sq){

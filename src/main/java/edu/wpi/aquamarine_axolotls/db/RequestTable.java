@@ -21,7 +21,7 @@ class RequestTable extends Table {
 	 * @throws SQLException Something went wrong.
 	 */
 	List<Map<String,String>> getRequests() throws SQLException {
-		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " JOIN " + DatabaseInfo.TABLES.SERVICE_REQUESTS.name() + " ON " + tableName + ".REQUESTID = " + DatabaseInfo.TABLES.SERVICE_REQUESTS.name() + ".REQUESTID")) {
+		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " JOIN " + TABLES.SERVICE_REQUESTS.name() + " ON " + tableName + ".REQUESTID = " + TABLES.SERVICE_REQUESTS.name() + ".REQUESTID")) {
 			try (ResultSet rs = smnt.executeQuery()) {
 				return resultSetToList(rs);
 			}

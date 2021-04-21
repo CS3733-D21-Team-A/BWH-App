@@ -79,11 +79,7 @@ public class TemplateServiceRequest {
                     options.add(node.get("LONGNAME"));
                 }
                 locationDropdown.setItems(options);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
+            } catch (SQLException | IOException | URISyntaxException e) {
                 e.printStackTrace();
             }
         }

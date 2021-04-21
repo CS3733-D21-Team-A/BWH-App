@@ -1,0 +1,18 @@
+package edu.wpi.aquamarine_axolotls.db;
+
+/**
+ * Enum for service request tables.
+ */
+public enum SERVICEREQUEST {
+	EXTERNAL_TRANSPORT,
+	FLORAL_DELIVERY,
+	FOOD_DELIVERY,
+	GIFT_DELIVERY,
+	INTERNAL_TRANSPORT,
+	LANGUAGE_INTERPRETER,
+	LAUNDRY,
+	MEDICINE_DELIVERY,
+	RELIGIOUS_REQUEST,
+	SANITATION,
+	SECURITY
+}

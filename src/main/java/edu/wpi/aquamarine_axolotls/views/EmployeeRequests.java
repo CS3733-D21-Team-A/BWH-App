@@ -2,9 +2,8 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
+import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,9 +63,9 @@ public class EmployeeRequests extends SPage{
                 .observableArrayList("Sai", "Samantha", "Imani"));
 
         statusD.setItems(FXCollections
-                .observableArrayList(DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.IN_PROGRESS.text,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.DONE.text,
-                        DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.CANCELED.text));
+                .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
+                   DatabaseUtil.STATUS_NAMES.get(STATUS.DONE),
+                   DatabaseUtil.STATUS_NAMES.get(STATUS.CANCELED)));
         assignedColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assigned"));
         assigneeColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assignee"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("status"));
@@ -90,11 +88,7 @@ public class EmployeeRequests extends SPage{
                 srTable.getItems().add(new EmployeeRequest(req));
             }
             db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -115,14 +109,9 @@ public class EmployeeRequests extends SPage{
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
             refresh();
             db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
     }
 
     @FXML
@@ -134,17 +123,12 @@ public class EmployeeRequests extends SPage{
 
             db = new DatabaseController();
             String status = statusD.getSelectionModel().getSelectedItem().toString();
-            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseInfo.TABLES.SERVICEREQUESTS.STATUS.stringToStatus(status));
+            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
             db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
     }
 
 }

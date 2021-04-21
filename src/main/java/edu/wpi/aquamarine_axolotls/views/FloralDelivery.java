@@ -2,20 +2,12 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
+import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import edu.wpi.aquamarine_axolotls.Aapp;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -100,7 +92,7 @@ public class FloralDelivery extends SServiceRequest {
             shared.put("LOCATIONID", String.valueOf(nodeIDS.get(room)));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", DatabaseInfo.TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.text);
+            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> floral = new HashMap<String, String>();
 
@@ -110,9 +102,7 @@ public class FloralDelivery extends SServiceRequest {
             db.addServiceRequest(shared, floral);
             db.close();
             submit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }

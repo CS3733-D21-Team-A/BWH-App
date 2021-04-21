@@ -8,7 +8,6 @@ import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
-import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,12 +20,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Navigation  extends SPage{
@@ -109,11 +106,7 @@ public class Navigation  extends SPage{
             startLocation.setItems(options);
             destination.setItems(options);
             intermediate.setItems(options);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | URISyntaxException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -124,7 +117,7 @@ public class Navigation  extends SPage{
      * @return scaled X coordinate
      */
     public Double xScale(int xCoord) {
-        Double xCoordDouble = new Double(xCoord);
+        Double xCoordDouble = new Double(xCoord); //TODO: USE PRIMITIVE TYPES PLEASE
         Double imgWidth = 438.0;
         Double proportion = imgWidth / 5000;
 
@@ -194,12 +187,8 @@ public class Navigation  extends SPage{
 
 
 
-        } catch (IOException ie) {
+        } catch (IOException | URISyntaxException | SQLException ie) {
             ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
         }
 
 
@@ -244,14 +233,9 @@ public class Navigation  extends SPage{
             searchAlgorithm = new SearchAlgorithm();
             pathNodes = searchAlgorithm.getPath(start, end);
 
-        } catch (IOException ie) {
+        } catch (IOException | URISyntaxException | SQLException ie) {
             ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
         }
-
 
 
         Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
@@ -308,12 +292,8 @@ public class Navigation  extends SPage{
 
 
 
-        } catch (IOException ie) {
+        } catch (IOException | URISyntaxException | SQLException ie) {
             ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
         }
 
 
@@ -510,7 +490,7 @@ public class Navigation  extends SPage{
     }
 
     public void addStop(){
-        if (!(startLocation.getSelectionModel().getSelectedItem() == null)&& (!(destination.getSelectionModel().getSelectedItem() == null))){
+        if (!(startLocation.getSelectionModel().getSelectedItem() == null) && (!(destination.getSelectionModel().getSelectedItem() == null))){
             intermediate.setVisible(true);
         }
     }
