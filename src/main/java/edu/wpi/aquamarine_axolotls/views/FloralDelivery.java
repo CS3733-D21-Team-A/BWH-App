@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -99,7 +100,7 @@ public class FloralDelivery extends SServiceRequest {
             shared.put("LOCATIONID", String.valueOf(nodeIDS.get(room)));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", "Floral Delivery");
+            shared.put("REQUESTTYPE", DatabaseInfo.TABLES.SERVICEREQUESTS.FLORAL_DELIVERY.text);
 
             Map<String, String> floral = new HashMap<String, String>();
 
