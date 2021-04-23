@@ -234,7 +234,7 @@ public class Navigation  extends SPage{
     }
 
 
-    public void findPaths2() {
+    public void startEndlocation() {
         if (activePath == 0) anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();

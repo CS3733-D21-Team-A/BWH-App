@@ -97,10 +97,10 @@ public class TemplateServiceRequest {
             myDialog.setTitle("Help Page");
             Text text1 = new Text("\nHelp Page Information:\n");
             Text text2 = new Text("\n blahblahblah");
-            text1.setStyle("-fx-font-size: 20; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
+            text1.setStyle("-fx-font-size: 50; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
             TextFlow textFlow = new TextFlow(text1, text2);
             textFlow.setTextAlignment(TextAlignment.CENTER);
-            myDialog.setScene(new Scene(textFlow, 300 , 200));
+            myDialog.setScene(new Scene(textFlow, 600 , 400));
             myDialog.show();
         }
 
@@ -130,11 +130,11 @@ public class TemplateServiceRequest {
             myDialog.initModality(Modality.APPLICATION_MODAL);
             myDialog.centerOnScreen();
             myDialog.setTitle("Submission Success");
-            Text text1 = new Text("\nYour service request has been successfully submitted!\n");
-            text1.setStyle("-fx-font-size: 20; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
+            Text text1 = new Text("\nCongratulations. Your service request has been successfully submitted!\n");
+            text1.setStyle("-fx-font-size: 35; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
             TextFlow textFlow = new TextFlow(text1);
             textFlow.setTextAlignment(TextAlignment.CENTER);
-            myDialog.setScene(new Scene(textFlow, 300, 100));
+            myDialog.setScene(new Scene(textFlow, 600, 400));
             myDialog.show();
 
         }

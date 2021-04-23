@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="mainAnchor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
+<AnchorPane fx:id="mainAnchor" maxHeight="900.0" maxWidth="1300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -79,26 +79,21 @@
                <children>
                   <VBox prefHeight="323.0" prefWidth="73.0">
                      <children>
-                        <JFXComboBox fx:id="startLocation" prefHeight="27.0" prefWidth="101.0" promptText="Start location" style="-fx-font-size: 8; -fx-font-family: Times;">
+                        <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="302.0" promptText="Start location" style="-fx-font-size: 20; -fx-font-family: Times;">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="destination" prefHeight="21.0" prefWidth="100.0" promptText="Destination" style="-fx-font-size: 8; -fx-font-family: times;">
+                        <JFXComboBox fx:id="destination" prefHeight="50.0" prefWidth="200.0" promptText="Destination" style="-fx-font-size: 8; -fx-font-family: times;">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
                         </JFXComboBox>
-                        <JFXButton fx:id="addStopbtn" alignment="TOP_LEFT" onAction="#addStop" prefHeight="14.0" prefWidth="84.0" style="-fx-font-family: Times; -fx-font-size: 8;" text="+ Add Stop" textFill="#003da6">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <JFXComboBox fx:id="intermediate" prefHeight="21.0" prefWidth="98.0" promptText="Intermediate" style="-fx-font-size: 8; -fx-font-family: Times;">
+                        <JFXComboBox fx:id="intermediate" prefHeight="50.0" prefWidth="98.0" promptText="Intermediate" style="-fx-font-size: 8; -fx-font-family: Times;">
                            <VBox.margin>
                               <Insets bottom="2.0" top="2.0" />
                            </VBox.margin></JFXComboBox>
-                        <Line endX="20.5" startX="-100.0">
+                        <Line endX="200.0" startX="200.0">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
@@ -146,9 +141,9 @@
                   </VBox>
                   <VBox alignment="CENTER" GridPane.columnIndex="2">
                      <children>
-                        <AnchorPane maxWidth="438.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="438.0">
+                        <AnchorPane maxWidth="438.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="659.0">
                            <children>
-                              <ImageView fx:id="groundFloor" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="1102.0" layoutX="-213.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="-512.0" AnchorPane.leftAnchor="-227.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <image>
                                     <Image url="@../img/groundFloor.png" />
                                  </image>
@@ -158,8 +153,8 @@
                                     <Image url="@../img/firstFloor.png" />
                                  </image>
                               </ImageView>
-                              <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="298.0" prefWidth="438.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                              <AnchorPane fx:id="anchor" layoutX="119.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="298.0" prefWidth="438.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="nodeGridAnchor" layoutX="-170.0" layoutY="34.0" prefHeight="810.0" prefWidth="897.0" AnchorPane.bottomAnchor="-512.0" AnchorPane.leftAnchor="-227.0" AnchorPane.rightAnchor="-289.0" AnchorPane.topAnchor="0.0" />
+                              <AnchorPane fx:id="anchor" layoutX="-227.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="809.0" prefWidth="954.0" AnchorPane.bottomAnchor="-512.0" AnchorPane.leftAnchor="-227.0" AnchorPane.rightAnchor="-289.0" AnchorPane.topAnchor="0.0" />
                               <MenuBar prefHeight="26.0" prefWidth="130.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
                                  <menus>
                                     <Menu mnemonicParsing="false" text="Change Floor">
@@ -174,7 +169,7 @@
                         </AnchorPane>
                      </children>
                   </VBox>
-                  <JFXButton fx:id="switchPath" prefHeight="25.0" prefWidth="43.0" rotate="-90.0" style="-fx-font-size: 10;" text="&lt; &gt;" GridPane.columnIndex="1">
+                  <JFXButton fx:id="switchPath" prefHeight="25.0" prefWidth="43.0" rotate="-90.0" style="-fx-font-size: 10; visibility: false;" text="&lt; &gt;" GridPane.columnIndex="1">
                      <graphic>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" />
                      </graphic>
