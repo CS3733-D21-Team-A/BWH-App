@@ -15,43 +15,42 @@ public class SearchAlgorithm{
     private List<Node> nodes = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
 
-    public SearchAlgorithm() throws SQLException, IOException, URISyntaxException {
-        DatabaseController dbControl = new DatabaseController();
-
-        List<Map<String, String>> nodeMap = new ArrayList<>();
-        List<Map<String, String>> edgeMap = new ArrayList<>();
+    public SearchAlgorithm() {
 
         try {
+            DatabaseController dbControl = new DatabaseController();
+
+            List<Map<String, String>> nodeMap = new ArrayList<>();
+            List<Map<String, String>> edgeMap = new ArrayList<>();
+
             nodeMap = dbControl.getNodes();
             edgeMap = dbControl.getEdges();
-        } catch (SQLException e) {
+
+            for (int i = 0; i < nodeMap.size(); i++) {
+                Map<String, String> currNodeMap = nodeMap.get(i);
+                this.nodes.add(new Node(
+                                currNodeMap.get("NODEID"),
+                                Integer.parseInt(currNodeMap.get("XCOORD")),
+                                Integer.parseInt(currNodeMap.get("YCOORD")),
+                                currNodeMap.get("FLOOR"),
+                                currNodeMap.get("BUILDING"),
+                                currNodeMap.get("NODETYPE"),
+                                currNodeMap.get("LONGNAME"),
+                                currNodeMap.get("SHORTNAME")
+                        )
+                );
+            }
+
+            for (int j = 0; j < edgeMap.size(); j++) {
+                Map<String, String> currEdgeMap = edgeMap.get(j);
+                this.edges.add(new Edge(
+                        edgeMap.get(j).get("EDGEID"),
+                        edgeMap.get(j).get("STARTNODE"),
+                        edgeMap.get(j).get("ENDNODE")
+                ));
+            }
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
-        }
-
-
-
-        for (int i = 0; i < nodeMap.size(); i++) {
-            Map<String, String> currNodeMap = nodeMap.get(i);
-            this.nodes.add(new Node(
-                    currNodeMap.get("NODEID"),
-                    Integer.parseInt(currNodeMap.get("XCOORD")),
-                    Integer.parseInt(currNodeMap.get("YCOORD")),
-                    currNodeMap.get("FLOOR"),
-                    currNodeMap.get("BUILDING"),
-                    currNodeMap.get("NODETYPE"),
-                    currNodeMap.get("LONGNAME"),
-                    currNodeMap.get("SHORTNAME")
-                    )
-            );
-        }
-
-        for (int j = 0; j < edgeMap.size(); j++) {
-            Map<String, String> currEdgeMap = edgeMap.get(j);
-            this.edges.add(new Edge(
-                    edgeMap.get(j).get("EDGEID"),
-                    edgeMap.get(j).get("STARTNODE"),
-                    edgeMap.get(j).get("ENDNODE")
-            ));
         }
     }
 
