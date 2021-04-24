@@ -5,6 +5,10 @@ import java.util.List;
 
 public class BreadthFirstSearch extends AbsAlgorithmMethod{
 
+    public BreadthFirstSearch(){
+        //TODO: WRITE THE CONSTRUCTOR
+    }
+
     public List<Node> getPath(String startID, String endID){
         //TODO: IMPLEMENT THIS
         return new ArrayList<Node>();
