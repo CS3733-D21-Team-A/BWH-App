@@ -12,7 +12,6 @@ import java.util.Map;
 public class DepthFirstSearch extends AbsAlgorithmMethod{
 
     public DepthFirstSearch() {
-
         try {
             DatabaseController dbControl = new DatabaseController();
 
@@ -45,11 +44,7 @@ public class DepthFirstSearch extends AbsAlgorithmMethod{
                         edgeMap.get(j).get("ENDNODE")
                 ));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
