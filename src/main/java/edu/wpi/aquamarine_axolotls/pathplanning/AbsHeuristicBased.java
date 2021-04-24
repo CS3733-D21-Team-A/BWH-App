@@ -7,7 +7,7 @@ import java.util.PriorityQueue;
 
 public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
 
-    protected PriorityQueue<SearchAlgorithm.CostPair> frontier;
+    protected PriorityQueue<CostPair> frontier;
 
     public void updateSearchData() {
         //TODO: DON'T IMPLEMENT THIS

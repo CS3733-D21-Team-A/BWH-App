@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls;
 
+import edu.wpi.aquamarine_axolotls.pathplanning.DepthFirstSearch;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
@@ -30,7 +31,7 @@ public class DFSTest {
         List<String> expectedOut = new ArrayList<>();
         expectedOut.add("A");
 
-        Assertions.assertEquals(depthFirstSearch.depthFirstSearch("A", "A"), expectedOut);
+        Assertions.assertEquals(depthFirstSearch.getPath("A", "A"), expectedOut);
     }
 
     /**
@@ -53,7 +54,7 @@ public class DFSTest {
         expectedOut.add("A");
         expectedOut.add("B");
 
-        Assertions.assertEquals(depthFirstSearch.depthFirstSearch("A", "B"), expectedOut);
+        Assertions.assertEquals(depthFirstSearch.getPath("A", "B"), expectedOut);
     }
 
     /**
@@ -86,7 +87,7 @@ public class DFSTest {
         expectedOut.add("C");
 
         depthFirstSearch.setup(firstBranchNodes, firstBranchEdges);
-        Assertions.assertEquals(depthFirstSearch.initiateSearch("A", "C"), expectedOut);
+        Assertions.assertEquals(depthFirstSearch.getPath("A", "C"), expectedOut);
     }
 
     /**
