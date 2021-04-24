@@ -25,6 +25,21 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 return this.nodes.get(j);
             }
         }
+
+        //If we go through everything without finding the node with that ID, we'll instead look for it
+        //based on its long name instead
+        String nodeLongName;
+        //Loop through the list of nodes
+        for (int j = 0; j < this.nodes.size(); j++) {
+            //Get the name of the current node we're looking at
+            nodeLongName = this.nodes.get(j).getLongName();
+
+            //If this node is the one we're looking for, return it
+            if (nodeLongName.equals(id)) {
+                return this.nodes.get(j);
+            }
+        }
+
         //If we go through all the nodes and don't find the one we were looking for, return null
         System.out.println("Couldn't find that node");
         return null;
