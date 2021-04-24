@@ -491,39 +491,81 @@ public class DatabaseController implements AutoCloseable {
 
 	// ===== USERS ==========
 
-	public void addUser(Map<String, String> newUser)
+	/**
+	 * Adding a user to the database
+	 * @param newUser
+	 * @throws SQLException
+	 */
+	public void addUser(Map<String, String> newUser) throws SQLException
 	{
 
 	}
 
-	public void editUser(Map<String, String> user)
+	/**
+	 * editing a user in the database
+	 * @param user
+	 * @throws SQLException
+	 */
+	public void editUser(Map<String, String> user) throws SQLException
 	{
 
 	}
 
-	public void deleteUser(String username)
+	/**
+	 * editing a user in the database
+	 * @param username
+	 * @throws SQLException
+	 */
+	public void deleteUser(String username) throws SQLException
 	{
 
 	}
 
-	public List<Map<String, String>> getUsers()
+	/**
+	 * gets a list of all users in the databse
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getUsers() throws SQLException
 	{
 		return null;
 	}
 
-	public boolean checkValidUser(String username)
+	/**
+	 * checking if a user exists in the database given the username
+	 * @param username
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean checkValidUser(String username) throws SQLException
 	{
 		return true;
 	}
 
-	public Map<String, String> getUserByUsername(String username)
+	/**
+	 * pulling a table of a single user from the db given the username
+	 * @param username
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<String, String> getUserByUsername(String username) throws SQLException
 	{
 		return null;
 	}
 
-	public Map<String, String> getUserByEmail(String email)
+	/**
+	 * gets a user by email
+	 * @param email
+	 * @return
+	 * @throws SQLException
+	 */
+	public Map<String, String> getUserByEmail(String email) throws SQLException
 	{
 		return null;
+	}
+
+	public void upDatePasswordByEmail(String email) throws SQLException {
+
 	}
 
 
