@@ -1,3 +1,6 @@
+//TODO: MOVE THIS CLASS'SFUNCTIONALITY INTO NEW CLASS
+//TODO: DELETE THIS CLASS
+
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
