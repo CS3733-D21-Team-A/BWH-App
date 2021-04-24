@@ -9,7 +9,9 @@ public interface ISearchAlgorithmStrategy {
 
     public List<String> getTextDirections(List<Node> path);
 
-    public Node getNode(String nodeID);
+    public Node getNode(String id);
+
+    public Node getNodeByLongName(String longName);
 
     public List<Node> getConnected(Node node);
 }
