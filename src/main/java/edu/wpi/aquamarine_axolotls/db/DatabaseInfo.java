@@ -124,6 +124,10 @@ final class DatabaseInfo {
 	static final String DONE_TEXT = "Done";
 	static final String CANCELED_TEXT = "Canceled";
 
+	// ========== USERS ================
+
+	static final String USERS = "Users";
+
 
 	// ========== RESOURCES ==========
 

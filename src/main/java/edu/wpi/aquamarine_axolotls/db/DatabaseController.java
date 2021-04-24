@@ -489,6 +489,44 @@ public class DatabaseController implements AutoCloseable {
 		return ids;
 	}
 
+	// ===== USERS ==========
+
+	public void addUser(Map<String, String> newUser)
+	{
+
+	}
+
+	public void editUser(Map<String, String> user)
+	{
+
+	}
+
+	public void deleteUser(String username)
+	{
+
+	}
+
+	public List<Map<String, String>> getUsers()
+	{
+		return null;
+	}
+
+	public boolean checkValidUser(String username)
+	{
+		return true;
+	}
+
+	public Map<String, String> getUserByUsername(String username)
+	{
+		return null;
+	}
+
+	public Map<String, String> getUserByEmail(String email)
+	{
+		return null;
+	}
+
+
 
 	// ===== DATABASE CREATION =====
 
