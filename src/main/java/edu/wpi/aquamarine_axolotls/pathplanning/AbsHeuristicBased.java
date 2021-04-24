@@ -43,29 +43,4 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
         //Use the poll() method to get the next node off the frontier
         return frontier.poll().getItem();
     }
-
-    /**
-     * Builds a list of nodes that show the path from the start to the end
-     * Meant to be run AFTER the full search algorithm is complete
-     * @param cameFrom The list of nodes listed alongside which nodes came before them in the path
-     * @param goal The goal node
-     * @return A list of all the nodes used to make the path
-     */
-    protected List<Node> buildPath(final Map<Node, Node> cameFrom, final Node goal) {
-        //Initialize the path
-        LinkedList<Node> path = new LinkedList<>();
-        //Current node is the goal
-        Node next = goal;
-        //Trace the path backwards from the goal
-        //Each loop, we'll get the next node back from the current one on the path
-        while (cameFrom.get(next) != null) {
-            //Add that next node
-            path.push(next);
-            //Move back on the path another step
-            next = cameFrom.get(next);
-        }
-        //Add the last node
-        path.push(next);
-        return path;
-    }
 }
