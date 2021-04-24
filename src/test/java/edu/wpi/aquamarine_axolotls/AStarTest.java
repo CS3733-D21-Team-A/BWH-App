@@ -65,12 +65,7 @@ public class AStarTest {
 
     @BeforeEach
     void testSetup() {
-        try {
             aStarDB = new SearchAlgorithm();
-        } catch (SQLException | URISyntaxException | IOException e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 
     /*Test for the mapP with only one node in it, the start is the same as the goal*/

@@ -19,6 +19,13 @@ public class DFSTest {
     Node A = new Node("A");
     Node B = new Node("B");
     Node C = new Node("C");
+    Node D = new Node("D");
+    Node E = new Node("E");
+    Node F = new Node("F");
+    Node G = new Node("G");
+    Node H = new Node("H");
+    Node I = new Node("I");
+
 
     /**
      * Test case where the start node is the same as the end node
@@ -27,8 +34,6 @@ public class DFSTest {
     public void oneNodeTest() {
 
         List<Node> oneNodeList = new ArrayList<>();
-
-        Node A = new Node("A");
         oneNodeList.add(A);
 
         List<Edge> oneEdgeList = new ArrayList<>();
@@ -48,15 +53,13 @@ public class DFSTest {
     public void twoNodeTest() {
 
         List<Node> twoNodeList = new ArrayList<>();
-        Node A = new Node("A");
-        Node B = new Node("B");
         twoNodeList.add(A);
         twoNodeList.add(B);
 
         List<Edge> twoEdgeList = new ArrayList<>();
         twoEdgeList.add(new Edge("ab", "A", "B"));
 
-        SearchAlgorithm depthFirstSearch = new SearchAlgorithm(twoNodeList, twoEdgeList);
+        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(twoNodeList, twoEdgeList);
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
@@ -70,14 +73,13 @@ public class DFSTest {
      */
     @Test
     public void firstBranchTest() {
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch();
 
         List<Node> firstBranchNodes = new ArrayList<>();
-        firstBranchNodes.add(new Node("A"));
-        firstBranchNodes.add(new Node("B"));
-        firstBranchNodes.add(new Node("C"));
-        firstBranchNodes.add(new Node("D"));
-        firstBranchNodes.add(new Node("E"));
+        firstBranchNodes.add(A);
+        firstBranchNodes.add(B);
+        firstBranchNodes.add(C);
+        firstBranchNodes.add(D);
+        firstBranchNodes.add(E);
 
         List<Edge> firstBranchEdges = new ArrayList<>();
         firstBranchEdges.add(new Edge("ab", "A", "B"));
@@ -85,10 +87,12 @@ public class DFSTest {
         firstBranchEdges.add(new Edge("ad", "A", "D"));
         firstBranchEdges.add(new Edge("de", "D", "E"));
 
+        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(firstBranchNodes, firstBranchEdges);
+
         List<Node> expectedOut = new ArrayList<>();
-        expectedOut.add(new Node("A"));
-        expectedOut.add("B");
-        expectedOut.add("C");
+        expectedOut.add(A);
+        expectedOut.add(B);
+        expectedOut.add(C);
 
         Assertions.assertEquals(depthFirstSearch.getPath("A", "C"), expectedOut);
     }
@@ -99,47 +103,38 @@ public class DFSTest {
      */
     @Test
     public void secondBranchTest() {
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch();
 
-        List<String> secondBranchNodeList = new ArrayList<>();
-        secondBranchNodeList.add("A");
-        secondBranchNodeList.add("B");
-        secondBranchNodeList.add("C");
-        secondBranchNodeList.add("D");
-        secondBranchNodeList.add("E");
-        secondBranchNodeList.add("F");
-        secondBranchNodeList.add("G");
-        secondBranchNodeList.add("H");
-        secondBranchNodeList.add("I");
+        List<Node> secondBranchNodeList = new ArrayList<>();
+        secondBranchNodeList.add(A);
+        secondBranchNodeList.add(B);
+        secondBranchNodeList.add(C);
+        secondBranchNodeList.add(D);
+        secondBranchNodeList.add(E);
+        secondBranchNodeList.add(F);
+        secondBranchNodeList.add(G);
+        secondBranchNodeList.add(H);
+        secondBranchNodeList.add(I);
 
-        List<String[]> secondBranchEdgeList = new ArrayList<>();
-        String[] ab = {"A", "B"};
-        secondBranchEdgeList.add(ab);
-        String[] ac = {"A", "C"};
-        secondBranchEdgeList.add(ac);
-        String[] bd = {"B", "D"};
-        secondBranchEdgeList.add(bd);
-        String[] be = {"B", "E"};
-        secondBranchEdgeList.add(be);
-        String[] cg = {"C", "G"};
-        secondBranchEdgeList.add(cg);
-        String[] ch = {"C", "H"};
-        secondBranchEdgeList.add(ch);
-        String[] df = {"D", "F"};
-        secondBranchEdgeList.add(df);
-        String[] ef = {"E", "F"};
-        secondBranchEdgeList.add(ef);
-        String[] hi = {"H", "I"};
-        secondBranchEdgeList.add(hi);
+        List<Edge> secondBranchEdgeList = new ArrayList<>();
+        secondBranchEdgeList.add(new Edge("ab", "A", "B"));
+        secondBranchEdgeList.add(new Edge("ac", "A", "C"));
+        secondBranchEdgeList.add(new Edge("bd", "B", "D"));
+        secondBranchEdgeList.add(new Edge("be", "B", "E"));
+        secondBranchEdgeList.add(new Edge("cg", "C", "G"));
+        secondBranchEdgeList.add(new Edge("ch", "C", "H"));
+        secondBranchEdgeList.add(new Edge("df", "D", "F"));
+        secondBranchEdgeList.add(new Edge("ef", "E", "F"));
+        secondBranchEdgeList.add(new Edge("hi", "H", "I"));
 
-        List<String> expectedOut = new ArrayList<>();
-        expectedOut.add("A");
-        expectedOut.add("C");
-        expectedOut.add("H");
-        expectedOut.add("I");
+        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(secondBranchNodeList, secondBranchEdgeList);
 
-        depthFirstSearch.setup(secondBranchNodeList, secondBranchEdgeList);
-        Assertions.assertEquals(depthFirstSearch.initiateSearch("A", "I"), expectedOut);
+        List<Node> expectedOut = new ArrayList<>();
+        expectedOut.add(A);
+        expectedOut.add(C);
+        expectedOut.add(H);
+        expectedOut.add(I);
+
+        Assertions.assertEquals(depthFirstSearch.getPath("A", "I"), expectedOut);
     }
 
     /**
@@ -147,24 +142,22 @@ public class DFSTest {
      */
     @Test
     public void nodeNotFoundTest() {
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch();
 
-        List<String> threeNodeList = new ArrayList<>();
-        threeNodeList.add("A");
-        threeNodeList.add("B");
-        threeNodeList.add("C");
-        threeNodeList.add("D");
+        List<Node> threeNodeList = new ArrayList<>();
+        threeNodeList.add(A);
+        threeNodeList.add(B);
+        threeNodeList.add(C);
+        threeNodeList.add(D);
 
-        List<String[]> twoEdgeList = new ArrayList<>();
-        String[] ab = {"A", "B"};
-        twoEdgeList.add(ab);
-        String[] bc = {"B", "C"};
-        twoEdgeList.add(bc);
+        List<Edge> twoEdgeList = new ArrayList<>();
+        twoEdgeList.add(new Edge("ab", "A", "B"));
+        twoEdgeList.add(new Edge("bc", "B", "C"));
+
+        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(threeNodeList, twoEdgeList);
 
         List<String> expectedOut = null;
 
-        depthFirstSearch.setup(threeNodeList, twoEdgeList);
-        Assertions.assertEquals(depthFirstSearch.initiateSearch("A", "D"), null);
+        Assertions.assertEquals(depthFirstSearch.getPath("A", "D"), null);
     }
 
     /**
@@ -174,35 +167,31 @@ public class DFSTest {
      */
     @Test
     public void loopTest() {
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch();
 
-        List<String> loopNodeList = new ArrayList<>();
-        loopNodeList.add("A");
-        loopNodeList.add("B");
-        loopNodeList.add("C");
-        loopNodeList.add("D");
-        loopNodeList.add("E");
 
-        List<String[]> loopEdgeList = new ArrayList<>();
-        String[] ab = {"A", "B"};
-        loopEdgeList.add(ab);
-        String[] ac = {"A", "C"};
-        loopEdgeList.add(ac);
-        String[] bd = {"B", "D"};
-        loopEdgeList.add(bd);
-        String[] de = {"D", "E"};
-        loopEdgeList.add(de);
-        String[] ce = {"C", "E"};
-        loopEdgeList.add(ce);
+        List<Node> loopNodeList = new ArrayList<>();
+        loopNodeList.add(A);
+        loopNodeList.add(B);
+        loopNodeList.add(C);
+        loopNodeList.add(D);
+        loopNodeList.add(E);
 
-        List<String> expectedOut = new ArrayList<>();
-        expectedOut.add("A");
-        expectedOut.add("B");
-        expectedOut.add("D");
-        expectedOut.add("E");
-        expectedOut.add("C");
+        List<Edge> loopEdgeList = new ArrayList<>();
+        loopEdgeList.add(new Edge("ab", "A", "B"));
+        loopEdgeList.add(new Edge("ac", "A", "C"));
+        loopEdgeList.add(new Edge("bd", "B", "D"));
+        loopEdgeList.add(new Edge("de", "D", "E"));
+        loopEdgeList.add(new Edge("ce", "C", "E"));
 
-        depthFirstSearch.setup(loopNodeList, loopEdgeList);
-        Assertions.assertEquals(depthFirstSearch.initiateSearch("A", "C"), expectedOut);
+        List<Node> expectedOut = new ArrayList<>();
+        expectedOut.add(A);
+        expectedOut.add(B);
+        expectedOut.add(D);
+        expectedOut.add(E);
+        expectedOut.add(C);
+
+        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(loopNodeList, loopEdgeList);
+
+        Assertions.assertEquals(depthFirstSearch.getPath("A", "C"), expectedOut);
     }
 }

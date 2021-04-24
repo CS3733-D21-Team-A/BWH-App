@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class DepthFirstSearch extends AbsAlgorithmMethod{
+public class DepthFirstSearch extends AbsAlgorithmMethod {
 
     public DepthFirstSearch() {
         try {

@@ -109,7 +109,7 @@ public class Navigation  extends SPage{
             startLocation.setItems(options);
             destination.setItems(options);
             intermediate.setItems(options);
-        } catch (SQLException e) {
+       } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
@@ -182,26 +182,14 @@ public class Navigation  extends SPage{
         double minutes;
         double seconds;
         List<Node> pathNodes = new ArrayList<>();
-        try {
-            searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++ ){
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
-            }
-            etaTotal = searchAlgorithm.getETA(pathNodes);
-            minutes = Math.floor(etaTotal);
-            seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);
-
-
-
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
+        searchAlgorithm = new SearchAlgorithm();
+        for (int i = 0; i < pathList.size() - 1; i++ ){
+            pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
         }
-
+        etaTotal = searchAlgorithm.getETA(pathNodes);
+        minutes = Math.floor(etaTotal);
+        seconds = Math.floor((etaTotal - minutes) * 60);
+        etaLabel.setText((int) minutes + ":" + (int) seconds);
 
         Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
         Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
@@ -240,17 +228,17 @@ public class Navigation  extends SPage{
         String end = destination.getSelectionModel().getSelectedItem().toString();
         SearchAlgorithm searchAlgorithm;
         List<Node> pathNodes = new ArrayList<>();
-        try {
+        //try {
             searchAlgorithm = new SearchAlgorithm();
             pathNodes = searchAlgorithm.getPath(start, end);
 
-        } catch (IOException ie) {
+        /*} catch (IOException ie) {
             ie.printStackTrace();
         } catch (URISyntaxException ue) {
             ue.printStackTrace();
         } catch (SQLException sq) {
             sq.printStackTrace();
-        }
+        }*/
 
 
 
@@ -296,25 +284,14 @@ public class Navigation  extends SPage{
         double etaTotal;
         double minutes;
         double seconds;
-        try {
-            searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++ ){
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
-            }
-            etaTotal = searchAlgorithm.getETA(pathNodes);
-            minutes = Math.floor(etaTotal);
-            seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);
-
-
-
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
+        searchAlgorithm = new SearchAlgorithm();
+        for (int i = 0; i < pathList.size() - 1; i++ ){
+            pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
         }
+        etaTotal = searchAlgorithm.getETA(pathNodes);
+        minutes = Math.floor(etaTotal);
+        seconds = Math.floor((etaTotal - minutes) * 60);
+        etaLabel.setText((int) minutes + ":" + (int) seconds);
 
 
         Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code

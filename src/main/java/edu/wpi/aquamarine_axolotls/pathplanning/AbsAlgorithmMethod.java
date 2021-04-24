@@ -5,8 +5,8 @@ import java.util.List;
 
 public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
-    List<Node> nodes;
-    List<Edge> edges;
+    List<Node> nodes = new ArrayList<>();
+    List<Edge> edges = new ArrayList<>();
 
     /**
      * Gets a node by its ID from the search algorithm controller's list of nodes
