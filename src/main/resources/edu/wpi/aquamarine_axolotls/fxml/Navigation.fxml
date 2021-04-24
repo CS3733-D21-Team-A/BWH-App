@@ -142,7 +142,7 @@
                <content>
                   <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="1102.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image fx:id="img" url="@../img/groundFloor.png" />
+                        <Image url="@../img/groundFloor.png" />
                      </image>
                   </ImageView>
                </content>
@@ -153,7 +153,7 @@
                <children>
                   <ImageView fx:id="floor1" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <image>
-                        <Image url="@../img/firstFloor.png" />
+                        <Image url="@../../../../../java/edu/wpi/aquamarine_axolotls/views/Brigham-Womens-TO-USE.jpeg" />
                      </image>
                   </ImageView>
                   <AnchorPane fx:id="nodeGridAnchor" layoutX="-170.0" layoutY="34.0" prefHeight="810.0" prefWidth="897.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

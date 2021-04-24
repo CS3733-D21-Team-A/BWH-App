@@ -29,7 +29,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.LocalTime;
@@ -457,17 +457,7 @@ public class Navigation  extends SPage{
         }
     }
 
-    public void changeGroundFloor(){
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
-        changeFloorNodes();
-    }
 
-    public void changeFloor1(){
-        groundFloor.setVisible(false);
-        floor1.setVisible(true);
-        changeFloorNodes();
-    }
 
     public void changeFloorNodes(){
         nodeGridAnchor.getChildren().clear();
@@ -565,6 +555,19 @@ public class Navigation  extends SPage{
         zoom();
     }
 
+
+
+    public void changeFloor1() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
+
+        groundFloor.setImage(image);
+    }
+
+    public void changeGroundFloor() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
+
+        groundFloor.setImage(image);
+    }
 
 }
 
