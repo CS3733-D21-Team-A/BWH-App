@@ -16,9 +16,7 @@ class CostPair {
         return item;
     }
 
-    public double getCost() {
-        return cost;
-    }
+    public double getCost() { return cost; }
 
     public String toString() {
         return getItem() + "," + getCost();
