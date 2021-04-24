@@ -11,11 +11,17 @@ import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
 import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -53,22 +59,23 @@ public class Navigation  extends SPage{
     private JFXDrawer drawer;
     @FXML
     private AnchorPane anchor1;
-
     @FXML
     private JFXButton addStopbtn;
-
     @FXML
     private JFXComboBox intermediate;
-
     @FXML
     private Label etaLabel;
-
     @FXML
     private AnchorPane mainAnchor;
     @FXML
     private JFXHamburger hamburger;
     @FXML
     private Text time;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML private Image img;
+
+
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
     List<Map<String, String>> validNodes = new ArrayList<>();
@@ -76,6 +83,7 @@ public class Navigation  extends SPage{
     private String firstNode;
     private List<String> pathList = new ArrayList<>();
     private int activePath = 0;
+
 
     @FXML
     private JFXHamburger burger;
@@ -86,7 +94,10 @@ public class Navigation  extends SPage{
     private VBox box;
 
     private HamburgerBasicCloseTransition transition;
-
+    static Double SCALE_DELTA = 1.25;
+    static Double SCALE_TOTAL = 2.0;
+    //final Double w = img.getWidth();
+    //final Double h = img.getHeight();
 
     @FXML
     public void initialize() {
@@ -116,6 +127,28 @@ public class Navigation  extends SPage{
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void zoom(){
+
+//        //Adds functionality to scrolling
+//        scrollPane.addEventFilter(ScrollEvent.ANY, e ->{
+//            //Consumes the event
+//            e.consume();
+//            if(e.getDeltaY() == 0) return;
+//            double scaleFactor = (e.getDeltaY() > 0) ? SCALE_DELTA : 1/SCALE_DELTA;
+            double newWidth = 1102.0 * SCALE_DELTA;
+            double newHeight = 669.0 * SCALE_DELTA;
+
+            System.out.println(String.valueOf(groundFloor.getFitHeight()) + "   " + newHeight);
+            //Ensures that you do not exceed the limits of the map
+            if(SCALE_DELTA * SCALE_TOTAL >= 1)
+            {
+               groundFloor.setFitWidth(newWidth);
+               groundFloor.setFitHeight(newHeight);
+            }
+        //});
     }
 
     /**
@@ -521,6 +554,18 @@ public class Navigation  extends SPage{
         transition.setRate(transition.getRate() * -1);
         transition.play();
     }
+
+    public void zoomIn(ActionEvent actionEvent) {
+        SCALE_DELTA+=0.1;
+        zoom();
+    }
+
+    public void zoomOut(ActionEvent actionEvent) {
+        SCALE_DELTA-=0.1;
+        zoom();
+    }
+
+
 }
 
 
