@@ -237,6 +237,21 @@ public class SearchAlgorithm{
                 return this.nodes.get(j);
             }
         }
+
+        //If we go through everything without finding the node with that ID, we'll instead look for it
+        //based on its long name instead
+        String nodeLongName;
+        //Loop through the list of nodes
+        for (int j = 0; j < this.nodes.size(); j++) {
+            //Get the name of the current node we're looking at
+            nodeLongName = this.nodes.get(j).getLongName();
+
+            //If this node is the one we're looking for, return it
+            if (nodeLongName.equals(id)) {
+                return this.nodes.get(j);
+            }
+        }
+
         //If we go through all the nodes and don't find the one we were looking for, return null
         System.out.println("Couldn't find that node");
         return null;
@@ -464,7 +479,7 @@ public class SearchAlgorithm{
             //Otherwise, actually do the search
         else {
             //Our result equals the result of running the recursive search with the start and end IDs
-            result = search(startID, endID);
+            result = depthFirstRecursive(startID, endID, visited);
             //If the result ends up as null, that means there was no path, so that will be the final output
             if (result == null) {
                 System.out.println("Couldn't find a path between those nodes");
@@ -495,7 +510,7 @@ public class SearchAlgorithm{
      * @param endID ID of node to go to
      * @return Path from current node
      */
-    public List<Node> search(String startID, String endID, List<Node> visited) {
+    public List<Node> depthFirstRecursive(String startID, String endID, List<Node> visited) {
         //If either start or end are null, indicate that they're invalid
         if (getNode(startID) == null || getNode(endID) == null) {
             System.out.println("Invalid start or end ID");
@@ -531,7 +546,7 @@ public class SearchAlgorithm{
                     //Initialize the path that we'll get from the neighbor node search
                     List<Node> nextPath;
                     //Run the recursive search starting from the current neighbor
-                    nextPath = search(currNodeNeighbors.get(j).getNodeID(), endID, visited);
+                    nextPath = depthFirstRecursive(currNodeNeighbors.get(j).getNodeID(), endID, visited);
                     //If the path we got from that search is NOT null, add the new path to the current one
                     if (!(nextPath == null)) {
                         path = addAllNodes(path, nextPath);
