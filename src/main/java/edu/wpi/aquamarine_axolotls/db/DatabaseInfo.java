@@ -67,6 +67,20 @@ final class DatabaseInfo {
 			"ATTRIBUTE VARCHAR(30)" +
 		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
 
+	// ========== USER TABLE ================= //
+	/**
+	 * SQL table for the USER
+	 */
+	static final String USER_TABLE_SQL =
+		"CREATE TABLE " + TABLES.USERS.name() + " (" +
+			"USERNAME VARCHAR(25) PRIMARY KEY, " +
+			"FIRSTNAME VARCHAR(25)" +
+			"LASTNAME VARCHAR(25)" +
+			"EMAIL VARCHAR(25) NOT NULL" +
+			"CONSTRAINT emailConst UNIQUE(EMAIL)" +
+			"USERTYPE VARCHAR(25)" +
+			"PASSWORD VARCHAR(25) NOT NULL" +
+			")"; //TODO CONSTRAINT FOR USERTYPE OR POSSIBLE TYPE DEFAULT TO PATIENT
 
 	// ========== ATTRIBUTES STRINGS ==========
 
