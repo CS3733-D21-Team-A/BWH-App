@@ -569,7 +569,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public Map<String, String> getUserByUsername(String username) throws SQLException
 	{
-		return null ; //TODO SEAN also maybe take the passsword, sike very much make them take password
+		return userTable.getEntry(username);
 	}
 
 	/**
@@ -580,7 +580,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public Map<String, String> getUserByEmail(String email) throws SQLException
 	{
-		return null; //TODO SEAN
+		return userTable.getEntriesByValue("EMAIL", email).get(0);
 	}
 
 	// TODO: finish javadocs
