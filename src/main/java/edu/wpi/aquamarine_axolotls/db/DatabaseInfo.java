@@ -144,8 +144,10 @@ final class DatabaseInfo {
 
 	// ========== USERS ================
 
-	static final String USERS = "Users";
-
+	static final String USER = "User";
+	static final String EMPLOYEE = "Employee";
+	static final String ADMIN = "Admin";
+	static final String PATIENT = "Patient";
 
 	// ========== RESOURCES ==========
 
