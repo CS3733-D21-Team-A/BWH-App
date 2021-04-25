@@ -551,7 +551,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @return true if the username does not exist, false if it does
 	 * @throws SQLException
 	 */
-	public boolean checkNotPreexistingUser(String username)
+	public boolean checkUserExists(String username)
 	{
 		try{
 			userTable.getEntry(username);
@@ -567,10 +567,10 @@ public class DatabaseController implements AutoCloseable {
 	 * @return
 	 * @throws SQLException
 	 */
-	public Map<String, String> getUserByUsernameAndPassword(String username, String password) throws SQLException
+	public Map<String, String> getUserByUsername(String username) throws SQLException
 	{
 		return null ; //TODO SEAN also maybe take the passsword, sike very much make them take password
-	}// TODO: May not need password as UI is checking that the password is correct and storing the associated username
+	}
 
 	/**
 	 * gets a user by email
@@ -583,7 +583,15 @@ public class DatabaseController implements AutoCloseable {
 		return null; //TODO SEAN
 	}
 
-	public void upDatePasswordByEmailANDPASSWORD(String email) throws SQLException {
+	// TODO: finish javadocs
+	/**
+	 *
+	 * @param username
+	 * @param email
+	 * @param newPassword
+	 * @throws SQLException
+	 */
+	public void updatePassword(String username, String email, String newPassword) throws SQLException {
 //TODO SEAN
 	}
 
