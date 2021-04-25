@@ -583,8 +583,8 @@ public class DatabaseController implements AutoCloseable {
 		return userTable.getEntriesByValue("EMAIL", email).get(0);
 	}
 
-	// TODO: finish javadocs
-	/**
+	/** Changes the password for the user to the new password if the email and username point to the
+	 * same user, otherwise it throws an SQLException
 	 *
 	 * @param username
 	 * @param email
@@ -592,7 +592,16 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException
 	 */
 	public void updatePassword(String username, String email, String newPassword) throws SQLException {
-//TODO SEAN
+		Map<String, String> user = getUserByUsername(username);
+		if(user == getUserByEmail(email))
+		{
+			user.replace("PASSWORD", newPassword);
+			editUser(username, user);
+		}
+		else
+		{
+			throw new SQLException();
+		}
 	}
 
 
