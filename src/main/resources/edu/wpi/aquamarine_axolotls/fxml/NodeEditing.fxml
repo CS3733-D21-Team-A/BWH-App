@@ -265,11 +265,6 @@
                                 <Image url="@../img/groundFloor.png" />
                             </image>
                         </ImageView>
-                        <ImageView fx:id="floor1" fitHeight="293.0" fitWidth="425.0" layoutX="12.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <image>
-                                <Image url="@../img/firstFloor.png" />
-                            </image>
-                        </ImageView>
                         <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="293.0" prefWidth="425.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                         <MenuBar prefHeight="26.0" prefWidth="130.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
                             <menus>

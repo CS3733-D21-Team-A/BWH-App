@@ -138,9 +138,9 @@
             <Insets left="5.0" right="5.0" />
          </padding>
          <center>
-            <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onScroll="#zoom" pannable="true" prefHeight="706.0" prefWidth="961.0" BorderPane.alignment="TOP_LEFT">
+            <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onScroll="#zoom" pannable="true" prefHeight="600.0" prefWidth="936.0" BorderPane.alignment="TOP_LEFT">
                <content>
-                  <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="1102.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="936.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/groundFloor.png" />
                      </image>
@@ -149,10 +149,10 @@
             </ScrollPane>
          </center>
          <right>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="71.0" BorderPane.alignment="CENTER">
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="963.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="nodeGridAnchor" layoutX="-170.0" layoutY="34.0" prefHeight="810.0" prefWidth="897.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <AnchorPane fx:id="anchor" layoutX="-972.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="709.0" prefWidth="1043.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="-972.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="nodeGridAnchor" layoutX="-36.0" layoutY="-4.0" prefHeight="732.0" prefWidth="0.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="-36.0" AnchorPane.rightAnchor="132.0" AnchorPane.topAnchor="-4.0" />
+                  <AnchorPane fx:id="anchor" layoutX="970.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="732.0" prefWidth="23.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="970.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </right>

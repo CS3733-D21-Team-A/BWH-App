@@ -115,6 +115,11 @@
                                     </font>
                                 </JFXButton>
                                 <Line endX="200.0" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
+                        <JFXButton fx:id="signOut" onAction="#signOutPage" prefHeight="100.0" prefWidth="343.0" text="Sign out" textFill="WHITE">
+                           <font>
+                              <Font name="Times New Roman" size="30.0" />
+                           </font>
+                        </JFXButton>
                             </children>
                         </VBox>
                         <ImageView fitHeight="811.0" fitWidth="1000.0">

@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
@@ -19,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-public class CovidSurvey<group1> {
+public class CovidSurvey extends SPage {
 
 
     @FXML
@@ -184,6 +185,13 @@ public class CovidSurvey<group1> {
             }
         }
 */
+    }
+    public void helpButton(ActionEvent actionEvent) {
+        popUp("CovidSurvey", "\n\n\nPlease fill out this survey to the best of your ability ");
+    }
+
+    public void submitButton(ActionEvent actionEvent) {
+        popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
     }
 
     public void menu() {

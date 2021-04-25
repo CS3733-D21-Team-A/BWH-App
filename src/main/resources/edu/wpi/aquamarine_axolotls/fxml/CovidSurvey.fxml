@@ -314,7 +314,7 @@
         </VBox>
         <JFXHamburger fx:id="burger" prefHeight="70.0" prefWidth="75.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
         <JFXDrawer fx:id="menuDrawer" direction="RIGHT" overLayVisible="false" prefHeight="800.0" prefWidth="290.0" AnchorPane.rightAnchor="-300.0" AnchorPane.topAnchor="90.0" />
-        <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="800.0">
+        <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submitButton" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="800.0">
             <font>
                 <Font name="Times New Roman" size="30.0" />
             </font>
@@ -343,7 +343,7 @@
             </children>
         </HBox>
         <Rectangle fill="#003da6" height="35.0" layoutY="89.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
-        <JFXButton layoutX="1188.0" layoutY="105.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE" AnchorPane.leftAnchor="1150.0" AnchorPane.topAnchor="140.0">
+        <JFXButton layoutX="1188.0" layoutY="105.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#helpButton" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE" AnchorPane.leftAnchor="1150.0" AnchorPane.topAnchor="140.0">
             <font>
                 <Font name="Times New Roman" size="20.0" />
             </font>
@@ -353,6 +353,6 @@
                 <Image url="@../img/back icon.jpg" />
             </image>
         </ImageView>
-        <JFXButton fx:id="backB" layoutX="9.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="30.0" text=" " />
+        <JFXButton fx:id="backB" layoutX="9.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" " />
     </children>
 </AnchorPane>
