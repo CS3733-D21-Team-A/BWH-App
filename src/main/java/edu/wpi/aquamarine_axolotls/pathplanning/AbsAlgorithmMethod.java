@@ -100,7 +100,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     }
 
     protected double getETASingleEdge(Node start, Node goal){
-        double walkingSpeed = 220 * 3.75; //2 miles/h
+        double walkingSpeed = 220 * 3.75; //2.5 miles/h
         double distance = getCostTo(start,goal);
         double ETASingleEdge;
 
@@ -178,7 +178,63 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     }
 
     public List<String> getTextDirections(List<Node> path){
-        //TODO: IMPLEMENT THIS
-        return new ArrayList<String>();
+        //TODO: FIGURE OUT HOW TF TO TEST THIS
+        ArrayList<String> returnList = new ArrayList<String>();
+
+        int stepNum = 1;
+
+        double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
+        double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
+        returnList.add(stepNum + ". Walk " + firstEdgeDistanceFeet + " feet towards " + path.get(1).getShortName() + ".");
+        stepNum++;
+
+        for (int i = 1; i < path.size() - 1; i++){
+
+            double angleIn = absAngleEdge(path.get(i-1), path.get(i));
+            double angleOut = absAngleEdge(path.get(i), path.get(i+1));
+            double turnAngle = angleOut - angleIn;
+
+            if(turnAngle < -180.0) turnAngle += 360;
+            if(turnAngle > 180.0) turnAngle -= 360;
+
+            if(turnAngle > 0 && turnAngle < 60){
+                returnList.add(stepNum + ". Make a slight left turn.");
+                stepNum++;
+            } else if (turnAngle >= 60 && turnAngle < 120){
+                returnList.add(stepNum + ". Make a left turn.");
+                stepNum++;
+            } else if (turnAngle >= 120 && turnAngle < 180){
+                returnList.add(stepNum + ". Make an extreme left turn.");
+                stepNum++;
+            } else if (turnAngle < 0 && turnAngle > -60){
+                returnList.add(stepNum + ". Make a slight right turn.");
+                stepNum++;
+            } else if (turnAngle <= -60 && turnAngle > -120){
+                returnList.add(stepNum + ". Make a right turn.");
+                stepNum++;
+            } else if (turnAngle <= -120 && turnAngle > -180){
+                returnList.add(stepNum + ". Make an extreme right turn.");
+                stepNum++;
+            } else if (turnAngle == -180.0){
+                returnList.add(stepNum + ". Turn around.");
+                stepNum++;
+            }
+
+            double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
+            double edgeDistanceFeet = edgeDistancePixels * 3.75;
+
+            returnList.add(stepNum + ". Walk " + edgeDistanceFeet + " feet towards " + path.get(i+1).getShortName() + ".");
+            stepNum++;
+        }
+        return returnList;
     }
+
+    protected double absAngleEdge(Node start, Node end){
+        double deltaX = end.getXcoord() - start.getXcoord();
+        double deltaY = end.getYcoord() - start.getYcoord();
+        double radians = Math.atan2(deltaY, deltaX);
+        double degrees = radians * 180.0 / Math.PI;
+        return degrees;
+    }
+
 }
