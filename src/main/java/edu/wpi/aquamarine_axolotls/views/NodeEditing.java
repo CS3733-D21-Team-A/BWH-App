@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -23,6 +24,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -72,14 +75,16 @@ public class NodeEditing extends SEditing {
     @FXML private TableColumn buildingCol;
     @FXML private TableColumn typeCol;
 
+    @FXML private Image image1;
     String state = "";
-
     DatabaseController db;
     CSVHandler csvHandler;
 
+
+    String floorString;
     @FXML
     public void initialize() {
-
+        floorString = "ground";
         table.setEditable(false);
         table.getItems().clear();
 
@@ -132,17 +137,6 @@ public class NodeEditing extends SEditing {
         }
     }
 
-    public void changeGroundFloor(){
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
-        changeFloorNodes();
-    }
-
-    public void changeFloor1(){
-        groundFloor.setVisible(false);
-        floor1.setVisible(true);
-        changeFloorNodes();
-    }
 
     public void clearfields(){
         longName.clear();
@@ -386,9 +380,9 @@ public class NodeEditing extends SEditing {
         try {
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if (floor1.isVisible() && node.get("FLOOR").equals("1")) {
+                if (floorString.equals("first") && node.get("FLOOR").equals("1")) {
                     drawNodes(node);
-                } else if (groundFloor.isVisible() && (node.get("FLOOR").equals("G"))) {
+                } else if (floorString.equals("ground") && groundFloor.isVisible() && (node.get("FLOOR").equals("G"))) {
                     drawNodes(node);
                     count++;
                 }
@@ -410,6 +404,21 @@ public class NodeEditing extends SEditing {
         circ1.setFill(Color.RED);
 
         nodeGridAnchor.getChildren().addAll(circ1);
+
+    }
+
+    public void changeFloor1() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
+        floorString = "first";
+        groundFloor.setImage(image);
+        changeFloorNodes();
+    }
+
+    public void changeGroundFloor() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
+        floorString = "ground";
+        groundFloor.setImage(image);
+        changeFloorNodes();
 
     }
 

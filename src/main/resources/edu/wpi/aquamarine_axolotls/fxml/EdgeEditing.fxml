@@ -151,7 +151,7 @@
                                     <Insets top="-1.0" />
                                  </padding>
                               </JFXButton>
-                                      <JFXButton fx:id="deleteButton" onAction="#pressDeleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
+                                      <JFXButton fx:id="deleteButton" contentDisplay="GRAPHIC_ONLY" minWidth="23.0" onAction="#pressDeleteButton" prefHeight="18.0" prefWidth="23.0" style="-fx-background-color: f0f0f0;" text="delete" textFill="#8b8b8b">
                                  <graphic>
                                     <ImageView fitHeight="13.0" fitWidth="11.0">
                                        <image>
@@ -213,7 +213,7 @@
                               </HBox>
                               <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="175.0" style="-fx-background-color: f0f0f0;">
                                  <children>
-                                              <JFXButton fx:id="submissionButton" onAction="#submitfunction" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
+                                              <JFXButton fx:id="submissionButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#submitfunction" prefHeight="26.0" prefWidth="110.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textAlignment="CENTER" textFill="#f8f8f8">
                                                   <font>
                                                       <Font size="10.0" />
                                                   </font>
@@ -236,11 +236,6 @@
                         <Image url="@../img/groundFloor.png" />
                      </image>
                   </ImageView>
-                   <ImageView fx:id="floor1" fitHeight="293.0" fitWidth="425.0" layoutX="22.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                       <image>
-                           <Image url="@../img/firstFloor.png" />
-                       </image>
-                   </ImageView>
                    <AnchorPane fx:id="nodeGridAnchor" layoutX="119.0" layoutY="34.0" prefHeight="293.0" prefWidth="425.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                    <MenuBar prefHeight="26.0" prefWidth="130.0" AnchorPane.bottomAnchor="50.0" AnchorPane.rightAnchor="15.0">
                        <menus>

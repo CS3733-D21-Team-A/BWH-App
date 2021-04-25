@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -21,6 +22,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -54,7 +57,7 @@ public class EdgeEditing extends SEditing{
     @FXML private TableColumn<Edge,String> startNodeCol;
     @FXML private TableColumn<Edge,String> endNodeCol;
 
-
+    String floor;
     @FXML
     private JFXHamburger burger;
 
@@ -66,7 +69,6 @@ public class EdgeEditing extends SEditing{
 
 
     @FXML ImageView groundFloor;
-    @FXML ImageView floor1;
 
     String state = "";
 
@@ -75,6 +77,7 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
+        floor = "ground";
         table.setEditable(false);
         table.getItems().clear();
 
@@ -83,7 +86,6 @@ public class EdgeEditing extends SEditing{
         submissionlabel.setVisible(true);
         anchor.setVisible(false);
         //groundFloor.setVisible(true);
-        floor1.setVisible(false);
 
         edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
         startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
@@ -120,17 +122,6 @@ public class EdgeEditing extends SEditing{
         }
     }
 
-    public void changeGroundFloor(){
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
-        changeFloorNodes();
-    }
-
-    public void changeFloor1(){
-        groundFloor.setVisible(false);
-        floor1.setVisible(true);
-        changeFloorNodes();
-    }
 
     public void pressDeleteButton() {
         edgeD.toFront();
@@ -310,6 +301,7 @@ public class EdgeEditing extends SEditing{
 
     public void changeFloorNodes(){
         nodeGridAnchor.getChildren().clear();
+        FileInputStream fileInputStream = null;
         int count = 0;
         try {
             List<Map<String, String>> edges = db.getEdges();
@@ -323,13 +315,12 @@ public class EdgeEditing extends SEditing{
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
 
-                        if (floor1.isVisible() && (
-                                ( snode.get("FLOOR").equals("1")) && enode.get("FLOOR").equals("1")) ){
+                        if (floor.equals("first") && snode.get("FLOOR").equals("1") && enode.get("FLOOR").equals("1")) {
                             drawNodes(snode,enode);
                             nodesList.add(startNode + endNode);
                             count++;
-                        }else if (groundFloor.isVisible() && (
-                                ( snode.get("FLOOR").equals("G")) && enode.get("FLOOR").equals("G")) ){
+                        }
+                        else if(floor.equals("ground")&&snode.get("FLOOR").equals("G") && enode.get("FLOOR").equals("G")) {
                             drawNodes(snode,enode);
                             nodesList.add(startNode + endNode);
                             count++;
@@ -379,5 +370,22 @@ public class EdgeEditing extends SEditing{
         else menuDrawer.close();
         transition.setRate(transition.getRate() * -1);
         transition.play();
+    }
+
+
+
+    public void changeFloor1() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
+        floor = "first";
+        groundFloor.setImage(image);
+        changeFloorNodes();
+    }
+
+    public void changeGroundFloor() throws FileNotFoundException {
+        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
+        floor = "ground";
+        groundFloor.setImage(image);
+        changeFloorNodes();
+
     }
 }

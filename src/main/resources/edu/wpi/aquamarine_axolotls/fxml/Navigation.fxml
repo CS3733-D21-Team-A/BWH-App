@@ -151,13 +151,8 @@
          <right>
             <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="71.0" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="floor1" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../../../../../java/edu/wpi/aquamarine_axolotls/views/Brigham-Womens-TO-USE.jpeg" />
-                     </image>
-                  </ImageView>
                   <AnchorPane fx:id="nodeGridAnchor" layoutX="-170.0" layoutY="34.0" prefHeight="810.0" prefWidth="897.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <AnchorPane fx:id="anchor" layoutX="-227.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="755.0" prefWidth="71.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="anchor" layoutX="-972.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="709.0" prefWidth="1043.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="-972.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </right>
@@ -174,6 +169,7 @@
             </MenuBar>
          </bottom>
       </BorderPane>
+      <ImageView fx:id="floor1" fitHeight="150.0" fitWidth="200.0" layoutX="1065.0" layoutY="-215.0" pickOnBounds="true" preserveRatio="true" />
    </children>
    <padding>
       <Insets left="10.0" right="10.0" />
