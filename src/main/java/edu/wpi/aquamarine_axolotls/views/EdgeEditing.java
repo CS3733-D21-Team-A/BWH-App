@@ -1,10 +1,9 @@
 package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
+import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -160,7 +159,7 @@ public class EdgeEditing extends SEditing{
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES, true);
+            csvHandler.importCSV(csv, TABLES.EDGES, true);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){
@@ -177,7 +176,7 @@ public class EdgeEditing extends SEditing{
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try{
-            csvHandler.importCSV(csv, DatabaseInfo.TABLES.EDGES, false);
+            csvHandler.importCSV(csv, TABLES.EDGES, false);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){
@@ -194,7 +193,7 @@ public class EdgeEditing extends SEditing{
         );
         File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
         try{
-            csvHandler.exportCSV(csv, DatabaseInfo.TABLES.EDGES);
+            csvHandler.exportCSV(csv, TABLES.EDGES);
         }catch(IOException ie){
             ie.printStackTrace();
         }catch(SQLException sq){

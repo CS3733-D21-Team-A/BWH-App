@@ -10,9 +10,8 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.ATTRIBUTE.*;
-import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.TABLES.SERVICEREQUESTS.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 public class DatabaseControllerTest3 {
 
@@ -28,8 +27,8 @@ public class DatabaseControllerTest3 {
         db.emptyServiceRequestsTable();
 
         CSVHandler csvHandler = new CSVHandler(db);
-        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), DatabaseInfo.TABLES.NODES, true);
-        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), DatabaseInfo.TABLES.EDGES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
     }
 
     @AfterEach
@@ -80,18 +79,18 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetServiceRequestsDNE(){
         try {
-            ArrayList<Map<String, String>> expectedResult = new ArrayList<Map<String, String>>();
-            Map<String, String> sharedValues = new HashMap<String, String>();
+            ArrayList<Map<String, String>> expectedResult = new ArrayList<>();
+            Map<String, String> sharedValues = new HashMap<>();
             sharedValues.put("REQUESTID", "12345");
-            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
             expectedResult.add(sharedValues);
 
-            assertFalse(expectedResult.equals(db.getServiceRequests()));
+            assertNotEquals(expectedResult, db.getServiceRequests());
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -102,14 +101,14 @@ public class DatabaseControllerTest3 {
     public void testAddGetServiceRequests(){
         try {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
-            Map<String, String> sharedValues = new HashMap<String, String>();
+            Map<String, String> sharedValues = new HashMap<>();
             sharedValues.put("REQUESTID", "23456");
-            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "23456");
@@ -135,10 +134,10 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "34567");
-            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "34567");
@@ -168,10 +167,10 @@ public class DatabaseControllerTest3 {
             e.printStackTrace();
         }
         Map<String, String> sharedValues = new HashMap<String, String>();
-            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "45678");
@@ -188,12 +187,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "123");
-            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "123");
@@ -221,12 +220,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "56789");
-            sharedValues.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "56789");
@@ -243,7 +242,7 @@ public class DatabaseControllerTest3 {
             db.changeStatus("56789", STATUS.IN_PROGRESS);
 
             expectedResult.remove(sharedValues);
-            sharedValues.replace("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues.replace("STATUS", STATUS_NAMES.get(STATUS.IN_PROGRESS));
             expectedResult.add(sharedValues);
 
             assertEquals(expectedResult, db.getServiceRequests());
@@ -251,7 +250,7 @@ public class DatabaseControllerTest3 {
             db.changeStatus("56789", STATUS.DONE);
 
             expectedResult.remove(sharedValues);
-            sharedValues.replace("STATUS", STATUS.DONE.text);
+            sharedValues.replace("STATUS", STATUS_NAMES.get(STATUS.DONE));
             expectedResult.add(sharedValues);
 
             assertEquals(expectedResult, db.getServiceRequests());
@@ -259,7 +258,7 @@ public class DatabaseControllerTest3 {
             db.changeStatus("56789", STATUS.CANCELED);
 
             expectedResult.remove(sharedValues);
-            sharedValues.replace("STATUS", STATUS.CANCELED.text);
+            sharedValues.replace("STATUS", STATUS_NAMES.get(STATUS.CANCELED));
             expectedResult.add(sharedValues);
 
             assertEquals(expectedResult, db.getServiceRequests());
@@ -279,12 +278,12 @@ public class DatabaseControllerTest3 {
         }
         Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "67890");
-            sharedValues.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "67890");
@@ -311,12 +310,12 @@ public class DatabaseControllerTest3 {
         }
         Map<String, String> sharedValues = new HashMap<String, String>();
         sharedValues.put("REQUESTID", "78901");
-        sharedValues.put("STATUS", STATUS.IN_PROGRESS.text);
+        sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
         sharedValues.put("EMPLOYEEID", "WONG123");
         sharedValues.put("LOCATIONID", "aPARK009GG");
         sharedValues.put("FIRSTNAME", "Bob");
         sharedValues.put("LASTNAME", "Jones");
-        sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+        sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
         Map<String, String> requestValues = new HashMap<String, String>();
         requestValues.put("REQUESTID", "78901");
@@ -340,12 +339,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "24680");
-            sharedValues.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "24680");
@@ -382,12 +381,12 @@ public class DatabaseControllerTest3 {
         }
         Map<String, String> sharedValues = new HashMap<String, String>();
         sharedValues.put("REQUESTID", "13579");
-        sharedValues.put("STATUS", STATUS.IN_PROGRESS.text);
+        sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
         sharedValues.put("EMPLOYEEID", "WONG123");
         sharedValues.put("LOCATIONID", "aPARK009GG");
         sharedValues.put("FIRSTNAME", "Bob");
         sharedValues.put("LASTNAME", "Jones");
-        sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+        sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
         Map<String, String> requestValues = new HashMap<String, String>();
         requestValues.put("REQUESTID", "13579");
@@ -411,11 +410,11 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "753");
-            sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "753");
@@ -434,7 +433,7 @@ public class DatabaseControllerTest3 {
 
             expectedResult.remove(sharedValues);
             sharedValues.replace("EMPLOYEEID", "WONG321");
-            sharedValues.replace("STATUS", STATUS.ASSIGNED.text);
+            sharedValues.replace("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             expectedResult.add(sharedValues);
 
             assertEquals(expectedResult, db.getServiceRequests());
@@ -454,11 +453,11 @@ public class DatabaseControllerTest3 {
         }
         Map<String, String> sharedValues = new HashMap<String, String>();
         sharedValues.put("REQUESTID", "13579");
-        sharedValues.put("STATUS", STATUS.UNASSIGNED.text);
+        sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
         sharedValues.put("LOCATIONID", "aPARK009GG");
         sharedValues.put("FIRSTNAME", "Bob");
         sharedValues.put("LASTNAME", "Jones");
-        sharedValues.put("REQUESTTYPE", FOOD_DELIVERY.text);
+        sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
         Map<String, String> requestValues = new HashMap<String, String>();
         requestValues.put("REQUESTID", "13579");
@@ -482,12 +481,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -498,12 +497,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -513,12 +512,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -550,12 +549,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -566,12 +565,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -581,12 +580,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -619,12 +618,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -635,12 +634,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -650,12 +649,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -687,12 +686,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -702,12 +701,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -717,12 +716,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -731,7 +730,7 @@ public class DatabaseControllerTest3 {
             db.addServiceRequest(sharedValues3, requestValues3);
 
 
-            assertThrows(NullPointerException.class, () -> db.getServiceRequestsWithStatus(null));
+            assertEquals(0, db.getServiceRequestsWithStatus(null).size());
         } catch (SQLException e){
             e.printStackTrace();
             fail();
@@ -745,12 +744,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FOOD_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -761,12 +760,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -776,12 +775,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -802,12 +801,12 @@ public class DatabaseControllerTest3 {
             expectedResult.add(requestValues2);
             expectedResult.add(requestValues3);
 
-            assertEquals(expectedResult, db.getServiceRequestsByType(FLORAL_DELIVERY));
+            assertEquals(expectedResult, db.getServiceRequestsByType(SERVICEREQUEST.FLORAL_DELIVERY));
 
             expectedResult = new ArrayList<Map<String, String>>();
             expectedResult.add(requestValues1);
 
-            assertEquals(expectedResult, db.getServiceRequestsByType(FOOD_DELIVERY));
+            assertEquals(expectedResult, db.getServiceRequestsByType(SERVICEREQUEST.FOOD_DELIVERY));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -821,12 +820,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -836,12 +835,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -851,12 +850,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -875,7 +874,7 @@ public class DatabaseControllerTest3 {
             expectedResult.remove(sharedValues2);
             expectedResult.remove(sharedValues3);
 
-            assertEquals(expectedResult, db.getServiceRequestsByType(FOOD_DELIVERY));
+            assertEquals(expectedResult, db.getServiceRequestsByType(SERVICEREQUEST.FOOD_DELIVERY));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -889,12 +888,12 @@ public class DatabaseControllerTest3 {
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
-            sharedValues1.put("STATUS", STATUS.ASSIGNED.text);
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
-            sharedValues1.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
@@ -904,12 +903,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues2 = new HashMap<String, String>();
             sharedValues2.put("REQUESTID", "2");
-            sharedValues2.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
-            sharedValues2.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
@@ -919,12 +918,12 @@ public class DatabaseControllerTest3 {
 
             Map<String, String> sharedValues3 = new HashMap<String, String>();
             sharedValues3.put("REQUESTID", "3");
-            sharedValues3.put("STATUS", STATUS.IN_PROGRESS.text);
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
-            sharedValues3.put("REQUESTTYPE", FLORAL_DELIVERY.text);
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
 
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
@@ -936,9 +935,7 @@ public class DatabaseControllerTest3 {
             fail();
         }
 
-            assertThrows(IllegalArgumentException.class, () ->{
-                db.getServiceRequestsByType(DatabaseInfo.TABLES.SERVICEREQUESTS.valueOf("A_FAKE_TYPE"));
-            });
+        assertThrows(IllegalArgumentException.class, () -> db.getServiceRequestsByType(SERVICEREQUEST.valueOf("A_FAKE_TYPE")));
 
     }
 
@@ -949,7 +946,7 @@ public class DatabaseControllerTest3 {
     @Test
     public void testHasAttributeNodeFalse(){
         try {
-            assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -959,7 +956,7 @@ public class DatabaseControllerTest3 {
     @Test
     public void testHasAttributeEdgeFalse(){
         try {
-            assertFalse(db.hasAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false));
+            assertFalse(db.hasAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.COVID_SAFE, false));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -971,7 +968,7 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddAttributeNode(){
         try {
-            assertTrue(db.addAttribute("aPARK020GG", HANDICAPPED_ACCESSIBLE, true));
+            assertTrue(db.addAttribute("aPARK020GG", ATTRIBUTE.HANDICAPPED_ACCESSIBLE, true));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -981,7 +978,7 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddAttributeEdge(){
         try {
-            assertTrue(db.addAttribute("aWALK002GG_aWALK003GG", HANDICAPPED_ACCESSIBLE, false));
+            assertTrue(db.addAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.HANDICAPPED_ACCESSIBLE, false));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -991,14 +988,14 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddAttributeNodeDNE(){
         assertThrows(SQLException.class, () -> {
-            db.addAttribute("aFakeNode", HANDICAPPED_ACCESSIBLE, true);
+            db.addAttribute("aFakeNode", ATTRIBUTE.HANDICAPPED_ACCESSIBLE, true);
         });
     }
 
     @Test
     public void testAddAttributeEdgeDNE(){
         assertThrows(SQLException.class, () -> {
-            db.addAttribute("aFakeEdge", HANDICAPPED_ACCESSIBLE, false);
+            db.addAttribute("aFakeEdge", ATTRIBUTE.HANDICAPPED_ACCESSIBLE, false);
         });
     }
 
@@ -1007,8 +1004,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testHasAttributeNodeTrue(){
         try {
-            db.addAttribute("aPARK020GG", COVID_SAFE, true);
-            assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+            db.addAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true);
+            assertTrue(db.hasAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1018,8 +1015,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testHasAttributeEdgeTrue(){
         try {
-            db.addAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false);
-            assertTrue(db.hasAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false));
+            db.addAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.COVID_SAFE, false);
+            assertTrue(db.hasAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.COVID_SAFE, false));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1029,8 +1026,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testHasAttributeNodeFalse2(){
         try {
-            db.addAttribute("aPARK020GG", COVID_SAFE, true);
-            assertFalse(db.hasAttribute("aPARK050GG", COVID_SAFE, true));
+            db.addAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true);
+            assertFalse(db.hasAttribute("aPARK050GG", ATTRIBUTE.COVID_SAFE, true));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1040,8 +1037,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testHasAttributeEdgeFalse2(){
         try {
-            db.addAttribute("aWALK002GG_aWALK003GG", COVID_SAFE, false);
-            assertFalse(db.hasAttribute("aWALK003GG_aWALK004GG", COVID_SAFE, false));
+            db.addAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.COVID_SAFE, false);
+            assertFalse(db.hasAttribute("aWALK003GG_aWALK004GG", ATTRIBUTE.COVID_SAFE, false));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1053,9 +1050,9 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddAttributeNode2(){
         try {
-            assertFalse(db.hasAttribute("aPARK020GG", NOT_NAVIGABLE, true));
-            assertTrue(db.addAttribute("aPARK020GG", NOT_NAVIGABLE, true));
-            assertTrue(db.hasAttribute("aPARK020GG", NOT_NAVIGABLE, true));
+            assertFalse(db.hasAttribute("aPARK020GG", ATTRIBUTE.NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aPARK020GG", ATTRIBUTE.NOT_NAVIGABLE, true));
+            assertTrue(db.hasAttribute("aPARK020GG", ATTRIBUTE.NOT_NAVIGABLE, true));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1065,9 +1062,9 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddAttributeEdge2(){
         try {
-            assertFalse(db.hasAttribute("aWALK002GG_aWALK003GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aWALK002GG_aWALK003GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aWALK002GG_aWALK003GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK002GG_aWALK003GG", ATTRIBUTE.NOT_NAVIGABLE, false));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1079,15 +1076,15 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetAttributesNode(){
         try {
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aWALK002GG",true);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aWALK002GG",true);
             assertEquals(expectedList, actualList);
 
-            assertTrue(db.addAttribute("aWALK002GG", NOT_NAVIGABLE, true));
-            assertTrue(db.addAttribute("aWALK002GG", COVID_SAFE, true));
+            assertTrue(db.addAttribute("aWALK002GG", ATTRIBUTE.NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aWALK002GG", ATTRIBUTE.COVID_SAFE, true));
 
-            expectedList.add(NOT_NAVIGABLE);
-            expectedList.add(COVID_SAFE);
+            expectedList.add(ATTRIBUTE.NOT_NAVIGABLE);
+            expectedList.add(ATTRIBUTE.COVID_SAFE);
 
             actualList = db.getAttributes("aWALK002GG",true);
 
@@ -1102,15 +1099,15 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetAttributesEdge(){
         try {
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aPARK001GG_aWALK001GG",false);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aPARK001GG_aWALK001GG",false);
             assertEquals(expectedList, actualList);
 
-            assertTrue(db.addAttribute("aPARK001GG_aWALK001GG", HANDICAPPED_ACCESSIBLE, false));
-            assertTrue(db.addAttribute("aPARK001GG_aWALK001GG", COVID_SAFE, false));
+            assertTrue(db.addAttribute("aPARK001GG_aWALK001GG", ATTRIBUTE.HANDICAPPED_ACCESSIBLE, false));
+            assertTrue(db.addAttribute("aPARK001GG_aWALK001GG", ATTRIBUTE.COVID_SAFE, false));
 
-            expectedList.add(HANDICAPPED_ACCESSIBLE);
-            expectedList.add(COVID_SAFE);
+            expectedList.add(ATTRIBUTE.HANDICAPPED_ACCESSIBLE);
+            expectedList.add(ATTRIBUTE.COVID_SAFE);
 
             actualList = db.getAttributes("aPARK001GG_aWALK001GG",false);
 
@@ -1125,8 +1122,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetAttributesNodeDNE(){
         try {
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeNode2",true);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aFakeNode2",true);
             assertEquals(expectedList, actualList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1137,8 +1134,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetAttributesEdgeDNE(){
         try {
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeEdge2",false);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aFakeEdge2",false);
             assertEquals(expectedList, actualList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1150,12 +1147,12 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetByAttributeOneNode(){
         try{
-            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
-            assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
 
             List<String> expectedList = new ArrayList<>();
-            List<String> actualList = db.getByAttribute(COVID_SAFE,true);
+            List<String> actualList = db.getByAttribute(ATTRIBUTE.COVID_SAFE,true);
 
             expectedList.add("aPARK019GG");
 
@@ -1169,16 +1166,16 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetByAttributeTwoNodes(){
         try{
-            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
-            assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
 
-            assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aPARK020GG", COVID_SAFE, true));
-            assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
 
             List<String> expectedList = new ArrayList<>();
-            List<String> actualList = db.getByAttribute(COVID_SAFE,true);
+            List<String> actualList = db.getByAttribute(ATTRIBUTE.COVID_SAFE,true);
 
             expectedList.add("aPARK019GG");
             expectedList.add("aPARK020GG");
@@ -1193,14 +1190,14 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetByAttributeOneEdge(){
         try{
-            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
 
 
 
             List<String> expectedList = new ArrayList<>();
-            List<String> actualList = db.getByAttribute(NOT_NAVIGABLE,false);
+            List<String> actualList = db.getByAttribute(ATTRIBUTE.NOT_NAVIGABLE,false);
 
             expectedList.add("aWALK008GG_aWALK009GG");
 
@@ -1214,16 +1211,16 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetByAttributeTwoEdges(){
         try{
-            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
 
-            assertFalse(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
 
             List<String> expectedList = new ArrayList<>();
-            List<String> actualList = db.getByAttribute(NOT_NAVIGABLE,false);
+            List<String> actualList = db.getByAttribute(ATTRIBUTE.NOT_NAVIGABLE,false);
 
             expectedList.add("aWALK008GG_aWALK009GG");
             expectedList.add("aPARK020GG_aWALK009GG");
@@ -1238,16 +1235,16 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetByAttributeNoEdges(){
         try{
-            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
 
-            assertFalse(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
 
             List<String> expectedList = new ArrayList<>();
-            List<String> actualList = db.getByAttribute(COVID_SAFE,false);
+            List<String> actualList = db.getByAttribute(ATTRIBUTE.COVID_SAFE,false);
 
             assertEquals(expectedList, actualList);
         } catch(SQLException e){
@@ -1262,11 +1259,11 @@ public class DatabaseControllerTest3 {
     @Test
     public void testDeleteAttributesNode(){
         try {
-            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aPARK019GG", COVID_SAFE, true));
-            assertTrue(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
-            db.deleteAttribute("aPARK019GG", COVID_SAFE, true);
-            assertFalse(db.hasAttribute("aPARK019GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
+            db.deleteAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true);
+            assertFalse(db.hasAttribute("aPARK019GG", ATTRIBUTE.COVID_SAFE, true));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1276,11 +1273,11 @@ public class DatabaseControllerTest3 {
     @Test
     public void testDeleteAttributesEdge(){
         try {
-            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
-            db.deleteAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false);
-            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", NOT_NAVIGABLE, false));
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            db.deleteAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false);
+            assertFalse(db.hasAttribute("aWALK008GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -1290,11 +1287,11 @@ public class DatabaseControllerTest3 {
     @Test
     public void testDeleteAttributesNodeDNE(){
         try{
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeNode3",true);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aFakeNode3",true);
             assertEquals(expectedList, actualList);
 
-            db.deleteAttribute("aFakeNode3", NOT_NAVIGABLE, true);
+            db.deleteAttribute("aFakeNode3", ATTRIBUTE.NOT_NAVIGABLE, true);
 
             actualList = db.getAttributes("aFakeNode3",true);
             assertEquals(expectedList, actualList);
@@ -1307,11 +1304,11 @@ public class DatabaseControllerTest3 {
     @Test
     public void testDeleteAttributesEdgeDNE(){
         try{
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeEdge3",false);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aFakeEdge3",false);
             assertEquals(expectedList, actualList);
 
-            db.deleteAttribute("aFakeEdge3", NOT_NAVIGABLE, false);
+            db.deleteAttribute("aFakeEdge3", ATTRIBUTE.NOT_NAVIGABLE, false);
 
             actualList = db.getAttributes("aFakeEdge3",false);
             assertEquals(expectedList, actualList);
@@ -1326,17 +1323,17 @@ public class DatabaseControllerTest3 {
     @Test
     public void testClearAttributesNode(){
         try {
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aWALK008GG",true);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aWALK008GG",true);
             assertEquals(expectedList, actualList);
 
-            assertTrue(db.addAttribute("aWALK008GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aWALK008GG", NOT_NAVIGABLE, true));
-            assertTrue(db.addAttribute("aWALK008GG", HANDICAPPED_ACCESSIBLE, true));
+            assertTrue(db.addAttribute("aWALK008GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aWALK008GG", ATTRIBUTE.NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aWALK008GG", ATTRIBUTE.HANDICAPPED_ACCESSIBLE, true));
 
-            expectedList.add(COVID_SAFE);
-            expectedList.add(NOT_NAVIGABLE);
-            expectedList.add(HANDICAPPED_ACCESSIBLE);
+            expectedList.add(ATTRIBUTE.COVID_SAFE);
+            expectedList.add(ATTRIBUTE.NOT_NAVIGABLE);
+            expectedList.add(ATTRIBUTE.HANDICAPPED_ACCESSIBLE);
 
             actualList = db.getAttributes("aWALK008GG",true);
 
@@ -1344,7 +1341,7 @@ public class DatabaseControllerTest3 {
 
             db.clearAttributes("aWALK008GG", true);
 
-            expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            expectedList = new ArrayList<ATTRIBUTE>();
             actualList = db.getAttributes("aWALK008GG",true);
             assertEquals(expectedList, actualList);
         } catch (SQLException e) {
@@ -1356,17 +1353,17 @@ public class DatabaseControllerTest3 {
     @Test
     public void testClearAttributesEdge(){
         try {
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aPARK020GG_aWALK009GG",false);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aPARK020GG_aWALK009GG",false);
             assertEquals(expectedList, actualList);
 
-            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", COVID_SAFE, false));
-            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", NOT_NAVIGABLE, false));
-            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", HANDICAPPED_ACCESSIBLE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.COVID_SAFE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG", ATTRIBUTE.NOT_NAVIGABLE, false));
+            assertTrue(db.addAttribute("aPARK020GG_aWALK009GG",ATTRIBUTE.HANDICAPPED_ACCESSIBLE, false));
 
-            expectedList.add(COVID_SAFE);
-            expectedList.add(NOT_NAVIGABLE);
-            expectedList.add(HANDICAPPED_ACCESSIBLE);
+            expectedList.add(ATTRIBUTE.COVID_SAFE);
+            expectedList.add(ATTRIBUTE.NOT_NAVIGABLE);
+            expectedList.add(ATTRIBUTE.HANDICAPPED_ACCESSIBLE);
 
             actualList = db.getAttributes("aPARK020GG_aWALK009GG",false);
 
@@ -1374,7 +1371,7 @@ public class DatabaseControllerTest3 {
 
             db.clearAttributes("aPARK020GG_aWALK009GG", false);
 
-            expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
+            expectedList = new ArrayList<ATTRIBUTE>();
             actualList = db.getAttributes("aPARK020GG_aWALK009GG",false);
             assertEquals(expectedList, actualList);
         } catch (SQLException e) {
@@ -1386,8 +1383,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testClearAttributesNodeDNE(){
         try{
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeNode4",true);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aFakeNode4",true);
             assertEquals(expectedList, actualList);
 
             db.clearAttributes("aFakeNode4", true);
@@ -1403,8 +1400,8 @@ public class DatabaseControllerTest3 {
     @Test
     public void testClearAttributesEdgeDNE(){
         try{
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aFakeEdge4",false);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aFakeEdge4",false);
             assertEquals(expectedList, actualList);
 
             db.clearAttributes("aFakeEdge4", false);
@@ -1422,35 +1419,35 @@ public class DatabaseControllerTest3 {
     @Test
     public void testCascadingDeleteNode(){
         try{
-            List<DatabaseInfo.TABLES.ATTRIBUTE> expectedList = new ArrayList<DatabaseInfo.TABLES.ATTRIBUTE>();
-            List<DatabaseInfo.TABLES.ATTRIBUTE> actualList = db.getAttributes("aWALK008GG",true);
+            List<ATTRIBUTE> expectedList = new ArrayList<ATTRIBUTE>();
+            List<ATTRIBUTE> actualList = db.getAttributes("aWALK008GG",true);
             assertEquals(expectedList, actualList);
 
-            assertTrue(db.addAttribute("aWALK008GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aWALK008GG", NOT_NAVIGABLE, true));
-            assertTrue(db.addAttribute("aWALK008GG", HANDICAPPED_ACCESSIBLE, true));
+            assertTrue(db.addAttribute("aWALK008GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aWALK008GG", ATTRIBUTE.NOT_NAVIGABLE, true));
+            assertTrue(db.addAttribute("aWALK008GG",ATTRIBUTE.HANDICAPPED_ACCESSIBLE, true));
 
-            assertFalse(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
-            assertTrue(db.addAttribute("aPARK020GG", COVID_SAFE, true));
-            assertTrue(db.hasAttribute("aPARK020GG", COVID_SAFE, true));
+            assertFalse(db.hasAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.addAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
+            assertTrue(db.hasAttribute("aPARK020GG", ATTRIBUTE.COVID_SAFE, true));
 
-            expectedList.add(COVID_SAFE);
-            expectedList.add(NOT_NAVIGABLE);
-            expectedList.add(HANDICAPPED_ACCESSIBLE);
+            expectedList.add(ATTRIBUTE.COVID_SAFE);
+            expectedList.add(ATTRIBUTE.NOT_NAVIGABLE);
+            expectedList.add(ATTRIBUTE.HANDICAPPED_ACCESSIBLE);
 
             actualList = db.getAttributes("aWALK008GG",true);
 
             assertEquals(expectedList, actualList);
 
             List<String> expectedList2 = new ArrayList<>();
-            List<String> actualList2 = db.getByAttribute(COVID_SAFE,true);
+            List<String> actualList2 = db.getByAttribute(ATTRIBUTE.COVID_SAFE,true);
             expectedList2.add("aWALK008GG");
             expectedList2.add("aPARK020GG");
             assertEquals(expectedList2, actualList2);
 
             db.deleteNode("aWALK008GG");
             expectedList2.remove("aWALK008GG");
-            actualList2 = db.getByAttribute(COVID_SAFE,true);
+            actualList2 = db.getByAttribute(ATTRIBUTE.COVID_SAFE,true);
             assertEquals(expectedList2, actualList2);
 
         } catch(SQLException e){
@@ -1462,7 +1459,7 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddAttributeToNodeNotExist(){
         Exception exception = assertThrows(DerbySQLIntegrityConstraintViolationException.class, ()
-                    -> db.addAttribute("aPARK030GG", COVID_SAFE, true));
+                    -> db.addAttribute("aPARK030GG", ATTRIBUTE.COVID_SAFE, true));
 
         assertTrue(exception.getMessage().contains("caused a violation of foreign key constraint"));
     }

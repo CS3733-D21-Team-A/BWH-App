@@ -24,15 +24,15 @@ public class CSVHandlerTest {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
-		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH);
-		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH);
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH);
 
 		csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES, true);
-		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES, true);
+		csvHandler.importCSV(nodeStream, TABLES.NODES, true);
+		csvHandler.importCSV(edgeStream, TABLES.EDGES, true);
 
-		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.NODE_RESOURCE_PATH);
-		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.EDGE_RESOURCE_PATH);
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH);
 	}
 
 	@AfterAll
@@ -46,7 +46,7 @@ public class CSVHandlerTest {
 	void importEdgesTest() throws SQLException, IOException {
 		db.emptyEdgeTable();
 		assertEquals(0, db.getEdges().size());
-		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES, true);
+		csvHandler.importCSV(edgeStream, TABLES.EDGES, true);
 		assertNotNull(db.getEdges());
 	}
 
@@ -54,7 +54,7 @@ public class CSVHandlerTest {
 	void importNodesTest() throws SQLException, IOException {
 		db.emptyNodeTable();
 		assertEquals(0, db.getNodes().size());
-		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES, true);
+		csvHandler.importCSV(nodeStream, TABLES.NODES, true);
 		assertNotNull(db.getNodes());
 	}
 
@@ -68,7 +68,7 @@ public class CSVHandlerTest {
 			assertTrue(file.createNewFile());
 			assertEquals(file.length(), 0);
 
-			csvHandler.exportCSV(file, DatabaseInfo.TABLES.EDGES);
+			csvHandler.exportCSV(file, TABLES.EDGES);
 
 			assertNotEquals(file.length(), 0);
 			assertTrue(file.delete());
@@ -88,7 +88,7 @@ public class CSVHandlerTest {
 			assertTrue(file.createNewFile());
 			assertEquals(file.length(), 0);
 
-			csvHandler.exportCSV(file, DatabaseInfo.TABLES.NODES);
+			csvHandler.exportCSV(file, TABLES.NODES);
 
 			assertNotEquals(file.length(), 0);
 			assertTrue(file.delete());

@@ -2,20 +2,13 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import edu.wpi.aquamarine_axolotls.Aapp;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -112,7 +105,7 @@ public class FoodDelivery extends SServiceRequest {
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", "Food Delivery");
+            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
             Map<String, String> foodR = new HashMap<String, String>();
             foodR.put("REQUESTID", id);
@@ -122,19 +115,15 @@ public class FoodDelivery extends SServiceRequest {
             db.addServiceRequest(shared, foodR);
             db.close();
             submit();
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
+
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
         else menuDrawer.close();
         transition.setRate(transition.getRate() * -1);
         transition.play();
     }
-
 }

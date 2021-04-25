@@ -26,7 +26,7 @@ class TableFactory {
 	 * @param table identifier for table to link to.
 	 * @return Table object representing the corresponding table in the database.
 	 */
-	Table getTable(DatabaseInfo.TABLES table) {
+	Table getTable(TABLES table) {
 		try {
 			return new Table(connection, table.name());
 		} catch (SQLException e) {
@@ -40,7 +40,7 @@ class TableFactory {
 	 * @param requestType identifier for service request table to link to.
 	 * @return RequestTable object representing the corresponding table in the database.
 	 */
-	RequestTable getRequestTable(DatabaseInfo.TABLES.SERVICEREQUESTS requestType) {
+	RequestTable getRequestTable(SERVICEREQUEST requestType) {
 		try {
 			return new RequestTable(connection, requestType.name());
 		} catch (SQLException e) {
