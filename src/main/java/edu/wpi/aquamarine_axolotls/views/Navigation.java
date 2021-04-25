@@ -15,6 +15,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -48,12 +50,6 @@ public class Navigation extends SPage {
     @FXML
     private ImageView groundFloor;
     @FXML
-    private ImageView floor1;
-    @FXML
-    private JFXButton homeButton;
-    @FXML
-    private JFXButton helpB;
-    @FXML
     private JFXComboBox startLocation;
     @FXML
     private JFXComboBox destination;
@@ -79,7 +75,14 @@ public class Navigation extends SPage {
     private ScrollPane scrollPane;
     @FXML
     private Group mapGroup;
-
+    @FXML
+    private Canvas nodeCanvas;
+    @FXML
+    private JFXHamburger burger;
+    @FXML
+    private JFXDrawer menuDrawer;
+    @FXML
+    private VBox box;
 
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
@@ -90,19 +93,13 @@ public class Navigation extends SPage {
     private int activePath = 0;
 
 
-    @FXML
-    private JFXHamburger burger;
-    @FXML
-    private JFXDrawer menuDrawer;
-
-    @FXML
-    private VBox box;
-
     private HamburgerBasicCloseTransition transition;
-    static Double SCALE_DELTA = 1.25;
-    static Double SCALE_TOTAL = 2.0;
-    //static Double X_DELTA = 0.0;
-    //static Double Y_DELTA = 0.0;
+    static double SCALE_DELTA = 1.25;
+    static double SCALE_TOTAL = 2.0;
+    static double SCALE = 1.0;
+    static int FLOOR = 0;
+    static Double imgWidth = 991.0;
+    static Double imgHeight = 669.0;
 
     @FXML
     public void initialize() {
@@ -120,8 +117,8 @@ public class Navigation extends SPage {
 
             }
             mapGroup.setAutoSizeChildren(true);
-//            floor1.setVisible(false);
-//            changeFloorNodes();
+
+            changeFloorNodes();
 
             startLocation.setItems(options);
             destination.setItems(options);
@@ -144,7 +141,6 @@ public class Navigation extends SPage {
      */
     public Double xScale(int xCoord) {
         Double xCoordDouble = new Double(xCoord);
-        Double imgWidth = 438.0;
         Double proportion = imgWidth / 5000;
 
         Double newXCoord = xCoordDouble * proportion; //may need to add margins depending on how it's placed on
@@ -154,8 +150,7 @@ public class Navigation extends SPage {
 
     public Double yScale(int yCoord) {
         Double yCoordDouble = new Double(yCoord);
-        Double imgWidth = 298.0;
-        Double proportion = imgWidth / 3400;
+        Double proportion = imgHeight / 3400;
 
         Double newYCoord = yCoordDouble * proportion; //may need to add margins depending on how it's placed on
 
@@ -166,17 +161,14 @@ public class Navigation extends SPage {
      * alternative to x and y scale, taking in doubles
      */
     public Double xScale(double xCoord) {
-        Double imgWidth = 438.0;
         Double proportion = imgWidth / 5000;
-
         Double newXCoord = xCoord * proportion; //may need to add margins depending on how it's placed on
 
         return newXCoord;
     }
 
     public Double yScale(double yCoord) {
-        Double imgWidth = 298.0;
-        Double proportion = imgWidth / 3400;
+        Double proportion = imgHeight / 3400;
 
         Double newYCoord = yCoord * proportion; //may need to add margins depending on how it's placed on
 
@@ -385,9 +377,9 @@ public class Navigation extends SPage {
 
         //Loop through nodes
         for (Map<String, String> n : validNodes) {
-            if (true)
-/*                    (groundFloor.isVisible() && n.get("FLOOR").equals("G"))
-                || (floor1.isVisible() && n.get("FLOOR").equals("1")))*/ {
+            if (
+                    (FLOOR == 0 && n.get("FLOOR").equals("G"))
+                            || (FLOOR == 1 && n.get("FLOOR").equals("1"))) {
                 //Get the x and y of that node
                 double currNodeX = xScale(Double.parseDouble(n.get("XCOORD")));
                 double currNodeY = yScale(Double.parseDouble(n.get("YCOORD")));
@@ -439,7 +431,9 @@ public class Navigation extends SPage {
     }
 
     public void changeFloorNodes() {
-        nodeGridAnchor.getChildren().clear();
+        //nodeGridAnchor.getChildren().clear();
+        GraphicsContext gc = nodeCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, nodeCanvas.getWidth(), nodeCanvas.getHeight());
         int count = 0;
         try {
             List<Map<String, String>> edges = db.getEdges();
@@ -452,7 +446,7 @@ public class Navigation extends SPage {
                     try {
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
-                        if (floor1.isVisible() &&
+                        if (FLOOR == 1 &&
                                 ((snode.get("FLOOR").equals("1")) && (snode.get("BUILDING").equals("Tower") || snode.get("BUILDING").equals("45 Francis"))) &&
                                 ((enode.get("FLOOR").equals("1")) && (enode.get("BUILDING").equals("Tower") || enode.get("BUILDING").equals("45 Francis")))) {
                             drawNodes(snode, enode);
@@ -476,31 +470,20 @@ public class Navigation extends SPage {
     }
 
     public void drawNodes(Map<String, String> snode, Map<String, String> enode) {
-        Circle circ1 = new Circle();
-        Circle circ2 = new Circle();
-
         Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
         Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
         Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
         Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
 
-        circ1.setCenterX(startX);
-        circ1.setCenterY(startY);
-        circ2.setCenterX(endX);
-        circ2.setCenterY(endY);
-        circ1.setRadius(2);
-        circ2.setRadius(2);
-        circ1.setFill(Color.RED);
-        circ2.setFill(Color.RED);
+        GraphicsContext gc = nodeCanvas.getGraphicsContext2D();
+        gc.setFill(Color.RED);
+        gc.fillOval(startX, startY, 2, 2);
+        gc.setFill(Color.RED);
+        gc.fillOval(endX, endY, 2, 2);
 
-        Line line = new Line();
-        line.setStartX(startX);
-        line.setStartY(startY);
-        line.setEndX(endX);
-        line.setEndY(endY);
-        line.setStroke(Color.WHITE);
-        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
-
+        gc.moveTo(startX, startY);
+        gc.lineTo(endX, endY);
+        gc.stroke();
     }
 
     public void clearNodes() {
@@ -537,36 +520,46 @@ public class Navigation extends SPage {
 
     public void zoom() {
 
-        double newWidth = 991.0 * SCALE_DELTA;
-        double newHeight = 669.0 * SCALE_DELTA;
-        double currentScale = mapGroup.getScaleX() / SCALE_DELTA; //need to fix scaling here
+        double newWidth = imgWidth * SCALE_DELTA;
+        double newHeight = imgHeight * SCALE_DELTA;
+        double scale = newWidth / imgWidth;
 
         System.out.println(String.valueOf(groundFloor.getFitHeight()) + "   " + SCALE_DELTA);
 
         //Ensures that you do not exceed the limits of the map
-        if (SCALE_DELTA * SCALE_TOTAL >= 1) {   //what did you do here :/
+        if (SCALE_DELTA <= SCALE_TOTAL && SCALE_DELTA >= 0.5) {
             System.out.println(SCALE_DELTA);
 
-            Scale scale = new Scale(currentScale, currentScale);
-            mapGroup.getTransforms().add(scale);
+            Scale sc = new Scale(scale, scale);
+            nodeCanvas.setWidth(newWidth);
+            nodeCanvas.setHeight(newHeight);
+
+            nodeCanvas.getTransforms().add(sc);
+            //nodeCanvas.setScaleY(scale);
+
             //mapGroup.setScaleY(SCALE_DELTA);
 
             groundFloor.setFitWidth(newWidth);
             groundFloor.setFitHeight(newHeight);
+
+            //imgWidth = newWidth;
+            //imgHeight = newHeight;
+
+            changeFloorNodes();
         }
     }
 
 
     public void changeFloor1() throws FileNotFoundException {
         Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
-
         groundFloor.setImage(image);
+        FLOOR = 1;
     }
 
     public void changeGroundFloor() throws FileNotFoundException {
         Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
-
         groundFloor.setImage(image);
+        FLOOR = 0;
     }
 
 }

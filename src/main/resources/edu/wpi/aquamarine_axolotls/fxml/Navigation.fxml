@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -21,161 +22,155 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="mainAnchor" maxHeight="900.0" maxWidth="1300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
-   <children>
-      <BorderPane layoutX="20.0" prefHeight="900.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <left>
-            <VBox alignment="TOP_CENTER" prefHeight="733.0" prefWidth="235.0" BorderPane.alignment="CENTER">
+<BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="733.0" prefWidth="235.0" BorderPane.alignment="CENTER">
+         <children>
+            <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="302.0" promptText="Start location" style="-fx-font-size: 14; -fx-font-family: Times;">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </JFXComboBox>
+            <JFXComboBox fx:id="destination" prefHeight="50.0" prefWidth="236.0" promptText="Destination" style="-fx-font-size: 14; -fx-font-family: times;">
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </JFXComboBox>
+            <JFXComboBox fx:id="intermediate" prefHeight="50.0" prefWidth="237.0" promptText="Intermediate" style="-fx-font-size: 14; -fx-font-family: Times;">
+               <VBox.margin>
+                  <Insets bottom="2.0" top="2.0" />
+               </VBox.margin>
+            </JFXComboBox>
+            <HBox prefHeight="25.0" prefWidth="122.0">
                <children>
-                  <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="302.0" promptText="Start location" style="-fx-font-size: 14; -fx-font-family: Times;">
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </JFXComboBox>
-                  <JFXComboBox fx:id="destination" prefHeight="50.0" prefWidth="236.0" promptText="Destination" style="-fx-font-size: 14; -fx-font-family: times;">
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </JFXComboBox>
-                  <JFXComboBox fx:id="intermediate" prefHeight="50.0" prefWidth="237.0" promptText="Intermediate" style="-fx-font-size: 14; -fx-font-family: Times;">
-                     <VBox.margin>
-                        <Insets bottom="2.0" top="2.0" />
-                     </VBox.margin>
-                  </JFXComboBox>
-                  <HBox prefHeight="25.0" prefWidth="122.0">
-                     <children>
-                        <Text fx:id="te" strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time: " wrappingWidth="107.0438346862793">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                        </Text>
-                        <Label fx:id="etaLabel" />
-                     </children>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="22.0" prefWidth="95.0" style="-fx-font-family: Times;" text="Go" textAlignment="CENTER">
+                  <Text fx:id="te" strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time: " wrappingWidth="107.0438346862793">
                      <font>
                         <Font size="14.0" />
                      </font>
-                  </JFXButton>
-                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 8; -fx-background-color: D3D3D3; -fx-font-family: Times;" text="Cancel" textAlignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets top="10.0" />
-                     </VBox.margin>
-                  </JFXButton>
-                  <JFXButton fx:id="switchPath" prefHeight="25.0" prefWidth="43.0" style="-fx-font-size: 10; visibility: false;" text="&lt; &gt;">
-                     <graphic>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-                     </graphic>
-                  </JFXButton>
-                  <JFXButton fx:id="zoomInButton" onAction="#zoomIn" text="Zoom In" />
-                  <JFXButton fx:id="zoomOutButton" onAction="#zoomOut" text="Zoom Out" />
+                  </Text>
+                  <Label fx:id="etaLabel" />
                </children>
-               <padding>
-                  <Insets left="10.0" right="10.0" top="20.0" />
-               </padding>
-            </VBox>
-         </left>
-         <top>
-            <VBox prefHeight="122.0" prefWidth="1270.0" BorderPane.alignment="CENTER">
-               <children>
-                  <GridPane alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="1270.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="640.0">
-                           <padding>
-                              <Insets left="10.0" top="7.0" />
-                           </padding>
-                           <children>
-                              <ImageView fitHeight="61.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../img/logo.png" />
-                                 </image>
-                              </ImageView>
-                              <Label fx:id="text" prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                                 <font>
-                                    <Font name="Times New Roman" size="18.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="5.0" />
-                                 </HBox.margin>
-                              </Label>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-                           <children>
-                              <JFXButton onAction="#goHome" prefHeight="52.0" prefWidth="162.0" text="Home">
-                                 <graphic>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../img/homeBlue.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                     </children>
-                  </GridPane>
-                  <HBox prefHeight="9.0" prefWidth="607.0" style="-fx-background-color: #003da6;" />
-               </children>
-            </VBox>
-         </top>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="22.0" prefWidth="95.0" style="-fx-font-family: Times;" text="Go" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 8; -fx-background-color: D3D3D3; -fx-font-family: Times;" text="Cancel" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton fx:id="switchPath" prefHeight="25.0" prefWidth="43.0" style="-fx-font-size: 10; visibility: false;" text="&lt; &gt;">
+               <graphic>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" />
+               </graphic>
+            </JFXButton>
+            <JFXButton fx:id="zoomInButton" onAction="#zoomIn" text="Zoom In" />
+            <JFXButton fx:id="zoomOutButton" onAction="#zoomOut" text="Zoom Out" />
+         </children>
          <padding>
-            <Insets left="5.0" right="5.0" />
+            <Insets left="10.0" right="10.0" top="20.0" />
          </padding>
-         <center>
-            <Group BorderPane.alignment="CENTER">
+      </VBox>
+   </left>
+   <top>
+      <VBox prefHeight="122.0" prefWidth="1270.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="1270.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <ScrollPane fx:id="scrollPane" layoutX="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseDragged="#pan" onScroll="#zoom" pannable="true" prefHeight="706.0" prefWidth="989.0">
-                     <content>
-                        <Group>
-                           <children>
-                              <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="991.0" onMouseClicked="#getNearestNode" onMouseDragged="#pan" pickOnBounds="true" preserveRatio="true">
+                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="640.0">
+                     <padding>
+                        <Insets left="10.0" top="7.0" />
+                     </padding>
+                     <children>
+                        <ImageView fitHeight="61.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/logo.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="text" prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                           <font>
+                              <Font name="Times New Roman" size="18.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                        <JFXButton onAction="#goHome" prefHeight="52.0" prefWidth="162.0" text="Home">
+                           <graphic>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../img/groundFloor.png" />
+                                    <Image url="@../img/homeBlue.png" />
                                  </image>
                               </ImageView>
-                              <Group fx:id="mapGroup">
-                                 <children>
-                                    <AnchorPane fx:id="nodeGridAnchor" prefHeight="669.0" prefWidth="991.0" />
-                                    <AnchorPane fx:id="anchor" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="669.0" prefWidth="991.0" />
-                                 </children>
-                              </Group>
+                           </graphic>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+               </children>
+            </GridPane>
+            <HBox prefHeight="9.0" prefWidth="607.0" style="-fx-background-color: #003da6;" />
+         </children>
+      </VBox>
+   </top>
+   <padding>
+      <Insets left="5.0" right="5.0" />
+   </padding>
+   <center>
+      <Group BorderPane.alignment="CENTER">
+         <children>
+            <ScrollPane fx:id="scrollPane" layoutX="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onScroll="#zoom" pannable="true" prefHeight="706.0" prefWidth="989.0">
+               <content>
+                  <Group>
+                     <children>
+                        <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="991.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/groundFloor.png" />
+                           </image>
+                        </ImageView>
+                        <Canvas fx:id="nodeCanvas" height="669.0" width="991.0" />
+                        <Group fx:id="mapGroup">
+                           <children>
+                              <AnchorPane fx:id="nodeGridAnchor" prefHeight="669.0" prefWidth="991.0" />
+                              <AnchorPane fx:id="anchor" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="669.0" prefWidth="991.0" />
                            </children>
                         </Group>
-                     </content>
-                  </ScrollPane>
-                  <MenuBar prefHeight="33.0" prefWidth="120.0">
-                     <menus>
-                        <Menu mnemonicParsing="false" text="Change Floor">
-                           <items>
-                              <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
-                              <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
-                           </items>
-                        </Menu>
-                     </menus>
-                  </MenuBar>
-               </children>
-            </Group>
-         </center>
-      </BorderPane>
-   </children>
-   <padding>
-      <Insets left="10.0" right="10.0" />
-   </padding>
-</AnchorPane>
+                     </children>
+                  </Group>
+               </content>
+            </ScrollPane>
+            <MenuBar prefHeight="33.0" prefWidth="120.0">
+               <menus>
+                  <Menu mnemonicParsing="false" text="Change Floor">
+                     <items>
+                        <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                        <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </children>
+      </Group>
+   </center>
+</BorderPane>
