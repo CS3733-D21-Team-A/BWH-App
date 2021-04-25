@@ -54,7 +54,6 @@ public class Dijkstra extends AbsHeuristicBased{
 
 
     private double getPriorityHeuristic(Node start, Node end){
-        // TODO: HAVE I ALREADY IMPLEMENTED THIS?
         return 0.0;
     }
 
