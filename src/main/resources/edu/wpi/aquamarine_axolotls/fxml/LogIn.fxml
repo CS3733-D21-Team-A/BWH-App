@@ -73,7 +73,7 @@
                   <Font size="18.0" />
                </font>
             </Hyperlink>
-            <Hyperlink onAction="#forgottenPassword" text="Forgotten Password?">
+            <Hyperlink text="Forgotten Password?">
                <VBox.margin>
                   <Insets top="15.0" />
                </VBox.margin>

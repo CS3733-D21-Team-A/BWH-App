@@ -92,19 +92,6 @@
                                         <Font name="Times New Roman" size="30.0" />
                                     </font>
                                 </JFXButton>
-                                <Line endX="200.0" endY="0.8284767270088196" startX="-100.0" stroke="WHITE">
-                                    <VBox.margin>
-                                        <Insets />
-                                    </VBox.margin>
-                                </Line>
-                                <JFXButton fx:id="serviceReqB" onAction="#serviceReqP" prefHeight="100.0" prefWidth="341.0" text="Service Requests" textFill="WHITE">
-                                    <VBox.margin>
-                                        <Insets bottom="10.0" top="10.0" />
-                                    </VBox.margin>
-                                    <font>
-                                        <Font name="Times New Roman" size="30.0" />
-                                    </font>
-                                </JFXButton>
                                 <Line endX="200.0" endY="2.243088483810425" startX="-100.0" stroke="WHITE" />
                                 <JFXButton onAction="#covidSurveyPage" prefHeight="100.0" prefWidth="343.0" text="Covid Survey" textFill="WHITE">
                                     <VBox.margin>

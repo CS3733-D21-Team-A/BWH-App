@@ -37,6 +37,7 @@ public class LogIn extends SPage{
 
     @FXML
     public void submit_button(ActionEvent actionEvent) {
+
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/PatientMainPage.fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);

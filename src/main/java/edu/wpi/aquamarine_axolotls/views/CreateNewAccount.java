@@ -50,11 +50,11 @@ public class CreateNewAccount extends SPage {
             popUp("Failed Submission.", "\n\n\n\n\n\nInvalid email.");
 
         }
-        if(firstName.getText().isEmpty() && lastName.getText().isEmpty() &&emailAddress.getText().isEmpty() && userName.getText().isEmpty()){
-            popUp("Failed Submission.", "\n\n\n\n\n\nPlease fill out all required fields.");
+        else if(firstName.getText().isEmpty() && lastName.getText().isEmpty() &&emailAddress.getText().isEmpty() && userName.getText().isEmpty()){
+            popUp("Failed Submission.", "\n\n\n\n\nPlease fill out all required fields.");
         }
-        if (!password.getText().equals(confirmPassword.getText())) {
-            popUp("Account Creation Failed", "\n\n\n\n\n\n\n\nPlease type in the same password for both fields");
+        else if (!password.getText().equals(confirmPassword.getText())) {
+            popUp("Account Creation Failed", "\n\n\n\n\n\nPlease type in the same password for both fields");
         }
 
         //if(!password.equals(confirmPassword)) Account is already in DB

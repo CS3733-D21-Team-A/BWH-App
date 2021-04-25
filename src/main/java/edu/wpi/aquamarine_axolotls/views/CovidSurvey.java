@@ -192,6 +192,7 @@ public class CovidSurvey extends SPage {
 
     public void submitButton(ActionEvent actionEvent) {
         popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
+
     }
 
     public void menu() {

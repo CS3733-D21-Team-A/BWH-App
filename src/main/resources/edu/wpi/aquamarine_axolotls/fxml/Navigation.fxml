@@ -149,9 +149,9 @@
             </ScrollPane>
          </center>
          <right>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="963.0" BorderPane.alignment="CENTER">
+            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="732.0" prefWidth="0.0" BorderPane.alignment="CENTER">
                <children>
-                  <AnchorPane fx:id="nodeGridAnchor" layoutX="-36.0" layoutY="-4.0" prefHeight="732.0" prefWidth="0.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="-36.0" AnchorPane.rightAnchor="132.0" AnchorPane.topAnchor="-4.0" />
+                  <AnchorPane fx:id="nodeGridAnchor" layoutX="831.0" layoutY="-4.0" prefHeight="732.0" prefWidth="0.0" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="831.0" AnchorPane.rightAnchor="132.0" AnchorPane.topAnchor="-4.0" />
                   <AnchorPane fx:id="anchor" layoutX="970.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="732.0" prefWidth="23.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="970.0" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
