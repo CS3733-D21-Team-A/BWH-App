@@ -530,7 +530,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public List<Map<String, String>> getUsers() throws SQLException
 	{
-		return null;
+		return null; //TODO EMILY IS GOING TO WRITE THIS
 	}
 
 	/**
@@ -541,7 +541,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public boolean checkValidUser(String username) throws SQLException
 	{
-		return true;
+		return true; //TODO EMILY IS GOING OT WRITE THIS
 	}
 
 	/**
@@ -552,7 +552,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public Map<String, String> getUserByUsername(String username) throws SQLException
 	{
-		return null;
+		return null; //TODO SEAN also maybe take the passsword, sike very much make them take password
 	}
 
 	/**
@@ -563,11 +563,11 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public Map<String, String> getUserByEmail(String email) throws SQLException
 	{
-		return null;
+		return null; //TODO SEAN
 	}
 
-	public void upDatePasswordByEmail(String email) throws SQLException {
-
+	public void upDatePasswordByEmailANDPASSWORD(String email) throws SQLException {
+//TODO SEAN
 	}
 
 
