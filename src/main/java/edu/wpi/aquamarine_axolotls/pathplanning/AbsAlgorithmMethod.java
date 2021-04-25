@@ -7,6 +7,8 @@ import java.util.Map;
 
 public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
+    //TODO: MAKE JAVADOCS :(
+
     List<Node> nodes = new ArrayList<>();
     List<Edge> edges = new ArrayList<>();
 
@@ -47,6 +49,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return null;
     }
 
+    //TODO: REMOVE THIS
     public Node getNodeByLongName(String longName) {
         String nodeLongName;
         //Loop through the list of nodes
@@ -99,6 +102,14 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return connectedNode;
     }
 
+    /**
+     * Calculates the estimated time it will take for a patient to walk in a straight
+     * line between two nodes
+     * @param start The node at which the patient is starting
+     * @param goal The node to which the patient is walking
+     * @return The time, in minutes, that it will take for a patient to walk from the
+     *          first node to the second
+     */
     protected double getETASingleEdge(Node start, Node goal){
         double walkingSpeed = 220 * 3.75; //2.5 miles/h
         double distance = getCostTo(start,goal);
@@ -108,6 +119,13 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return ETASingleEdge;
     }
 
+    /**
+     * Calculates the estimated time, in minutes, that it will take for a patient to
+     * walk the entire length of the path
+     * @param path The path that the patient is traversing
+     * @return The time, in minutes, that it will take for a patient to walk along the
+     *          entire path
+     */
     public double getETA(List<Node> path){
         double ETASoFar = 0.0;
         for(int i = 0; i < path.size()-1;i++){
@@ -177,11 +195,23 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return startNodeisEqual && goalNodeisEqual;
     }
 
+    /**
+     * Creates a list of text directions instructing the user how to navigate a path
+     * @param path The path for which text directions are to be generated
+     * @return The list of steps that a user must take to navigate from the start
+     *          of the path to the end
+     */
     public List<String> getTextDirections(List<Node> path){
         //TODO: FIGURE OUT HOW TF TO TEST THIS
         ArrayList<String> returnList = new ArrayList<String>();
 
         int stepNum = 1;
+
+        for(int i = 0; i < path.size(); i++){
+            if(nodeIsUnimportant(path, path.get(i))){
+                path.remove(i);
+            }
+        }
 
         double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
         double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
@@ -194,10 +224,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             double angleOut = absAngleEdge(path.get(i), path.get(i+1));
             double turnAngle = angleOut - angleIn;
 
-            if(turnAngle < -180.0) turnAngle += 360;
-            if(turnAngle > 180.0) turnAngle -= 360;
-
-            if(turnAngle > 0 && turnAngle < 60){
+            if(turnAngle > 5 && turnAngle < 60){
                 returnList.add(stepNum + ". Make a slight left turn.");
                 stepNum++;
             } else if (turnAngle >= 60 && turnAngle < 120){
@@ -206,7 +233,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             } else if (turnAngle >= 120 && turnAngle < 180){
                 returnList.add(stepNum + ". Make an extreme left turn.");
                 stepNum++;
-            } else if (turnAngle < 0 && turnAngle > -60){
+            } else if (turnAngle < 5 && turnAngle > -60){
                 returnList.add(stepNum + ". Make a slight right turn.");
                 stepNum++;
             } else if (turnAngle <= -60 && turnAngle > -120){
@@ -229,12 +256,43 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return returnList;
     }
 
+    /**
+     * Calculates the absolute angle, in degrees, of a line connecting two nodes with respect
+     * to the horizontal x-axis
+     * @param start The starting node
+     * @param end The ending node
+     * @return The absolute angle, in degrees of a line connecting the two nodes.
+     *          The angle will be in the range of -180 to 180.
+     */
     protected double absAngleEdge(Node start, Node end){
         double deltaX = end.getXcoord() - start.getXcoord();
         double deltaY = end.getYcoord() - start.getYcoord();
         double radians = Math.atan2(deltaY, deltaX);
         double degrees = radians * 180.0 / Math.PI;
+
+        if(degrees < -180.0) degrees += 360;
+        if(degrees > 180.0) degrees -= 360;
+
         return degrees;
+    }
+
+    /**
+     * Determines whether a given node is unimportant to a path's text directions, based on the
+     * node's type and whether a user must turn at that node
+     * @param path The path for which a node's importance is in question
+     * @param node The node in question
+     * @return true if the given node is unimportant to the path's text directions
+     */
+    protected boolean nodeIsUnimportant(List<Node> path, Node node){
+
+        int nodeIndex = path.indexOf(node);
+
+        double angleIn = absAngleEdge(path.get(nodeIndex-1), path.get(nodeIndex));
+        double angleOut = absAngleEdge(path.get(nodeIndex), path.get(nodeIndex+1));
+        double turnAngle = angleOut - angleIn;
+
+        return (node.getNodeType().equals("HALL") || node.getNodeType().equals("WALK")) &&
+                (Math.abs(turnAngle) < 5);
     }
 
 }

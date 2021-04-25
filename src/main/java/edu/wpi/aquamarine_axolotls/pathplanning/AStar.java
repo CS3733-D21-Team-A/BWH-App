@@ -45,11 +45,7 @@ public class AStar extends AbsHeuristicBased{
                         edgeMap.get(j).get("ENDNODE")
                 ));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
