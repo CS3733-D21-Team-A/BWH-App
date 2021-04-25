@@ -530,30 +530,47 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public List<Map<String, String>> getUsers() throws SQLException
 	{
-		return null; //TODO EMILY IS GOING TO WRITE THIS
+		return userTable.getEntries();
 	}
 
 	/**
-	 * checking if a user exists in the database given the username
+	 * checking if a username and password match associated user account
 	 * @param username
-	 * @return
+	 * @return true if the username and password match, false if they don't
 	 * @throws SQLException
 	 */
-	public boolean checkValidUser(String username) throws SQLException
+	public boolean checkUserMatchesPass(String username, String password) throws SQLException
 	{
-		return true; //TODO EMILY IS GOING OT WRITE THIS
+		String dbPass = userTable.getEntry(username).get(DatabaseInfo.PASSWORD_TEXT);
+		return password.equals(dbPass);
 	}
 
+	/**
+	 * checks database for the username to make sure it does not previously exist
+	 * @param username
+	 * @return true if the username does not exist, false if it does
+	 * @throws SQLException
+	 */
+	public boolean checkNotPreexistingUser(String username)
+	{
+		try{
+			userTable.getEntry(username);
+		}catch (SQLException notExist){
+			return false;
+		}
+
+		return true;
+	}
 	/**
 	 * pulling a table of a single user from the db given the username
 	 * @param username
 	 * @return
 	 * @throws SQLException
 	 */
-	public Map<String, String> getUserByUsername(String username) throws SQLException
+	public Map<String, String> getUserByUsernameAndPassword(String username, String password) throws SQLException
 	{
-		return null; //TODO SEAN also maybe take the passsword, sike very much make them take password
-	}
+		return null ; //TODO SEAN also maybe take the passsword, sike very much make them take password
+	}// TODO: May not need password as UI is checking that the password is correct and storing the associated username
 
 	/**
 	 * gets a user by email

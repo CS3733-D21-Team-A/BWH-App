@@ -27,6 +27,11 @@ public final class DatabaseUtil {
 	 */
 	public final static BiMap<ATTRIBUTE,String> ATTRIBUTE_NAMES;
 
+	/**
+	 * BiMap for associating USERTYPE enum with corresponding string representations.
+	 */
+	public final static BiMap<USERTYPE,String> USER_TYPE_NAMES;
+
 	static {
 		SERVICEREQUEST_NAMES = EnumHashBiMap.create(SERVICEREQUEST.class);
 		SERVICEREQUEST_NAMES.put(SERVICEREQUEST.EXTERNAL_TRANSPORT,EXTERNAL_TRANSPORT_TEXT);
@@ -52,5 +57,8 @@ public final class DatabaseUtil {
 		ATTRIBUTE_NAMES.put(ATTRIBUTE.NOT_NAVIGABLE,NOT_NAVIGABLE_TEXT);
 		ATTRIBUTE_NAMES.put(ATTRIBUTE.HANDICAPPED_ACCESSIBLE,HANDICAPPED_ACCESSIBLE_TEXT);
 		ATTRIBUTE_NAMES.put(ATTRIBUTE.COVID_SAFE,COVID_SAFE_TEXT);
+
+		USER_TYPE_NAMES = EnumHashBiMap.create(USERTYPE.class);
+		USER_TYPE_NAMES.put(USERTYPE.EMPLOYEE,EMPLOYEE_TEXT);
 	}
 }
