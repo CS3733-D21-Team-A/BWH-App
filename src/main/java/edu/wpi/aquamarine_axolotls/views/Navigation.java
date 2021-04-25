@@ -14,19 +14,23 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
+import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Scale;
 import javafx.util.Duration;
 
 import java.io.*;
@@ -35,7 +39,7 @@ import java.sql.SQLException;
 import java.time.LocalTime;
 import java.util.*;
 
-public class Navigation  extends SPage{
+public class Navigation extends SPage {
 
     @FXML
     private AnchorPane anchor;
@@ -73,7 +77,8 @@ public class Navigation  extends SPage{
     private Text time;
     @FXML
     private ScrollPane scrollPane;
-    @FXML private Image img;
+    @FXML
+    private Group mapGroup;
 
 
     ObservableList<String> options = FXCollections.observableArrayList();
@@ -96,8 +101,8 @@ public class Navigation  extends SPage{
     private HamburgerBasicCloseTransition transition;
     static Double SCALE_DELTA = 1.25;
     static Double SCALE_TOTAL = 2.0;
-    //final Double w = img.getWidth();
-    //final Double h = img.getHeight();
+    //static Double X_DELTA = 0.0;
+    //static Double Y_DELTA = 0.0;
 
     @FXML
     public void initialize() {
@@ -105,17 +110,18 @@ public class Navigation  extends SPage{
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if (( node.get("NODETYPE").equals("WALK"))
+                if ((node.get("NODETYPE").equals("WALK"))
                         || node.get("NODETYPE").equals("PARK")
-                        || ( node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
-                        || ( node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
+                        || (node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
+                        || (node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
                     options.add(node.get("NODEID"));
                     validNodes.add(node);
                 }
 
             }
-            floor1.setVisible(false);
-            changeFloorNodes();
+            mapGroup.setAutoSizeChildren(true);
+//            floor1.setVisible(false);
+//            changeFloorNodes();
 
             startLocation.setItems(options);
             destination.setItems(options);
@@ -130,29 +136,9 @@ public class Navigation  extends SPage{
 
     }
 
-    public void zoom(){
-
-//        //Adds functionality to scrolling
-//        scrollPane.addEventFilter(ScrollEvent.ANY, e ->{
-//            //Consumes the event
-//            e.consume();
-//            if(e.getDeltaY() == 0) return;
-//            double scaleFactor = (e.getDeltaY() > 0) ? SCALE_DELTA : 1/SCALE_DELTA;
-            double newWidth = 1102.0 * SCALE_DELTA;
-            double newHeight = 669.0 * SCALE_DELTA;
-
-            System.out.println(String.valueOf(groundFloor.getFitHeight()) + "   " + newHeight);
-            //Ensures that you do not exceed the limits of the map
-            if(SCALE_DELTA * SCALE_TOTAL >= 1)
-            {
-               groundFloor.setFitWidth(newWidth);
-               groundFloor.setFitHeight(newHeight);
-            }
-        //});
-    }
-
     /**
      * Scales the x coordinate from table for image (5000,3400)
+     *
      * @param xCoord x coordinate from table
      * @return scaled X coordinate
      */
@@ -176,8 +162,10 @@ public class Navigation  extends SPage{
         return newYCoord;
     }
 
-
-    public Double xScaleDouble(double xCoord) {
+    /**
+     * alternative to x and y scale, taking in doubles
+     */
+    public Double xScale(double xCoord) {
         Double imgWidth = 438.0;
         Double proportion = imgWidth / 5000;
 
@@ -186,8 +174,7 @@ public class Navigation  extends SPage{
         return newXCoord;
     }
 
-
-    public Double yScaleDouble(double yCoord) {
+    public Double yScale(double yCoord) {
         Double imgWidth = 298.0;
         Double proportion = imgWidth / 3400;
 
@@ -217,14 +204,13 @@ public class Navigation  extends SPage{
         List<Node> pathNodes = new ArrayList<>();
         try {
             searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++ ){
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
+            for (int i = 0; i < pathList.size() - 1; i++) {
+                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
             }
             etaTotal = searchAlgorithm.getETA(pathNodes);
             minutes = Math.floor(etaTotal);
             seconds = Math.floor((etaTotal - minutes) * 60);
             etaLabel.setText((int) minutes + ":" + (int) seconds);
-
 
 
         } catch (IOException ie) {
@@ -236,8 +222,8 @@ public class Navigation  extends SPage{
         }
 
 
-        Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
+        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
+        Double prevY = yScale(pathNodes.get(0).getYcoord());
 
 
         for (Node node : pathNodes) {
@@ -258,7 +244,7 @@ public class Navigation  extends SPage{
             line.setStroke(Color.RED);
 
 
-            anchor.getChildren().addAll(circ,line);
+            anchor.getChildren().addAll(circ, line);
             prevX = scaledX;
             prevY = scaledY;
         }
@@ -286,7 +272,6 @@ public class Navigation  extends SPage{
         }
 
 
-
         Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
         Double prevY = yScale(pathNodes.get(0).getYcoord());
 
@@ -308,8 +293,7 @@ public class Navigation  extends SPage{
             line.setStroke(Color.RED);
 
 
-
-            anchor.getChildren().addAll(circ,line);
+            anchor.getChildren().addAll(circ, line);
             prevX = scaledX;
             prevY = scaledY;
         }
@@ -319,11 +303,12 @@ public class Navigation  extends SPage{
 
     /**
      * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
+     *
      * @param start String, long name of start node
-     * @param end String, long name of end node
+     * @param end   String, long name of end node
      */
     public void findPath(String start, String end) {
-        if(activePath == 0) anchor.getChildren().clear();
+        if (activePath == 0) anchor.getChildren().clear();
         SearchAlgorithm searchAlgorithm;
         List<Node> pathNodes = new ArrayList<>();
         double etaTotal;
@@ -331,14 +316,13 @@ public class Navigation  extends SPage{
         double seconds;
         try {
             searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++ ){
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i+1)));
+            for (int i = 0; i < pathList.size() - 1; i++) {
+                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
             }
             etaTotal = searchAlgorithm.getETA(pathNodes);
             minutes = Math.floor(etaTotal);
             seconds = Math.floor((etaTotal - minutes) * 60);
             etaLabel.setText((int) minutes + ":" + (int) seconds);
-
 
 
         } catch (IOException ie) {
@@ -350,8 +334,8 @@ public class Navigation  extends SPage{
         }
 
 
-        Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
+        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
+        Double prevY = yScale(pathNodes.get(0).getYcoord());
 
 
         for (Node node : pathNodes) {
@@ -372,7 +356,7 @@ public class Navigation  extends SPage{
             line.setStroke(Color.RED);
 
 
-            anchor.getChildren().addAll(circ,line);
+            anchor.getChildren().addAll(circ, line);
             prevX = scaledX;
             prevY = scaledY;
         }
@@ -380,21 +364,19 @@ public class Navigation  extends SPage{
         activePath = 1;
     }
 
-
-
     /**
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
 
-        System.out.println("Clicked map");
+        //System.out.println("Clicked map");
 
-        //double x = xScaleDouble(event.getX());
-        //double y = yScaleDouble(event.getY());
+        //double x = xScale(event.getX());
+        //double y = yScale(event.getY());
         double x = event.getX();
         double y = event.getY();
 
-        System.out.println(x + " " + y);
+        //System.out.println(x + " " + y);
         double radius = 20;
 
         //Establish current closest recorded node and current least distance
@@ -403,11 +385,12 @@ public class Navigation  extends SPage{
 
         //Loop through nodes
         for (Map<String, String> n : validNodes) {
-            if ((groundFloor.isVisible() && n.get("FLOOR").equals("G"))
-                || (floor1.isVisible() && n.get("FLOOR").equals("1"))) {
+            if (true)
+/*                    (groundFloor.isVisible() && n.get("FLOOR").equals("G"))
+                || (floor1.isVisible() && n.get("FLOOR").equals("1")))*/ {
                 //Get the x and y of that node
-                double currNodeX = xScaleDouble(Double.parseDouble(n.get("XCOORD")));
-                double currNodeY = yScaleDouble(Double.parseDouble(n.get("YCOORD")));
+                double currNodeX = xScale(Double.parseDouble(n.get("XCOORD")));
+                double currNodeY = yScale(Double.parseDouble(n.get("YCOORD")));
 
                 //Get the difference in x and y between input coords and current node coords
                 double xOff = x - currNodeX;
@@ -431,14 +414,13 @@ public class Navigation  extends SPage{
         if (currClosest.isEmpty()) return;
 
         String currCloseName = currClosest.get("LONGNAME");
-        System.out.println(currClosest.get("LONGNAME"));
+        //System.out.println(currClosest.get("LONGNAME"));
 
         if (activePath == 0) {
             if (this.firstNodeSelect == 0) {
                 firstNodeSelect = 1;
                 this.firstNode = currCloseName;
-            }
-            else if (this.firstNodeSelect == 1) {
+            } else if (this.firstNodeSelect == 1) {
                 if (this.firstNode != null && currCloseName != null) {
                     firstNodeSelect = 0;
                     pathList.add(this.firstNode);
@@ -447,8 +429,7 @@ public class Navigation  extends SPage{
                     activePath = 1;
                 }
             }
-        }
-        else if (activePath == 1) {
+        } else if (activePath == 1) {
             anchor.getChildren().clear();
             pathList.add(pathList.size() - 1, currCloseName);
             for (int i = 0; i < pathList.size() - 1; i++) {
@@ -457,9 +438,7 @@ public class Navigation  extends SPage{
         }
     }
 
-
-
-    public void changeFloorNodes(){
+    public void changeFloorNodes() {
         nodeGridAnchor.getChildren().clear();
         int count = 0;
         try {
@@ -474,14 +453,14 @@ public class Navigation  extends SPage{
                         Map<String, String> snode = db.getNode(startNode);
                         Map<String, String> enode = db.getNode(endNode);
                         if (floor1.isVisible() &&
-                                (( snode.get("FLOOR").equals("1")) && (snode.get("BUILDING").equals("Tower") || snode.get("BUILDING").equals("45 Francis")) ) &&
-                                (( enode.get("FLOOR").equals("1")) && (enode.get("BUILDING").equals("Tower") || enode.get("BUILDING").equals("45 Francis")) )) {
-                            drawNodes(snode,enode);
+                                ((snode.get("FLOOR").equals("1")) && (snode.get("BUILDING").equals("Tower") || snode.get("BUILDING").equals("45 Francis"))) &&
+                                ((enode.get("FLOOR").equals("1")) && (enode.get("BUILDING").equals("Tower") || enode.get("BUILDING").equals("45 Francis")))) {
+                            drawNodes(snode, enode);
                             nodesList.add(startNode + endNode);
                             count++;
-                        }else if (groundFloor.isVisible() &&
-                                (snode.get("FLOOR").equals("G") && enode.get("FLOOR").equals("G")) ){
-                            drawNodes(snode,enode);
+                        } else if (groundFloor.isVisible() &&
+                                (snode.get("FLOOR").equals("G") && enode.get("FLOOR").equals("G"))) {
+                            drawNodes(snode, enode);
                             nodesList.add(startNode + endNode);
                             count++;
                         }
@@ -490,12 +469,13 @@ public class Navigation  extends SPage{
                     }
                 }
             }
-        }catch (SQLException sq) {
+        } catch (SQLException sq) {
             sq.printStackTrace();
-        } System.out.println(count);
+        }
+        System.out.println(count);
     }
 
-    public void drawNodes(Map<String, String> snode, Map<String,String> enode) {
+    public void drawNodes(Map<String, String> snode, Map<String, String> enode) {
         Circle circ1 = new Circle();
         Circle circ2 = new Circle();
 
@@ -532,29 +512,49 @@ public class Navigation  extends SPage{
         activePath = 0;
     }
 
-    public void addStop(){
-        if (!(startLocation.getSelectionModel().getSelectedItem() == null)&& (!(destination.getSelectionModel().getSelectedItem() == null))){
+    public void addStop() {
+        if (!(startLocation.getSelectionModel().getSelectedItem() == null) && (!(destination.getSelectionModel().getSelectedItem() == null))) {
             intermediate.setVisible(true);
         }
     }
 
     public void menu(MouseEvent mouseEvent) {
-        if(transition.getRate() == -1) menuDrawer.open();
+        if (transition.getRate() == -1) menuDrawer.open();
         else menuDrawer.close();
         transition.setRate(transition.getRate() * -1);
         transition.play();
     }
 
     public void zoomIn(ActionEvent actionEvent) {
-        SCALE_DELTA+=0.1;
+        SCALE_DELTA += 0.1;
         zoom();
     }
 
     public void zoomOut(ActionEvent actionEvent) {
-        SCALE_DELTA-=0.1;
+        SCALE_DELTA -= 0.1;
         zoom();
     }
 
+    public void zoom() {
+
+        double newWidth = 991.0 * SCALE_DELTA;
+        double newHeight = 669.0 * SCALE_DELTA;
+        double currentScale = mapGroup.getScaleX() / SCALE_DELTA; //need to fix scaling here
+
+        System.out.println(String.valueOf(groundFloor.getFitHeight()) + "   " + SCALE_DELTA);
+
+        //Ensures that you do not exceed the limits of the map
+        if (SCALE_DELTA * SCALE_TOTAL >= 1) {   //what did you do here :/
+            System.out.println(SCALE_DELTA);
+
+            Scale scale = new Scale(currentScale, currentScale);
+            mapGroup.getTransforms().add(scale);
+            //mapGroup.setScaleY(SCALE_DELTA);
+
+            groundFloor.setFitWidth(newWidth);
+            groundFloor.setFitHeight(newHeight);
+        }
+    }
 
 
     public void changeFloor1() throws FileNotFoundException {

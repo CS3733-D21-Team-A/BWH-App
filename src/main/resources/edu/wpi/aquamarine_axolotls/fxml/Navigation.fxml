@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -22,9 +23,9 @@
 
 <AnchorPane fx:id="mainAnchor" maxHeight="900.0" maxWidth="1300.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
    <children>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <BorderPane layoutX="20.0" prefHeight="900.0" prefWidth="1300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <VBox alignment="TOP_CENTER" prefHeight="733.0" prefWidth="238.0" BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_CENTER" prefHeight="733.0" prefWidth="235.0" BorderPane.alignment="CENTER">
                <children>
                   <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="302.0" promptText="Start location" style="-fx-font-size: 14; -fx-font-family: Times;">
                      <VBox.margin>
@@ -138,41 +139,40 @@
             <Insets left="5.0" right="5.0" />
          </padding>
          <center>
-            <ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onScroll="#zoom" pannable="true" prefHeight="706.0" prefWidth="961.0" BorderPane.alignment="TOP_LEFT">
-               <content>
-                  <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="1102.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/groundFloor.png" />
-                     </image>
-                  </ImageView>
-               </content>
-            </ScrollPane>
-         </center>
-         <right>
-            <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="619.0" prefWidth="71.0" BorderPane.alignment="CENTER">
+            <Group BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fx:id="floor1" fitHeight="327.0" fitWidth="438.0" onMouseClicked="#getNearestNode" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <image>
-                        <Image url="@../../../../../java/edu/wpi/aquamarine_axolotls/views/Brigham-Womens-TO-USE.jpeg" />
-                     </image>
-                  </ImageView>
-                  <AnchorPane fx:id="nodeGridAnchor" layoutX="-170.0" layoutY="34.0" prefHeight="810.0" prefWidth="897.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <AnchorPane fx:id="anchor" layoutX="-227.0" layoutY="34.0" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="755.0" prefWidth="71.0" AnchorPane.bottomAnchor="23.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ScrollPane fx:id="scrollPane" layoutX="8.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseDragged="#pan" onScroll="#zoom" pannable="true" prefHeight="706.0" prefWidth="989.0">
+                     <content>
+                        <Group>
+                           <children>
+                              <ImageView fx:id="groundFloor" fitHeight="669.0" fitWidth="991.0" onMouseClicked="#getNearestNode" onMouseDragged="#pan" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../img/groundFloor.png" />
+                                 </image>
+                              </ImageView>
+                              <Group fx:id="mapGroup">
+                                 <children>
+                                    <AnchorPane fx:id="nodeGridAnchor" prefHeight="669.0" prefWidth="991.0" />
+                                    <AnchorPane fx:id="anchor" onMouseClicked="#getNearestNode" pickOnBounds="true" prefHeight="669.0" prefWidth="991.0" />
+                                 </children>
+                              </Group>
+                           </children>
+                        </Group>
+                     </content>
+                  </ScrollPane>
+                  <MenuBar prefHeight="33.0" prefWidth="120.0">
+                     <menus>
+                        <Menu mnemonicParsing="false" text="Change Floor">
+                           <items>
+                              <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                              <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
                </children>
-            </AnchorPane>
-         </right>
-         <bottom>
-            <MenuBar prefHeight="46.0" prefWidth="1270.0" BorderPane.alignment="CENTER">
-               <menus>
-                  <Menu mnemonicParsing="false" text="Change Floor">
-                     <items>
-                        <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
-                        <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
-         </bottom>
+            </Group>
+         </center>
       </BorderPane>
    </children>
    <padding>
