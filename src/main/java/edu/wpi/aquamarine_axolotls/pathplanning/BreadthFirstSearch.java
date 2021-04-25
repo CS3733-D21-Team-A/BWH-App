@@ -66,6 +66,7 @@ public class BreadthFirstSearch extends AbsAlgorithmMethod{
         List<Node> path = null;
 
         boolean foundGoal = false;
+        visited.add(start);
         queue.add(start);
         Node current = start;
         cameFrom.put(start,null);

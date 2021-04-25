@@ -185,9 +185,6 @@ public class BFSTest {
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
-        expectedOut.add(B);
-        expectedOut.add(D);
-        expectedOut.add(E);
         expectedOut.add(C);
 
         BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(loopNodeList, loopEdgeList);

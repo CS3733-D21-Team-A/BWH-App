@@ -391,7 +391,7 @@ public class SearchAlgorithm{
                 }
             }
         }
-        System.out.println("pathfound");
+        System.out.println("pathfound:" + cameFrom);
         //Build the actual path that we can return
         List<Node> foundPath = buildPath(cameFrom, goal);
         //Check if the created path is valid and return if it is
