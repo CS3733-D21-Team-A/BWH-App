@@ -18,6 +18,7 @@ public class DatabaseController implements AutoCloseable {
 	final private Table edgeTable;
 	final private Table attrTable;
 	final private Table serviceRequestsTable;
+	final private Table userTable;
 	/*
 	 * Map for getting service request tables.
 	 * Key: Service Request enumeration.
@@ -53,6 +54,7 @@ public class DatabaseController implements AutoCloseable {
 		edgeTable = tableFactory.getTable(TABLES.EDGES);
 		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+		userTable = tableFactory.getTable(TABLES.USERS);
 
 		requestsTables = new HashMap<>();
 		for (SERVICEREQUEST table : SERVICEREQUEST.values()) {
@@ -498,7 +500,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void addUser(Map<String, String> newUser) throws SQLException
 	{
-
+			userTable.addEntry(newUser);
 	}
 
 	/**
@@ -506,9 +508,9 @@ public class DatabaseController implements AutoCloseable {
 	 * @param user
 	 * @throws SQLException
 	 */
-	public void editUser(Map<String, String> user) throws SQLException
+	public void editUser(String username, Map<String, String> user) throws SQLException
 	{
-
+		userTable.editEntry(username, user);
 	}
 
 	/**
@@ -518,7 +520,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void deleteUser(String username) throws SQLException
 	{
-
+		userTable.deleteEntry(username);
 	}
 
 	/**
