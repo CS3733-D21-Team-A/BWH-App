@@ -9,8 +9,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -22,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,12 +56,6 @@ public class NodeEditing extends SEditing {
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
 
-    @FXML ImageView groundFloor;
-    @FXML ImageView floor1;
-
-    @FXML private AnchorPane anchor;
-    @FXML private AnchorPane nodeGridAnchor;
-
     @FXML private TableView table;
     @FXML private TableColumn nodeIDCol;
     @FXML private TableColumn lNameCol;
@@ -67,8 +66,19 @@ public class NodeEditing extends SEditing {
     @FXML private TableColumn buildingCol;
     @FXML private TableColumn typeCol;
 
-    String state = "";
+    @FXML private ScrollPane mapScrollPane;
+    @FXML private Canvas mapCanvas;
 
+
+
+    private Map<String, String> floors;
+    static String FLOOR = "G";
+    private Group zoomGroup;
+    private int zoom;
+    List<Node> validNodes = new ArrayList<>();
+
+
+    String state = "";
     DatabaseController db;
     CSVHandler csvHandler;
 
@@ -80,9 +90,6 @@ public class NodeEditing extends SEditing {
 
         ObservableList<String> options = FXCollections.observableArrayList();
         submissionlabel.setVisible(true);
-        anchor.setVisible(false);
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
 
         nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
         lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
@@ -110,29 +117,88 @@ public class NodeEditing extends SEditing {
 
             for (Map<String, String> node : nodes) {
                 options.add(node.get("NODEID"));
-                table.getItems().add(new Node(
-                        node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")),
-                        node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"), node.get("LONGNAME"), node.get("SHORTNAME")
-                ));
-                drawNodes(node);
+                Node cur = new Node(node.get("NODEID"),
+                        Integer.parseInt(node.get("XCOORD")),
+                        Integer.parseInt(node.get("YCOORD")),
+                        node.get("FLOOR"), node.get("BUILDING"),
+                        node.get("NODETYPE"), node.get("LONGNAME"),
+                        node.get("SHORTNAME")
+                );
+                table.getItems().add(cur);
+                validNodes.add(cur);
+                drawSingleNode(cur);
             }
             nodeDropdown.setItems(options);
-            changeFloorNodes();
+            floors = new HashMap<>();
+            floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+
+            mapScrollPane.pannableProperty().set(true);
+            Group contentGroup = new Group();
+            zoomGroup = new Group();
+            contentGroup.getChildren().add(zoomGroup);
+            zoomGroup.getChildren().add(mapCanvas);
+            mapScrollPane.setContent(contentGroup);
+            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+            drawFloor(FLOOR);
+            zoom = 1;
+
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
-    public void changeGroundFloor(){
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
-        changeFloorNodes();
+    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
+    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
+
+    public void zoomIn(ActionEvent actionEvent) {
+        if(zoom < 3){
+            zoomGroup.setScaleX(++zoom);
+            zoomGroup.setScaleY(zoom);
+        }
     }
 
-    public void changeFloor1(){
-        groundFloor.setVisible(false);
-        floor1.setVisible(true);
-        changeFloorNodes();
+    public void resetZoom(){
+        zoomGroup.setScaleX(1);
+        zoomGroup.setScaleY(1);
+    }
+
+    public void zoomOut(ActionEvent actionEvent) {
+        if(zoom > 1){
+            zoomGroup.setScaleX(--zoom);
+            zoomGroup.setScaleY(zoom);
+        }
+    }
+
+    public void resetMap(String floor) {
+        resetZoom();
+        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        FLOOR = floor;
+    }
+
+    public void resetMapAndDraw(String floor) {
+        resetMap(floor);
+        drawFloor(floor);
+    }
+
+    public void drawFloor(String floor){
+        resetMap(floor);
+
+        try {
+            for( Map<String, String> node : db.getNodes()){ if(node.get("FLOOR").equals(floor)) drawSingleNode(node); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void changeFloor1() {
+        resetMapAndDraw("1");
+    }
+
+    public void changeGroundFloor() {
+        resetMapAndDraw("G");
     }
 
     public void clearfields(){
@@ -243,7 +309,7 @@ public class NodeEditing extends SEditing {
                 db.deleteNode(current_nodeID);
                 submissionlabel.setText("You have deleted " + current_nodeID);
             }else{
-                submissionlabel.setText("Edge does not exist");
+                submissionlabel.setText("Node does not exist");
             }
         }catch (SQLException sq){
             sq.printStackTrace();
@@ -342,14 +408,15 @@ public class NodeEditing extends SEditing {
         switch (state){
             case "delete":
                 delete(nodeDropdown.getSelectionModel().getSelectedItem().toString());
+                drawFloor(FLOOR);
                 break;
             case "add":
                 add(nodeID.getText());
-                drawNodes(db.getNode(nodeID.getText()));
+                drawFloor(FLOOR);
                 break;
             case "edit":
                 edit(nodeDropdown.getSelectionModel().getSelectedItem().toString());
-                drawNodes(db.getNode(nodeDropdown.getSelectionModel().getSelectedItem().toString()));
+                drawFloor(FLOOR);
                 break;
             case "":
                 submissionlabel.setText("Invalid submission");
@@ -365,37 +432,26 @@ public class NodeEditing extends SEditing {
         sceneSwitch("EdgeEditing");
     }
 
-    public void changeFloorNodes(){
-        nodeGridAnchor.getChildren().clear();
-        int count = 0;
-        try {
-            List<Map<String, String>> nodes = db.getNodes();
-            for (Map<String, String> node : nodes) {
-                if (floor1.isVisible() && node.get("FLOOR").equals("1")) {
-                    drawNodes(node);
-                } else if (groundFloor.isVisible() && (node.get("FLOOR").equals("G"))) {
-                    drawNodes(node);
-                    count++;
-                }
-            }
-        }catch (SQLException sq) {
-            sq.printStackTrace();
-        } System.out.println(count);
+    public void drawSingleNode(Map<String, String> node) {
+        double x = xScale(Integer.parseInt(node.get("XCOORD")));
+        double y = yScale(Integer.parseInt(node.get("YCOORD")));
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillOval(x, y, radius, radius);
     }
 
-    public void drawNodes(Map<String, String> node) {
-        Circle circ1 = new Circle();
-
-        Double startX = xScale((int) Double.parseDouble(node.get("XCOORD")));
-        Double startY = yScale((int) Double.parseDouble(node.get("YCOORD")));
-
-        circ1.setCenterX(startX);
-        circ1.setCenterY(startY);
-        circ1.setRadius(2);
-        circ1.setFill(Color.RED);
-
-        nodeGridAnchor.getChildren().addAll(circ1);
-
+    public void drawSingleNode(Node node) {
+        double x = xScale(node.getXcoord());
+        double y = yScale(node.getYcoord());
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillOval(x, y, radius, radius);
     }
 
 }
