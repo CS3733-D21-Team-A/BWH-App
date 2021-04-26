@@ -4,7 +4,7 @@ import java.util.*;
 
 public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
 
-    protected PriorityQueue<CostPair> frontier;
+    protected PriorityQueue<CostPair> frontier = new PriorityQueue<>();
 
     /**
      * Completely clears the frontier in the search algorithm

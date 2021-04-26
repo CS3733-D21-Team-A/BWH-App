@@ -48,6 +48,7 @@ public class AStar extends AbsHeuristicBased{
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+
     }
 
 

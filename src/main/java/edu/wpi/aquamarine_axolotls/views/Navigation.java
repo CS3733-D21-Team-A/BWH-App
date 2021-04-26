@@ -175,6 +175,9 @@ public class Navigation extends SPage {
     }
 
     public void findPath() {
+        currPath.clear();
+        stopList.clear();
+        activePath = 0;
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
             return;
         }
