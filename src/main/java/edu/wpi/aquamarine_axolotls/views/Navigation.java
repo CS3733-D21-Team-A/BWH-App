@@ -2,9 +2,6 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
@@ -18,11 +15,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.io.*;
 import java.net.URISyntaxException;
@@ -141,44 +135,48 @@ public class Navigation extends SPage {
     }
 
     public void clearNodes() {
-        resetMap(FLOOR);
         stopList.clear();
+        currPath.clear();
+        activePath = 0;
+        drawFloor(FLOOR);
         startLocation.getSelectionModel().clearSelection();
         destination.getSelectionModel().clearSelection();
         intermediate.getSelectionModel().clearSelection();
-        activePath = 0;
+    }
+
+    public void drawFloor(String floor){
+        resetMap(FLOOR);
+        for (Node n: validNodes) {
+            if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D());
+        }
+
+        if (activePath == 1) {
+            for (int i = 0; i < currPath.size() - 1; i++) {
+                if (currPath.get(i).getFloor().equals(FLOOR) &&
+                    currPath.get(i + 1).getFloor().equals(FLOOR)) {
+                    drawNodes(currPath.get(i), currPath.get(i + 1));
+                }
+            }
+        }
     }
 
     public void resetMap(String floor) {
         resetZoom();
         mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
         mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
-        FLOOR = floor;
+        //FLOOR = floor;
     }
-
-    public void resetMapAndDraw(String floor) {
-        resetMap(floor);
-        drawFloor(floor);
-    }
-
-    public void drawFloor(String floor){
-        resetMap(FLOOR);
-        for (Node n: validNodes) if(n.getFloor().equals(floor)) drawSingleNode(n);
-
-        if (activePath == 1) {
-            for (int i = 0; i < currPath.size() - 1; i++) {
-                drawNodes(currPath.get(i), currPath.get(i + 1));
-            }
-        }
-    }
-
 
     public void changeFloor1() throws FileNotFoundException {
-        resetMapAndDraw("1");
+        FLOOR = "1";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("1");
     }
 
     public void changeGroundFloor() throws FileNotFoundException {
-        resetMapAndDraw("G");
+        FLOOR = "G";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("G");
     }
 
     public void findPath() {
@@ -187,8 +185,10 @@ public class Navigation extends SPage {
         }
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
-        resetMap(FLOOR);
-        findPath(start, end);
+        stopList.add(start);
+        stopList.add(end);
+        findPathSingleSegment(start, end);
+        drawFloor(FLOOR);
     }
 
 
@@ -242,27 +242,25 @@ public class Navigation extends SPage {
 
     /**
      * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
-     *
      * @param start String, long name of start node
      * @param end   String, long name of end node
      */
-    public void findPath(String start, String end) {
-        stopList.add(start);
-        stopList.add(end);
+    public void findPathSingleSegment(String start, String end) {
         SearchAlgorithm searchAlgorithm;
         double etaTotal, minutes, seconds;
-        currPath.clear();
+        //currPath.clear();
         try {
             searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < stopList.size() - 1; i++) {
-                currPath.addAll(searchAlgorithm.getPath(stopList.get(i), stopList.get(i + 1)));
-            }
+            //for (int i = 0; i < stopList.size() - 1; i++) {
+                //currPath.addAll(searchAlgorithm.getPath(stopList.get(i), stopList.get(i + 1)));
+            //}
+            currPath.addAll(searchAlgorithm.getPath(start, end));
 
+            /*
             etaTotal = searchAlgorithm.getETA(currPath);
             minutes = Math.floor(etaTotal);
             seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);
-
+            etaLabel.setText((int) minutes + ":" + (int) seconds);*/
 
         } catch (IOException | URISyntaxException | SQLException e) {
             e.printStackTrace();
@@ -272,80 +270,85 @@ public class Navigation extends SPage {
 
         firstNodeSelect = 0;
         activePath = 1;
-        drawFloor(FLOOR);
-        drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
+        //drawFloor(FLOOR);
+        //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
     }
 
     /**
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
-        //System.out.println("Clicked map");
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            //System.out.println("Clicked map");
 
-        //double x = xScale(event.getX());
-        //double y = yScale(event.getY());
-        double x = event.getX();
-        double y = event.getY();
+            //double x = xScale(event.getX());
+            //double y = yScale(event.getY());
+            double x = event.getX();
+            double y = event.getY();
 
-        //System.out.println(x + " " + y);
-        double radius = 20;
+            //System.out.println(x + " " + y);
+            double radius = 20;
 
-        //Establish current closest recorded node and current least distance
-        Node currClosest = null;
-        double currLeastDist = 100000;
+            //Establish current closest recorded node and current least distance
+            Node currClosest = null;
+            double currLeastDist = 100000;
 
-        //Loop through nodes
-        for (Node n : validNodes) {
-            if (
-                    (FLOOR == "G" && n.getFloor().equals("G"))
-                            || (FLOOR == "1" && n.getFloor().equals("1"))) {
-                //Get the x and y of that node
-                double currNodeX = xScale(n.getXcoord());
-                double currNodeY = yScale(n.getYcoord());
+            //Loop through nodes
+            for (Node n : validNodes) {
+                if ((FLOOR == "G" && n.getFloor().equals("G"))
+                        || (FLOOR == "1" && n.getFloor().equals("1"))) {
+                    //Get the x and y of that node
+                    double currNodeX = xScale(n.getXcoord());
+                    double currNodeY = yScale(n.getYcoord());
 
-                //Get the difference in x and y between input coords and current node coords
-                double xOff = x - currNodeX;
-                double yOff = y - currNodeY;
+                    //Get the difference in x and y between input coords and current node coords
+                    double xOff = x - currNodeX;
+                    double yOff = y - currNodeY;
 
-                //Give 'em the ol' pythagoras maneuver
-                double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
-                dist = Math.sqrt(dist);
+                    //Give 'em the ol' pythagoras maneuver
+                    double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                    dist = Math.sqrt(dist);
 
-                //If the distance is LESS than the given radius...
-                if (dist < radius) {
-                    //...AND the distance is less than the current min, update current closest node
-                    if (dist < currLeastDist) {
-                        currClosest = n;
-                        currLeastDist = dist;
+                    //If the distance is LESS than the given radius...
+                    if (dist < radius) {
+                        //...AND the distance is less than the current min, update current closest node
+                        if (dist < currLeastDist) {
+                            currClosest = n;
+                            currLeastDist = dist;
+                        }
                     }
                 }
             }
-        }
 
-        if (currClosest == null) return;
+            if (currClosest == null) return;
 
-        String currCloseName = currClosest.getLongName();
+            else {
+                String currCloseName = currClosest.getLongName();
 
-        if (activePath == 0) { //if there's no active path, we'll handle that
-            if (firstNodeSelect == 0) {
-                firstNode = currCloseName;
-                firstNodeSelect = 1;
-            } else if (firstNodeSelect == 1) {
-                stopList.add(firstNode);
-                stopList.add(currCloseName);
-                findPath(stopList.get(0), stopList.get(1));
-                activePath = 1;
-                firstNodeSelect = 0;
+                if (activePath == 0) { //if there's no active path, we'll handle that
+                    if (firstNodeSelect == 0) {
+                        firstNode = currCloseName;
+                        firstNodeSelect = 1;
+                    } else if (firstNodeSelect == 1) {
+                        stopList.clear();
+                        stopList.add(firstNode);
+                        stopList.add(currCloseName);
+                        currPath.clear();
+                        findPathSingleSegment(stopList.get(0), stopList.get(1));
+                        drawFloor(FLOOR);
+                    }
+                }
+                else if (activePath == 1) {
+                    stopList.add(stopList.size() - 1, currCloseName);
+                    currPath.clear();
+                    for (int i = 0; i < stopList.size() - 1; i++) {
+                        findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
+                    }
+                    drawFloor(FLOOR);
+                }
             }
-        }
-        else if (activePath == 1) {
-            stopList.add(stopList.size() - 1, currCloseName);
-            for (int i = 0; i < stopList.size() - 1; i++) {
-                findPath(stopList.get(i), stopList.get(i + 1));
-            }
-        }
 
-        //System.out.println(currClosest.get("LONGNAME"));
+            //System.out.println(currClosest.get("LONGNAME"));
 
 //        if (activePath == 0) {
 //            if (this.firstNodeSelect == 0) {
@@ -367,15 +370,34 @@ public class Navigation extends SPage {
 //                findPath(pathList.get(i), pathList.get(i + 1));
 //            }
 //        }
+        }
     }
 
-    public void drawSingleNode(Node node) {
+    private double getDistBetweenNodes(Node snode, Node enode) {
+
+        double sNodeX = xScale(snode.getXcoord());
+        double sNodeY = yScale(snode.getYcoord());
+
+        double eNodeX = xScale(enode.getXcoord());
+        double eNodeY = yScale(enode.getYcoord());
+
+        //Get the difference in x and y between input coords and current node coords
+        double xOff = eNodeX - sNodeX;
+        double yOff = eNodeY - sNodeY;
+
+        //Give 'em the ol' pythagoras maneuver
+        double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+        dist = Math.sqrt(dist);
+
+        return dist;
+    }
+
+    public void drawSingleNode(Node node, GraphicsContext gc) {
         double x = xScale(node.getXcoord());
         double y = yScale(node.getYcoord());
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         gc.setFill(Color.BLUE);
         gc.fillOval(x, y, radius, radius);
     }
@@ -383,12 +405,13 @@ public class Navigation extends SPage {
     public void drawNodes(Node snode, Node enode) {
         if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
             GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-            gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
+            /*gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
             gc.lineTo(xScale(enode.getXcoord()), yScale(enode.getYcoord()));
-            gc.stroke();
+            gc.stroke();*/
+            gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
 
-            drawSingleNode(snode);
-            drawSingleNode(enode);
+            drawSingleNode(snode, gc);
+            drawSingleNode(enode, gc);
         }
     }
 
