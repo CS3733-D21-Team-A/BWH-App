@@ -8,12 +8,10 @@ import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
-import javafx.animation.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,24 +19,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Scale;
-import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.*;
 
 public class Navigation extends SPage {
@@ -85,7 +73,8 @@ public class Navigation extends SPage {
     List<Node> validNodes = new ArrayList<>();
     private int firstNodeSelect = 0;
     private String firstNode;
-    private List<String> pathList = new ArrayList<>();
+    private List<String> stopList = new ArrayList<>();
+    private List<Node> currPath = new ArrayList<>();
     private int activePath = 0;
 
 
@@ -147,6 +136,14 @@ public class Navigation extends SPage {
             e.printStackTrace();
         }
 
+    }
+    
+    private Node getNodeFromValid(String longName) {
+        for (Node n: validNodes) {
+            if (n.getLongName().equals(longName)) return n;
+        }
+        System.out.println("No valid node with that name");
+        return null;
     }
 
     /**
@@ -294,8 +291,8 @@ public class Navigation extends SPage {
         currPath.clear();
         try {
             searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++) {
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
+            for (int i = 0; i < stopList.size() - 1; i++) {
+                currPath.addAll(searchAlgorithm.getPath(stopList.get(i), stopList.get(i + 1)));
             }
 
             etaTotal = searchAlgorithm.getETA(currPath);
@@ -312,6 +309,8 @@ public class Navigation extends SPage {
 
         firstNodeSelect = 0;
         activePath = 1;
+        drawFloor(FLOOR);
+        drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
     }
 
     /**
@@ -329,17 +328,17 @@ public class Navigation extends SPage {
         double radius = 20;
 
         //Establish current closest recorded node and current least distance
-        Map<String, String> currClosest = new HashMap<>();
+        Node currClosest = null;
         double currLeastDist = 100000;
 
         //Loop through nodes
-        for (Map<String, String> n : validNodes) {
+        for (Node n : validNodes) {
             if (
-                    (FLOOR == 0 && n.get("FLOOR").equals("G"))
-                            || (FLOOR == 1 && n.get("FLOOR").equals("1"))) {
+                    (FLOOR == "G" && n.getFloor().equals("G"))
+                            || (FLOOR == "1" && n.getFloor().equals("1"))) {
                 //Get the x and y of that node
-                double currNodeX = xScale(Double.parseDouble(n.get("XCOORD")));
-                double currNodeY = yScale(Double.parseDouble(n.get("YCOORD")));
+                double currNodeX = xScale(n.getXcoord());
+                double currNodeY = yScale(n.getYcoord());
 
                 //Get the difference in x and y between input coords and current node coords
                 double xOff = x - currNodeX;
@@ -360,31 +359,51 @@ public class Navigation extends SPage {
             }
         }
 
-        if (currClosest.isEmpty()) return;
+        if (currClosest == null) return;
 
-        String currCloseName = currClosest.get("LONGNAME");
-        //System.out.println(currClosest.get("LONGNAME"));
+        String currCloseName = currClosest.getLongName();
 
-        if (activePath == 0) {
-            if (this.firstNodeSelect == 0) {
+        if (activePath == 0) { //if there's no active path, we'll handle that
+            if (firstNodeSelect == 0) {
+                firstNode = currCloseName;
                 firstNodeSelect = 1;
-                this.firstNode = currCloseName;
-            } else if (this.firstNodeSelect == 1) {
-                if (this.firstNode != null && currCloseName != null) {
-                    firstNodeSelect = 0;
-                    pathList.add(this.firstNode);
-                    pathList.add(currCloseName);
-                    findPath(pathList.get(0), pathList.get(1));
-                    activePath = 1;
-                }
-            }
-        } else if (activePath == 1) {
-            anchor.getChildren().clear();
-            pathList.add(pathList.size() - 1, currCloseName);
-            for (int i = 0; i < pathList.size() - 1; i++) {
-                findPath(pathList.get(i), pathList.get(i + 1));
+            } else if (firstNodeSelect == 1) {
+                stopList.add(firstNode);
+                stopList.add(currCloseName);
+                findPath(stopList.get(0), stopList.get(1));
+                activePath = 1;
+                firstNodeSelect = 0;
             }
         }
+        else if (activePath == 1) {
+            stopList.add(stopList.size() - 1, currCloseName);
+            for (int i = 0; i < stopList.size() - 1; i++) {
+                findPath(stopList.get(i), stopList.get(i + 1));
+            }
+        }
+
+        //System.out.println(currClosest.get("LONGNAME"));
+
+//        if (activePath == 0) {
+//            if (this.firstNodeSelect == 0) {
+//                firstNodeSelect = 1;
+//                this.firstNode = currCloseName;
+//            } else if (this.firstNodeSelect == 1) {
+//                if (this.firstNode != null && currCloseName != null) {
+//                    firstNodeSelect = 0;
+//                    pathList.add(this.firstNode);
+//                    pathList.add(currCloseName);
+//                    findPath(pathList.get(0), pathList.get(1));
+//                    activePath = 1;
+//                }
+//            }
+//        } else if (activePath == 1) {
+//            anchor.getChildren().clear();
+//            pathList.add(pathList.size() - 1, currCloseName);
+//            for (int i = 0; i < pathList.size() - 1; i++) {
+//                findPath(pathList.get(i), pathList.get(i + 1));
+//            }
+//        }
     }
 
     public void changeFloorNodes() {
