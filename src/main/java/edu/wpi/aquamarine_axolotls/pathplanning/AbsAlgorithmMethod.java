@@ -110,7 +110,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The time, in minutes, that it will take for a patient to walk from the
      *          first node to the second
      */
-    protected double getETASingleEdge(Node start, Node goal){
+    double getETASingleEdge(Node start, Node goal){
         double walkingSpeed = 220 * 3.75; //2.5 miles/h
         double distance = getCostTo(start,goal);
         double ETASingleEdge;
@@ -205,6 +205,8 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         //TODO: FIGURE OUT HOW TF TO TEST THIS
         ArrayList<String> returnList = new ArrayList<String>();
 
+        if(path.size() <= 1) return returnList;
+
         int stepNum = 1;
 
         for(int i = 0; i < path.size(); i++){
@@ -215,7 +217,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
         double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
-        returnList.add(stepNum + ". Walk " + firstEdgeDistanceFeet + " feet towards " + path.get(1).getShortName() + ".");
+        returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getShortName() + ".");
         stepNum++;
 
         for (int i = 1; i < path.size() - 1; i++){
@@ -224,13 +226,16 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             double angleOut = absAngleEdge(path.get(i), path.get(i+1));
             double turnAngle = angleOut - angleIn;
 
+            if(turnAngle <= -180.0) turnAngle += 360;
+            if(turnAngle > 180.0) turnAngle -= 360;
+
             if(turnAngle > 5 && turnAngle < 60){
                 returnList.add(stepNum + ". Make a slight left turn.");
                 stepNum++;
             } else if (turnAngle >= 60 && turnAngle < 120){
                 returnList.add(stepNum + ". Make a left turn.");
                 stepNum++;
-            } else if (turnAngle >= 120 && turnAngle < 180){
+            } else if (turnAngle >= 120 && turnAngle < 178){
                 returnList.add(stepNum + ". Make an extreme left turn.");
                 stepNum++;
             } else if (turnAngle < 5 && turnAngle > -60){
@@ -239,10 +244,10 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             } else if (turnAngle <= -60 && turnAngle > -120){
                 returnList.add(stepNum + ". Make a right turn.");
                 stepNum++;
-            } else if (turnAngle <= -120 && turnAngle > -180){
+            } else if (turnAngle <= -120 && turnAngle > -178){
                 returnList.add(stepNum + ". Make an extreme right turn.");
                 stepNum++;
-            } else if (turnAngle == -180.0){
+            } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
                 returnList.add(stepNum + ". Turn around.");
                 stepNum++;
             }
@@ -250,7 +255,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
             double edgeDistanceFeet = edgeDistancePixels * 3.75;
 
-            returnList.add(stepNum + ". Walk " + edgeDistanceFeet + " feet towards " + path.get(i+1).getShortName() + ".");
+            returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getShortName() + ".");
             stepNum++;
         }
         return returnList;
@@ -258,7 +263,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
     /**
      * Calculates the absolute angle, in degrees, of a line connecting two nodes with respect
-     * to the horizontal x-axis
+     * to the x-axis
      * @param start The starting node
      * @param end The ending node
      * @return The absolute angle, in degrees of a line connecting the two nodes.
@@ -269,10 +274,6 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         double deltaY = end.getYcoord() - start.getYcoord();
         double radians = Math.atan2(deltaY, deltaX);
         double degrees = radians * 180.0 / Math.PI;
-
-        if(degrees < -180.0) degrees += 360;
-        if(degrees > 180.0) degrees -= 360;
-
         return degrees;
     }
 
@@ -286,6 +287,8 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     protected boolean nodeIsUnimportant(List<Node> path, Node node){
 
         int nodeIndex = path.indexOf(node);
+
+        if (nodeIndex == 0 || nodeIndex == path.size() - 1) return false;
 
         double angleIn = absAngleEdge(path.get(nodeIndex-1), path.get(nodeIndex));
         double angleOut = absAngleEdge(path.get(nodeIndex), path.get(nodeIndex+1));
