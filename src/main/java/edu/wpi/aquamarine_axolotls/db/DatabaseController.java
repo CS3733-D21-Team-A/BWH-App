@@ -580,7 +580,15 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public Map<String, String> getUserByEmail(String email) throws SQLException
 	{
-		return userTable.getEntriesByValue("EMAIL", email).get(0);
+		List<Map<String, String>> accounts = userTable.getEntriesByValue("EMAIL", email);
+		if(accounts.size() != 0)
+		{
+			return accounts.get(0);
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/** Changes the password for the user to the new password if the email and username point to the
