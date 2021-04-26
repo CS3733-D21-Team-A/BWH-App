@@ -58,7 +58,7 @@ public class BreadthFirstSearch extends AbsAlgorithmMethod {
     }
 
     /**
-     * Determines the most efficient path from a start node to end node using the A* algorithm
+     * Determines the most efficient path from a start node to end node using the BFS algorithm
      * @param startID The ID of the node to start at
      * @param endID The ID of the node to go to
      * @return
