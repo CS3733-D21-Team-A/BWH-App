@@ -35,7 +35,14 @@ public class FoodDelivery extends SServiceRequest {
     private JFXComboBox roomNumber;
 
     @FXML
-    private ComboBox foodOptions;
+    private JFXComboBox foodOptions;
+
+    @FXML
+    private JFXComboBox drinkOptions;
+
+    @FXML
+    private JFXComboBox numberServings;
+
 
     @FXML
     private JFXTextArea dietaryRestA;
@@ -45,6 +52,8 @@ public class FoodDelivery extends SServiceRequest {
 
     @FXML
     private ArrayList<String> nodeIDS;
+
+
     @FXML
     JFXHamburger burger;
 
@@ -57,7 +66,6 @@ public class FoodDelivery extends SServiceRequest {
     HamburgerBasicCloseTransition transition;
 
 
-
     @FXML
     public void initialize() {
         foodOptions.setItems(FXCollections
@@ -67,6 +75,12 @@ public class FoodDelivery extends SServiceRequest {
         nodeIDS.add("EINFO00101");
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
+        );
+        drinkOptions.setItems(FXCollections
+                .observableArrayList("Water","Coca-Cola", "Sprite", "Milk", "Orange Juice")
+        );
+        numberServings.setItems(FXCollections
+                .observableArrayList("1","2", "3", "4", "5")
         );
     }
 
@@ -120,6 +134,8 @@ public class FoodDelivery extends SServiceRequest {
         }
     }
 
+
+
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
         else menuDrawer.close();
@@ -127,3 +143,4 @@ public class FoodDelivery extends SServiceRequest {
         transition.play();
     }
 }
+

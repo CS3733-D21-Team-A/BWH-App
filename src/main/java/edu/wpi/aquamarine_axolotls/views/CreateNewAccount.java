@@ -73,17 +73,17 @@ public class CreateNewAccount extends SPage {
     @FXML
     public void initialize() {
     }
-/*
 
     public void confirmUserDoesNotExist(){
 
         String CUusername = userName.getText();
-        if(db.checkNotPreexistingUser(CUusername)
+        if(db.checkUserExists(CUusername));
+
         //user does not already exist, so the username is Valid.
 
 
     }
-*/
+
 
     public void goHome(javafx.event.ActionEvent event) {
         try {

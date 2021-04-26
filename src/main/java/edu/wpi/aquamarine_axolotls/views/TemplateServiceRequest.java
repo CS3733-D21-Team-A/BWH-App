@@ -46,11 +46,7 @@ public class TemplateServiceRequest {
         @FXML
         private TextField lastName;
 
-        @FXML
-        private TextField deliveryTime;
 
-        @FXML
-        private TextField roomNumber;
 
         @FXML
         private ComboBox foodOptions;
@@ -66,6 +62,7 @@ public class TemplateServiceRequest {
         @FXML
         private ToggleButton toggleButton;
 
+        /*
         @FXML
         public void initialize() {
             ObservableList<String> options = FXCollections.observableArrayList();
@@ -83,6 +80,8 @@ public class TemplateServiceRequest {
                 e.printStackTrace();
             }
         }
+
+         */
 
 
         @FXML

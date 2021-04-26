@@ -5,6 +5,7 @@ import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 
 import javafx.scene.layout.VBox;
@@ -41,6 +42,11 @@ public class FloralDelivery extends SServiceRequest {
     @FXML
     VBox box;
 
+    @FXML
+    private JFXComboBox flowerOptions;
+
+    @FXML
+    private JFXComboBox vaseOptions;
     HamburgerBasicCloseTransition transition;
 
 
@@ -57,6 +63,13 @@ public class FloralDelivery extends SServiceRequest {
         nodeIDS.add("EINFO00101");
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
+        );
+        flowerOptions.setItems(FXCollections
+                .observableArrayList("Roses","Sunflowers", "Peruvian Lilies", "Hydrangeas", "Orchids")
+        );
+
+        vaseOptions.setItems(FXCollections
+                .observableArrayList("Bouquet Vase","Square Vase", "Cylinder Vase", "Milk Bottle", "Pedestal Vase")
         );
     }
 
