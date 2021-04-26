@@ -44,10 +44,6 @@ import java.util.*;
 public class Navigation extends SPage {
 
     @FXML
-    private AnchorPane anchor;
-    @FXML
-    private AnchorPane nodeGridAnchor;
-    @FXML
     private ImageView groundFloor;
     @FXML
     private JFXComboBox startLocation;
@@ -72,21 +68,21 @@ public class Navigation extends SPage {
     @FXML
     private Text time;
     @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private Group mapGroup;
-    @FXML
-    private Canvas nodeCanvas;
-    @FXML
     private JFXHamburger burger;
     @FXML
     private JFXDrawer menuDrawer;
     @FXML
     private VBox box;
 
+    @FXML Canvas mapCanvas;
+    @FXML ScrollPane mapScrollPane;
+
+    private Group zoomGroup;
+    private int zoom;
+
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
-    List<Map<String, String>> validNodes = new ArrayList<>();
+    List<Node> validNodes = new ArrayList<>();
     private int firstNodeSelect = 0;
     private String firstNode;
     private List<String> pathList = new ArrayList<>();
@@ -97,9 +93,11 @@ public class Navigation extends SPage {
     static double SCALE_DELTA = 1.25;
     static double SCALE_TOTAL = 2.0;
     static double SCALE = 1.0;
-    static int FLOOR = 0;
+    static String FLOOR = "G";
     static Double imgWidth = 991.0;
     static Double imgHeight = 669.0;
+    
+    Map<String, String> floors;
 
     @FXML
     public void initialize() {
@@ -111,12 +109,30 @@ public class Navigation extends SPage {
                         || node.get("NODETYPE").equals("PARK")
                         || (node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
                         || (node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
-                    options.add(node.get("NODEID"));
-                    validNodes.add(node);
+                    options.add(node.get("LONGNAME"));
+                    validNodes.add(new Node(node.get("NODEID"),
+                            Integer.parseInt(node.get("XCOORD")),
+                            Integer.parseInt(node.get("YCOORD")),
+                            node.get("FLOOR"),
+                            node.get("BUILDING"),
+                            node.get("NODETYPE"),
+                            node.get("LONGNAME"),
+                            node.get("SHORTNAME")));
                 }
 
             }
-            mapGroup.setAutoSizeChildren(true);
+            floors = new HashMap<>();
+            floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+            mapScrollPane.pannableProperty().set(true);
+            Group contentGroup = new Group();
+            zoomGroup = new Group();
+            contentGroup.getChildren().add(zoomGroup);
+            zoomGroup.getChildren().add(mapCanvas);
+            mapScrollPane.setContent(contentGroup);
+
+            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+            zoom = 1;
 
             changeFloorNodes();
 
@@ -139,41 +155,70 @@ public class Navigation extends SPage {
      * @param xCoord x coordinate from table
      * @return scaled X coordinate
      */
-    public Double xScale(int xCoord) {
-        Double xCoordDouble = new Double(xCoord);
-        Double proportion = imgWidth / 5000;
+    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
+    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
 
-        Double newXCoord = xCoordDouble * proportion; //may need to add margins depending on how it's placed on
 
-        return newXCoord;
+    public void zoomIn(ActionEvent actionEvent) {
+        if(zoom < 3){
+            zoomGroup.setScaleX(++zoom);
+            zoomGroup.setScaleY(zoom);
+        }
     }
 
-    public Double yScale(int yCoord) {
-        Double yCoordDouble = new Double(yCoord);
-        Double proportion = imgHeight / 3400;
-
-        Double newYCoord = yCoordDouble * proportion; //may need to add margins depending on how it's placed on
-
-        return newYCoord;
+    public void resetZoom(){
+        zoomGroup.setScaleX(1);
+        zoomGroup.setScaleY(1);
     }
 
-    /**
-     * alternative to x and y scale, taking in doubles
-     */
-    public Double xScale(double xCoord) {
-        Double proportion = imgWidth / 5000;
-        Double newXCoord = xCoord * proportion; //may need to add margins depending on how it's placed on
-
-        return newXCoord;
+    public void zoomOut(ActionEvent actionEvent) {
+        if(zoom > 1){
+            zoomGroup.setScaleX(--zoom);
+            zoomGroup.setScaleY(zoom);
+        }
     }
 
-    public Double yScale(double yCoord) {
-        Double proportion = imgHeight / 3400;
-
-        Double newYCoord = yCoord * proportion; //may need to add margins depending on how it's placed on
-
-        return newYCoord;
+    public void clearNodes() {
+        resetMap(FLOOR);
+        stopList.clear();
+        startLocation.getSelectionModel().clearSelection();
+        destination.getSelectionModel().clearSelection();
+        intermediate.getSelectionModel().clearSelection();
+        activePath = 0;
     }
+
+    public void resetMap(String floor) {
+        resetZoom();
+        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        FLOOR = floor;
+    }
+
+    public void resetMapAndDraw(String floor) {
+        resetMap(floor);
+        drawFloor(floor);
+    }
+
+    public void drawFloor(String floor){
+        resetMap(FLOOR);
+        for (Node n: validNodes) if(n.getFloor().equals(floor)) drawSingleNode(n);
+
+        if (activePath == 1) {
+            for (int i = 0; i < currPath.size() - 1; i++) {
+                drawNodes(currPath.get(i), currPath.get(i + 1));
+            }
+        }
+    }
+
+
+    public void changeFloor1() throws FileNotFoundException {
+        resetMapAndDraw("1");
+    }
+
+    public void changeGroundFloor() throws FileNotFoundException {
+        resetMapAndDraw("G");
+    }
+
 
 
     public void findPath() {
@@ -182,71 +227,13 @@ public class Navigation extends SPage {
         }
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
-        anchor.getChildren().clear();
-        pathList.clear();
-        pathList.add(start);
-        if (intermediate.getSelectionModel().getSelectedItem() != null) {
-            pathList.add(intermediate.getSelectionModel().getSelectedItem().toString());
-        }
-        pathList.add(end);
-        SearchAlgorithm searchAlgorithm;
-        double etaTotal;
-        double minutes;
-        double seconds;
-        List<Node> pathNodes = new ArrayList<>();
-        try {
-            searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++) {
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
-            }
-            etaTotal = searchAlgorithm.getETA(pathNodes);
-            minutes = Math.floor(etaTotal);
-            seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);
-
-
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
-
-
-        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScale(pathNodes.get(0).getYcoord());
-
-
-        for (Node node : pathNodes) {
-            Circle circ = new Circle();
-            Line line = new Line();
-            Double scaledX = xScale(node.getXcoord());
-            Double scaledY = yScale(node.getYcoord());
-
-            circ.setCenterX(scaledX);
-            circ.setCenterY(scaledY);
-            circ.setRadius(2);
-            circ.setFill(Color.RED);
-
-            line.setStartX(scaledX);
-            line.setStartY(scaledY);
-            line.setEndX(prevX);
-            line.setEndY(prevY);
-            line.setStroke(Color.RED);
-
-
-            anchor.getChildren().addAll(circ, line);
-            prevX = scaledX;
-            prevY = scaledY;
-        }
-        firstNodeSelect = 0;
-        activePath = 1;
+        resetMap(FLOOR);
+        findPath(start, end);
     }
 
 
     public void startEndlocation() {
-        if (activePath == 0) anchor.getChildren().clear();
+/*        if (activePath == 0) anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
         SearchAlgorithm searchAlgorithm;
@@ -289,7 +276,7 @@ public class Navigation extends SPage {
             prevX = scaledX;
             prevY = scaledY;
         }
-        firstNodeSelect = 0;
+        firstNodeSelect = 0;*/
     }
 
 
@@ -300,58 +287,29 @@ public class Navigation extends SPage {
      * @param end   String, long name of end node
      */
     public void findPath(String start, String end) {
-        if (activePath == 0) anchor.getChildren().clear();
+        stopList.add(start);
+        stopList.add(end);
         SearchAlgorithm searchAlgorithm;
-        List<Node> pathNodes = new ArrayList<>();
-        double etaTotal;
-        double minutes;
-        double seconds;
+        double etaTotal, minutes, seconds;
+        currPath.clear();
         try {
             searchAlgorithm = new SearchAlgorithm();
             for (int i = 0; i < pathList.size() - 1; i++) {
                 pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
             }
-            etaTotal = searchAlgorithm.getETA(pathNodes);
+
+            etaTotal = searchAlgorithm.getETA(currPath);
             minutes = Math.floor(etaTotal);
             seconds = Math.floor((etaTotal - minutes) * 60);
             etaLabel.setText((int) minutes + ":" + (int) seconds);
 
 
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
+        } catch (IOException | URISyntaxException | SQLException e) {
+            e.printStackTrace();
         }
 
+        if(currPath.isEmpty()) return;
 
-        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScale(pathNodes.get(0).getYcoord());
-
-
-        for (Node node : pathNodes) {
-            Circle circ = new Circle();
-            Line line = new Line();
-            Double scaledX = xScale(node.getXcoord());
-            Double scaledY = yScale(node.getYcoord());
-
-            circ.setCenterX(scaledX);
-            circ.setCenterY(scaledY);
-            circ.setRadius(2);
-            circ.setFill(Color.RED);
-
-            line.setStartX(scaledX);
-            line.setStartY(scaledY);
-            line.setEndX(prevX);
-            line.setEndY(prevY);
-            line.setStroke(Color.RED);
-
-
-            anchor.getChildren().addAll(circ, line);
-            prevX = scaledX;
-            prevY = scaledY;
-        }
         firstNodeSelect = 0;
         activePath = 1;
     }
@@ -360,7 +318,6 @@ public class Navigation extends SPage {
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
-
         //System.out.println("Clicked map");
 
         //double x = xScale(event.getX());
@@ -431,7 +388,7 @@ public class Navigation extends SPage {
     }
 
     public void changeFloorNodes() {
-        //nodeGridAnchor.getChildren().clear();
+/*        //nodeGridAnchor.getChildren().clear();
         GraphicsContext gc = nodeCanvas.getGraphicsContext2D();
         gc.clearRect(0, 0, nodeCanvas.getWidth(), nodeCanvas.getHeight());
         int count = 0;
@@ -466,101 +423,40 @@ public class Navigation extends SPage {
         } catch (SQLException sq) {
             sq.printStackTrace();
         }
-        System.out.println(count);
+        System.out.println(count);*/
     }
 
-    public void drawNodes(Map<String, String> snode, Map<String, String> enode) {
-        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
-        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
-        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
-        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
-
-        GraphicsContext gc = nodeCanvas.getGraphicsContext2D();
+    public void drawSingleNode(Node node) {
+        double x = xScale(node.getXcoord());
+        double y = yScale(node.getYcoord());
+        double radius = 4;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         gc.setFill(Color.RED);
-        gc.fillOval(startX, startY, 2, 2);
-        gc.setFill(Color.RED);
-        gc.fillOval(endX, endY, 2, 2);
-
-        gc.moveTo(startX, startY);
-        gc.lineTo(endX, endY);
-        gc.stroke();
+        gc.fillOval(x, y, radius, radius);
     }
 
-    public void clearNodes() {
-        anchor.getChildren().clear();
-        pathList.clear();
-        startLocation.getSelectionModel().clearSelection();
-        destination.getSelectionModel().clearSelection();
-        intermediate.getSelectionModel().clearSelection();
-        activePath = 0;
+    public void drawNodes(Node snode, Node enode) {
+        if (snode.getFloor().equals(FLOOR) || enode.getFloor().equals(FLOOR)){
+            GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+            gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
+            gc.lineTo(xScale(enode.getXcoord()), yScale(enode.getYcoord()));
+            gc.stroke();
+
+            drawSingleNode(snode);
+            drawSingleNode(enode);
+        }
     }
+
 
     public void addStop() {
-        if (!(startLocation.getSelectionModel().getSelectedItem() == null) && (!(destination.getSelectionModel().getSelectedItem() == null))) {
+/*        if (!(startLocation.getSelectionModel().getSelectedItem() == null) && (!(destination.getSelectionModel().getSelectedItem() == null))) {
             intermediate.setVisible(true);
-        }
-    }
-
-    public void menu(MouseEvent mouseEvent) {
-        if (transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
-
-    public void zoomIn(ActionEvent actionEvent) {
-        SCALE_DELTA += 0.1;
-        zoom();
-    }
-
-    public void zoomOut(ActionEvent actionEvent) {
-        SCALE_DELTA -= 0.1;
-        zoom();
-    }
-
-    public void zoom() {
-
-        double newWidth = imgWidth * SCALE_DELTA;
-        double newHeight = imgHeight * SCALE_DELTA;
-        double scale = newWidth / imgWidth;
-
-        System.out.println(String.valueOf(groundFloor.getFitHeight()) + "   " + SCALE_DELTA);
-
-        //Ensures that you do not exceed the limits of the map
-        if (SCALE_DELTA <= SCALE_TOTAL && SCALE_DELTA >= 0.5) {
-            System.out.println(SCALE_DELTA);
-
-            Scale sc = new Scale(scale, scale);
-            nodeCanvas.setWidth(newWidth);
-            nodeCanvas.setHeight(newHeight);
-
-            nodeCanvas.getTransforms().add(sc);
-            //nodeCanvas.setScaleY(scale);
-
-            //mapGroup.setScaleY(SCALE_DELTA);
-
-            groundFloor.setFitWidth(newWidth);
-            groundFloor.setFitHeight(newHeight);
-
-            //imgWidth = newWidth;
-            //imgHeight = newHeight;
-
-            changeFloorNodes();
-        }
+        }*/
     }
 
 
-    public void changeFloor1() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
-        groundFloor.setImage(image);
-        FLOOR = 1;
-    }
-
-    public void changeGroundFloor() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
-        groundFloor.setImage(image);
-        FLOOR = 0;
-    }
 
 }
 
