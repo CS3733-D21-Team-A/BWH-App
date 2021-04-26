@@ -19,6 +19,33 @@ public class DatabaseControllerTest4 {
 
     public DatabaseControllerTest4() throws SQLException, IOException, URISyntaxException {
     }
+
+    @BeforeEach
+    void resetDB() throws IOException, SQLException {
+        db.emptyEdgeTable();
+        db.emptyNodeTable();
+        db.emptyServiceRequestsTable();
+
+        CSVHandler csvHandler = new CSVHandler(db);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
+        csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
+    }
+
+    @AfterEach
+    void closeDB() {
+        try {
+            db.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @AfterAll
+    @BeforeAll
+    static void cleanup() {
+        TestUtil.resetDB();
+    }
 /*
     @Test
     public void testAddServiceRequestEXTERNAL_TRANSPORTATION(){
@@ -66,7 +93,7 @@ public class DatabaseControllerTest4 {
             user.put("FIRSTNAME", "Sean");
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
-            user.put("USERTYPE", DatabaseInfo.ADMIN_TEXT);
+            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
 
             db.addUser(user);
