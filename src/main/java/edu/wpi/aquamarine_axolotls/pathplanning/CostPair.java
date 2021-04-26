@@ -2,7 +2,7 @@ package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import java.util.Objects;
 
-class CostPair {
+class CostPair implements Comparable<CostPair> {
     private final Node item; //The item
     private final double cost; //The current cost to get to that item from the starting node
 
