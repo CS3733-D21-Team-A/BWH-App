@@ -285,12 +285,12 @@ public class DatabaseInfo {
 	/**
 	 * Path to default node CSV resource.
 	 */
-	static final String NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv";
+	static final String NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAAllNodes.csv";
 
 	/**
 	 * Path to default edge CSV resource.
 	 */
-	static final String EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAnodes.csv";
+	static final String EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAAllEdges.csv";
 
 	/**
 	 * Path to test node CSV resource.
