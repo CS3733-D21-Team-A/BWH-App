@@ -276,6 +276,11 @@ public class DatabaseControllerTest4 {
             assertThrows(SQLException.class, () -> {
                 db.updatePassword("Seansta18", "emily@gmail.com", "SoftEngIsLife");
             });
+
+            db.updatePassword("EKelley", "emily@gmail.com", "Tennis");
+            user2.replace("PASSWORD", "Tennis");
+
+            assertEquals(user2, db.getUserByUsername("EKelley"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();

@@ -601,7 +601,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void updatePassword(String username, String email, String newPassword) throws SQLException {
 		Map<String, String> user = getUserByUsername(username);
-		if(user == getUserByEmail(email))
+		if(user.containsValue(email))
 		{
 			user.replace("PASSWORD", newPassword);
 			editUser(username, user);
