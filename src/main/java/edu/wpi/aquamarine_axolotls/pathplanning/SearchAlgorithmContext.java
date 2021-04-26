@@ -4,13 +4,25 @@ import java.util.List;
 
 public class SearchAlgorithmContext {
 
-    ISearchAlgorithmStrategy context;
+    public ISearchAlgorithmStrategy context;
 
-    public SearchAlgorithmContext(ISearchAlgorithmStrategy context){
+    private SearchAlgorithmContext(ISearchAlgorithmStrategy context){
         this.context = context;
     }
 
-    public SearchAlgorithmContext() {}
+    private SearchAlgorithmContext() {}
+
+    private static class ContextHelper{
+        private static final SearchAlgorithmContext _context = new SearchAlgorithmContext();
+    }
+
+    public static SearchAlgorithmContext getSearchAlgorithmContext(){
+        return ContextHelper._context;
+    }
+
+//    public static ISearchAlgorithmStrategy getContext(){
+//        return context;
+//    }
 
     /**
      * Changes the strategy that will be used throughout the package.

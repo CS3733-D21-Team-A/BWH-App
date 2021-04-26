@@ -3,8 +3,7 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
-import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
+import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -188,11 +187,11 @@ public class Navigation extends SPage {
 /*        if (activePath == 0) anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
-        SearchAlgorithm searchAlgorithm;
+        SearchAlgorithmContext searchAlgorithmContext;
         List<Node> pathNodes = new ArrayList<>();
         try {
-            searchAlgorithm = new SearchAlgorithm();
-            pathNodes = searchAlgorithm.getPath(start, end);
+            searchAlgorithmContext = new SearchAlgorithmContext(new AStar());
+            pathNodes = searchAlgorithmContext.getPath(start, end);
 
         } catch (IOException ie) {
             ie.printStackTrace();
@@ -238,25 +237,19 @@ public class Navigation extends SPage {
      * @param end   String, long name of end node
      */
     public void findPathSingleSegment(String start, String end) {
-        SearchAlgorithm searchAlgorithm;
         double etaTotal, minutes, seconds;
         //currPath.clear();
-        try {
-            searchAlgorithm = new SearchAlgorithm();
-            //for (int i = 0; i < stopList.size() - 1; i++) {
-                //currPath.addAll(searchAlgorithm.getPath(stopList.get(i), stopList.get(i + 1)));
-            //}
-            currPath.addAll(searchAlgorithm.getPath(start, end));
+        //for (int i = 0; i < stopList.size() - 1; i++) {
+            //currPath.addAll(searchAlgorithmContext.getPath(stopList.get(i), stopList.get(i + 1)));
+        //}
 
-            /*
-            etaTotal = searchAlgorithm.getETA(currPath);
-            minutes = Math.floor(etaTotal);
-            seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);*/
+        currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
 
-        } catch (IOException | URISyntaxException | SQLException e) {
-            e.printStackTrace();
-        }
+        /*
+        etaTotal = searchAlgorithmContext.getETA(currPath);
+        minutes = Math.floor(etaTotal);
+        seconds = Math.floor((etaTotal - minutes) * 60);
+        etaLabel.setText((int) minutes + ":" + (int) seconds);*/
 
         if(currPath.isEmpty()) return;
 

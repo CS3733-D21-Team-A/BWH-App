@@ -37,7 +37,7 @@ public class NodeEditing extends SEditing {
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
-
+    @FXML private JFXComboBox algoSelectBox;
     @FXML private HBox nodeT;
     @FXML private HBox nodeD;
     @FXML private JFXButton edgesButton;
