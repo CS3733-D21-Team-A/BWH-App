@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -23,14 +24,14 @@
         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1605.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-5.0" />
         <VBox alignment="CENTER" layoutX="-1.0" layoutY="163.0" prefHeight="460.0" prefWidth="1301.0">
             <children>
-                <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="Food Delivery Service" textAlignment="CENTER">
+                <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="Gift Delivery Service" textAlignment="CENTER">
                     <font>
                         <Font name="Times New Roman" size="60.0" />
                     </font>
                 </Label>
-                <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement. Remember that this service is only for same day delivery. " textAlignment="CENTER" wrapText="true">
+                <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="103.0" prefWidth="1301.0" text="Please provide at least 30 minutes between your desired delivery time and order placement. Remember that this service is only for same day delivery. " textAlignment="CENTER" wrapText="true">
                     <font>
-                        <Font name="Calibri" size="30.0" />
+                        <Font name="Times New Roman" size="28.0" />
                     </font>
                     <padding>
                         <Insets left="20.0" right="20.0" />
@@ -57,14 +58,18 @@
                                 <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="95.0" prefWidth="267.0" promptText="First Name" style="-fx-font-size: 20;" />
-                                <JFXTextField fx:id="deliveryTime" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="95.0" prefWidth="267.0" promptText="Delivery TIme" style="-fx-font-size: 20;" GridPane.rowIndex="1" />
-                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" promptText="Last Name" style="-fx-font-size: 20;" GridPane.columnIndex="1" />
-                                <JFXComboBox fx:id="locationDropdown" onAction="#initialize" prefHeight="42.0" prefWidth="300.0" promptText="Delivery Locations" style="-fx-font-size: 20px;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="275.0" promptText="First Name" style="-fx-font-size: 20;" />
+                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="275.0" promptText="Last Name" style="-fx-font-size: 20;" GridPane.columnIndex="1" />
+                                <JFXComboBox fx:id="locationDropdown" prefHeight="42.0" prefWidth="275.0" promptText="Delivery Locations" style="-fx-font-size: 20px;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets top="50.0" />
                                     </GridPane.margin>
                                 </JFXComboBox>
+                        <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="89.0" prefWidth="275.0" promptText="Time Selection" style="-fx-font-size: 20; fx-font-family: Times;" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets top="40.0" />
+                           </GridPane.margin>
+                        </JFXTimePicker>
                             </children>
                             <HBox.margin>
                                 <Insets bottom="20.0" />
@@ -143,7 +148,7 @@
         </VBox>
         <JFXHamburger fx:id="burger" prefHeight="70.0" prefWidth="75.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
         <JFXDrawer fx:id="menuDrawer" direction="RIGHT" overLayVisible="false" prefHeight="800.0" prefWidth="290.0" AnchorPane.rightAnchor="-300.0" AnchorPane.topAnchor="90.0" />
-        <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="953.0" AnchorPane.topAnchor="779.0">
+        <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="953.0" AnchorPane.topAnchor="779.0">
             <font>
                 <Font name="Times New Roman" size="30.0" />
             </font>
@@ -172,7 +177,7 @@
             </children>
         </HBox>
         <Rectangle fill="#003da6" height="35.0" layoutY="89.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
-        <JFXButton layoutX="1188.0" layoutY="105.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE" AnchorPane.leftAnchor="1150.0" AnchorPane.topAnchor="140.0">
+        <JFXButton layoutX="1188.0" layoutY="105.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE" AnchorPane.leftAnchor="1150.0" AnchorPane.topAnchor="140.0">
             <font>
                 <Font name="Times New Roman" size="20.0" />
             </font>
@@ -183,6 +188,6 @@
             </image>
         </ImageView>
         <JFXButton fx:id="backB" layoutX="9.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="30.0" text=" " />
-        <JFXComboBox fx:id="giftOptions" layoutX="483.0" layoutY="613.0" prefHeight="50.0" prefWidth="300.0" promptText="Gift Options" style="-fx-font-size: 20;" />
+        <JFXComboBox fx:id="giftOptions" layoutX="483.0" layoutY="624.0" maxHeight="92.0" minHeight="42.0" prefHeight="53.0" prefWidth="300.0" promptText="Gift Options" style="-fx-font-size: 20;" AnchorPane.topAnchor="650.0" />
     </children>
 </AnchorPane>

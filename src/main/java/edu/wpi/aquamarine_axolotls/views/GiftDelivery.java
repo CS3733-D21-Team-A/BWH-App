@@ -39,10 +39,10 @@ public class GiftDelivery extends SServiceRequest {
     private JFXTimePicker deliveryTime;
 
     @FXML
-    private JFXComboBox roomNumber;
+    private JFXComboBox locationDropdown;
 
     @FXML
-    private ComboBox giftOptions;
+    private JFXComboBox giftOptions;
 
     @FXML
     private AnchorPane myAnchorPane;
@@ -69,7 +69,7 @@ public class GiftDelivery extends SServiceRequest {
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
-        roomNumber.setItems(FXCollections
+        locationDropdown.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
     }
@@ -81,14 +81,14 @@ public class GiftDelivery extends SServiceRequest {
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
         if(giftOptions.getSelectionModel().getSelectedItem() == null
-                || roomNumber.getSelectionModel().getSelectedItem() == null){
+                || locationDropdown.getSelectionModel().getSelectedItem() == null){
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number\n- Gift Option");
             return;
         }
         String fn = firstName.getText();
         String ln = lastName.getText();
         String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-        int room = roomNumber.getSelectionModel().getSelectedIndex();
+        int room = locationDropdown.getSelectionModel().getSelectedIndex();
         String gift = giftOptions.getSelectionModel().getSelectedItem().toString();
 
         if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
