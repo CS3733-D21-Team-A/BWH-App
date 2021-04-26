@@ -121,7 +121,6 @@ public class Navigation extends SPage {
     public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
     public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
 
-
     public void zoomIn(ActionEvent actionEvent) {
         if(zoom < 3){
             zoomGroup.setScaleX(++zoom);
@@ -181,8 +180,6 @@ public class Navigation extends SPage {
     public void changeGroundFloor() throws FileNotFoundException {
         resetMapAndDraw("G");
     }
-
-
 
     public void findPath() {
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
