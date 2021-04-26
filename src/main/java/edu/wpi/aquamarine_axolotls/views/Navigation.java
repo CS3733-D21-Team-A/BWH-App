@@ -95,15 +95,6 @@ public class Navigation extends SPage {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
-
-    }
-    
-    private Node getNodeFromValid(String longName) {
-        for (Node n: validNodes) {
-            if (n.getLongName().equals(longName)) return n;
-        }
-        System.out.println("No valid node with that name");
-        return null;
     }
 
     /**
