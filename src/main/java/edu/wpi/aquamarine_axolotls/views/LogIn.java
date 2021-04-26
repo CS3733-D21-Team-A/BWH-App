@@ -60,6 +60,8 @@ public class LogIn extends SPage{
         String CUpassword = password.getText ( );
         if ( db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
             popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
+
+        //update user to loggedin    db.getUserByUsername ( CUusername ).set
         }
         else {
             popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"

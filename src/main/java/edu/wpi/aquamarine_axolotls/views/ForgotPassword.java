@@ -30,15 +30,15 @@ public class ForgotPassword extends SPage{
         public void initialize() {
         }
 
-    public void submit_button() throws SQLException {
-    if(username.getText ()!=null && email.getText ()!=null&& password.getText ()!=null) {
-        db.updatePassword ( username.getText ( ) ,email.getText ( ) ,password.getText ( ) );
-        popUp ( "New Password" ,"Your password has been successfully created. " +
-                                "Please check your email for a confirmation message. Log in using your new credentials." );
-        sceneSwitch ( "Login" );
+        public void submit_button() throws SQLException {
+    if(username.getText ().isEmpty() || email.getText ().isEmpty ()|| password.getText().isEmpty ()) {
+        popUp ( "Error","\n\n\n\nYour password was not updated" );
     }
     else{
-        popUp ( "Error","Your password was not updated" );
+        //db.updatePassword ( username.getText ( ) ,email.getText ( ) ,password.getText ( ) );
+        popUp ( "New Password" ,"\n\n\n\n\n\n\nYour password has been successfully created. " +
+                                "Please check your email for a confirmation message. Log in using your new credentials." );
+        sceneSwitch ( "Login" );
     }
     }
 

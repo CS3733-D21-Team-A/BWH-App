@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -18,10 +18,22 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.CreateNewAccount">
-    <children>
-        <VBox alignment="CENTER" layoutX="1.0" layoutY="98.0" prefHeight="802.0" prefWidth="1639.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="-9.0" AnchorPane.topAnchor="98.0">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.CreateNewAccount">
+    <center>
+        <VBox alignment="CENTER" maxWidth="1300.0" minWidth="1300.0" prefHeight="697.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
             <children>
+                <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="65.0" text=" ">
+                    <graphic>
+                        <ImageView fitHeight="53.0" fitWidth="34.0">
+                            <image>
+                                <Image url="@../img/back%20icon.jpg" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <VBox.margin>
+                        <Insets right="1500.0" />
+                    </VBox.margin>
+                </JFXButton>
                 <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="INSIDE" strokeWidth="0.0" text="New Account Information" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="1619.1130065917969">
                     <font>
                         <Font name="Times New Roman" size="60.0" />
@@ -35,7 +47,7 @@
                         <Insets />
                     </VBox.margin>
                 </Line>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please create credentials for you new account. " textAlignment="CENTER" wrappingWidth="864.9440307617188">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please provide the proper credentials your new account." textAlignment="CENTER" wrappingWidth="864.9440307617188">
                     <font>
                         <Font name="Times New Roman" size="30.0" />
                     </font>
@@ -43,55 +55,60 @@
                         <Insets top="20.0" />
                     </VBox.margin>
                 </Text>
-            <GridPane maxWidth="800.0" prefHeight="293.0" prefWidth="800.0">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="568.94287109375" minWidth="10.0" prefWidth="403.97344970703125" />
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.4581298828125" minWidth="10.0" prefWidth="396.02655029296875" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <JFXTextField fx:id="firstName" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="First Name">
-                     <font>
-                        <Font name="Times New Roman" size="30.0" />
-                     </font>
-                     <GridPane.margin>
-                        <Insets right="20.0" />
-                     </GridPane.margin>
-                  </JFXTextField>
-                  <JFXTextField fx:id="lastName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Last Name" GridPane.columnIndex="1">
-                     <font>
-                        <Font name="Times New Roman" size="30.0" />
-                     </font>
-                  </JFXTextField>
-                      <JFXTextField fx:id="emailAddress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Email Address" GridPane.rowIndex="1">
-                          <font>
-                              <Font name="Times New Roman" size="30.0" />
-                          </font>
-                      </JFXTextField>
-                  <JFXTextField fx:id="userName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Username" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Times New Roman" size="30.0" />
-                     </font>
-                  </JFXTextField>
-                      <JFXPasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Password" GridPane.rowIndex="2">
-                          <font>
-                              <Font name="Times New Roman" size="30.0" />
-                          </font>
-                      </JFXPasswordField>
-                  <JFXPasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Confirm Password" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                     <font>
-                        <Font name="Times New Roman" size="30.0" />
-                     </font>
-                  </JFXPasswordField>
-               </children>
-            </GridPane>
+                <GridPane maxWidth="800.0" prefHeight="293.0" prefWidth="800.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="568.94287109375" minWidth="10.0" prefWidth="403.97344970703125" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.4581298828125" minWidth="10.0" prefWidth="396.02655029296875" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <JFXTextField fx:id="firstName" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="First Name">
+                            <font>
+                                <Font name="Times New Roman" size="30.0" />
+                            </font>
+                            <GridPane.margin>
+                                <Insets right="20.0" />
+                            </GridPane.margin>
+                        </JFXTextField>
+                        <JFXTextField fx:id="lastName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Last Name" GridPane.columnIndex="1">
+                            <font>
+                                <Font name="Times New Roman" size="30.0" />
+                            </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="emailAddress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Email Address" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Times New Roman" size="30.0" />
+                            </font>
+                        </JFXTextField>
+                        <JFXTextField fx:id="userName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Username" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <font>
+                                <Font name="Times New Roman" size="30.0" />
+                            </font>
+                        </JFXTextField>
+                        <JFXPasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Password" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Times New Roman" size="30.0" />
+                            </font>
+                        </JFXPasswordField>
+                        <JFXPasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Confirm Password" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <font>
+                                <Font name="Times New Roman" size="30.0" />
+                            </font>
+                        </JFXPasswordField>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="50.0" />
+                    </VBox.margin>
+                </GridPane>
             </children>
         </VBox>
-        <HBox alignment="CENTER_LEFT" layoutX="20.0" layoutY="21.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1605.0">
+    </center>
+    <top>
+        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="1296.0" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -114,19 +131,17 @@
                 </Label>
             </children>
         </HBox>
-        <Rectangle fill="#003da6" height="30.0" layoutX="-7.0" layoutY="99.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1638.0" />
-        <JFXButton fx:id="backB" layoutX="19.0" layoutY="142.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="65.0" text=" ">
-         <graphic>
-            <ImageView fitHeight="53.0" fitWidth="34.0">
-               <image>
-                  <Image url="@../img/back%20icon.jpg" />
-               </image>
-            </ImageView>
-         </graphic></JFXButton>
-          <JFXButton fx:id="submit" minHeight="30.0" onAction="#submit_button" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="1000.0">
-              <font>
-                  <Font name="Times New Roman" size="40.0" />
-              </font>
-          </JFXButton>
-    </children>
-</AnchorPane>
+    </top>
+    <bottom>
+        <JFXButton fx:id="submit" minHeight="30.0" onAction="#submit_button" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Times New Roman" size="40.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets bottom="30.0" left="750.0" />
+            </BorderPane.margin>
+        </JFXButton>
+    </bottom>
+    <Rectangle fill="#003da6" height="23.0" layoutX="-7.0" layoutY="99.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1295.0" />
+
+</BorderPane>
