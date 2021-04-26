@@ -1,7 +1,5 @@
 package edu.wpi.aquamarine_axolotls.views;
 
-import edu.wpi.aquamarine_axolotls.db.DatabaseInfo;
-
 import java.util.Map;
 
 public class EmployeeRequest {
