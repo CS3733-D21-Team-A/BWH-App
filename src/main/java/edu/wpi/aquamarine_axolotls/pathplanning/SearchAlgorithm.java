@@ -450,6 +450,12 @@ public class SearchAlgorithm{
         return startNodeisEqual && goalNodeisEqual;
     }
 
+    /**
+     * Calculate the time estimation of one edge based on Euclidean distance and 2 miles/hour walking speed
+     * @param start The start node
+     * @param goal The end node
+     * @return double, returns the estimated time of one edge
+     */
     private double getETASingleEdge(Node start, Node goal){
         double walkingSpeed = 220 * 3.75; //2 miles/h
         double distance = getCostTo(start,goal);
@@ -458,7 +464,11 @@ public class SearchAlgorithm{
         ETASingleEdge = distance/walkingSpeed;
         return ETASingleEdge;
     }
-
+    /**
+     * Calculate the time estimation of sum of edges
+     * @param path A list of path
+     * @return double, returns the estimated time of one edge
+     */
     public double getETA(List<Node> path){
         double ETASoFar = 0.0;
         for(int i = 0; i < path.size()-1;i++){

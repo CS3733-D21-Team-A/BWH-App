@@ -57,12 +57,18 @@ public class BreadthFirstSearch extends AbsAlgorithmMethod {
         }
     }
 
+    /**
+     * Determines the most efficient path from a start node to end node using the A* algorithm
+     * @param startID The ID of the node to start at
+     * @param endID The ID of the node to go to
+     * @return
+     */
     public List<Node> getPath(String startID, String endID) {
         Node start = getNode(startID);
         Node end = getNode(endID);
-        LinkedList<Node> queue = new LinkedList<>();
-        List<Node> visited = new LinkedList<>();
-        Map<Node, Node> cameFrom = new HashMap<>();
+        LinkedList<Node> queue = new LinkedList<>(); //queue for tracking the next nodes to visit
+        List<Node> visited = new LinkedList<>(); // list for recording the visited nodes, so the search will not come back
+        Map<Node, Node> cameFrom = new HashMap<>(); // map to track the progress of the search, for building the path at the end
         List<Node> path = null;
 
         boolean foundGoal = false;
