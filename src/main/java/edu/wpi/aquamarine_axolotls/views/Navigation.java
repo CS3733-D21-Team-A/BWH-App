@@ -402,9 +402,10 @@ public class Navigation extends SPage {
     public void drawNodes(Node snode, Node enode) {
         if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
             GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-            gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
+            /*gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
             gc.lineTo(xScale(enode.getXcoord()), yScale(enode.getYcoord()));
-            gc.stroke();
+            gc.stroke();*/
+            gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
 
             drawSingleNode(snode, gc);
             drawSingleNode(enode, gc);
