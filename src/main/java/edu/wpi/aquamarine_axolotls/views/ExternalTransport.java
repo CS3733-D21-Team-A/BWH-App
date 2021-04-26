@@ -89,10 +89,13 @@ public class ExternalTransport extends SServiceRequest{
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
-        if (roomNumber.getSelectionModel().getSelectedItem() == null) {
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
+        if (roomNumber.getSelectionModel().getSelectedItem() == null ||
+            levelOfEmergency.getSelectionModel().getSelectedItem() == null||
+            modeOfTrans.getSelectionModel().getSelectedItem() == null) {
+            errorFields("- First Name\n- Last Name\n-Transport Time\n- Room Number");
             return;
         }
+
         String fn = firstName.getText();
         String ln = lastName.getText();
         String dfn = docFirstName.getText();
@@ -100,10 +103,12 @@ public class ExternalTransport extends SServiceRequest{
         String med = destination.getText();
         String dt = transpTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
         int room = roomNumber.getSelectionModel().getSelectedIndex();
+        String lemr = levelOfEmergency.getSelectionModel().getSelectedItem().toString();
+        String modtrans = modeOfTrans.getSelectionModel().getSelectedItem().toString();
 
         if (!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
                 || dt.isEmpty()) {
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
+            errorFields("- First Name\n- Last Name\n-Transport Time\n- Room Number");
             return;
         }
 
@@ -118,14 +123,16 @@ public class ExternalTransport extends SServiceRequest{
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", "Medicine Delivery");
+            shared.put("REQUESTTYPE", "External Transport");
 
             Map<String, String> medicineR = new HashMap<String, String>();
             medicineR.put("REQUESTID", id);
-            medicineR.put("DELIVERYTIME", dt);
-            medicineR.put("MEDICATION", med);
+            medicineR.put("TRANSPORTTIME", dt);
+            medicineR.put("DESTINATION", med);
             medicineR.put("DOCFIRSTNAME", dfn);
             medicineR.put("DOCLASTNAME", dln);
+            medicineR.put("MODEOFTRANSP",modtrans);
+            medicineR.put("LVLOFEMERG",lemr);
             db.addServiceRequest(shared, medicineR);
             db.close();
             submit();
