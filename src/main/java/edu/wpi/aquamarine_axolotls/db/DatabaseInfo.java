@@ -153,7 +153,6 @@ public class DatabaseInfo {
 							 "NOTE VARCHAR(300)," +
 							 "CONSTRAINT FK_FLORAL_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 							 ")";
-
 		/**
 		 * Map linking SERVICEREQUESTS enum to the SQL code that builds the corresponding table.
 		 */

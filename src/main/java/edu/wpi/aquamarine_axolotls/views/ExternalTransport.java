@@ -91,7 +91,13 @@ public class ExternalTransport extends SServiceRequest{
 
         if (roomNumber.getSelectionModel().getSelectedItem() == null ||
             levelOfEmergency.getSelectionModel().getSelectedItem() == null||
-            modeOfTrans.getSelectionModel().getSelectedItem() == null) {
+            modeOfTrans.getSelectionModel().getSelectedItem() == null||
+                firstName.getText().isEmpty()||
+                lastName.getText().isEmpty()||
+                docFirstName.getText().isEmpty()||
+                docLastName.getText().isEmpty()||
+                destination.getText().isEmpty()||
+                transpTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm")).isEmpty()) {
             errorFields("- First Name\n- Last Name\n-Transport Time\n- Room Number");
             return;
         }
