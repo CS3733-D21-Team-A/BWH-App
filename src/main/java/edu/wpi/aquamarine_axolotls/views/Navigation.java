@@ -31,37 +31,11 @@ import java.util.*;
 
 public class Navigation extends SPage {
 
-    @FXML
-    private ImageView groundFloor;
-    @FXML
-    private JFXComboBox startLocation;
-    @FXML
-    private JFXComboBox destination;
-    @FXML
-    private JFXButton findPathButton;
-    @FXML
-    private JFXDrawer drawer;
-    @FXML
-    private AnchorPane anchor1;
-    @FXML
-    private JFXButton addStopbtn;
-    @FXML
-    private JFXComboBox intermediate;
-    @FXML
-    private Label etaLabel;
-    @FXML
-    private AnchorPane mainAnchor;
-    @FXML
-    private JFXHamburger hamburger;
-    @FXML
-    private Text time;
-    @FXML
-    private JFXHamburger burger;
-    @FXML
-    private JFXDrawer menuDrawer;
-    @FXML
-    private VBox box;
-
+    @FXML private JFXComboBox startLocation;
+    @FXML private JFXComboBox destination;
+    @FXML private JFXButton findPathButton;
+    @FXML private JFXComboBox intermediate;
+    @FXML private Label etaLabel;
     @FXML Canvas mapCanvas;
     @FXML ScrollPane mapScrollPane;
 
@@ -76,17 +50,9 @@ public class Navigation extends SPage {
     private List<String> stopList = new ArrayList<>();
     private List<Node> currPath = new ArrayList<>();
     private int activePath = 0;
+    private Map<String, String> floors;
 
-
-    private HamburgerBasicCloseTransition transition;
-    static double SCALE_DELTA = 1.25;
-    static double SCALE_TOTAL = 2.0;
-    static double SCALE = 1.0;
     static String FLOOR = "G";
-    static Double imgWidth = 991.0;
-    static Double imgHeight = 669.0;
-    
-    Map<String, String> floors;
 
     @FXML
     public void initialize() {
@@ -113,17 +79,17 @@ public class Navigation extends SPage {
             floors = new HashMap<>();
             floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
             zoomGroup = new Group();
             contentGroup.getChildren().add(zoomGroup);
             zoomGroup.getChildren().add(mapCanvas);
             mapScrollPane.setContent(contentGroup);
-
             mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
-            zoom = 1;
 
-            changeFloorNodes();
+            drawFloor(FLOOR);
+            zoom = 1;
 
             startLocation.setItems(options);
             destination.setItems(options);
@@ -406,58 +372,19 @@ public class Navigation extends SPage {
 //        }
     }
 
-    public void changeFloorNodes() {
-/*        //nodeGridAnchor.getChildren().clear();
-        GraphicsContext gc = nodeCanvas.getGraphicsContext2D();
-        gc.clearRect(0, 0, nodeCanvas.getWidth(), nodeCanvas.getHeight());
-        int count = 0;
-        try {
-            List<Map<String, String>> edges = db.getEdges();
-            List<String> nodesList = new ArrayList<>();
-            for (Map<String, String> edge : edges) {
-                String startNode = edge.get("STARTNODE");
-                String endNode = edge.get("ENDNODE");
-                String bothNodes = startNode.concat(endNode);
-                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
-                    try {
-                        Map<String, String> snode = db.getNode(startNode);
-                        Map<String, String> enode = db.getNode(endNode);
-                        if (FLOOR == 1 &&
-                                ((snode.get("FLOOR").equals("1")) && (snode.get("BUILDING").equals("Tower") || snode.get("BUILDING").equals("45 Francis"))) &&
-                                ((enode.get("FLOOR").equals("1")) && (enode.get("BUILDING").equals("Tower") || enode.get("BUILDING").equals("45 Francis")))) {
-                            drawNodes(snode, enode);
-                            nodesList.add(startNode + endNode);
-                            count++;
-                        } else if (groundFloor.isVisible() &&
-                                (snode.get("FLOOR").equals("G") && enode.get("FLOOR").equals("G"))) {
-                            drawNodes(snode, enode);
-                            nodesList.add(startNode + endNode);
-                            count++;
-                        }
-                    } catch (SQLException sq) {
-                        sq.printStackTrace();
-                    }
-                }
-            }
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
-        System.out.println(count);*/
-    }
-
     public void drawSingleNode(Node node) {
         double x = xScale(node.getXcoord());
         double y = yScale(node.getYcoord());
-        double radius = 4;
+        double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.RED);
+        gc.setFill(Color.BLUE);
         gc.fillOval(x, y, radius, radius);
     }
 
     public void drawNodes(Node snode, Node enode) {
-        if (snode.getFloor().equals(FLOOR) || enode.getFloor().equals(FLOOR)){
+        if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
             GraphicsContext gc = mapCanvas.getGraphicsContext2D();
             gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
             gc.lineTo(xScale(enode.getXcoord()), yScale(enode.getYcoord()));
