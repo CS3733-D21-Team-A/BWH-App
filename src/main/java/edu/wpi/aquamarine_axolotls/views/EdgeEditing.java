@@ -13,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -66,6 +67,7 @@ public class EdgeEditing extends SEditing{
     private Group zoomGroup;
     private int zoom;
     List<Edge> validEdges = new ArrayList<>();
+    List<Node> validNodes = new ArrayList<>();
 
     String state = "";
 
@@ -78,7 +80,9 @@ public class EdgeEditing extends SEditing{
         table.setEditable(false);
         table.getItems().clear();
 
-        ObservableList<String> options = FXCollections.observableArrayList();
+        ObservableList<String> edgeOptions = FXCollections.observableArrayList();
+        ObservableList<String> nodeOptions = FXCollections.observableArrayList();
+
         submissionlabel.setVisible(true);
 
         edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("edgeID"));
@@ -95,9 +99,10 @@ public class EdgeEditing extends SEditing{
             db = new DatabaseController();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
+            List<Map<String, String>> nodes = db.getNodes();
 
             for(Map<String, String> edge : edges){
-                options.add(edge.get("EDGEID"));
+                edgeOptions.add(edge.get("EDGEID"));
                 Edge cur = new Edge(edge.get("EDGEID"),
                         edge.get("STARTNODE"),
                         edge.get("ENDNODE"));
@@ -106,8 +111,11 @@ public class EdgeEditing extends SEditing{
                 validEdges.add(cur);
                 drawSingleEdge(cur);
             }
+            for (Map<String, String> node : nodes) nodeOptions.add(node.get("NODEID"));
 
-            edgeDropdown.setItems(options);
+            startNodeDropdown.setItems(nodeOptions);
+            endNodeDropdown.setItems(nodeOptions);
+            edgeDropdown.setItems(edgeOptions);
             floors = new HashMap<>();
             floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
@@ -207,9 +215,10 @@ public class EdgeEditing extends SEditing{
 
     public void drawFloor(String floor){
         resetMap(floor);
-
         try {
-            for( Map<String, String> edge : db.getEdges()){ if(edge.get("FLOOR").equals(floor)) drawSingleEdge(edge); }
+            for( Map<String, String> edge : db.getEdges()){
+                drawSingleEdge(edge);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -218,10 +227,14 @@ public class EdgeEditing extends SEditing{
     private void drawSingleEdge(Edge edge) {
         Line line = new Line();
         try {
-            line.setStartX(Integer.parseInt(db.getNode(edge.getStartNode()).get("XCOORD")));
-            line.setStartY(Integer.parseInt(db.getNode(edge.getStartNode()).get("YCOORD")));
-            line.setEndX(Integer.parseInt(db.getNode(edge.getEndNode()).get("XCOORD")));
-            line.setEndY(Integer.parseInt(db.getNode(edge.getEndNode()).get("YCOORD")));
+            Map<String, String> startNode = db.getNode(edge.getStartNode());
+            Map<String, String> endNode = db.getNode(edge.getEndNode());
+            if(startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){// TODO: set up triangle floor thing
+                line.setStartX(Integer.parseInt(startNode.get("XCOORD")));
+                line.setStartY(Integer.parseInt(startNode.get("YCOORD")));
+                line.setEndX(Integer.parseInt(endNode.get("XCOORD")));
+                line.setEndY(Integer.parseInt(endNode.get("YCOORD")));
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -231,14 +244,30 @@ public class EdgeEditing extends SEditing{
     private void drawSingleEdge(Map<String, String> edge) {
         Line line = new Line();
         try {
-            line.setStartX(Integer.parseInt(db.getNode(edge.get("STARTNODE")).get("XCOORD")));
-            line.setStartY(Integer.parseInt(db.getNode(edge.get("STARTNODE")).get("YCOORD")));
-            line.setEndX(Integer.parseInt(db.getNode(edge.get("ENDNODE")).get("XCOORD")));
-            line.setEndY(Integer.parseInt(db.getNode(edge.get("ENDNODE")).get("YCOORD")));
+            Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
+            Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
+            if(startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){// TODO: set up triangle floor thing
+                GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+                gc.strokeLine(xScale(Integer.parseInt(startNode.get("XCOORD"))), yScale(Integer.parseInt(startNode.get("YCOORD"))),
+                        xScale(Integer.parseInt(endNode.get("XCOORD"))), yScale(Integer.parseInt(endNode.get("YCOORD"))));
+                drawSingleNode(startNode);
+                drawSingleNode(endNode);
+            }
         } catch (SQLException e){
             e.printStackTrace();
         }
         line.setStroke(Color.RED);
+    }
+
+    public void drawSingleNode(Map<String, String> node) {
+        double x = xScale(Integer.parseInt(node.get("XCOORD")));
+        double y = yScale(Integer.parseInt(node.get("YCOORD")));
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillOval(x, y, radius, radius);
     }
 
     public void changeGroundFloor() {
@@ -255,6 +284,7 @@ public class EdgeEditing extends SEditing{
         edgeIDtextbox.setVisible(true);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
+        submissionButton.setVisible(true);
 
         state = "add";
     }
@@ -265,6 +295,7 @@ public class EdgeEditing extends SEditing{
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(true);
         endNodeDropdown.setVisible(true);
+        submissionButton.setVisible(true);
 
         state = "edit";
     }
@@ -324,6 +355,7 @@ public class EdgeEditing extends SEditing{
         try{
             if (db.edgeExists(edgeID)){
                 db.deleteEdge(edgeID);
+                drawFloor(FLOOR);
                 submissionlabel.setText("You have deleted "+ edgeID);
             }else{
                 submissionlabel.setText("Edge does not exist");
@@ -351,6 +383,7 @@ public class EdgeEditing extends SEditing{
                     edge.put("ENDNODE", endNode);
 
                     db.addEdge(edge);
+                    drawFloor(FLOOR);
                     submissionlabel.setText("You have added " + edgeID);
                 } else {
                     submissionlabel.setText("Edge already exist");
@@ -381,6 +414,7 @@ public class EdgeEditing extends SEditing{
                 edge.put("STARTNODE", startNode);
                 edge.put("ENDNODE", endNode);
 
+                drawFloor(FLOOR);
                 db.editEdge(edgeID, edge);
                 submissionlabel.setText("You have edited "+ edgeID);
             }else{
