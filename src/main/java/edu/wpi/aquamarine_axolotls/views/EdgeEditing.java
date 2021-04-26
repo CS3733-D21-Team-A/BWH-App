@@ -6,6 +6,7 @@ import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,7 +24,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -54,10 +57,9 @@ public class EdgeEditing extends SEditing{
 
 
     @FXML private TableView table;
-    @FXML private TableColumn<Edge,String> edgeIdCol;
-    @FXML private TableColumn<Edge,String> startNodeCol;
-    @FXML private TableColumn<Edge,String> endNodeCol;
-
+    @FXML private TableColumn edgeIdCol;
+    @FXML private TableColumn startNodeCol;
+    @FXML private TableColumn endNodeCol;
 
     private Map<String, String> floors;
     static String FLOOR = "G";
@@ -168,26 +170,83 @@ public class EdgeEditing extends SEditing{
 //        }
     }
 
-    public void changeGroundFloor(){
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
-        changeFloorNodes();
+    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
+    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
+
+    public void resetMap(String floor) {
+        resetZoom();
+        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        FLOOR = floor;
     }
 
-    public void changeFloor1(){
-        groundFloor.setVisible(false);
-        floor1.setVisible(true);
-        changeFloorNodes();
+    public void resetMapAndDraw(String floor) {
+        resetMap(floor);
+        drawFloor(floor);
     }
 
-    public void pressDeleteButton() {
-        edgeD.toFront();
-        edgeDropdown.setVisible(true);
-        edgeIDtextbox.setVisible(false);
-        startNodeDropdown.setVisible(false);
-        endNodeDropdown.setVisible(false);
+    public void zoomIn(ActionEvent actionEvent) {
+        if(zoom < 3){
+            zoomGroup.setScaleX(++zoom);
+            zoomGroup.setScaleY(zoom);
+        }
+    }
 
-        state = "delete";
+    public void resetZoom(){
+        zoom = 1;
+        zoomGroup.setScaleX(1);
+        zoomGroup.setScaleY(1);
+    }
+
+    public void zoomOut(ActionEvent actionEvent) {
+        if(zoom > 1){
+            zoomGroup.setScaleX(--zoom);
+            zoomGroup.setScaleY(zoom);
+        }
+    }
+
+    public void drawFloor(String floor){
+        resetMap(floor);
+
+        try {
+            for( Map<String, String> edge : db.getEdges()){ if(edge.get("FLOOR").equals(floor)) drawSingleEdge(edge); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void drawSingleEdge(Edge edge) {
+        Line line = new Line();
+        try {
+            line.setStartX(Integer.parseInt(db.getNode(edge.getStartNode()).get("XCOORD")));
+            line.setStartY(Integer.parseInt(db.getNode(edge.getStartNode()).get("YCOORD")));
+            line.setEndX(Integer.parseInt(db.getNode(edge.getEndNode()).get("XCOORD")));
+            line.setEndY(Integer.parseInt(db.getNode(edge.getEndNode()).get("YCOORD")));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        line.setStroke(Color.RED);
+    }
+
+    private void drawSingleEdge(Map<String, String> edge) {
+        Line line = new Line();
+        try {
+            line.setStartX(Integer.parseInt(db.getNode(edge.get("STARTNODE")).get("XCOORD")));
+            line.setStartY(Integer.parseInt(db.getNode(edge.get("STARTNODE")).get("YCOORD")));
+            line.setEndX(Integer.parseInt(db.getNode(edge.get("ENDNODE")).get("XCOORD")));
+            line.setEndY(Integer.parseInt(db.getNode(edge.get("ENDNODE")).get("YCOORD")));
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        line.setStroke(Color.RED);
+    }
+
+    public void changeGroundFloor() {
+        resetMapAndDraw("G");
+    }
+
+    public void changeFloor1() {
+        resetMapAndDraw("1");
     }
 
     public void pressAddButton() {
@@ -334,6 +393,7 @@ public class EdgeEditing extends SEditing{
 
     }
 
+    @FXML
     public void submitfunction() {
         switch(state){
             case "delete":
@@ -349,78 +409,98 @@ public class EdgeEditing extends SEditing{
                 edgeIDtextbox.clear();
                 submissionlabel.setText("Invalid submission");
         }
+        clearfields();
         initialize();
+    }
+
+    @FXML
+    public void clearfields(){
+        edgeIDtextbox.clear();
+        startNodeDropdown.getSelectionModel().clearSelection();
+        endNodeDropdown.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    public void pressDeleteButton(){
+        edgeD.toFront();
+        edgeDropdown.setVisible(true);
+        edgeIDtextbox.setVisible(false);
+        startNodeDropdown.setVisible(false);
+        endNodeDropdown.setVisible(false);
+        submissionButton.setVisible(true);
+
+        state = "delete";
     }
 
     public void pressNodeButton() {
         sceneSwitch("NodeEditing");
     }
 
-    public void changeFloorNodes(){
-        nodeGridAnchor.getChildren().clear();
-        int count = 0;
-        try {
-            List<Map<String, String>> edges = db.getEdges();
-            List<String> nodesList = new ArrayList<>();
-            for (Map<String, String> edge : edges) {
-                String startNode = edge.get("STARTNODE");
-                String endNode = edge.get("ENDNODE");
-                String bothNodes = startNode.concat(endNode);
-                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
-                    try {
-                        Map<String, String> snode = db.getNode(startNode);
-                        Map<String, String> enode = db.getNode(endNode);
+//    public void changeFloorNodes(){
+//        edgeGridAnchor.getChildren().clear();
+//        int count = 0;
+//        try {
+//            List<Map<String, String>> edges = db.getEdges();
+//            List<String> nodesList = new ArrayList<>();
+//            for (Map<String, String> edge : edges) {
+//                String startNode = edge.get("STARTNODE");
+//                String endNode = edge.get("ENDNODE");
+//                String bothNodes = startNode.concat(endNode);
+//                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
+//                    try {
+//                        Map<String, String> snode = db.getNode(startNode);
+//                        Map<String, String> enode = db.getNode(endNode);
+//
+//                        if (floor1.isVisible() && (
+//                                ( snode.get("FLOOR").equals("1")) && enode.get("FLOOR").equals("1")) ){
+//                            drawNodes(snode,enode);
+//                            nodesList.add(startNode + endNode);
+//                            count++;
+//                        }else if (groundFloor.isVisible() && (
+//                                ( snode.get("FLOOR").equals("G")) && enode.get("FLOOR").equals("G")) ){
+//                            drawNodes(snode,enode);
+//                            nodesList.add(startNode + endNode);
+//                            count++;
+//
+//                        }
+//
+//                    } catch (SQLException sq) {
+//                        sq.printStackTrace();
+//                    }
+//                }
+//            }
+//        }catch (SQLException sq) {
+//            sq.printStackTrace();
+//        } System.out.println(count);
+//    }
 
-                        if (floor1.isVisible() && (
-                                ( snode.get("FLOOR").equals("1")) && enode.get("FLOOR").equals("1")) ){
-                            drawNodes(snode,enode);
-                            nodesList.add(startNode + endNode);
-                            count++;
-                        }else if (groundFloor.isVisible() && (
-                                ( snode.get("FLOOR").equals("G")) && enode.get("FLOOR").equals("G")) ){
-                            drawNodes(snode,enode);
-                            nodesList.add(startNode + endNode);
-                            count++;
-
-                        }
-
-                    } catch (SQLException sq) {
-                        sq.printStackTrace();
-                    }
-                }
-            }
-        }catch (SQLException sq) {
-            sq.printStackTrace();
-        } System.out.println(count);
-    }
-
-    public void drawNodes(Map<String, String> snode, Map<String,String> enode) {
-        Circle circ1 = new Circle();
-        Circle circ2 = new Circle();
-
-        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
-        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
-        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
-        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
-
-        circ1.setCenterX(startX);
-        circ1.setCenterY(startY);
-        circ2.setCenterX(endX);
-        circ2.setCenterY(endY);
-        circ1.setRadius(1);
-        circ2.setRadius(1);
-        circ1.setFill(Color.RED);
-        circ2.setFill(Color.RED);
-
-        Line line = new Line();
-        line.setStartX(startX);
-        line.setStartY(startY);
-        line.setEndX(endX);
-        line.setEndY(endY);
-        line.setStroke(Color.RED);
-        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
-
-    }
+//    public void drawNodes(Map<String, String> snode, Map<String,String> enode) {
+//        Circle circ1 = new Circle();
+//        Circle circ2 = new Circle();
+//
+//        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
+//        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
+//        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
+//        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
+//
+//        circ1.setCenterX(startX);
+//        circ1.setCenterY(startY);
+//        circ2.setCenterX(endX);
+//        circ2.setCenterY(endY);
+//        circ1.setRadius(1);
+//        circ2.setRadius(1);
+//        circ1.setFill(Color.RED);
+//        circ2.setFill(Color.RED);
+//
+//        Line line = new Line();
+//        line.setStartX(startX);
+//        line.setStartY(startY);
+//        line.setEndX(endX);
+//        line.setEndY(endY);
+//        line.setStroke(Color.RED);
+//        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
+//
+//    }
 
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
