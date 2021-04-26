@@ -97,10 +97,5 @@
             </JFXButton>
          </children>
       </HBox>
-      <JFXButton fx:id="externalTranB" layoutX="213.0" layoutY="238.0" maxWidth="234.0" mnemonicParsing="false" onAction="#externalTransP" prefWidth="234.0" style="-fx-max-width: 175px; -fx-pref-height: 55px; -fx-background-color: #003da6; -fx-background-radius: 7px;" text="External Transportation" textFill="WHITE">
-         <font>
-            <Font name="Optima Regular" size="14.0" />
-         </font>
-      </JFXButton>
    </children>
 </AnchorPane>
