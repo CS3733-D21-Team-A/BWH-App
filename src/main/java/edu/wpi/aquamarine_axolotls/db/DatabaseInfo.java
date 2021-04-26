@@ -234,11 +234,11 @@ final class DatabaseInfo {
 	static final String CANCELED_TEXT = "Canceled";
 
 	// ========== USERS ================
-// TODO: update for guest user type
 	static final String USER_TEXT = "User";
 	static final String EMPLOYEE_TEXT = "Employee";
 	static final String ADMIN_TEXT = "Admin";
 	static final String PATIENT_TEXT = "Patient";
+	static final String GUEST_TEXT = "Guest";
 	static final String PASSWORD_TEXT = "Password";
 	static final String USERTYPE_TEXT = "Usertype";
 	static final String LASTNAME_TEXT = "Last Name";

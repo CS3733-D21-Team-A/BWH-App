@@ -553,7 +553,7 @@ public class DatabaseController implements AutoCloseable {
 	public boolean checkUserMatchesPass(String username, String password) throws SQLException
 	{
 		if(checkUserExists(username)) {
-			String dbPass = userTable.getEntry(username).get(DatabaseInfo.PASSWORD_TEXT);
+			String dbPass = userTable.getEntry(username).get("PASSWORD");
 			return password.equals(dbPass);
 		}
 		else{
