@@ -75,6 +75,10 @@ public class DefaultServicePage extends SPage {
         sceneSwitch("FloralDelivery");
     }
 
+    @FXML
+    public void externalTransP(ActionEvent actionEvent) {
+        sceneSwitch("ExternalTransport");
+    }
 
     @FXML
     public void viewReqP(ActionEvent actionEvent) {
