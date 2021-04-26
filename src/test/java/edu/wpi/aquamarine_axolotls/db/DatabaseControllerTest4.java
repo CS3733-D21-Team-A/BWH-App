@@ -57,5 +57,25 @@ public class DatabaseControllerTest4 {
 
     //Sean
 
+    @Test
+    public void testGetUserByUsername()
+    {
+        try{
+            Map<String, String> user = new HashMap<String, String>();
+            user.put("USERNAME", "Seansta18");
+            user.put("FIRSTNAME", "Sean");
+            user.put("LASTNAME", "McMillan");
+            user.put("EMAIL", "Sean@gmail.com");
+            user.put("USERTYPE", DatabaseInfo.ADMIN_TEXT);
+            user.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user);
+
+            assertEquals(user, db.getUserByUsername("Seansta18"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 
 }
