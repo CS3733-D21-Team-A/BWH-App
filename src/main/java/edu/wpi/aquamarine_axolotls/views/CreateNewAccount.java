@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -58,8 +59,14 @@ public class CreateNewAccount extends SPage {
         }
 
         //if(!password.equals(confirmPassword)) Account is already in DB
-        else {
-                sceneSwitch("LogIn");
+        else if(!db.checkUserExists ( userName.getText ())) {
+            popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUsername already exists." );
+        }
+        else{
+            //Map<String,String> user = new Map<String, String>();
+            //db.addUser (  );
+            sceneSwitch("LogIn");
+
             }
     }
 

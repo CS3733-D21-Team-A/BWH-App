@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.Aapp;
+import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,6 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class LogIn extends SPage{
@@ -35,6 +37,7 @@ public class LogIn extends SPage{
 
     @FXML private JFXPasswordField password;
 
+    DatabaseController db;
     @FXML
     public void submit_button(ActionEvent actionEvent) {
 
@@ -52,64 +55,24 @@ public class LogIn extends SPage{
     }
 
 
-/*
-    public void confirmUser(){
-        String CUusername = username.getText();
-        String CUpassword = password.getText();
-        if(db.checkUserMatchesPass(CUusername,CUpassword)){
-            popUp("Submission Success!", "\n\n\n\n\n\nYou have entered the correct credentials");
-        }else
-        {popUp("Submission Failed!", "\n\n\n\n\n\nYou have entered either an incorrect username and password combination
-        , or the account does not exist");
+    public void confirmUser ( ) throws SQLException {
+        String CUusername = username.getText ( );
+        String CUpassword = password.getText ( );
+        if ( db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
+            popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
         }
- */
+        else {
+            popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
+                                          + "or the account does not exist" );
+        }
+    }
 
-    /*
+
+
    public void  forgottenPassword(){
-       Stage s = new Stage();
-       // set title for the stage
-       s.setTitle("creating textInput dialog");
-       // create a tile pane
-       TilePane r = new TilePane();
-
-       // create a label to show the input in text dialog
-       Label l = new Label("no text input");
-
-       // create a text input dialog
-       JFXDialog td = new JFXDialog();
-
-       // create a button
-       JFXButton d = new JFXButton("click");
-
-       // create a event handler
-       EventHandler<ActionEvent> event = new EventHandler<ActionEvent>() {
-           public void handle(ActionEvent e)
-           {
-               // show the text input dialog
-               td.showAndWait();
-
-               // set the text of the label
-               l.setText(td.getEditor().getText());
-           }
-       };
-
-       // set on action of event
-       d.setOnAction(event);
-
-       // add button and label
-       r.getChildren().add(d);
-       r.getChildren().add(l);
-
-       // create a scene
-       Scene sc = new Scene(r, 500, 300);
-
-       // set the scene
-       s.setScene(sc);
-
-       s.show();
+        sceneSwitch ( "ForgotPassword" );
    }
 
- */
 
 
     public void goHome(javafx.event.ActionEvent event){
@@ -120,8 +83,8 @@ public class LogIn extends SPage{
             ex.printStackTrace();
         }
     }
-
     public void createNewAccount(){
         sceneSwitch("CreateNewAccount");
     }
 }
+
