@@ -123,6 +123,7 @@ public class Navigation extends SPage {
     }
 
     public void resetZoom(){
+        zoom = 1;
         zoomGroup.setScaleX(1);
         zoomGroup.setScaleY(1);
     }

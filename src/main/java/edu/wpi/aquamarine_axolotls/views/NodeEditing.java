@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -111,6 +112,8 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(false);
         floor.setVisible(false);
         building.setVisible(false);
+        submissionButton.setVisible(false);
+        clearButton.setVisible(false);
 
         try {
             db = new DatabaseController();
@@ -228,6 +231,8 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(false);
         floor.setVisible(false);
         building.setVisible(false);
+        submissionButton.setVisible(true);
+        clearButton.setVisible(false);
 
         state = "delete";
     }
@@ -244,6 +249,8 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(true);
         floor.setVisible(true);
         building.setVisible(true);
+        submissionButton.setVisible(true);
+        clearButton.setVisible(true);
 
         state = "add";
     }
@@ -260,9 +267,12 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(true);
         floor.setVisible(true);
         building.setVisible(true);
+        submissionButton.setVisible(true);
+        clearButton.setVisible(true);
 
         state = "edit";
     }
+
 
     public void newCSV() {
         FileChooser fileChooser = new FileChooser();
@@ -458,4 +468,18 @@ public class NodeEditing extends SEditing {
         gc.fillOval(x, y, radius, radius);
     }
 
+
+    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            //System.out.println("Clicked map");
+
+            //double x = xScale(event.getX());
+            //double y = yScale(event.getY());
+            double x = Math.floor(event.getX());
+            double y = Math.floor(event.getY());
+
+            if (xCoor.isVisible()) xCoor.setText(Double.toString(x));
+            if (yCoor.isVisible()) yCoor.setText(Double.toString(y));
+        }
+    }
 }
