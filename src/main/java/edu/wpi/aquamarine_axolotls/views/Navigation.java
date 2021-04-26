@@ -15,6 +15,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 
 import java.io.*;
@@ -277,76 +278,77 @@ public class Navigation extends SPage {
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
-        //System.out.println("Clicked map");
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            //System.out.println("Clicked map");
 
-        //double x = xScale(event.getX());
-        //double y = yScale(event.getY());
-        double x = event.getX();
-        double y = event.getY();
+            //double x = xScale(event.getX());
+            //double y = yScale(event.getY());
+            double x = event.getX();
+            double y = event.getY();
 
-        //System.out.println(x + " " + y);
-        double radius = 20;
+            //System.out.println(x + " " + y);
+            double radius = 20;
 
-        //Establish current closest recorded node and current least distance
-        Node currClosest = null;
-        double currLeastDist = 100000;
+            //Establish current closest recorded node and current least distance
+            Node currClosest = null;
+            double currLeastDist = 100000;
 
-        //Loop through nodes
-        for (Node n : validNodes) {
-            if ((FLOOR == "G" && n.getFloor().equals("G"))
-                    || (FLOOR == "1" && n.getFloor().equals("1"))) {
-                //Get the x and y of that node
-                double currNodeX = xScale(n.getXcoord());
-                double currNodeY = yScale(n.getYcoord());
+            //Loop through nodes
+            for (Node n : validNodes) {
+                if ((FLOOR == "G" && n.getFloor().equals("G"))
+                        || (FLOOR == "1" && n.getFloor().equals("1"))) {
+                    //Get the x and y of that node
+                    double currNodeX = xScale(n.getXcoord());
+                    double currNodeY = yScale(n.getYcoord());
 
-                //Get the difference in x and y between input coords and current node coords
-                double xOff = x - currNodeX;
-                double yOff = y - currNodeY;
+                    //Get the difference in x and y between input coords and current node coords
+                    double xOff = x - currNodeX;
+                    double yOff = y - currNodeY;
 
-                //Give 'em the ol' pythagoras maneuver
-                double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
-                dist = Math.sqrt(dist);
+                    //Give 'em the ol' pythagoras maneuver
+                    double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                    dist = Math.sqrt(dist);
 
-                //If the distance is LESS than the given radius...
-                if (dist < radius) {
-                    //...AND the distance is less than the current min, update current closest node
-                    if (dist < currLeastDist) {
-                        currClosest = n;
-                        currLeastDist = dist;
+                    //If the distance is LESS than the given radius...
+                    if (dist < radius) {
+                        //...AND the distance is less than the current min, update current closest node
+                        if (dist < currLeastDist) {
+                            currClosest = n;
+                            currLeastDist = dist;
+                        }
                     }
                 }
             }
-        }
 
-        if (currClosest == null) return;
+            if (currClosest == null) return;
 
-        else {
-            String currCloseName = currClosest.getLongName();
+            else {
+                String currCloseName = currClosest.getLongName();
 
-            if (activePath == 0) { //if there's no active path, we'll handle that
-                if (firstNodeSelect == 0) {
-                    firstNode = currCloseName;
-                    firstNodeSelect = 1;
-                } else if (firstNodeSelect == 1) {
-                    stopList.clear();
-                    stopList.add(firstNode);
-                    stopList.add(currCloseName);
+                if (activePath == 0) { //if there's no active path, we'll handle that
+                    if (firstNodeSelect == 0) {
+                        firstNode = currCloseName;
+                        firstNodeSelect = 1;
+                    } else if (firstNodeSelect == 1) {
+                        stopList.clear();
+                        stopList.add(firstNode);
+                        stopList.add(currCloseName);
+                        currPath.clear();
+                        findPathSingleSegment(stopList.get(0), stopList.get(1));
+                        drawFloor(FLOOR);
+                    }
+                }
+                else if (activePath == 1) {
+                    stopList.add(stopList.size() - 1, currCloseName);
                     currPath.clear();
-                    findPathSingleSegment(stopList.get(0), stopList.get(1));
+                    for (int i = 0; i < stopList.size() - 1; i++) {
+                        findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
+                    }
                     drawFloor(FLOOR);
                 }
             }
-            else if (activePath == 1) {
-                stopList.add(stopList.size() - 1, currCloseName);
-                currPath.clear();
-                for (int i = 0; i < stopList.size() - 1; i++) {
-                    findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
-                }
-                drawFloor(FLOOR);
-            }
-        }
 
-        //System.out.println(currClosest.get("LONGNAME"));
+            //System.out.println(currClosest.get("LONGNAME"));
 
 //        if (activePath == 0) {
 //            if (this.firstNodeSelect == 0) {
@@ -368,6 +370,7 @@ public class Navigation extends SPage {
 //                findPath(pathList.get(i), pathList.get(i + 1));
 //            }
 //        }
+        }
     }
 
     private double getDistBetweenNodes(Node snode, Node enode) {
