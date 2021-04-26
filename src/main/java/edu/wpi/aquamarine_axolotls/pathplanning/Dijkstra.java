@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Dijkstra extends AStar{
 
-    public Dijkstra() throws SQLException, IOException, URISyntaxException {
+    public Dijkstra() {
         super();
 //        DatabaseController dbControl = new DatabaseController();
 //

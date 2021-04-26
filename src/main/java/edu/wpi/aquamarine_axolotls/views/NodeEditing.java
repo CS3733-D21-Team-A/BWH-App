@@ -51,6 +51,8 @@ public class NodeEditing extends SEditing {
     @FXML private JFXTextField floor;
     @FXML private JFXTextField building;
 
+    @FXML private Label curAlgorithm;
+
     @FXML private RadioMenuItem exportButton;
     @FXML private RadioMenuItem newCSVButton;
     @FXML private RadioMenuItem mergeCSVButton;
@@ -92,7 +94,30 @@ public class NodeEditing extends SEditing {
         table.getItems().clear();
 
         ObservableList<String> options = FXCollections.observableArrayList();
+        ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
+
         submissionlabel.setVisible(true);
+
+        searchAlgorithms.add("A-Star");
+        searchAlgorithms.add("Dijkstra");
+        searchAlgorithms.add("Breadth First");
+        searchAlgorithms.add("Depth First");
+        algoSelectBox.setItems(searchAlgorithms);
+
+
+        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
+            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
+
+        String algo = SearchAlgorithmContext.getSearchAlgorithmContext().context.toString();
+
+        if(algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0);
+        else if(algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
+        else if(algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
+        else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
+
+
+
 
         nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
         lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
@@ -439,6 +464,23 @@ public class NodeEditing extends SEditing {
         initialize();
 
         return;
+    }
+
+    @FXML
+    public void selectAlgorithm() {
+        if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
+            if(algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            }
+            curAlgorithm.setText(algoSelectBox.getSelectionModel().getSelectedItem().toString());
+
+        }
     }
 
     @FXML

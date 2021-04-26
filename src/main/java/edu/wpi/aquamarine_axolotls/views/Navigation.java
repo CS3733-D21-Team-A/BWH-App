@@ -49,6 +49,10 @@ public class Navigation extends SPage {
 
     @FXML
     public void initialize() {
+
+        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
+            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
         try {
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
@@ -244,6 +248,7 @@ public class Navigation extends SPage {
         //}
 
         currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
+        System.out.println(SearchAlgorithmContext.getSearchAlgorithmContext().context);
 
         /*
         etaTotal = searchAlgorithmContext.getETA(currPath);
