@@ -66,6 +66,8 @@ public class NodeEditing extends SEditing {
     @FXML private TableColumn buildingCol;
     @FXML private TableColumn typeCol;
 
+    @FXML private JFXButton clearButton;
+
     @FXML private ScrollPane mapScrollPane;
     @FXML private Canvas mapCanvas;
 
@@ -159,6 +161,7 @@ public class NodeEditing extends SEditing {
     }
 
     public void resetZoom(){
+        zoom = 1;
         zoomGroup.setScaleX(1);
         zoomGroup.setScaleY(1);
     }
@@ -201,6 +204,7 @@ public class NodeEditing extends SEditing {
         resetMapAndDraw("G");
     }
 
+    @FXML
     public void clearfields(){
         longName.clear();
         shortName.clear();

@@ -1,3 +1,4 @@
+
 package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
@@ -7,7 +8,10 @@ import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
@@ -33,20 +37,21 @@ public class EdgeEditing extends SEditing{
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
 
-    @FXML private HBox edgeD;
     @FXML private HBox edgeT;
+    @FXML private HBox edgeD;
     @FXML private JFXComboBox edgeDropdown;
     @FXML private JFXTextField edgeIDtextbox;
     @FXML private JFXComboBox startNodeDropdown;
     @FXML private JFXComboBox endNodeDropdown;
 
-    @FXML public RadioMenuItem importButton;
+    @FXML public RadioMenuItem importButton; // TODO: whats going on?
     @FXML public RadioMenuItem exportButton;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
 
-    @FXML private AnchorPane anchor;
-    @FXML private AnchorPane nodeGridAnchor;
+    @FXML Canvas mapCanvas;
+    @FXML ScrollPane mapScrollPane;
+
 
     @FXML private TableView table;
     @FXML private TableColumn<Edge,String> edgeIdCol;
@@ -54,18 +59,11 @@ public class EdgeEditing extends SEditing{
     @FXML private TableColumn<Edge,String> endNodeCol;
 
 
-    @FXML
-    private JFXHamburger burger;
-
-    @FXML
-    private JFXDrawer menuDrawer;
-
-    @FXML
-    private VBox box;
-
-
-    @FXML ImageView groundFloor;
-    @FXML ImageView floor1;
+    private Map<String, String> floors;
+    static String FLOOR = "G";
+    private Group zoomGroup;
+    private int zoom;
+    List<Edge> validEdges = new ArrayList<>();
 
     String state = "";
 
@@ -74,49 +72,100 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
+
         table.setEditable(false);
         table.getItems().clear();
 
-        ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
-        ObservableList<String> nodeOptions = FXCollections.observableArrayList();
+        ObservableList<String> options = FXCollections.observableArrayList();
         submissionlabel.setVisible(true);
-        anchor.setVisible(false);
-        //groundFloor.setVisible(true);
-        floor1.setVisible(false);
 
-        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
-        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
-        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
+        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("edgeID"));
+        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("startNode"));
+        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("endNode"));
 
-        edgeDropdown.setVisible(false);         //making fields invisible
+        edgeDropdown.setVisible(false);
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
+        submissionButton.setVisible(false);
 
-        try {
+        try{
             db = new DatabaseController();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
-            List<Map<String, String>> nodes = db.getNodes();
-            for (Map<String, String> edge : edges) {
-                edgeOptions.add(edge.get("EDGEID"));    //getting edge options
-                table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
-            }
-            for (Map<String, String> node : nodes) {
-                nodeOptions.add(node.get("NODEID"));
-            }
-            edgeDropdown.setItems(edgeOptions);
-            startNodeDropdown.setItems(nodeOptions);
-            endNodeDropdown.setItems(nodeOptions);
-            changeFloorNodes();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+            for(Map<String, String> edge : edges){
+                options.add(edge.get("EDGEID"));
+                Edge cur = new Edge(edge.get("EDGEID"),
+                        edge.get("STARTNODE"),
+                        edge.get("ENDNODE"));
+
+                table.getItems().add(cur);
+                validEdges.add(cur);
+                drawSingleEdge(cur);
+            }
+
+            edgeDropdown.setItems(options);
+            floors = new HashMap<>();
+            floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+
+            mapScrollPane.pannableProperty().set(true);
+            Group contentGroup = new Group();
+            zoomGroup = new Group();
+            contentGroup.getChildren().add(zoomGroup);
+            zoomGroup.getChildren().add(mapCanvas);
+            mapScrollPane.setContent(contentGroup);
+            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+            drawFloor(FLOOR);
+            zoom = 1;
+        } catch (SQLException | IOException | URISyntaxException e){
             e.printStackTrace();
         }
+
+//        table.setEditable(false);
+//        table.getItems().clear();
+//
+//        ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
+//        ObservableList<String> nodeOptions = FXCollections.observableArrayList();
+//        submissionlabel.setVisible(true);
+//        anchor.setVisible(false);
+//        //groundFloor.setVisible(true);
+//        //floor1.setVisible(false);
+//
+//        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
+//        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
+//        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
+//
+//        edgeDropdown.setVisible(false);         //making fields invisible
+//        edgeIDtextbox.setVisible(false);
+//        startNodeDropdown.setVisible(false);
+//        endNodeDropdown.setVisible(false);
+//
+//        try {
+//            db = new DatabaseController();
+//            csvHandler = new CSVHandler(db);
+//            List<Map<String, String>> edges = db.getEdges();
+//            List<Map<String, String>> nodes = db.getNodes();
+//            for (Map<String, String> edge : edges) {
+//                edgeOptions.add(edge.get("EDGEID"));    //getting edge options
+//                table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
+//            }
+//            for (Map<String, String> node : nodes) {
+//                nodeOptions.add(node.get("NODEID"));
+//            }
+//            edgeDropdown.setItems(edgeOptions);
+//            startNodeDropdown.setItems(nodeOptions);
+//            endNodeDropdown.setItems(nodeOptions);
+//            changeFloorNodes();
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void changeGroundFloor(){
