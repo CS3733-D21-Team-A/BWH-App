@@ -523,6 +523,16 @@ public class DatabaseController implements AutoCloseable {
 		userTable.deleteEntry(username);
 	}
 
+	// Emily
+	/**
+	 * Empties the user table by deleting all entries.
+	 * @throws SQLException Something went wrong.
+	 */
+	public void emptyUserTable() throws SQLException {
+		userTable.emptyTable();
+	}
+
+	// Emily
 	/**
 	 * gets a list of all users in the databse
 	 * @return
@@ -533,34 +543,37 @@ public class DatabaseController implements AutoCloseable {
 		return userTable.getEntries();
 	}
 
+	// Emily
 	/**
 	 * checking if a username and password match associated user account
 	 * @param username
-	 * @return true if the username and password match, false if they don't
+	 * @return true if the username and password match, false if they don't match or the user doesn't exist
 	 * @throws SQLException
 	 */
 	public boolean checkUserMatchesPass(String username, String password) throws SQLException
 	{
-		String dbPass = userTable.getEntry(username).get(DatabaseInfo.PASSWORD_TEXT);
-		return password.equals(dbPass);
+		if(checkUserExists(username)) {
+			String dbPass = userTable.getEntry(username).get(DatabaseInfo.PASSWORD_TEXT);
+			return password.equals(dbPass);
+		}
+		else{
+			return false;
+		}
 	}
 
+	// Emily
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
 	 * @return true if the username does not exist, false if it does
 	 * @throws SQLException
 	 */
-	public boolean checkUserExists(String username)
+	public boolean checkUserExists(String username) throws SQLException
 	{
-		try{
-			userTable.getEntry(username);
-		}catch (SQLException notExist){
-			return false;
-		}
-
-		return true;
+		return !(userTable.getEntry(username) == null);
 	}
+
+	// Emily
 	/**
 	 * pulling a table of a single user from the db given the username
 	 * @param username
@@ -572,6 +585,7 @@ public class DatabaseController implements AutoCloseable {
 		return userTable.getEntry(username);
 	}
 
+	// Sean
 	/**
 	 * gets a user by email
 	 * @param email
