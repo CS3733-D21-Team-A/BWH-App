@@ -79,6 +79,8 @@ public class NodeEditing extends SEditing {
     private Group zoomGroup;
     private int zoom;
     List<Node> validNodes = new ArrayList<>();
+    private Node prevSelected;
+    private Node currSelected;
 
 
     String state = "";
@@ -500,6 +502,20 @@ public class NodeEditing extends SEditing {
     }
 
     @FXML
+    public void highLightNodeFromSelector() {
+        if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
+            for (Node n : validNodes) {
+                if (n.getNodeID().equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
+                    prevSelected = currSelected;
+                    currSelected = n;
+                    drawSingleNode(prevSelected);
+                    drawSingleNodeRed(currSelected);
+                }
+            }
+        }
+    }
+
+    @FXML
     public void pressEdgeButton(ActionEvent actionEvent) {
         sceneSwitch("EdgeEditing");
     }
@@ -527,19 +543,74 @@ public class NodeEditing extends SEditing {
     }
 
 
-    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
-        if (event.getButton().equals(MouseButton.PRIMARY)) {
-            //System.out.println("Clicked map");
-
-            //double x = xScale(event.getX());
-            //double y = yScale(event.getY());
-            int x = (int) Math.floor(event.getX());
-            int y = (int) Math.floor(event.getY());
-
-            if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
-            if (yCoor.isVisible()) yCoor.setText(Double.toString(y));
-        }
+    public void drawSingleNodeRed(Node node) {
+        double x = xScale(node.getXcoord());
+        double y = yScale(node.getYcoord());
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.RED);
+        gc.fillOval(x, y, radius, radius);
     }
 
 
+    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
+        if (event.getButton().equals(MouseButton.SECONDARY)) {
+            if (state.equals("add")) {
+                //System.out.println("Clicked map");
+
+                //double x = xScale(event.getX());
+                //double y = yScale(event.getY());
+                int x = (int) Math.floor(event.getX() / (mapCanvas.getWidth()/5000));
+                int y = (int) Math.floor(event.getY() / (mapCanvas.getHeight()/3400));
+
+                if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
+                if (yCoor.isVisible()) yCoor.setText(Integer.toString(y));
+            }
+            else if (state.equals("edit") || state.equals("delete")) {
+                double x = event.getX();
+                double y = event.getY();
+
+                double radius = 20;
+
+                Node currClosest = null;
+                double currLeastDist = 100000;
+
+                for (Node n : validNodes) {
+                    //if ((FLOOR == "G" && n.getFloor().equals("G"))
+                    //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
+                    //Get the x and y of that node
+                    double currNodeX = xScale(n.getXcoord());
+                    double currNodeY = yScale(n.getYcoord());
+
+                    //Get the difference in x and y between input coords and current node coords
+                    double xOff = x - currNodeX;
+                    double yOff = y - currNodeY;
+
+                    //Give 'em the ol' pythagoras maneuver
+                    double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                    dist = Math.sqrt(dist);
+
+                    //If the distance is LESS than the given radius...
+                    if (dist < radius) {
+                        //...AND the distance is less than the current min, update current closest node
+                        if (dist < currLeastDist) {
+                            currClosest = n;
+                            currLeastDist = dist;
+                        }
+                    }
+                }
+
+                if (currClosest == null) return;
+                else {
+                    nodeDropdown.setValue(currClosest.getNodeID());
+                }
+                prevSelected = currSelected;
+                currSelected = currClosest;
+                drawSingleNode(prevSelected);
+                drawSingleNodeRed(currSelected);
+            }
+        }
+    }
 }

@@ -180,7 +180,7 @@
                      <children>
                         <HBox fx:id="nodeD" alignment="CENTER" prefHeight="26.0" prefWidth="175.0">
                            <children>
-                              <JFXComboBox fx:id="nodeDropdown" maxHeight="23.0" minHeight="15.0" prefHeight="23.0" prefWidth="130.0" promptText="Node Dropdown" style="-fx-font-size: 12;" />
+                              <JFXComboBox fx:id="nodeDropdown" onAction="#highLightNodeFromSelector" maxHeight="23.0" minHeight="15.0" prefHeight="23.0" prefWidth="130.0" promptText="Node Dropdown" style="-fx-font-size: 12;" />
                            </children>
                         </HBox>
                         <HBox fx:id="nodeT" alignment="CENTER" prefHeight="45.0" prefWidth="272.0">
