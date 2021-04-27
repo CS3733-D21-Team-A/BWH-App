@@ -53,7 +53,9 @@ public class FoodDelivery extends SServiceRequest {
     @FXML
     private ArrayList<String> nodeIDS;
 
-    @FXML private JFXTextField contactNumber;
+    @FXML
+   private JFXTextField contactNumber;
+
     @FXML
     JFXHamburger burger;
 
@@ -91,7 +93,13 @@ public class FoodDelivery extends SServiceRequest {
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
         if(foodOptions.getSelectionModel().getSelectedItem() == null
-                || roomNumber.getSelectionModel().getSelectedItem() == null){
+                || roomNumber.getSelectionModel().getSelectedItem() == null
+                ||drinkOptions.getSelectionModel ().getSelectedItem ()== null
+                ||firstName.getText ().isEmpty ()|| lastName.getText ().isEmpty ()||
+                dietaryRestA.getText ().isEmpty ()||
+                contactNumber.getText ().isEmpty ()||
+                numberServings.getSelectionModel ().getSelectedItem () == null)
+        {
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
             return;
         }
@@ -101,7 +109,7 @@ public class FoodDelivery extends SServiceRequest {
         int room = roomNumber.getSelectionModel().getSelectedIndex();
         String food = foodOptions.getSelectionModel().getSelectedItem().toString();
         String rest = dietaryRestA.getText();
-        String fo = foodOptions.getSelectionModel ().getSelectedItem ().toString ();
+        String fo = numberServings.getSelectionModel ().getSelectedItem ().toString ();
         String cn = contactNumber.getText();
         String dop = drinkOptions.getSelectionModel ().getSelectedItem ().toString ();
         if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")

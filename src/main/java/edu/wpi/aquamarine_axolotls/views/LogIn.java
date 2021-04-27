@@ -53,10 +53,9 @@ public class LogIn extends SPage{
         if ( username.getText ( ).isEmpty ( ) || password.getText ( ).isEmpty ( ) ) {
             popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have not filled in both the username and password fields" );
         }
-           if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
+        else if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
         popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
                                       + "or the account does not exist" );
-//WHY IS THIS NOT WORKING
         //update user to loggedin    db.getUserByUsername ( CUusername ).set
           }
         else{
