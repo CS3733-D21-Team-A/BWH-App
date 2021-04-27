@@ -224,7 +224,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         } else {
             double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
             double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
-            returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getShortName() + ".");
+            returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getLongName() + ".");
             stepNum++;
         }
 
@@ -270,7 +270,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
                 double edgeDistanceFeet = edgeDistancePixels * 3.75;
 
-                returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getShortName() + ".");
+                returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getLongName() + ".");
                 stepNum++;
             }
         }
