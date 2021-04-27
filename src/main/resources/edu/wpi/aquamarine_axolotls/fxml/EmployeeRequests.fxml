@@ -51,7 +51,7 @@
                   <Insets top="20.0" />
                </VBox.margin>
             </HBox>
-            <Line endX="175.0" stroke="#c4c4c4">
+            <Line fx:id="line" endX="175.0" stroke="#c4c4c4">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

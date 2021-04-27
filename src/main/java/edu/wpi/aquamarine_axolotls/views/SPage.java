@@ -49,8 +49,10 @@ public abstract class SPage {
     }
 
     @FXML
-    public void goHome(ActionEvent actionEvent) {
-        sceneSwitch("AdminMainPage");
+    public void goHome() {
+        if(Aapp.userType.equals("Employee")) sceneSwitch("EmployeeMainPage");
+        else if(Aapp.userType.equals("Patient")) sceneSwitch("PatientMainPage");
+        else if(Aapp.userType.equals("Admin")) sceneSwitch("AdminMainPage");
     }
 
     @FXML
@@ -69,6 +71,12 @@ public abstract class SPage {
 
     }
 
+    public void signOutPage(){
+        popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
+        Aapp.username = null;
+        Aapp.userType = "Guest";
+        sceneSwitch("GuestMainPage");
+    }
 
     @FXML
     public void popUp(String title, String disp){

@@ -20,19 +20,14 @@ public class ForgotPassword extends SPage{
         @FXML private JFXTextField username;
         @FXML private JFXTextField email;
         @FXML private JFXPasswordField password;
-
         DatabaseController db;
 
         @FXML
         public void initialize() {
             try {
                 db = new DatabaseController ();
-            } catch (SQLException throwables) {
+            } catch (SQLException | IOException | URISyntaxException throwables) {
                 throwables.printStackTrace ( );
-            } catch (IOException ioException) {
-                ioException.printStackTrace ( );
-            } catch (URISyntaxException e) {
-                e.printStackTrace ( );
             }
         }
 
@@ -42,19 +37,19 @@ public class ForgotPassword extends SPage{
             String pass = password.getText ();
             if(usrname.isEmpty() || eml.isEmpty ()|| pass.isEmpty ()) {
                 popUp ( "Error","\n\n\n\nYour password was not updated" );
+                return;
             }
-            else{
-                try {
-                    if(db.checkUserExists(usrname)){
-                        db.updatePassword (usrname,eml ,pass);
-                        popUp ( "New Password" ,"\n\n\n\n\nYour password has been successfully created. " +
-                                                "Please check your email for a confirmation message. Log in using your new credentials." );
-                        sceneSwitch ( "Login" );
-                    }
-                    else popUp ( "This account does not exist" ,"\n\n\n\n\n\n\nPlease try again. ");
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace ( );
+
+            try {
+                if(db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)){
+                    db.updatePassword (usrname,eml ,pass);
+                    popUp ( "New Password" ,"\n\n\n\n\nYour password has been successfully created. " +
+                                            "Please check your email for a confirmation message. Log in using your new credentials." );
+                    sceneSwitch ( "Login" );
                 }
+                else popUp ( "This account does not exist." ,"\n\n\n\n\nVerify that you have input the right username and email. ");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace ( );
             }
         }
 

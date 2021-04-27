@@ -17,6 +17,9 @@ public class Aapp extends Application {
 
   public static List<Map<String,String>> serviceRequests = new ArrayList<>();
 
+  public static String userType = "Guest";
+  public static String username;
+
 
   @Override
   public void init() {

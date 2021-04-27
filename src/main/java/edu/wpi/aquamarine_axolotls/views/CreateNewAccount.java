@@ -27,34 +27,30 @@ public class CreateNewAccount extends SPage {
 
     @FXML
     private StackPane stackPane;
-
     @FXML
     private JFXButton backB;
-
-    @FXML private JFXTextField firstName;
-
-    @FXML private JFXTextField lastName;
-
-    @FXML private JFXTextField emailAddress;
-
-    @FXML private JFXTextField userName;
-
-    @FXML private JFXComboBox userType;
-
+    @FXML
+    private JFXTextField firstName;
+    @FXML
+    private JFXTextField lastName;
+    @FXML
+    private JFXTextField emailAddress;
+    @FXML
+    private JFXTextField userName;
+    @FXML
+    private JFXComboBox userType;
     @FXML
     private JFXPasswordField password;
-
     @FXML
     private JFXPasswordField confirmPassword;
-
 
     DatabaseController db;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController ();
-        userType.setItems( FXCollections
-                .observableArrayList("Patient","Employee")
+        db = new DatabaseController();
+        userType.setItems(FXCollections
+                .observableArrayList("Patient", "Employee")
         );
     }
 
@@ -62,44 +58,54 @@ public class CreateNewAccount extends SPage {
     @FXML
     public void submit_button(ActionEvent actionEvent) throws SQLException {
         String email = emailAddress.getText();
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
+/*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
         Pattern pat = Pattern.compile(emailRegex);
-        if (email.matches(pat.pattern())){
+        if (!email.matches(pat.pattern())){
             popUp("Failed Submission.", "\n\n\n\n\n\nInvalid email.");
 
-        }
-        else if(firstName.getText().isEmpty() && lastName.getText().isEmpty() &&emailAddress.getText().isEmpty() && userName.getText().isEmpty()){
-            popUp("Failed Submission.", "\n\n\n\n\nPlease fill out all required fields.");
-        }
-        else if (!password.getText().equals(confirmPassword.getText())) {
-            popUp("Account Creation Failed", "\n\n\n\n\n\nPlease type in the same password for both fields");
+        }*/
+        if (firstName.getText().isEmpty() || lastName.getText().isEmpty() ||
+                emailAddress.getText().isEmpty() || userName.getText().isEmpty() ||
+                userType.getSelectionModel().getSelectedItem() == null) {
+            popUp("Failed Submission.", "\n\n\n\n\nPlease fill out all fields listed.");
+            return;
         }
 
-        //if(!password.equals(confirmPassword)) Account is already in DB
-        else if(db.checkUserExists ( userName.getText ())) {
-            popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUsername already exists." );
+        if (!password.getText().equals(confirmPassword.getText())) {
+            popUp("Account Creation Failed", "\n\n\n\n\n\nThe two passwords do not match, Try again.");
+            return;
         }
-        else{
-            Map<String, String> user = new HashMap<String, String> ();
-            user.put("USERNAME", userName.getText ());
-            user.put("FIRSTNAME", firstName.getText ());
-            user.put("LASTNAME", lastName.getText ());
-            user.put("EMAIL", emailAddress.getText ());
-            user.put("USERTYPE", userType.getSelectionModel().getSelectedItem().toString());
-            user.put("PASSWORD", password.getText ());
 
-            db.addUser(user);
+        if (db.checkUserExists(userName.getText())) {
+            popUp("Account Creation Failed", "\n\n\n\n\n\nUsername already exists.");
+            return;
+        }
 
-            sceneSwitch("LogIn");
-
+        for (Map<String, String> usr : db.getUsers()) {
+            if (usr.get("EMAIL").equals(email)) {
+                popUp("Account Creation Failed", "\n\n\n\n\n\nUser with this email already exists.");
+                return;
             }
+        }
+
+        Map<String, String> user = new HashMap<String, String>();
+        user.put("USERNAME", userName.getText());
+        user.put("FIRSTNAME", firstName.getText());
+        user.put("LASTNAME", lastName.getText());
+        user.put("EMAIL", emailAddress.getText());
+        user.put("USERTYPE", userType.getSelectionModel().getSelectedItem().toString());
+        user.put("PASSWORD", password.getText());
+        db.addUser(user);
+
+        sceneSwitch("LogIn");
+
     }
 
-    public void goBack(){
-        sceneSwitch ( "LogIn" );
+    public void goBack() {
+        sceneSwitch("LogIn");
     }
-
 
 
     public void goHome(javafx.event.ActionEvent event) {
@@ -110,7 +116,6 @@ public class CreateNewAccount extends SPage {
             ex.printStackTrace();
         }
     }
-
 
 
 }

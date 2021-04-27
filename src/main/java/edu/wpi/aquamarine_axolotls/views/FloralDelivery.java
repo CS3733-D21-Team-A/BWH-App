@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -42,6 +43,16 @@ public class FloralDelivery extends SServiceRequest {
 
     @FXML
     public void initialize() {
+        try {
+            db = new DatabaseController();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
@@ -55,6 +66,8 @@ public class FloralDelivery extends SServiceRequest {
         vaseOptions.setItems(FXCollections
                 .observableArrayList("Bouquet Vase","Square Vase", "Cylinder Vase", "Milk Bottle", "Pedestal Vase")
         );
+
+
     }
 
 
@@ -62,7 +75,7 @@ public class FloralDelivery extends SServiceRequest {
 
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || persMessage.getText ( ).isEmpty ()|| flowerOptions.getSelectionModel ( ).getSelectedItem ( ) == null|| vaseOptions.getSelectionModel ().getSelectedItem () ==null||firstName.getText ().isEmpty () || contactNumber.getText ().isEmpty () ||lastName.getText ().isEmpty() || deliveryTime.getValue ( ) == null ) {
+        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || flowerOptions.getSelectionModel ( ).getSelectedItem ( ) == null|| vaseOptions.getSelectionModel ().getSelectedItem () ==null||firstName.getText ().isEmpty () || contactNumber.getText ().isEmpty () ||lastName.getText ().isEmpty() || deliveryTime.getValue ( ) == null ) {
             errorFields ( "- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number\n- Contact Number\n- Delivery Date\n- Flower Options\n- Vase Options"  );
             return;
         }
@@ -83,11 +96,11 @@ public class FloralDelivery extends SServiceRequest {
         }
 
         try {
-            DatabaseController db = new DatabaseController();
             Map<String, String> shared = new HashMap<String, String>();
             Random r = new Random();
             int id = Math.abs(r.nextInt());
             shared.put("REQUESTID", String.valueOf(id));
+            shared.put("AUTHORID", Aapp.username);
             shared.put("STATUS", "Unassigned");
             shared.put("LOCATIONID", String.valueOf(nodeIDS.get(room)));
             shared.put("FIRSTNAME", fn);
@@ -100,14 +113,13 @@ public class FloralDelivery extends SServiceRequest {
             floral.put("DELIVERYTIME", dt);
             floral.put("NOTE", pmsg);
             floral.put("DELIVERYDATE", dd);
-            floral.put ( "FLOWEROPTION", fo );
-            floral.put ( "VASEOPTION", vo );
-            floral.put ( "CONTACTNUMBER", co );
+            floral.put ("FLOWEROPTION", fo );
+            floral.put ("VASEOPTION", vo );
+            floral.put ("CONTACTNUMBER", co );
 
             db.addServiceRequest(shared, floral);
-            db.close();
             submit();
-        } catch (SQLException | URISyntaxException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

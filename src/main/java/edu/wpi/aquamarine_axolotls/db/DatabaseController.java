@@ -17,8 +17,8 @@ public class DatabaseController implements AutoCloseable {
 	final private Table nodeTable;
 	final private Table edgeTable;
 	final private Table attrTable;
-	final private Table serviceRequestsTable;
 	final private Table userTable;
+	final private Table serviceRequestsTable;
 	/*
 	 * Map for getting service request tables.
 	 * Key: Service Request enumeration.
@@ -53,8 +53,9 @@ public class DatabaseController implements AutoCloseable {
 		nodeTable = tableFactory.getTable(TABLES.NODES);
 		edgeTable = tableFactory.getTable(TABLES.EDGES);
 		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
-		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
 		userTable = tableFactory.getTable(TABLES.USERS);
+		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+
 
 		requestsTables = new HashMap<>();
 		for (SERVICEREQUEST table : SERVICEREQUEST.values()) {

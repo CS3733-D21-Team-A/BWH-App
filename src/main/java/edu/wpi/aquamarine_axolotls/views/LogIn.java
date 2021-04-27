@@ -24,20 +24,15 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.Map;
 
 
 public class LogIn extends SPage{
 
-    @FXML
-    private StackPane stackPane;
-
-    @FXML
-    private JFXButton backB;
-
+    @FXML private StackPane stackPane;
+    @FXML private JFXButton backB;
     @FXML private JFXTextField username;
-
     @FXML private JFXPasswordField password;
-
     DatabaseController db;
 
     @FXML
@@ -52,22 +47,20 @@ public class LogIn extends SPage{
 
         if ( username.getText ( ).isEmpty ( ) || password.getText ( ).isEmpty ( ) ) {
             popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have not filled in both the username and password fields" );
+            return;
         }
-           if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
-        popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
-                                      + "or the account does not exist" );
-//WHY IS THIS NOT WORKING
-        //update user to loggedin    db.getUserByUsername ( CUusername ).set
-          }
-        else{
-            popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
-            try {
-                Parent root = FXMLLoader.load ( getClass ( ).getResource ( "/edu/wpi/aquamarine_axolotls/fxml/PatientMainPage.fxml" ) );
-                Aapp.getPrimaryStage ( ).getScene ( ).setRoot ( root );
-            } catch (IOException ex) {
-                ex.printStackTrace ( );
-            }
-        }
+       if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
+           popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
+                   + "or the account does not exist" );
+           return;
+       }
+
+       popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
+       Map<String, String> usr = db.getUserByUsername(CUusername);
+       Aapp.userType = usr.get("USERTYPE");
+       Aapp.username = usr.get("USERNAME");
+       goHome();
+
     }
 
 

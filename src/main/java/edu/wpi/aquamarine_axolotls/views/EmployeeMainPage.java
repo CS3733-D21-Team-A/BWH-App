@@ -8,10 +8,6 @@ public class EmployeeMainPage extends SMainPage{
         sceneSwitch("PatientMainPage");
     }
 
-    public void signOutPage(){
-        popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        sceneSwitch("GuestMainPage");
-    }
     public void covidSurveyPage(ActionEvent actionEvent) {
         sceneSwitch("CovidSurvey");
     }

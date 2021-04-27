@@ -14,7 +14,6 @@ public class GuestMainPage extends SMainPage {
         sceneSwitch("GuestMainPage");
     }
 
-
     @FXML
     public void initialize() {
     }

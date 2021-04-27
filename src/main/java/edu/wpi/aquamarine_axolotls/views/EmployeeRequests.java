@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.shape.Line;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,8 +32,8 @@ public class EmployeeRequests extends SPage{
     @FXML private JFXButton changeStatusB;
     @FXML private JFXComboBox assignD;
     @FXML JFXComboBox statusD;
-    @FXML JFXComboBox filterD;
-    
+    @FXML Line line;
+
     DatabaseController db;
 
 
@@ -39,24 +41,34 @@ public class EmployeeRequests extends SPage{
     public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
         try {
             db = new DatabaseController();
-            Map<String, String> user1 = new HashMap<>();
-/*            user1.put("USERNAME", "poophead");
-            user1.put("FIRSTNAME","poo");
-            user1.put("LASTNAME","head");
-            user1.put("EMAIL","phead@gmail.com");
-            user1.put("USERTYPE", "Employee");
-            user1.put("PASSWORD", "123");*/
 
-
-           // db.addUser(user1);
-            ObservableList<String> employeeNames = FXCollections.observableArrayList();
-            List<Map<String, String>> users = db.getUsers();
-            for(Map<String, String> user : users){
-                if(user.get("USERTYPE").equals("Employee")){
-                    employeeNames.add(user.get("FIRSTNAME") + user.get("LASTNAME"));
-                }
+            if(Aapp.userType.equals("Patient")){ // only display their service requests
+                assignB.setVisible(false);
+                changeStatusB.setVisible(false);
+                statusD.setVisible(false);
+                assignD.setVisible(false);
+                line.setVisible(false);
             }
-            assignD.setItems(employeeNames);
+            else if(Aapp.userType.equals("Admin")){
+                ObservableList<String> names = FXCollections.observableArrayList();
+                List<Map<String, String>> users = db.getUsers();
+                for(Map<String, String> user : users){
+                    if(user.get("USERTYPE").equals("Employee")){
+                        names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
+                    }
+                }
+                assignD.setItems(names);
+
+            }
+            else if(Aapp.userType.equals("Employee")){
+                ObservableList<String> names = FXCollections.observableArrayList();
+                Map<String, String> usr = db.getUserByUsername(Aapp.username);
+                String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
+                names.add(name);
+                assignD.setItems(names);
+            }
+
+
             statusD.setItems(FXCollections
                     .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.DONE),
@@ -74,17 +86,22 @@ public class EmployeeRequests extends SPage{
 
     }
 
-    public void goHome(ActionEvent actionEvent) {
-        sceneSwitch("AdminMainPage");
-    }
-
     public void refresh(){
         List<Map<String, String>> serviceRequests = null;
         try {
-            serviceRequests = db.getServiceRequests();
-            srTable.getItems().clear();
-            for(Map<String, String> req : serviceRequests){
-                srTable.getItems().add(new EmployeeRequest(req));
+            if(Aapp.userType.equals("Admin") || Aapp.userType.equals("Employee")){
+                serviceRequests = db.getServiceRequests();
+                srTable.getItems().clear();
+                for(Map<String, String> req : serviceRequests){
+                    srTable.getItems().add(new EmployeeRequest(req));
+                }
+            }
+            else if(Aapp.userType.equals("Patient")){
+                serviceRequests = db.getServiceRequestsByAuthor(Aapp.username);
+                srTable.getItems().clear();
+                for(Map<String, String> req : serviceRequests){
+                    srTable.getItems().add(new EmployeeRequest(req));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

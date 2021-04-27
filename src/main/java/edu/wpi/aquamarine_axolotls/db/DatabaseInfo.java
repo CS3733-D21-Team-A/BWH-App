@@ -11,6 +11,7 @@ final class DatabaseInfo {
 
 	private DatabaseInfo() {} //NO CONSTRUCTION ALLOWED >:(
 
+
 	// ========== PRIMARY TABLE SQL ==========
 
 
@@ -46,12 +47,14 @@ final class DatabaseInfo {
 		"CREATE TABLE " + TABLES.SERVICE_REQUESTS.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"STATUS VARCHAR(11) DEFAULT 'Unassigned'," +
-			"EMPLOYEEID VARCHAR(30)," + //TODO: THIS IS A FOREIGN KEY TO THE USER TABLE (NOT YET IMPLEMENTED)
+			"EMPLOYEEID VARCHAR(30)," +
+			"AUTHORID VARCHAR(25)," +
 			"LOCATIONID VARCHAR(25)," +
 			"FIRSTNAME VARCHAR(30)," +
 			"LASTNAME VARCHAR(50)," +
 			"REQUESTTYPE VARCHAR(20) NOT NULL," + //TODO: MAKE THIS USE ENUM
-			"CONSTRAINT FK_LOCATIONID FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT" +
+			"CONSTRAINT FK_LOCATIONID FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT," +
+			"CONSTRAINT FK_AUTHORID FOREIGN KEY (AUTHORID) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON UPDATE RESTRICT" +
 			//TODO: Constraint to replace ENUM('Unassigned','Assigned','In Progress','Done','Canceled') for STATUS
 			//TODO: Constraint to replace ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') for REQUESTTYPE
 		")";
@@ -67,21 +70,22 @@ final class DatabaseInfo {
 			"ATTRIBUTE VARCHAR(30)" +
 		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
 
+
 	// ========== USER TABLE ================= //
 	/**
 	 * SQL table for the USER
 	 */
 
 	static final String USER_TABLE_SQL =
-		"CREATE TABLE " + TABLES.USERS.name() + " (" +
-			"USERNAME VARCHAR(25) PRIMARY KEY, " +
-			"FIRSTNAME VARCHAR(25)," +
-			"LASTNAME VARCHAR(25)," +
-			"EMAIL VARCHAR(25) NOT NULL," +
-			"CONSTRAINT emailConst UNIQUE(EMAIL)," +
-			"USERTYPE VARCHAR(25)," +
-			"PASSWORD VARCHAR(25) NOT NULL" +
-			")"; //TODO CONSTRAINT FOR USERTYPE OR POSSIBLE TYPE DEFAULT TO PATIENT
+			"CREATE TABLE " + TABLES.USERS.name() + " (" +
+					"USERNAME VARCHAR(25) PRIMARY KEY, " +
+					"FIRSTNAME VARCHAR(25)," +
+					"LASTNAME VARCHAR(25)," +
+					"EMAIL VARCHAR(25) NOT NULL," +
+					"CONSTRAINT emailConst UNIQUE(EMAIL)," +
+					"USERTYPE VARCHAR(25)," +
+					"PASSWORD VARCHAR(25) NOT NULL" +
+					")"; //TODO CONSTRAINT FOR USERTYPE OR POSSIBLE TYPE DEFAULT TO PATIENT
 
 	// ========== ATTRIBUTES STRINGS ==========
 
@@ -106,6 +110,7 @@ final class DatabaseInfo {
 			"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
+			"FOODOPTION VARCHAR(25)," +
 			"NUMBEROFSERVINGS VARCHAR(3)," +
 			"CONTACTNUMBER VARCHAR(15)," +
 			"DRINKOPTIONS VARCHAR(25)," + // TODO: do the same thing as what happened with food options thing

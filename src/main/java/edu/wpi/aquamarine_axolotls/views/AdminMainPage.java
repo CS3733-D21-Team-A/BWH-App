@@ -61,11 +61,6 @@ public class AdminMainPage extends SMainPage{
         sceneSwitch("EmployeeRequests");
     }
 
-    public void signOutPage(){
-        popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        sceneSwitch("GuestMainPage");
-    }
-
 
 
 }
