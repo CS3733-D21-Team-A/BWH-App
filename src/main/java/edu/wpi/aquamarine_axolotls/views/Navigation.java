@@ -28,8 +28,9 @@ public class Navigation extends SPage {
 
     @FXML private JFXComboBox startLocation;
     @FXML private JFXComboBox destination;
-    @FXML private JFXButton findPathButton;
     @FXML private JFXComboBox intermediate;
+    @FXML private JFXButton findPathButton;
+    @FXML private JFXButton cancelPath;
     @FXML private Label etaLabel;
     @FXML Canvas mapCanvas;
     @FXML ScrollPane mapScrollPane;
@@ -153,7 +154,7 @@ public class Navigation extends SPage {
         startLocation.getSelectionModel().clearSelection();
         destination.getSelectionModel().clearSelection();
         intermediate.getSelectionModel().clearSelection();
-        cancelDir();
+        listDirVBox.setVisible(false);
     }
 
     public void drawFloor(String floor){
@@ -469,6 +470,8 @@ public class Navigation extends SPage {
         startLocation.setDisable(false);
         destination.setDisable(false);
         intermediate.setDisable(false);
+        findPathButton.setDisable(false);
+        cancelPath.setDisable(false);
     }
 
     public void startDir() {
@@ -479,6 +482,8 @@ public class Navigation extends SPage {
         startLocation.setDisable(true);
         destination.setDisable(true);
         intermediate.setDisable(true);
+        findPathButton.setDisable(true);
+        cancelPath.setDisable(true);
 
         curDirection.setText("current direction"); //get first direction
     }

@@ -182,7 +182,7 @@
             </HBox>
             <Group>
                <children>
-                  <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="388.0" prefWidth="248.0">
+                  <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="388.0" prefWidth="231.0">
                      <children>
                         <ScrollPane prefHeight="429.0" prefWidth="227.0">
                            <VBox.margin>
@@ -203,7 +203,7 @@
                         <Insets top="20.0" />
                      </padding>
                   </VBox>
-                  <VBox fx:id="stepByStep" alignment="TOP_CENTER" prefHeight="431.0" prefWidth="248.0" style="-fx-background-color: c4c4c450;">
+                  <VBox fx:id="stepByStep" alignment="TOP_CENTER" prefHeight="431.0" prefWidth="233.0" style="-fx-background-color: c4c4c450;">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="232.0" style="-fx-background-color: ffffff; -fx-border-radius: 10;">
                            <children>
@@ -244,6 +244,14 @@
                               <Insets top="20.0" />
                            </padding>
                         </HBox>
+                        <JFXButton fx:id="backToListDir" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelDir" prefHeight="30.0" prefWidth="127.0" style="-fx-font-size: 14; -fx-background-color: #003da6;" text="List Directions" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </JFXButton>
                      </children>
                      <padding>
                         <Insets top="20.0" />
