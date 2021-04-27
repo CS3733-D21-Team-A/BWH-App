@@ -80,6 +80,193 @@ public class DatabaseControllerTest4 {
 */
 
     //CJ
+    @Test
+    public void testAddUser()
+    {
+        try{
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+
+            Map<String, String> user2 = new HashMap<String, String>();
+            user2.put("USERNAME", "Eakelley");
+            user2.put("FIRSTNAME", "Emily");
+            user2.put("LASTNAME", "Kelley");
+            user2.put("EMAIL", "emily@gmail.com");
+            user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user2.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user2);
+
+            Map<String, String> user3 = new HashMap<String, String>();
+            user3.put("USERNAME", "Alexa123");
+            user3.put("FIRSTNAME", "Alexa");
+            user3.put("LASTNAME", "Freglette");
+            user3.put("EMAIL", "alexa@gmail.com");
+            user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user3.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user3);
+
+            assertEquals(user1, db.getUserByUsername("Seansta18"));
+            assertEquals(user2, db.getUserByUsername("Eakelley"));
+            assertEquals(user3, db.getUserByUsername("Alexa123"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAddUserThatUsernameExists()
+    {
+        try {
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+            assertThrows(SQLException.class, () -> {
+                db.addUser(user1);
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testAddUserThatEmailExists()
+    {
+        try {
+            List<Map<String,String>> testBoi = new ArrayList<>();
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            Map<String, String> user2 = new HashMap<String, String>();
+            user2.put("USERNAME", "BananasTho");
+            user2.put("FIRSTNAME", "Craig");
+            user2.put("LASTNAME", "CJ");
+            user2.put("EMAIL", "Sean@gmail.com");
+            user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user2.put("PASSWORD", "YourPassword");
+
+            db.addUser(user1);
+            assertThrows(SQLException.class, () -> {
+                db.addUser(user2);
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testEditUser()
+    {
+        try {
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+            user1.replace("LASTNAME", "DeMaio");
+            db.editUser("Seansta18", user1);
+
+            assertEquals(user1, db.getUserByUsername("Seansta18"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testEditUserThatDNE()
+    {
+        try {
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+            user1.replace("LASTNAME", "DeMaio");
+            db.editUser("Seansta18", user1);
+
+            assertThrows(SQLException.class, () -> {
+                db.editUser("Chistopher", user1);
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testDeleteUser()
+    {
+        try {
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+            assertEquals(user1, db.getUserByUsername("Seansta18"));
+
+            db.deleteUser("Seansta18");
+            assertEquals(null, db.getUserByUsername("Seansta18"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
+    @Test
+    public void testDeleteUserThatDNE() throws SQLException
+    {
+
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+            assertEquals(user1, db.getUserByUsername("Seansta18"));
+            db.deleteUser("Seansta18");
+        assertThrows(SQLException.class, () -> {
+            db.deleteUser("Seansta18");
+        });
+    }
+
 
     //Emily
 
