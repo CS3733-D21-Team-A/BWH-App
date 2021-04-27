@@ -86,7 +86,7 @@
                 </Line>
             </children>
         </VBox>
-        <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" layoutY="175.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true" AnchorPane.topAnchor="150.0">
+        <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" layoutY="175.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" text="Please wait patiently until the request being processed" textAlignment="CENTER" wrapText="true" AnchorPane.topAnchor="150.0">
             <font>
                 <Font name="Calibri" size="14.0" />
             </font>
