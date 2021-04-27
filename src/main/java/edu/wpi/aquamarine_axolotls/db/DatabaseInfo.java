@@ -111,7 +111,6 @@ final class DatabaseInfo {
 			"FOODOPTION VARCHAR(50)," +
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
-			"FOODOPTION VARCHAR(25)," +
 			"NUMBEROFSERVINGS VARCHAR(3)," +
 			"CONTACTNUMBER VARCHAR(15)," +
 			"DRINKOPTIONS VARCHAR(25)," + // TODO: do the same thing as what happened with food options thing

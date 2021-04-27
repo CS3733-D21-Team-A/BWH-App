@@ -729,11 +729,20 @@ public class DatabaseControllerTest4 {
     public void testGetServiceRequestsByAuthor()
     {
         try {
+            Map<String, String> user = new HashMap<String, String>();
+            user.put("USERNAME", "Seansta18");
+            user.put("FIRSTNAME", "Sean");
+            user.put("LASTNAME", "McMillan");
+            user.put("EMAIL", "Sean@gmail.com");
+            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user.put("PASSWORD", "PasswordIsMyPassword");
+            db.addUser(user);
+
             Map<String, String> sharedValues = new HashMap<>();
             sharedValues.put("REQUESTID", "12345");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
-            sharedValues.put("AUTHORID", "John123");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
@@ -741,6 +750,7 @@ public class DatabaseControllerTest4 {
 
             Map<String, String> requestValues = new HashMap<String, String>();
             requestValues.put("REQUESTID", "23456");
+            requestValues.put("FOODOPTION", "Pizza");
             requestValues.put("DELIVERYTIME", "NOW");
             requestValues.put("DIETARYRESTRICTIONS", "PEANUTS");
             requestValues.put("NOTE", "BLAH BLAH BLAH");
