@@ -19,38 +19,16 @@ import java.util.*;
 
 public class FloralDelivery extends SServiceRequest {
 
-    @FXML
-    private JFXTextField firstName;
-
-    @FXML
-    private JFXTextField lastName;
-
-    @FXML
-    private JFXTimePicker deliveryTime;
-
-    @FXML
-    private JFXComboBox roomNumber;
-
-    @FXML
-    private JFXTextArea persMessage;
-
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
-    @FXML
-    private JFXComboBox flowerOptions;
-
+    @FXML private JFXTextField firstName;
+    @FXML private JFXTextField lastName;
+    @FXML private JFXTimePicker deliveryTime;
+    @FXML private JFXComboBox roomNumber;
+    @FXML private JFXTextArea persMessage;
+    @FXML JFXHamburger burger;
+    @FXML private JFXComboBox flowerOptions;
     @FXML private JFXDatePicker deliveryDate;
-
     @FXML private JFXTextField contactNumber;
-    @FXML
-    private JFXComboBox vaseOptions;
+    @FXML private JFXComboBox vaseOptions;
     HamburgerBasicCloseTransition transition;
 
 
@@ -58,6 +36,8 @@ public class FloralDelivery extends SServiceRequest {
     private AnchorPane myAnchorPane;
 
     private ArrayList<String> nodeIDS;
+
+    DatabaseController db;
 
 
     @FXML

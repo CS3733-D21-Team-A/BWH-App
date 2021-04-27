@@ -40,19 +40,21 @@ public class EmployeeRequests extends SPage{
         try {
             db = new DatabaseController();
             Map<String, String> user1 = new HashMap<>();
-            user1.put("USERNAME", "poophead");
+/*            user1.put("USERNAME", "poophead");
             user1.put("FIRSTNAME","poo");
             user1.put("LASTNAME","head");
             user1.put("EMAIL","phead@gmail.com");
             user1.put("USERTYPE", "Employee");
-            user1.put("PASSWORD", "123");
+            user1.put("PASSWORD", "123");*/
 
 
-            db.addUser(user1);
+           // db.addUser(user1);
             ObservableList<String> employeeNames = FXCollections.observableArrayList();
             List<Map<String, String>> users = db.getUsers();
             for(Map<String, String> user : users){
-                if(user.get("USERTYPE").equals("Employee")) employeeNames.add(user.get("FIRSTNAME") + user.get("LASTNAME"));
+                if(user.get("USERTYPE").equals("Employee")){
+                    employeeNames.add(user.get("FIRSTNAME") + user.get("LASTNAME"));
+                }
             }
             assignD.setItems(employeeNames);
             statusD.setItems(FXCollections
@@ -77,17 +79,17 @@ public class EmployeeRequests extends SPage{
     }
 
     public void refresh(){
+        List<Map<String, String>> serviceRequests = null;
         try {
-            db = new DatabaseController();
-            List<Map<String, String>> serviceRequests = db.getServiceRequests();
+            serviceRequests = db.getServiceRequests();
             srTable.getItems().clear();
             for(Map<String, String> req : serviceRequests){
                 srTable.getItems().add(new EmployeeRequest(req));
             }
-            db.close();
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     @FXML

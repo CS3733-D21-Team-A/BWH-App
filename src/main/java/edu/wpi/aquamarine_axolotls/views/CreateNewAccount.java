@@ -49,6 +49,16 @@ public class CreateNewAccount extends SPage {
 
 
     DatabaseController db;
+
+    @FXML
+    public void initialize() throws SQLException, IOException, URISyntaxException {
+        db = new DatabaseController ();
+        userType.setItems( FXCollections
+                .observableArrayList("Patient","Employee")
+        );
+    }
+
+
     @FXML
     public void submit_button(ActionEvent actionEvent) throws SQLException {
         String email = emailAddress.getText();
@@ -76,7 +86,7 @@ public class CreateNewAccount extends SPage {
             user.put("FIRSTNAME", firstName.getText ());
             user.put("LASTNAME", lastName.getText ());
             user.put("EMAIL", emailAddress.getText ());
-        //    user.put("USERTYPE", userType.getSelectionModel ().toString ()); //// Should i ask this in the login???
+            user.put("USERTYPE", userType.getSelectionModel().getSelectedItem().toString());
             user.put("PASSWORD", password.getText ());
 
             db.addUser(user);
@@ -84,14 +94,6 @@ public class CreateNewAccount extends SPage {
             sceneSwitch("LogIn");
 
             }
-    }
-
-    @FXML
-    public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController ();
-        userType.setItems( FXCollections
-                .observableArrayList("Patient","Employee")
-        );
     }
 
     public void goBack(){
