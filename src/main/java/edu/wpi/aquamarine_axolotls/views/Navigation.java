@@ -309,11 +309,12 @@ public class Navigation extends SPage {
         activePath = 1;
         //drawFloor(FLOOR);
         //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
-
-        List<String> textDir = new ArrayList<String>();
-        textDir.add("left 1");
-        textDir.add("left 2");
-        currPathDir = textDir;
+        currPathDir.clear();
+        currPathDir = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currPath);
+//        List<String> textDir = new ArrayList<String>();
+//        textDir.add("left 1");
+//        textDir.add("left 2");
+//         = textDir;
         initializeDirections();
     }
 
@@ -568,10 +569,11 @@ public class Navigation extends SPage {
     public void changeArrow(String direction){ //update arrow
         Image arrowImg;
         if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
-        else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
-        else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
-        else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
-        else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
+        else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
+        else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
+        else if (direction.contains("Turn around")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+        else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
 
         arrow.setImage(arrowImg);
     }
@@ -580,6 +582,10 @@ public class Navigation extends SPage {
         cancelDir();
         for (int i = 0; i < currPathDir.size(); i++) {
             Label l = new Label(currPathDir.get(i));
+            l.setStyle("wrapText: true");
+            l.setStyle("-fx-background-color: #fa8786");
+            l.setPrefWidth(225.0);
+
             listOfDirections.getChildren().add(l);
         }
     }
