@@ -51,8 +51,6 @@ public class NodeEditing extends SEditing {
     @FXML private JFXTextField floor;
     @FXML private JFXTextField building;
 
-    @FXML private Label curAlgorithm;
-
     @FXML private RadioMenuItem exportButton;
     @FXML private RadioMenuItem newCSVButton;
     @FXML private RadioMenuItem mergeCSVButton;
@@ -478,8 +476,6 @@ public class NodeEditing extends SEditing {
             } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
             }
-            curAlgorithm.setText(algoSelectBox.getSelectionModel().getSelectedItem().toString());
-
         }
     }
 

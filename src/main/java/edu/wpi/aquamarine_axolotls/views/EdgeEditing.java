@@ -5,8 +5,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
-import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,6 +37,7 @@ import java.util.Map;
 
 public class EdgeEditing extends SEditing{
     @FXML public JFXButton deleteButton;
+    @FXML public JFXComboBox algoSelectBox;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
 
@@ -76,6 +76,27 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
+
+        ObservableList<String> options = FXCollections.observableArrayList();
+        ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
+
+        searchAlgorithms.add("A-Star");
+        searchAlgorithms.add("Dijkstra");
+        searchAlgorithms.add("Breadth First");
+        searchAlgorithms.add("Depth First");
+        algoSelectBox.setItems(searchAlgorithms);
+
+
+        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
+            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
+
+        String algo = SearchAlgorithmContext.getSearchAlgorithmContext().context.toString();
+
+        if(algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0);
+        else if(algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
+        else if(algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
+        else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
 
         table.setEditable(false);
         table.getItems().clear();
@@ -541,5 +562,19 @@ public class EdgeEditing extends SEditing{
         else menuDrawer.close();
         transition.setRate(transition.getRate() * -1);
         transition.play();
+    }
+
+    public void selectAlgorithm(ActionEvent actionEvent) {
+        if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
+            if(algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            }
+        }
     }
 }
