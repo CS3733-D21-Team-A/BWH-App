@@ -59,7 +59,7 @@ public class SearchAlgorithmContext {
      * @return The list of steps that a user must take to navigate from the start
      *          of the path to the end
      */
-    public List<String> getTextDirections(List<Node> path){
+    public List<List<String>> getTextDirections(List<Node> path){
         return context.getTextDirections(path);
     }
 }

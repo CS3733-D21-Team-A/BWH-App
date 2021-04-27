@@ -201,11 +201,25 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The list of steps that a user must take to navigate from the start
      *          of the path to the end
      */
-    public List<String> getTextDirections(List<Node> path){
-        //TODO: FIGURE OUT HOW TF TO TEST THIS
-        ArrayList<String> returnList = new ArrayList<String>();
+    public List<List<String>> getTextDirections(List<Node> path){
+        //TODO: FIGURE OUT HOW TF TO T hello?
 
-        if(path.size() <= 1) return returnList;
+        List<List<String>> returnList = new ArrayList<List<String>>();
+        ArrayList<String> instructions = new ArrayList<String>();
+        ArrayList<String> nodeIDS = new ArrayList<String>();
+
+        if(path.size() == 0){
+            returnList.add(instructions);
+            returnList.add(nodeIDS);
+            return returnList;
+        }
+        if(path.size() == 1) {
+            instructions.add("1. You have arrived at your destination");
+            nodeIDS.add(path.get(0).getNodeID()); // TODO : could error because path could be mt??
+            returnList.add(instructions);
+            returnList.add(nodeIDS);
+            return returnList;
+        }
 
         int stepNum = 1;
 
@@ -216,20 +230,23 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         }
 
         if(path.get(0).getNodeType().equals("ELEV") && path.get(1).getNodeType().equals("ELEV")){
-            returnList.add(stepNum + ". Take the elevator to floor " + path.get(1).getFloor() + ".");
+            instructions.add(stepNum + ". Take the elevator to floor " + path.get(1).getFloor() + ".");
+            nodeIDS.add(path.get(0).getNodeID());
             stepNum++;
         } else if(path.get(0).getNodeType().equals("STAI") && path.get(1).getNodeType().equals("STAI")){
-            returnList.add(stepNum + ". Take the stairs to floor " + path.get(1).getFloor() + ".");
+            instructions.add(stepNum + ". Take the stairs to floor " + path.get(1).getFloor() + ".");
+            nodeIDS.add(path.get(0).getNodeID());
             stepNum++;
         } else {
             double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
             double firstEdgeDistanceFeet = firstEdgeDistancePixels * 2.35;
-            returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getLongName() + ".");
+            instructions.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getLongName() + ".");
+            nodeIDS.add(path.get(0).getNodeID() + "," + path.get(1).getNodeID());
             stepNum++;
         }
 
-        for (int i = 1; i < path.size() - 1; i++){
 
+        for (int i = 1; i < path.size() - 1; i++){
             if(path.get(i).getNodeType().equals("ELEV") && path.get(i+1).getNodeType().equals("ELEV")){
                 returnList.add(stepNum + ". Take the elevator to floor " + path.get(i+1).getFloor() + ".");
                 stepNum++;
@@ -266,13 +283,17 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                     returnList.add(stepNum + ". Turn around.");
                     stepNum++;
                 }
+                nodeIDS.add(path.get(i).getNodeID());
 
                 double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
                 double edgeDistanceFeet = edgeDistancePixels * 2.35;
 
                 returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getLongName() + ".");
                 stepNum++;
+                nodeIDS.add(path.get(i).getNodeID() + "," + path.get(i+1).getNodeID());
+
             }
+
         }
         return returnList;
     }

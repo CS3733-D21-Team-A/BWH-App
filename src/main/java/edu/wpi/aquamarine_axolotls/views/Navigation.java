@@ -148,6 +148,7 @@ public class Navigation extends SPage {
         stopList.clear();
         currPath.clear();
         activePath = 0;
+        etaLabel.setText("");
         drawFloor(FLOOR);
         startLocation.getSelectionModel().clearSelection();
         destination.getSelectionModel().clearSelection();
@@ -293,6 +294,7 @@ public class Navigation extends SPage {
         //for (int i = 0; i < stopList.size() - 1; i++) {
             //currPath.addAll(searchAlgorithmContext.getPath(stopList.get(i), stopList.get(i + 1)));
         //}
+
 
         currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
         System.out.println(SearchAlgorithmContext.getSearchAlgorithmContext().context);
@@ -547,7 +549,7 @@ public class Navigation extends SPage {
     }
 
     public void progress() {
-        if (dirIndex >= currPathDir.size() - 1){
+        if (dirIndex >= currPathDir.get(0).size() - 1){
            return;
         }else{
             dirIndex += 1;
@@ -580,12 +582,10 @@ public class Navigation extends SPage {
 
     public void initializeDirections() {
         cancelDir();
-        for (int i = 0; i < currPathDir.size(); i++) {
-            Label l = new Label(currPathDir.get(i));
-            l.setStyle("wrapText: true");
-            l.setStyle("-fx-background-color: #fa8786");
-            l.setPrefWidth(225.0);
-
+        listOfDirections.getChildren().clear();
+        for (int i = 0; i < currPathDir.get(0).size(); i++) {
+            Label l = new Label(currPathDir.get(0).get(i));
+            l.setWrapText(true);
             listOfDirections.getChildren().add(l);
         }
     }
