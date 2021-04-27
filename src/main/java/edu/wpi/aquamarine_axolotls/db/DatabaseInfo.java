@@ -95,7 +95,7 @@ final class DatabaseInfo {
 
 
 	// delivery time, dietary restrictions, note, food requested mess
-	// 4/26 added Number of Servings, Contact Number and Drink Options
+	// 4/26 added Food Option, Number of Servings, Contact Number and Drink Options
 	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FOOD_DELIVERY table.
@@ -104,6 +104,7 @@ final class DatabaseInfo {
 		"CREATE TABLE " + SERVICEREQUEST.FOOD_DELIVERY.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
+			"FOODOPTION VARCHAR(50)," +
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
 			"NUMBEROFSERVINGS VARCHAR(3)," +
