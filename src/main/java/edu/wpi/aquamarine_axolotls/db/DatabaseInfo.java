@@ -80,7 +80,7 @@ final class DatabaseInfo {
 			"EMAIL VARCHAR(25) NOT NULL," +
 			"CONSTRAINT emailConst UNIQUE(EMAIL)," +
 			"USERTYPE VARCHAR(25)," +
-			"PASSWORD VARCHAR(25) NOT NULL," +
+			"PASSWORD VARCHAR(25) NOT NULL" +
 			")"; //TODO CONSTRAINT FOR USERTYPE OR POSSIBLE TYPE DEFAULT TO PATIENT
 
 	// ========== ATTRIBUTES STRINGS ==========
@@ -94,6 +94,9 @@ final class DatabaseInfo {
 	// ========== SERVICE REQUESTS ==========
 
 
+	// delivery time, dietary restrictions, note, food requested mess
+	// 4/26 added Number of Servings, Contact Number and Drink Options
+	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FOOD_DELIVERY table.
 	 */
@@ -103,9 +106,17 @@ final class DatabaseInfo {
 			"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
-			"CONSTRAINT FK_FOOD_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+			"NUMBEROFSERVINGS VARCHAR(3)," +
+			"CONTACTNUMBER VARCHAR(15)," +
+			"DRINKOPTIONS VARCHAR(25)," + // TODO: do the same thing as what happened with food options thing
+			"CONSTRAINT FK_FOOD_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " +
+					TABLES.SERVICE_REQUESTS.name() +
+					"(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
 
+	// delivery time, note, flower requested mess
+	// 4/26 added Delivery Date, Flower Options, Vase Options and Contact Number
+	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FLORAL_DELIVERY table.
 	 */
@@ -113,6 +124,10 @@ final class DatabaseInfo {
 		"CREATE TABLE " + SERVICEREQUEST.FLORAL_DELIVERY.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
+			"DELIVERYDATE VARCHAR(50)," + // TODO: Make this take date type
+			"FLOWEROPTION VARCHAR(50)," +
+			"VASEOPTION VARCHAR(50)," +
+			"CONTACTNUMBER VARCHAR(15)," +
 			"NOTE VARCHAR(300)," +
 			"CONSTRAINT FK_FLORAL_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
@@ -144,7 +159,7 @@ final class DatabaseInfo {
 			"CREATE TABLE " + SERVICEREQUEST.GIFT_DELIVERY.name() + " (" +
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
 					"GIFTTYPE VARCHAR(25)," +
-					"NOTE VARCHAR(300)" +
+					"NOTE VARCHAR(300)," +
 					"CONTRAINT FK_GIFTDELIVERY_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 
@@ -175,7 +190,7 @@ final class DatabaseInfo {
 			"CREATE TABLE " + SERVICEREQUEST.MEDICINE_DELIVERY.name() + " (" +
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
 					"TYPE VARCHAR(100)," +
-					"DOSAGE VARCHAR(100)" +
+					"DOSAGE VARCHAR(100)," +
 					"CONTRAINT FK_MEDICINEDELIVERY_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 
@@ -186,7 +201,7 @@ final class DatabaseInfo {
 			"CREATE TABLE " + SERVICEREQUEST.RELIGIOUS_REQUEST.name() + " (" +
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
 					"TYPEOFREQUEST VARCHAR(25)," + //TODO ANOTHER ENUM?
-					"NOTE VARCHAR(300)" +
+					"NOTE VARCHAR(300)," +
 					"CONTRAINT FK_RELIGOUSREQUEST_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 	/**
@@ -196,7 +211,7 @@ final class DatabaseInfo {
 			"CREATE TABLE " + SERVICEREQUEST.SANITATION.name() + " (" +
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
 					"NOTE VARCHAR(300)," +
-					"BIOHAZARD VARCHAR(10)" + //TODO MAKE BOOLEAN? OR DEFAULT TO NO? WANTED TO MAKE IT NOT NULL BUT WANT CLARIFICATION
+					"BIOHAZARD VARCHAR(10)," + //TODO MAKE BOOLEAN? OR DEFAULT TO NO? WANTED TO MAKE IT NOT NULL BUT WANT CLARIFICATION
 					"CONTRAINT FK_SANITATION_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 
@@ -234,11 +249,11 @@ final class DatabaseInfo {
 	static final String CANCELED_TEXT = "Canceled";
 
 	// ========== USERS ================
-// TODO: update for guest user type
 	static final String USER_TEXT = "User";
 	static final String EMPLOYEE_TEXT = "Employee";
 	static final String ADMIN_TEXT = "Admin";
 	static final String PATIENT_TEXT = "Patient";
+	static final String GUEST_TEXT = "Guest";
 	static final String PASSWORD_TEXT = "Password";
 	static final String USERTYPE_TEXT = "Usertype";
 	static final String LASTNAME_TEXT = "Last Name";
@@ -297,5 +312,6 @@ final class DatabaseInfo {
 		SERVICEREQUEST_SQL = new EnumMap<>(SERVICEREQUEST.class);
 		SERVICEREQUEST_SQL.put(SERVICEREQUEST.FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
 		SERVICEREQUEST_SQL.put(SERVICEREQUEST.FOOD_DELIVERY, FOOD_DELIVERY_TABLE_SQL);
+		//TODO: Add other service requests
 	}
 }
