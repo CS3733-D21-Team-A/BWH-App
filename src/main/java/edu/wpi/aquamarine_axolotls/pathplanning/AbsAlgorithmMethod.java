@@ -248,10 +248,12 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         for (int i = 1; i < path.size() - 1; i++){
             if(path.get(i).getNodeType().equals("ELEV") && path.get(i+1).getNodeType().equals("ELEV")){
-                returnList.add(stepNum + ". Take the elevator to floor " + path.get(i+1).getFloor() + ".");
+                instructions.add(stepNum + ". Take the elevator to floor " + path.get(i+1).getFloor() + ".");
+                nodeIDS.add(path.get(i).getNodeID());
                 stepNum++;
             } else if(path.get(i).getNodeType().equals("STAI") && path.get(i+1).getNodeType().equals("STAI")){
-                returnList.add(stepNum + ". Take the stairs to floor " + path.get(i+1).getFloor() + ".");
+                instructions.add(stepNum + ". Take the stairs to floor " + path.get(i+1).getFloor() + ".");
+                nodeIDS.add(path.get(i).getNodeID());
                 stepNum++;
             } else{
                 double angleIn = absAngleEdge(path.get(i-1), path.get(i));
@@ -262,25 +264,25 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 if(turnAngle > 180.0) turnAngle -= 360;
 
                 if(turnAngle > 5 && turnAngle < 60){
-                    returnList.add(stepNum + ". Make a slight right turn.");
+                    instructions.add(stepNum + ". Make a slight right turn.");
                     stepNum++;
                 } else if (turnAngle >= 60 && turnAngle < 120){
-                    returnList.add(stepNum + ". Make a right turn.");
+                    instructions.add(stepNum + ". Make a right turn.");
                     stepNum++;
                 } else if (turnAngle >= 120 && turnAngle < 178){
-                    returnList.add(stepNum + ". Make an extreme right turn.");
+                    instructions.add(stepNum + ". Make an extreme right turn.");
                     stepNum++;
                 } else if (turnAngle < 5 && turnAngle > -60){
-                    returnList.add(stepNum + ". Make a slight left turn.");
+                     instructions.add(stepNum + ". Make a slight left turn.");
                     stepNum++;
                 } else if (turnAngle <= -60 && turnAngle > -120){
-                    returnList.add(stepNum + ". Make a left turn.");
+                    instructions.add(stepNum + ". Make a left turn.");
                     stepNum++;
                 } else if (turnAngle <= -120 && turnAngle > -178){
-                    returnList.add(stepNum + ". Make an extreme left turn.");
+                    instructions.add(stepNum + ". Make an extreme left turn.");
                     stepNum++;
                 } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
-                    returnList.add(stepNum + ". Turn around.");
+                    instructions.add(stepNum + ". Turn around.");
                     stepNum++;
                 }
                 nodeIDS.add(path.get(i).getNodeID());
@@ -288,13 +290,17 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
                 double edgeDistanceFeet = edgeDistancePixels * 2.35;
 
-                returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getLongName() + ".");
+                instructions.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getLongName() + ".");
                 stepNum++;
                 nodeIDS.add(path.get(i).getNodeID() + "," + path.get(i+1).getNodeID());
 
             }
 
         }
+        instructions.add(stepNum + ". You have arrived at your destination.");
+        nodeIDS.add(path.get(path.size()-1).getNodeID());
+        returnList.add(instructions);
+        returnList.add(nodeIDS);
         return returnList;
     }
 

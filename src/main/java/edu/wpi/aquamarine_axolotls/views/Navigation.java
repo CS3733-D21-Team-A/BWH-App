@@ -54,7 +54,7 @@ public class Navigation extends SPage {
     private Map<String, String> floors;
 
     static String FLOOR = "1";
-    private List<String> currPathDir = new ArrayList<>();
+    private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
 
     @FXML
@@ -311,11 +311,11 @@ public class Navigation extends SPage {
         currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
         System.out.println(SearchAlgorithmContext.getSearchAlgorithmContext().context);
 
-        /*
-        etaTotal = searchAlgorithmContext.getETA(currPath);
+
+        etaTotal = SearchAlgorithmContext.getSearchAlgorithmContext().getETA(currPath);
         minutes = Math.floor(etaTotal);
         seconds = Math.floor((etaTotal - minutes) * 60);
-        etaLabel.setText((int) minutes + ":" + (int) seconds);*/
+        etaLabel.setText((int) minutes + " min " + (int) seconds + " sec");
 
         if(currPath.isEmpty()) return;
 
@@ -450,13 +450,13 @@ public class Navigation extends SPage {
         return dist;
     }
 
-    public void drawSingleNode(Node node, GraphicsContext gc) {
+    public void drawSingleNode(Node node, GraphicsContext gc, Color c) {
         double x = xScale(node.getXcoord());
         double y = yScale(node.getYcoord());
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
-        gc.setFill(Color.BLUE);
+        gc.setFill(c);
         gc.fillOval(x, y, radius, radius);
     }
 
@@ -475,8 +475,8 @@ public class Navigation extends SPage {
             gc.setStroke(edgeCol);
             gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
 
-            drawSingleNode(snode, gc);
-            drawSingleNode(enode, gc);
+            drawSingleNode(snode, gc, snodeCol);
+            drawSingleNode(enode, gc, enodeCol);
         }
     }
 
@@ -549,6 +549,8 @@ public class Navigation extends SPage {
         intermediate.setDisable(false);
         findPathButton.setDisable(false);
         cancelPath.setDisable(false);
+
+        unHighlightDirection();
     }
 
     public void startDir() {
@@ -563,17 +565,20 @@ public class Navigation extends SPage {
         cancelPath.setDisable(true);
 
         dirIndex = 0;
-        changeArrow(currPathDir.get(dirIndex));
-        curDirection.setText(currPathDir.get(dirIndex)); //get first direction
+        changeArrow(currPathDir.get(0).get(dirIndex));
+        curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
+        highlightDirection();
     }
 
     public void progress() {
         if (dirIndex >= currPathDir.get(0).size() - 1){
            return;
         }else{
+            unHighlightDirection();
             dirIndex += 1;
-            changeArrow(currPathDir.get(dirIndex));
-            curDirection.setText(currPathDir.get(dirIndex)); //get next direction
+            changeArrow(currPathDir.get(0).get(dirIndex));
+            curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
+            highlightDirection();
         }
     }
 
@@ -581,9 +586,11 @@ public class Navigation extends SPage {
         if (dirIndex == 0){
             return;
         }else{
+            unHighlightDirection();
             dirIndex -= 1;
-            changeArrow(currPathDir.get(dirIndex));
-            curDirection.setText(currPathDir.get(dirIndex)); //get prev direction
+            changeArrow(currPathDir.get(0).get(dirIndex));
+            curDirection.setText(currPathDir.get(0).get(dirIndex));
+            highlightDirection();
         }
     }
 
@@ -599,7 +606,7 @@ public class Navigation extends SPage {
         arrow.setImage(arrowImg);
     }
 
-    public void initializeDirections() {
+    public void initializeDirections() {                    // adds each step to the list of direction
         cancelDir();
         listOfDirections.getChildren().clear();
         for (int i = 0; i < currPathDir.get(0).size(); i++) {
@@ -609,6 +616,33 @@ public class Navigation extends SPage {
         }
     }
 
+    public void highlightDirection(){
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        String curNode = currPathDir.get(1).get(dirIndex);
+        if (curNode.contains(",")){
+            int index = curNode.indexOf(",");
+            Node start = getNodeFromValidID(curNode.substring(0,index));
+            System.out.println(start);
+
+            Node end = getNodeFromValidID(curNode.substring(index+1));
+            System.out.println(end);
+            drawNodes(start, end, Color.RED, Color.BLUE, Color.RED );
+            //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
+            return;
+        }
+        drawSingleNode(getNodeFromValidID(curNode), gc, Color.RED);
+    }
+
+    public void unHighlightDirection(){
+        String curNode = currPathDir.get(1).get(dirIndex);
+        if (curNode.contains(",")){
+            int index = curNode.indexOf(",");
+            Node start = getNodeFromValidID(curNode.substring(0,index));
+            Node end = getNodeFromValidID(curNode.substring(index+1));
+            drawNodes(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
+        }
+
+    }
 
 }
 
