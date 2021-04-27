@@ -275,8 +275,12 @@
                <menus>
                   <Menu mnemonicParsing="false" text="       Change Floor">
                      <items>
-                        <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                        <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
+                        <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
+                        <MenuItem fx:id="floorL1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Floor L1" />
                         <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                        <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
+                        <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
                      </items>
                   </Menu>
                </menus>

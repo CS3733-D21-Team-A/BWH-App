@@ -53,7 +53,7 @@ public class Navigation extends SPage {
     private int activePath = 0;
     private Map<String, String> floors;
 
-    static String FLOOR = "G";
+    static String FLOOR = "1";
     private List<String> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
 
@@ -86,7 +86,7 @@ public class Navigation extends SPage {
             floors = new HashMap<>();
             floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
             floors.put("L1","edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
-            floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            //floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
             floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
             floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
@@ -110,11 +110,7 @@ public class Navigation extends SPage {
             listDirVBox.setVisible(false);
             listDirVBox.toFront();
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
@@ -171,6 +167,10 @@ public class Navigation extends SPage {
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
                     drawNodes(currPath.get(i), currPath.get(i + 1));
                 }
+                if ((currPath.get(i).getNodeType().equals("STAI") && currPath.get(i+1).getNodeType().equals("STAI")) ||
+                        (currPath.get(i).getNodeType().equals("ELEV") && currPath.get(i+1).getNodeType().equals("ELEV"))){
+                    drawArrow(currPath.get(i), currPath.get(i+1));
+                }
             }
         }
     }
@@ -200,11 +200,11 @@ public class Navigation extends SPage {
         //resetMapAndDraw("1");
     }
 
-    public void changeGroundFloor() throws FileNotFoundException {
-        FLOOR = "G";
-        drawFloor(FLOOR);
-        //resetMapAndDraw("G");
-    }
+//    public void changeGroundFloor() throws FileNotFoundException {
+//        FLOOR = "G";
+//        drawFloor(FLOOR);
+//        //resetMapAndDraw("G");
+//    }
 
     public void changeFloorL1() throws FileNotFoundException {
         FLOOR = "L1";
@@ -457,6 +457,58 @@ public class Navigation extends SPage {
             drawSingleNode(snode, gc);
             drawSingleNode(enode, gc);
         }
+    }
+
+    private void drawArrow(Node start, Node end) {
+
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.strokeLine(xScale(start.getXcoord()), yScale(start.getYcoord()), xScale(end.getXcoord()), yScale(end.getYcoord()));
+
+        double xCenter = xScale(start.getXcoord());
+        double yCenter = yScale(start.getYcoord());
+
+        double xPoints[] = new double[3];
+        xPoints[0] = xCenter;
+        xPoints[1] = xCenter + 7 * Math.sqrt(2.0) / 2.0;
+        xPoints[2] = xCenter - 7 * Math.sqrt(2.0) / 2.0;
+        double yPoints[] = new double[3];
+
+        if (start.getFloor().equals(FLOOR)){
+            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.GREEN);
+
+                yPoints[0] = yCenter - 7;
+                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+            }
+            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.RED);
+
+                yPoints[0] = yCenter + 7;
+                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+            }
+        } else if(end.getFloor().equals(FLOOR)){
+            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.RED);
+
+                yPoints[0] = yCenter + 7;
+                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+            }
+            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.GREEN);
+
+                yPoints[0] = yCenter - 7;
+                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+            }
+        }
+        gc.fillPolygon(xPoints, yPoints, 3);
     }
 
 
