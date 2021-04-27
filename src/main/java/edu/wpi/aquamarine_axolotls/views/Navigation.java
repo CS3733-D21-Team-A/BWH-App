@@ -54,6 +54,7 @@ public class Navigation extends SPage {
     private Map<String, String> floors;
 
     static String FLOOR = "G";
+    private List<String> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
 
     @FXML
@@ -312,7 +313,8 @@ public class Navigation extends SPage {
         List<String> textDir = new ArrayList<String>();
         textDir.add("left 1");
         textDir.add("left 2");
-        initializeDirections(textDir);
+        currPathDir = textDir;
+        initializeDirections();
     }
 
     /**
@@ -487,25 +489,27 @@ public class Navigation extends SPage {
         cancelPath.setDisable(true);
 
         dirIndex = 0;
-
-        curDirection.setText("current direction"); //get first direction
+        changeArrow(currPathDir.get(dirIndex));
+        curDirection.setText(currPathDir.get(dirIndex)); //get first direction
     }
 
-    public void progress(List<String> directions) {
-        if (dirIndex >= directions.size() - 1){
+    public void progress() {
+        if (dirIndex >= currPathDir.size() - 1){
            return;
         }else{
             dirIndex += 1;
-            curDirection.setText(directions.get(dirIndex)); //get next direction
+            changeArrow(currPathDir.get(dirIndex));
+            curDirection.setText(currPathDir.get(dirIndex)); //get next direction
         }
     }
 
-    public void regress(List<String> directions) {
+    public void regress() {
         if (dirIndex == 0){
             return;
         }else{
             dirIndex -= 1;
-            curDirection.setText(directions.get(dirIndex)); //get prev direction
+            changeArrow(currPathDir.get(dirIndex));
+            curDirection.setText(currPathDir.get(dirIndex)); //get prev direction
         }
     }
 
@@ -517,12 +521,13 @@ public class Navigation extends SPage {
         else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
         else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
 
+        arrow.setImage(arrowImg);
     }
 
-    public void initializeDirections(List<String> textDir) {
+    public void initializeDirections() {
         cancelDir();
-        for (int i = 0; i < textDir.size(); i++) {
-            Label l = new Label(textDir.get(i));
+        for (int i = 0; i < currPathDir.size(); i++) {
+            Label l = new Label(currPathDir.get(i));
             listOfDirections.getChildren().add(l);
         }
     }
