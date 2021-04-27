@@ -22,7 +22,7 @@
          <children>
             <HBox prefHeight="152.0" prefWidth="1319.0">
                <children>
-                  <Rectangle fill="#003da6" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1319.0" y="600.0" />
+                  <Rectangle fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1319.0" y="600.0" />
                </children>
             </HBox>
             <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="INSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="795.8607788085938">

@@ -195,6 +195,6 @@
             </children>
         </VBox>
         <JFXHamburger fx:id="burger" layoutX="1609.0" layoutY="10.0" prefHeight="69.0" prefWidth="72.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
-        <Rectangle fill="#003da6" height="24.0" layoutY="79.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" AnchorPane.bottomAnchor="803.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="79.0" />
+        <Rectangle fill="#003da6" height="35.0" layoutY="79.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" AnchorPane.bottomAnchor="803.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="79.0" />
     </children>
 </AnchorPane>

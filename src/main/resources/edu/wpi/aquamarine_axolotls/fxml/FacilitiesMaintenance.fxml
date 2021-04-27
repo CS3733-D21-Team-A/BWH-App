@@ -43,7 +43,7 @@
                   </Label>
                </children>
             </HBox>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" />
             <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="1300.0">
                <children>
                   <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="40.0" prefWidth="40.0" text=" ">

@@ -182,12 +182,14 @@
                 <Font name="Times New Roman" size="20.0" />
             </font>
         </JFXButton>
-        <ImageView fitHeight="43.0" fitWidth="69.0" layoutX="22.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../img/back icon.jpg" />
-            </image>
-        </ImageView>
-        <JFXButton fx:id="backB" layoutX="9.0" layoutY="148.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="30.0" text=" " />
+        <JFXButton fx:id="backB" layoutX="9.0" layoutY="123.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="60.0" prefWidth="65.0" text=" ">
+         <graphic>
+              <ImageView fitHeight="43.0" fitWidth="69.0" onDragDetected="#goHome" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../img/back icon.jpg" />
+                  </image>
+              </ImageView>
+         </graphic></JFXButton>
         <JFXComboBox fx:id="giftOptions" layoutX="483.0" layoutY="624.0" maxHeight="92.0" minHeight="42.0" prefHeight="53.0" prefWidth="300.0" promptText="Gift Options" style="-fx-font-size: 20;" AnchorPane.topAnchor="650.0" />
     </children>
 </AnchorPane>

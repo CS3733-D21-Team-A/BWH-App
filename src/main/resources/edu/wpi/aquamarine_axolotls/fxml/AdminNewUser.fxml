@@ -142,6 +142,6 @@
                </BorderPane.margin>
               </JFXButton>
          </bottom>
-    <Rectangle fill="#003da6" height="23.0" layoutX="-7.0" layoutY="99.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1295.0" />
+    <Rectangle fill="#003da6" height="35.0" layoutX="-7.0" layoutY="99.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1295.0" />
 
 </BorderPane>
