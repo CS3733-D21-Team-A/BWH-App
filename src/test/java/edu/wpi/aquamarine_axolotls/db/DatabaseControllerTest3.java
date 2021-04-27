@@ -25,6 +25,17 @@ public class DatabaseControllerTest3 {
         db.emptyEdgeTable();
         db.emptyNodeTable();
         db.emptyServiceRequestsTable();
+        db.emptyUserTable();
+
+        Map<String, String> user1 = new HashMap<String, String>();
+        user1.put("USERNAME", "Seansta18");
+        user1.put("FIRSTNAME", "Sean");
+        user1.put("LASTNAME", "McMillan");
+        user1.put("EMAIL", "Sean@gmail.com");
+        user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+        user1.put("PASSWORD", "PasswordIsMyPassword");
+
+        db.addUser(user1);
 
 
         CSVHandler csvHandler = new CSVHandler(db);
@@ -188,15 +199,6 @@ public class DatabaseControllerTest3 {
     @Test
     public void testAddServiceRequestAddingSameRequestTwice() {
         try {
-            Map<String, String> user1 = new HashMap<String, String>();
-            user1.put("USERNAME", "Seansta18");
-            user1.put("FIRSTNAME", "Sean");
-            user1.put("LASTNAME", "McMillan");
-            user1.put("EMAIL", "Sean@gmail.com");
-            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
-
-            db.addUser(user1);
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues = new HashMap<String, String>();
             sharedValues.put("REQUESTID", "123");
@@ -855,16 +857,6 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetServiceRequestsByTypeEmpty(){
         try {
-            Map<String, String> user1 = new HashMap<String, String>();
-            user1.put("USERNAME", "Seansta18");
-            user1.put("FIRSTNAME", "Sean");
-            user1.put("LASTNAME", "McMillan");
-            user1.put("EMAIL", "Sean@gmail.com");
-            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
-
-            db.addUser(user1);
-
             assertEquals(new ArrayList<Map<String, String>>(), db.getServiceRequests());
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
