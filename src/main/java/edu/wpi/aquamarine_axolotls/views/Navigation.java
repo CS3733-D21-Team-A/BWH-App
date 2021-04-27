@@ -54,6 +54,7 @@ public class Navigation extends SPage {
     private Map<String, String> floors;
 
     static String FLOOR = "G";
+    static int dirIndex = 0;
 
     @FXML
     public void initialize() {
@@ -309,8 +310,8 @@ public class Navigation extends SPage {
         //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
 
         List<String> textDir = new ArrayList<String>();
-        textDir.add("testing 1");
-        textDir.add("testing 2");
+        textDir.add("left 1");
+        textDir.add("left 2");
         initializeDirections(textDir);
     }
 
@@ -485,20 +486,36 @@ public class Navigation extends SPage {
         findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 
+        dirIndex = 0;
+
         curDirection.setText("current direction"); //get first direction
     }
 
-    public void progress() {
-
-        curDirection.setText("next direction"); //get next direction
+    public void progress(List<String> directions) {
+        if (dirIndex >= directions.size() - 1){
+           return;
+        }else{
+            dirIndex += 1;
+            curDirection.setText(directions.get(dirIndex)); //get next direction
+        }
     }
 
-    public void regress() {
-        curDirection.setText("previous direction"); //get previous direction
+    public void regress(List<String> directions) {
+        if (dirIndex == 0){
+            return;
+        }else{
+            dirIndex -= 1;
+            curDirection.setText(directions.get(dirIndex)); //get prev direction
+        }
     }
 
     public void changeArrow(String direction){ //update arrow
-        String d = "";
+        Image arrowImg;
+        if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
 
     }
 
