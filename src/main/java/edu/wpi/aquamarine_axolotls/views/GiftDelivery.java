@@ -61,9 +61,11 @@ public class GiftDelivery extends SServiceRequest {
     HamburgerBasicCloseTransition transition;
 
 
+    DatabaseController db;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException, IOException, URISyntaxException {
+        db = new DatabaseController ();
         giftOptions.setItems(FXCollections
                 .observableArrayList("Hospital T-Shirt", "Teddy Bear", "Hospital Mug"));
         nodeIDS = new ArrayList<String>();
@@ -98,7 +100,6 @@ public class GiftDelivery extends SServiceRequest {
         }
 
         try {
-            DatabaseController db = new DatabaseController();
             //   Aapp.num++; // TODO: better way of establishing request ID
             Map<String, String> shared = new HashMap<String, String>();
             Random r = new Random();
@@ -119,8 +120,6 @@ public class GiftDelivery extends SServiceRequest {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }

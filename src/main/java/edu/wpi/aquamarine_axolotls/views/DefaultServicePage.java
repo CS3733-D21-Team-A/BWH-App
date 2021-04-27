@@ -94,6 +94,19 @@ public class DefaultServicePage extends SPage {
         sceneSwitch("InternalTransportation");
     }
 
+    public void sanitationP(ActionEvent actionEvent) {
+        sceneSwitch("Sanitation");
+    }
+
+    public void laundryP(ActionEvent actionEvent) {
+        sceneSwitch("LaundryService");
+    }
+
+    public void languageP(ActionEvent actionEvent) {
+        sceneSwitch("LanguageService");
+    }
+
+
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
         else menuDrawer.close();

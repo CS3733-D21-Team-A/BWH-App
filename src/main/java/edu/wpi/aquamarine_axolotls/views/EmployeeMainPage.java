@@ -12,5 +12,13 @@ public class EmployeeMainPage extends SMainPage{
         sceneSwitch("CovidSurvey");
     }
 
+    public void employeeP(ActionEvent actionEvent) {
+        sceneSwitch("EmployeeRequests");
+    }
+
+    public void serviceReqEP(ActionEvent actionEvent) {
+        sceneSwitch("EmployeeServiceRequestPage");
+    }
+
 
 }

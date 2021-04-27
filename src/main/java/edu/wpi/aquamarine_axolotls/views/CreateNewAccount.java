@@ -98,6 +98,8 @@ public class CreateNewAccount extends SPage {
         user.put("USERTYPE", userType.getSelectionModel().getSelectedItem().toString());
         user.put("PASSWORD", password.getText());
         db.addUser(user);
+        popUp ( "Account Success", "\n\n\n\n\n\nThe account you submitted was successfully created." );
+
 
         sceneSwitch("LogIn");
 

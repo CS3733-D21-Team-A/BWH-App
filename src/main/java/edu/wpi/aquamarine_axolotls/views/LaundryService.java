@@ -69,7 +69,7 @@ public class LaundryService extends SServiceRequest {
     @FXML
     public void initialize() { //TODO: fill these out
         loadOptions.setItems(FXCollections
-                .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
+                .observableArrayList("Delicates", "Light", "Heavy"));
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
@@ -77,10 +77,10 @@ public class LaundryService extends SServiceRequest {
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
         detergentType.setItems(FXCollections
-                .observableArrayList("Water","Coca-Cola", "Sprite", "Milk", "Orange Juice")
+                .observableArrayList("Tide","All", "Gain")
         );
         articlesOfClothing.setItems(FXCollections
-                .observableArrayList("1","2", "3", "4", "5")
+                .observableArrayList("Work Clothes","T-Shirts", "Under Garments", "Clerical Garb")
         );
     }
 

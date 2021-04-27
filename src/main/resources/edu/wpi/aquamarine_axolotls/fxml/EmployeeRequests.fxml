@@ -17,18 +17,18 @@
 
 <BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.EmployeeRequests">
    <center>
-      <TableView fx:id="srTable" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn fx:id="assignedColumn" prefWidth="75.0" text="Assigned" />
-            <TableColumn fx:id="assigneeColumn" prefWidth="75.0" text="Assignee" />
-            <TableColumn fx:id="statusColumn" prefWidth="75.0" text="Status" />
-            <TableColumn fx:id="serviceRequestColumn" prefWidth="100.0" text="Service Name" />
-            <TableColumn fx:id="locationColumn" prefWidth="75.0" text="Location" />
+            <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Assigned" />
+            <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Assignee" />
+            <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Status" />
+            <TableColumn fx:id="serviceRequestColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Service Name" />
+            <TableColumn fx:id="locationColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Location" />
          </columns>
       </TableView>
    </center>
    <left>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="200.0" style="-fx-background-color: #F0F0F0;" BorderPane.alignment="TOP_LEFT">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="310.0" style="-fx-background-color: #F0F0F0;" BorderPane.alignment="TOP_LEFT">
          <children>
             <Label text="Service Requests">
                <font>
@@ -38,14 +38,20 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Label>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="313.0">
                <children>
-                  <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="28.0" prefWidth="80.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Assign" textFill="WHITE">
+                  <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #003da6; -fx-background-radius: 5; -fx-bold: true;" text="Assign" textFill="WHITE">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
+                     <font>
+                        <Font name="Times Roman" size="15.0" />
+                     </font>
                   </JFXButton>
-                  <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="28.0" prefWidth="95.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE" />
+                  <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="40.0" prefWidth="133.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE">
+                     <font>
+                        <Font name="Times New Roman" size="15.0" />
+                     </font></JFXButton>
                </children>
                <VBox.margin>
                   <Insets top="20.0" />
@@ -80,40 +86,35 @@
          <children>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
                <children>
-                  <ImageView fitHeight="36.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../img/logo.png" />
                      </image>
                      <HBox.margin>
-                        <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+                        <Insets left="10.0" top="20.0" />
                      </HBox.margin>
                   </ImageView>
-                  <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                  <Label fx:id="text1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                      <font>
-                        <Font name="Times New Roman" size="12.0" />
+                        <Font name="Times New Roman" size="24.0" />
                      </font>
-                     <HBox.margin>
-                        <Insets bottom="12.0" left="5.0" top="20.0" />
-                     </HBox.margin>
                      <padding>
                         <Insets bottom="5.0" />
                      </padding>
-                  </Label>
-                  <JFXButton onAction="#goHome" prefHeight="46.0" prefWidth="95.0" text="Home">
-                     <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/homeBlue.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
                      <HBox.margin>
-                        <Insets left="1000.0" />
+                        <Insets left="10.0" top="20.0" />
                      </HBox.margin>
-                  </JFXButton>
+                  </Label>
                </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
             </HBox>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" />
+            <Rectangle fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1295.0">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Rectangle>
          </children>
       </VBox>
    </top>

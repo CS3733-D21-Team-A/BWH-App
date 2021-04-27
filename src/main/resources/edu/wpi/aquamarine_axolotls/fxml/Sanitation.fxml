@@ -64,26 +64,29 @@
                     <children>
                         <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0" promptText="First Name" style="-fx-font-size: 20; -fx-font-family: Times  New Roman;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <GridPane.margin>
-                        <Insets />
+                        <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
                         <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="250.0" promptText="Last Name" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                             <GridPane.margin>
-                                <Insets />
+                                <Insets top="40.0" />
                             </GridPane.margin></JFXTextField>
                         <JFXComboBox fx:id="sanitLocation" prefHeight="50.0" prefWidth="250.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <GridPane.margin>
-                                <Insets />
+                                <Insets top="40.0" />
                             </GridPane.margin>
                         </JFXComboBox>
-                  <JFXComboBox fx:id="biohazard" prefHeight="50.0" prefWidth="250.0" promptText="Biohazard" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <JFXComboBox fx:id="biohazard" prefHeight="50.0" prefWidth="250.0" promptText="Biohazard" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXComboBox>
                     </children>
                 </GridPane>
-                <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="65.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="Sanitation Request" textAlignment="CENTER">
+                <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="2.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1306.0" text="Sanitation Request" textAlignment="CENTER">
                     <font>
                         <Font name="Times New Roman" size="60.0" />
                     </font>
                 </Label>
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" layoutY="179.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="61.0" prefWidth="1306.0" text="Please allow 30 minutes for the request to be processed." textAlignment="CENTER" wrapText="true">
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" layoutY="186.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="61.0" prefWidth="1306.0" text="Please allow 30 minutes for the request to be processed." textAlignment="CENTER" wrapText="true">
                     <font>
                         <Font name="Times Roman" size="30.0" />
                     </font>
@@ -91,10 +94,13 @@
                         <Insets left="20.0" right="20.0" />
                     </padding>
                 </Label>
-                <JFXTextArea fx:id="description" layoutX="353.0" layoutY="450.0" prefHeight="200.0" prefWidth="600.0" promptText="Description">
+                <JFXTextArea fx:id="description" layoutX="375.0" layoutY="473.0" prefHeight="88.0" prefWidth="554.0" promptText="Description">
                     <font>
-                        <Font size="20.0" />
+                        <Font name="Times Roman" size="20.0" />
                     </font>
+               <padding>
+                  <Insets top="40.0" />
+               </padding>
                 </JFXTextArea>
                 <JFXButton layoutX="1133.0" layoutY="67.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
                     <font>

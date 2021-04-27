@@ -61,6 +61,11 @@ public class AdminMainPage extends SMainPage{
         sceneSwitch("EmployeeRequests");
     }
 
+    public void addUser(ActionEvent actionEvent) {
+        sceneSwitch("AdminNewUser");
+    }
+
+
 
 
 }

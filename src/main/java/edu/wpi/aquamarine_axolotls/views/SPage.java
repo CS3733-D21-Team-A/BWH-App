@@ -53,6 +53,9 @@ public abstract class SPage {
         if(Aapp.userType.equals("Employee")) sceneSwitch("EmployeeMainPage");
         else if(Aapp.userType.equals("Patient")) sceneSwitch("PatientMainPage");
         else if(Aapp.userType.equals("Admin")) sceneSwitch("AdminMainPage");
+        else{
+            sceneSwitch ( "GuestMainPage" );
+        }
     }
 
     @FXML
@@ -91,6 +94,5 @@ public abstract class SPage {
         myDialog.setScene(new Scene(textFlow, 400, 300));
         myDialog.show();
     }
-
 
 }

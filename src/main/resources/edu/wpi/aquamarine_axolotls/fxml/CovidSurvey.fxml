@@ -349,11 +349,13 @@
                 <Font name="Times New Roman" size="20.0" />
             </font>
         </JFXButton>
-        <ImageView fitHeight="43.0" fitWidth="69.0" layoutX="22.0" layoutY="132.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../img/back icon.jpg" />
-            </image>
-        </ImageView>
-        <JFXButton fx:id="backB" layoutX="9.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" " />
+        <JFXButton fx:id="backB" layoutX="9.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" ">
+         <graphic>
+              <ImageView fitHeight="43.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                      <Image url="@../img/back icon.jpg" />
+                  </image>
+              </ImageView>
+         </graphic></JFXButton>
     </children>
 </AnchorPane>

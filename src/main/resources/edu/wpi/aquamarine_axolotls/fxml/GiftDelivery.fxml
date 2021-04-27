@@ -148,7 +148,7 @@
         </VBox>
         <JFXHamburger fx:id="burger" prefHeight="70.0" prefWidth="75.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
         <JFXDrawer fx:id="menuDrawer" direction="RIGHT" overLayVisible="false" prefHeight="800.0" prefWidth="290.0" AnchorPane.rightAnchor="-300.0" AnchorPane.topAnchor="90.0" />
-        <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="953.0" AnchorPane.topAnchor="779.0">
+        <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="953.0" AnchorPane.topAnchor="779.0">
             <font>
                 <Font name="Times New Roman" size="30.0" />
             </font>

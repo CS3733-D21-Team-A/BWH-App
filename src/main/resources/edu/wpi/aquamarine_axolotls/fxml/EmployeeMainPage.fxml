@@ -57,7 +57,7 @@
                                   <Insets />
                               </VBox.margin>
                           </Line>
-                          <JFXButton fx:id="serviceReqB" onAction="#serviceReqP" prefHeight="100.0" prefWidth="341.0" text="Service Requests" textFill="WHITE">
+                          <JFXButton fx:id="serviceReqB" onAction="#serviceReqEP" prefHeight="100.0" prefWidth="341.0" text="Service Requests" textFill="WHITE">
                               <VBox.margin>
                                   <Insets bottom="10.0" top="10.0" />
                               </VBox.margin>
@@ -75,7 +75,7 @@
                               </font>
                           </JFXButton>
                           <Line endX="200.0" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                  <JFXButton fx:id="edges_button" prefHeight="100.0" prefWidth="343.0" text="Employee Requests" textFill="WHITE">
+                  <JFXButton fx:id="edges_button" onAction="#employeeP" prefHeight="100.0" prefWidth="343.0" text="Employee Requests" textFill="WHITE">
                      <font>
                         <Font name="Times New Roman" size="30.0" />
                      </font>

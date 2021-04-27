@@ -58,14 +58,17 @@ public class InternalTransportation extends SServiceRequest {
     VBox box;
 
     HamburgerBasicCloseTransition transition;
-
+    DatabaseController db;
 
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException, IOException, URISyntaxException {
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
+
+        db = new DatabaseController();
+
     }
 
 
@@ -87,7 +90,6 @@ public class InternalTransportation extends SServiceRequest {
         }
 
         try {
-            DatabaseController db = new DatabaseController();
          //   Aapp.num++; // TODO: better way of establishing request ID
             Map<String, String> shared = new HashMap<String, String>();
             Random r = new Random();
@@ -109,8 +111,6 @@ public class InternalTransportation extends SServiceRequest {
 
 
         } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
