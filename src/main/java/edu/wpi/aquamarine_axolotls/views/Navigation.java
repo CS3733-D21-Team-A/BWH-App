@@ -160,7 +160,7 @@ public class Navigation extends SPage {
     }
 
     public void resetMap(String floor) {
-        resetZoom();
+        //resetZoom();
         mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
         mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
         //FLOOR = floor;
@@ -299,7 +299,7 @@ public class Navigation extends SPage {
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
-        if (event.getButton().equals(MouseButton.PRIMARY)) {
+        if (event.getButton().equals(MouseButton.SECONDARY)) { // CHanged from primary to secondary, makes more sense
             //System.out.println("Clicked map");
 
             //double x = xScale(event.getX());

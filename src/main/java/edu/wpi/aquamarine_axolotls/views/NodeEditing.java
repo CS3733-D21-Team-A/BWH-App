@@ -513,10 +513,10 @@ public class NodeEditing extends SEditing {
 
             //double x = xScale(event.getX());
             //double y = yScale(event.getY());
-            double x = Math.floor(event.getX());
-            double y = Math.floor(event.getY());
+            int x = (int) Math.floor(event.getX());
+            int y = (int) Math.floor(event.getY());
 
-            if (xCoor.isVisible()) xCoor.setText(Double.toString(x));
+            if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
             if (yCoor.isVisible()) yCoor.setText(Double.toString(y));
         }
     }

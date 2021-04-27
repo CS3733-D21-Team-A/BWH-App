@@ -3,12 +3,14 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -21,65 +23,8 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
-   <left>
-      <VBox alignment="TOP_CENTER" prefHeight="733.0" prefWidth="235.0" BorderPane.alignment="CENTER">
-         <children>
-            <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="302.0" promptText="Start location" style="-fx-font-size: 14; -fx-font-family: Times;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="destination" prefHeight="50.0" prefWidth="236.0" promptText="Destination" style="-fx-font-size: 14; -fx-font-family: times;">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="intermediate" prefHeight="50.0" prefWidth="237.0" promptText="Intermediate" style="-fx-font-size: 14; -fx-font-family: Times;">
-               <VBox.margin>
-                  <Insets bottom="2.0" top="2.0" />
-               </VBox.margin>
-            </JFXComboBox>
-            <HBox prefHeight="25.0" prefWidth="122.0">
-               <children>
-                  <Text fx:id="te" strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time: " wrappingWidth="107.0438346862793">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Text>
-                  <Label fx:id="etaLabel" />
-               </children>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </HBox>
-            <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="22.0" prefWidth="95.0" style="-fx-font-family: Times;" text="Go" textAlignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </JFXButton>
-            <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 8; -fx-background-color: D3D3D3; -fx-font-family: Times;" text="Cancel" textAlignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXButton>
-            <JFXButton fx:id="switchPath" prefHeight="25.0" prefWidth="43.0" style="-fx-font-size: 10; visibility: false;" text="&lt; &gt;">
-               <graphic>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" />
-               </graphic>
-            </JFXButton>
-            <JFXButton fx:id="zoomInButton" onAction="#zoomIn" text="Zoom In" />
-            <JFXButton fx:id="zoomOutButton" onAction="#zoomOut" text="Zoom Out" />
-         </children>
-         <padding>
-            <Insets left="10.0" right="10.0" top="20.0" />
-         </padding>
-      </VBox>
-   </left>
    <top>
-      <VBox prefHeight="122.0" prefWidth="1270.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="148.0" prefWidth="1290.0" BorderPane.alignment="CENTER">
          <children>
             <GridPane alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="1270.0">
                <columnConstraints>
@@ -128,34 +73,94 @@
                   </HBox>
                </children>
             </GridPane>
-            <HBox prefHeight="9.0" prefWidth="607.0" style="-fx-background-color: #003da6;" />
+            <HBox prefHeight="13.0" prefWidth="1290.0" style="-fx-background-color: #003da6;">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></HBox>
          </children>
       </VBox>
    </top>
    <padding>
       <Insets left="5.0" right="5.0" />
    </padding>
-   <right>
-      <MenuBar prefHeight="33.0" prefWidth="120.0" BorderPane.alignment="CENTER">
-         <menus>
-            <Menu mnemonicParsing="false" text="Change Floor">
-               <items>
-                  <MenuItem fx:id="lowerLevel2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Lower Lever 2" />
-                  <MenuItem fx:id="lowerLevel1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Lower Lever 1" />
-                  <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
-                  <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
-                  <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
-                  <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
-               </items>
-            </Menu>
-         </menus>
-      </MenuBar>
-   </right>
    <center>
-      <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" BorderPane.alignment="CENTER">
-         <content>
-            <Canvas fx:id="mapCanvas" height="507.0" onMouseClicked="#getNearestNode" width="899.0" />
-         </content>
-      </ScrollPane>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="19.0" prefWidth="1092.0">
+               <children>
+                  <Text fx:id="te" strokeType="OUTSIDE" strokeWidth="0.0" text="Est. Travel Time: " wrappingWidth="107.0438346862793">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="etaLabel" />
+               </children></HBox>
+            <Group>
+               <children>
+                  <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="711.0" prefWidth="1092.0">
+                     <content>
+                        <Canvas fx:id="mapCanvas" height="668.0" onMouseClicked="#getNearestNode" width="1093.0" />
+                     </content>
+                  </ScrollPane>
+                  <ToolBar layoutX="980.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="162.0" prefWidth="96.0">
+                     <items>
+                        <MenuBar prefHeight="33.0" prefWidth="86.0">
+                           <menus>
+                              <Menu mnemonicParsing="false" text="Floor">
+                                 <items>
+                                    <MenuItem fx:id="lowerLevel2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Lower Lever 2" />
+                                    <MenuItem fx:id="lowerLevel1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Lower Lever 1" />
+                                    <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
+                                    <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                                    <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
+                                    <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
+                                 </items>
+                              </Menu>
+                           </menus>
+                        </MenuBar>
+                        <JFXButton fx:id="zoomInButton" onAction="#zoomIn" prefHeight="25.0" prefWidth="108.0" text="+">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="zoomOutButton" onAction="#zoomOut" prefWidth="108.0" text="-">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </JFXButton>
+                     </items>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </ToolBar>
+               </children>
+            </Group>
+         </children>
+      </VBox>
    </center>
+   <left>
+      <VBox alignment="CENTER" maxHeight="-Infinity" prefHeight="278.0" prefWidth="200.0" BorderPane.alignment="TOP_LEFT">
+         <children>
+            <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="175.0" promptText="Start location" style="-fx-font-size: 14; -fx-font-family: Times;" />
+            <JFXComboBox fx:id="intermediate" prefHeight="50.0" prefWidth="177.0" promptText="Intermediate" style="-fx-font-size: 14; -fx-font-family: Times;" />
+            <JFXComboBox fx:id="destination" prefHeight="50.0" prefWidth="179.0" promptText="Destination" style="-fx-font-size: 14; -fx-font-family: times;" />
+            <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="22.0" prefWidth="95.0" style="-fx-font-family: Times;" text="Go" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </JFXButton>
+            <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 8; -fx-background-color: D3D3D3; -fx-font-family: Times;" text="Cancel" textAlignment="CENTER">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </JFXButton>
+         </children>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </left>
 </BorderPane>
