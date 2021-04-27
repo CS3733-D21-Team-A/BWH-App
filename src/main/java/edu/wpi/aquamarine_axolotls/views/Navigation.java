@@ -14,7 +14,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
 import java.io.*;
@@ -31,6 +33,11 @@ public class Navigation extends SPage {
     @FXML private Label etaLabel;
     @FXML Canvas mapCanvas;
     @FXML ScrollPane mapScrollPane;
+    @FXML private Label curDirection;
+    @FXML private ImageView arrow;
+    @FXML private VBox stepByStep;
+    @FXML private VBox listDirVBox;
+    @FXML private VBox listOfDirections;
 
     private Group zoomGroup;
     private int zoom;
@@ -95,6 +102,11 @@ public class Navigation extends SPage {
             startLocation.setItems(options);
             destination.setItems(options);
             intermediate.setItems(options);
+
+            stepByStep.setVisible(false);
+            listDirVBox.setVisible(false);
+            listDirVBox.toFront();
+
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -141,6 +153,7 @@ public class Navigation extends SPage {
         startLocation.getSelectionModel().clearSelection();
         destination.getSelectionModel().clearSelection();
         intermediate.getSelectionModel().clearSelection();
+        cancelDir();
     }
 
     public void drawFloor(String floor){
@@ -293,6 +306,11 @@ public class Navigation extends SPage {
         activePath = 1;
         //drawFloor(FLOOR);
         //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
+
+        List<String> textDir = new ArrayList<String>();
+        textDir.add("testing 1");
+        textDir.add("testing 2");
+        initializeDirections(textDir);
     }
 
     /**
@@ -443,6 +461,49 @@ public class Navigation extends SPage {
         }*/
     }
 
+    public void cancelDir() {
+        stepByStep.setVisible(false);
+        listDirVBox.setVisible(true);
+        listDirVBox.toFront();
+
+        startLocation.setDisable(false);
+        destination.setDisable(false);
+        intermediate.setDisable(false);
+    }
+
+    public void startDir() {
+        stepByStep.setVisible(true);
+        listDirVBox.setVisible(false);
+        stepByStep.toFront();
+
+        startLocation.setDisable(true);
+        destination.setDisable(true);
+        intermediate.setDisable(true);
+
+        curDirection.setText("current direction"); //get first direction
+    }
+
+    public void progress() {
+
+        curDirection.setText("next direction"); //get next direction
+    }
+
+    public void regress() {
+        curDirection.setText("previous direction"); //get previous direction
+    }
+
+    public void changeArrow(String direction){ //update arrow
+        String d = "";
+
+    }
+
+    public void initializeDirections(List<String> textDir) {
+        cancelDir();
+        for (int i = 0; i < textDir.size(); i++) {
+            Label l = new Label(textDir.get(i));
+            listOfDirections.getChildren().add(l);
+        }
+    }
 
 
 }
