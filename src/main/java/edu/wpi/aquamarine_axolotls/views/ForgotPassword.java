@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class ForgotPassword extends SPage{
@@ -28,20 +29,38 @@ public class ForgotPassword extends SPage{
 
         @FXML
         public void initialize() {
+            try {
+                db = new DatabaseController ();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace ( );
+            } catch (IOException ioException) {
+                ioException.printStackTrace ( );
+            } catch (URISyntaxException e) {
+                e.printStackTrace ( );
+            }
         }
 
-        public void submit_button() throws SQLException {
-    if(username.getText ().isEmpty() || email.getText ().isEmpty ()|| password.getText().isEmpty ()) {
-        popUp ( "Error","\n\n\n\nYour password was not updated" );
-    }
-    else{
-        //db.updatePassword ( username.getText ( ) ,email.getText ( ) ,password.getText ( ) );
-        popUp ( "New Password" ,"\n\n\n\n\n\n\nYour password has been successfully created. " +
-                                "Please check your email for a confirmation message. Log in using your new credentials." );
-        sceneSwitch ( "Login" );
-    }
-    }
-
+        public void submit_button()  {
+            String usrname = username.getText();
+            String eml = email.getText ();
+            String pass = password.getText ();
+            if(usrname.isEmpty() || eml.isEmpty ()|| pass.isEmpty ()) {
+                popUp ( "Error","\n\n\n\nYour password was not updated" );
+            }
+            else{
+                try {
+                    if(db.checkUserExists(usrname)){
+                        db.updatePassword (usrname,eml ,pass);
+                        popUp ( "New Password" ,"\n\n\n\n\nYour password has been successfully created. " +
+                                                "Please check your email for a confirmation message. Log in using your new credentials." );
+                        sceneSwitch ( "Login" );
+                    }
+                    else popUp ( "This account does not exist" ,"\n\n\n\n\n\n\nPlease try again. ");
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+                }
+            }
+        }
 
         public void goHome(javafx.event.ActionEvent event){
             try {
@@ -51,11 +70,6 @@ public class ForgotPassword extends SPage{
                 ex.printStackTrace();
             }
         }
-        public void createNewAccount(){
-            sceneSwitch("CreateNewAccount");
-        }
-
-
 
     }
 

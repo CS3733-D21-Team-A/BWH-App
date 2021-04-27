@@ -118,7 +118,7 @@
                         <Insets left="20.0" right="20.0" />
                     </padding>
                 </Label>
-                <JFXTextArea fx:id="dietaryRestA" layoutX="350.0" layoutY="593.0" prefHeight="71.0" prefWidth="582.0" promptText="Please insert a personalized message">
+                <JFXTextArea fx:id="persMessage" layoutX="350.0" layoutY="593.0" prefHeight="71.0" prefWidth="582.0" promptText="Please insert a personalized message">
                     <font>
                         <Font name="Times New Roman" size="20.0" />
                     </font>
