@@ -199,7 +199,6 @@ public class DatabaseControllerTest4 {
         }
     }
 
-    //TODO: Why doesnt this work man
     @Test
     public void testEditUserThatDNE()
     {
@@ -262,10 +261,10 @@ public class DatabaseControllerTest4 {
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
-
-            assertThrows(SQLException.class, () -> {
-                db.deleteUser("Chris");
-            });
+            db.deleteUser("Seansta18");
+        assertThrows(SQLException.class, () -> {
+            db.deleteUser("Seansta18");
+        });
     }
 
 

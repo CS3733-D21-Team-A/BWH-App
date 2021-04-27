@@ -510,7 +510,12 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void editUser(String username, Map<String, String> user) throws SQLException
 	{
-		userTable.editEntry(username, user);
+		if(userTable.getEntry(username) != null) {
+			userTable.editEntry(username, user);
+		}
+		else {
+			throw new SQLException();
+		}
 	}
 
 	/**
@@ -520,7 +525,12 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void deleteUser(String username) throws SQLException
 	{
-		userTable.deleteEntry(username);
+		if(userTable.getEntry(username) != null) {
+			userTable.deleteEntry(username);
+		}
+		else {
+			throw new SQLException();
+		}
 	}
 
 	// Emily
