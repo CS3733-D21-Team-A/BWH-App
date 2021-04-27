@@ -93,6 +93,10 @@ public class DefaultServicePage extends SPage {
         sceneSwitch("EmployeeRequests");
     }
 
+    public void internalTransport(ActionEvent actionEvent) {
+        sceneSwitch("InternalTransport");
+    }
+
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
         else menuDrawer.close();
