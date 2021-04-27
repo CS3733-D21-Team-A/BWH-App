@@ -30,6 +30,18 @@
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="310.0" style="-fx-background-color: #F0F0F0;" BorderPane.alignment="TOP_LEFT">
          <children>
+            <JFXButton minWidth="54.0" onAction="#goHome" prefHeight="49.0" prefWidth="54.0" text=" ">
+               <VBox.margin>
+                  <Insets right="250.0" />
+               </VBox.margin>
+               <graphic>
+                  <ImageView fitHeight="45.0" fitWidth="35.0">
+                     <image>
+                        <Image url="@../img/back icon.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
             <Label text="Service Requests">
                <font>
                   <Font name="Times New Roman" size="25.0" />

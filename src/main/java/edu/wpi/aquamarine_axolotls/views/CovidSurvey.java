@@ -187,13 +187,12 @@ public class CovidSurvey extends SPage {
 */
     }
     public void helpButton(ActionEvent actionEvent) {
-        popUp("CovidSurvey", "\n\n\nPlease fill out this survey to the best of your ability ");
+        popUp("CovidSurvey", "\n\n\nPlease fill out this survey to the best of your ability. ");
     }
 
     public void submitButton(ActionEvent actionEvent) {
         popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-        sceneSwitch ( "" );
-
+        goHome ();
 
     }
 

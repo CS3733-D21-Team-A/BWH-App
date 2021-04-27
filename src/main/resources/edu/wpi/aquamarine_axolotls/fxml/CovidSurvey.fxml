@@ -130,112 +130,112 @@
                               <Font name="Times New Roman" size="15.0" />
                            </font>
                         </Text>
-                        <JFXRadioButton fx:id="yes1" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXRadioButton fx:id="yes1" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no1" text="No" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <JFXRadioButton fx:id="no1" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="No" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes2" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <JFXRadioButton fx:id="yes2" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no2" text="No" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <JFXRadioButton fx:id="no2" text="No" GridPane.columnIndex="2" GridPane.rowIndex="2" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes4" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <JFXRadioButton fx:id="yes4" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no3" text="No" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                        <JFXRadioButton fx:id="no3" text="No" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no4" text="No" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                        <JFXRadioButton fx:id="no4" text="No" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;"  GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no5" text="No" GridPane.columnIndex="2" GridPane.rowIndex="5">
+                        <JFXRadioButton fx:id="no5" text="No" GridPane.columnIndex="2" GridPane.rowIndex="5"  style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no6" text="No" GridPane.columnIndex="2" GridPane.rowIndex="6">
+                        <JFXRadioButton fx:id="no6" text="No" GridPane.columnIndex="2" GridPane.rowIndex="6" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes3" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <JFXRadioButton fx:id="yes3" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes5" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                        <JFXRadioButton fx:id="yes5" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes6" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                        <JFXRadioButton fx:id="yes6" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes7" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                        <JFXRadioButton fx:id="yes7" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes8" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="8">
+                        <JFXRadioButton fx:id="yes8" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes9" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                        <JFXRadioButton fx:id="yes9" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="9">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes10" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                        <JFXRadioButton fx:id="yes10" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes11" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="11">
+                        <JFXRadioButton fx:id="yes11" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="11">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no7" text="No" GridPane.columnIndex="2" GridPane.rowIndex="7">
+                        <JFXRadioButton fx:id="no7" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;"  text="No" GridPane.columnIndex="2" GridPane.rowIndex="7">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no8" text="No" GridPane.columnIndex="2" GridPane.rowIndex="8">
+                        <JFXRadioButton fx:id="no8" text="No" GridPane.columnIndex="2" GridPane.rowIndex="8" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no9" text="No" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                        <JFXRadioButton fx:id="no9" text="No" GridPane.columnIndex="2" GridPane.rowIndex="9" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no10" text="No" GridPane.columnIndex="2" GridPane.rowIndex="10">
+                        <JFXRadioButton fx:id="no10" text="No" GridPane.columnIndex="2" GridPane.rowIndex="10" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="no11" text="No" GridPane.columnIndex="2" GridPane.rowIndex="11">
+                        <JFXRadioButton fx:id="no11" text="No" GridPane.columnIndex="2" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" GridPane.rowIndex="11">
                            <font>
                               <Font name="Times Roman" size="23.0" />
                            </font>

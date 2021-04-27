@@ -105,7 +105,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <Label alignment="CENTER" layoutX="305.0" layoutY="42.0" prefHeight="79.0" prefWidth="693.0" text="Patient Service Requests" textAlignment="CENTER">
+                  <Label alignment="CENTER" layoutX="305.0" layoutY="42.0" prefHeight="79.0" prefWidth="693.0" text="Service Requests" textAlignment="CENTER">
                      <font>
                         <Font name="Times New Roman" size="70.0" />
                      </font>

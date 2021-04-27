@@ -25,9 +25,9 @@
                   <children>
                     <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" ">
                         <graphic>
-                            <ImageView fitHeight="53.0" fitWidth="34.0">
+                            <ImageView fitHeight="53.0" fitWidth="47.0">
                                 <image>
-                                    <Image url="@../img/back%20icon.jpg" />
+                                    <Image url="@../img/back icon.jpg" />
                                 </image>
                             </ImageView>
                         </graphic>
