@@ -94,6 +94,9 @@ final class DatabaseInfo {
 	// ========== SERVICE REQUESTS ==========
 
 
+	// delivery time, dietary restrictions, note, food requested mess
+	// 4/26 added Food Option, Number of Servings, Contact Number and Drink Options
+	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FOOD_DELIVERY table.
 	 */
@@ -101,11 +104,20 @@ final class DatabaseInfo {
 		"CREATE TABLE " + SERVICEREQUEST.FOOD_DELIVERY.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
+			"FOODOPTION VARCHAR(50)," +
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NOTE VARCHAR(300)," +
-			"CONSTRAINT FK_FOOD_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
+			"NUMBEROFSERVINGS VARCHAR(3)," +
+			"CONTACTNUMBER VARCHAR(15)," +
+			"DRINKOPTIONS VARCHAR(25)" + // TODO: do the same thing as what happened with food options thing
+			"CONSTRAINT FK_FOOD_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " +
+					TABLES.SERVICE_REQUESTS.name() +
+					"(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
 
+	// delivery time, note, flower requested mess
+	// 4/26 added Delivery Date, Flower Options, Vase Options and Contact Number
+	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FLORAL_DELIVERY table.
 	 */
@@ -113,6 +125,10 @@ final class DatabaseInfo {
 		"CREATE TABLE " + SERVICEREQUEST.FLORAL_DELIVERY.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"DELIVERYTIME VARCHAR(10)," + //TODO: MAKE THIS TAKE TIME TYPE
+			"DELIVERYDATE VARCHAR(50)," + // TODO: Make this take date type
+			"FLOWEROPTION VARCHAR(50)," +
+			"VASEOPTION VARCHAR(50)," +
+			"CONTACTNUMBER VARCHAR(15)," +
 			"NOTE VARCHAR(300)," +
 			"CONSTRAINT FK_FLORAL_REQUESTID FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
