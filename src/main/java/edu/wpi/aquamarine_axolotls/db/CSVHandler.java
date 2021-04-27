@@ -12,7 +12,7 @@ public class CSVHandler {
 	/**
 	 * Strategy interface for use in CSV importing
 	 */
-	private interface ValueInsertionStrategy {
+	private interface ValueInsertionTemplate {
 		/**
 		 * Get the primary key corresponding to use in insertion.
 		 * @return the primary key column name corresponding to use in insertion.
@@ -48,7 +48,7 @@ public class CSVHandler {
 		void empty() throws SQLException;
 	}
 
-	private final ValueInsertionStrategy nodeInsertionStrategy = new ValueInsertionStrategy() {
+	private final ValueInsertionTemplate nodeInserter = new ValueInsertionTemplate() {
 		@Override
 		public String getPrimaryKey() {
 			return "NODEID"; //TODO: MAKE THIS REFERENCE DATABASEINFO
@@ -75,7 +75,7 @@ public class CSVHandler {
 		}
 	};
 
-	private final ValueInsertionStrategy edgeInsertionStrategy = new ValueInsertionStrategy() {
+	private final ValueInsertionTemplate edgeInserter = new ValueInsertionTemplate() {
 		@Override
 		public String getPrimaryKey() {
 			return "EDGEID"; //TODO: MAKE THIS REFERENCE DATABASEINFO
@@ -120,7 +120,7 @@ public class CSVHandler {
 	 * @throws IOException If the file exists but is a directory rather than a regular file, does not exist but cannot be created, or cannot be opened for any other reason
 	 * @throws SQLException Something went wrong.
 	 */
-	private void insertValues(BufferedReader br, boolean deleteAllOld, ValueInsertionStrategy insertionStrategy) throws IOException, SQLException {
+	private void insertValues(BufferedReader br, boolean deleteAllOld, ValueInsertionTemplate insertionStrategy) throws IOException, SQLException {
 		if (deleteAllOld) {
 			insertionStrategy.empty();
 		}
@@ -167,10 +167,10 @@ public class CSVHandler {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(inputStream))) {
 			switch (table) {
 				case NODES:
-					insertValues(br, deleteAllOld, nodeInsertionStrategy);
+					insertValues(br, deleteAllOld, nodeInserter);
 					break;
 				case EDGES:
-					insertValues(br, deleteAllOld, edgeInsertionStrategy);
+					insertValues(br, deleteAllOld, edgeInserter);
 					break;
 				default:
 					System.out.println("Import failed: Reference to table not implemented!"); //this should never happen since we're using enums. This will just catch if we add a new table and forget to add it here.
