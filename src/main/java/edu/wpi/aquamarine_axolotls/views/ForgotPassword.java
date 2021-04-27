@@ -16,13 +16,9 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class ForgotPassword extends SPage{
-        @FXML
-        private JFXButton backB;
-
+        @FXML private JFXButton backB;
         @FXML private JFXTextField username;
-
         @FXML private JFXTextField email;
-
         @FXML private JFXPasswordField password;
 
         DatabaseController db;
