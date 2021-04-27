@@ -63,7 +63,7 @@ public class EdgeEditing extends SEditing{
     @FXML private TableColumn endNodeCol;
 
     private Map<String, String> floors;
-    static String FLOOR = "G";
+    static String FLOOR = "1";
     private Group zoomGroup;
     private int zoom;
     List<Edge> validEdges = new ArrayList<>();
@@ -138,8 +138,12 @@ public class EdgeEditing extends SEditing{
             endNodeDropdown.setItems(nodeOptions);
             edgeDropdown.setItems(edgeOptions);
             floors = new HashMap<>();
-            floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            //floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
 
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
@@ -291,12 +295,28 @@ public class EdgeEditing extends SEditing{
         gc.fillOval(x, y, radius, radius);
     }
 
-    public void changeGroundFloor() {
-        resetMapAndDraw("G");
-    }
+    //public void changeGroundFloor() {
+//        resetMapAndDraw("G");
+//    }
 
     public void changeFloor1() {
         resetMapAndDraw("1");
+    }
+
+    public void changeFloor2() {
+        resetMapAndDraw("2");
+    }
+
+    public void changeFloor3() {
+        resetMapAndDraw("3");
+    }
+
+    public void changeFloorL1() {
+        resetMapAndDraw("L1");
+    }
+
+    public void changeFloorL2() {
+        resetMapAndDraw("L2");
     }
 
     public void pressAddButton() {
