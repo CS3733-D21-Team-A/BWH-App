@@ -75,6 +75,11 @@ public class DefaultServicePage extends SPage {
         sceneSwitch("FloralDelivery");
     }
 
+    @FXML
+    public void medicineDelivP(ActionEvent actionEvent) {
+        sceneSwitch("MedicineDelivery");
+    }
+
 
     @FXML
     public void viewReqP(ActionEvent actionEvent) {
