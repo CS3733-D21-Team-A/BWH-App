@@ -223,7 +223,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         int stepNum = 1;
 
-        for(int i = 0; i < path.size(); i++){
+        for(int i = 0; i < path.size(); i++) {
             if(nodeIsUnimportant(path, path.get(i))){
                 path.remove(i);
             }

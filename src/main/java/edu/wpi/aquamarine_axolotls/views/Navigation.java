@@ -115,6 +115,13 @@ public class Navigation extends SPage {
         }
     }
 
+    private Node getNodeFromValidID(String ID) {
+        for (Node n : validNodes) {
+            if (n.getNodeID().equals(ID)) return n;
+        }
+        return null;
+    }
+
     /**
      * Scales the x coordinate from table for image (5000,3400)
      *
@@ -158,15 +165,20 @@ public class Navigation extends SPage {
 
     public void drawFloor(String floor){
         resetMap(FLOOR);
-        for (Node n: validNodes) {
-            if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D());
+        if (activePath == 0) {
+            for (Node n: validNodes) {
+                if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D(), Color.BLUE);
+            }
         }
 
         if (activePath == 1) {
+            for (Node n: validNodes) {
+                if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D(), new Color(0.0 , 0.0, 1.0, 0.4));
+            }
             for (int i = 0; i < currPath.size() - 1; i++) {
                 if (currPath.get(i).getFloor().equals(FLOOR) &&
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
-                    drawNodes(currPath.get(i), currPath.get(i + 1));
+                    drawNodes(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
                 }
                 if ((currPath.get(i).getNodeType().equals("STAI") && currPath.get(i+1).getNodeType().equals("STAI")) ||
                         (currPath.get(i).getNodeType().equals("ELEV") && currPath.get(i+1).getNodeType().equals("ELEV"))){
@@ -448,12 +460,19 @@ public class Navigation extends SPage {
         gc.fillOval(x, y, radius, radius);
     }
 
-    public void drawNodes(Node snode, Node enode) {
+    public void drawSingleEdge(Node snode, Node enode, Color c) {
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setStroke(c);
+        gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
+    }
+
+    public void drawNodes(Node snode, Node enode, Color snodeCol, Color enodeCol, Color edgeCol) {
         if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
             GraphicsContext gc = mapCanvas.getGraphicsContext2D();
             /*gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
             gc.lineTo(xScale(enode.getXcoord()), yScale(enode.getYcoord()));
             gc.stroke();*/
+            gc.setStroke(edgeCol);
             gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
 
             drawSingleNode(snode, gc);
