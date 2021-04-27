@@ -337,7 +337,7 @@ public class AbsAlgorithmMethodTest {
         nodeList.add(node2);
 
         List<String> expectedValue = new ArrayList<String>();
-        expectedValue.add("1. Walk 19 feet towards Test Node 2.");
+        expectedValue.add("1. Walk 12 feet towards Test Node 2.");
 
         SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
         assertEquals(expectedValue, SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(nodeList));
@@ -360,13 +360,13 @@ public class AbsAlgorithmMethodTest {
         nodeList.add(node5);
 
         List<String> expectedValue = new ArrayList<String>();
-        expectedValue.add("1. Walk 19 feet towards Test Node 2.");
+        expectedValue.add("1. Walk 12 feet towards Test Node 2.");
         expectedValue.add("2. Make a slight left turn.");
-        expectedValue.add("3. Walk 132 feet towards Test Node 3.");
+        expectedValue.add("3. Walk 83 feet towards Test Node 3.");
         expectedValue.add("4. Make a right turn.");
-        expectedValue.add("5. Walk 247 feet towards Test Node 4.");
+        expectedValue.add("5. Walk 155 feet towards Test Node 4.");
         expectedValue.add("6. Make an extreme right turn.");
-        expectedValue.add("7. Walk 273 feet towards Test Node 5.");
+        expectedValue.add("7. Walk 171 feet towards Test Node 5.");
 
         SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
         assertEquals(expectedValue, SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(nodeList));

@@ -223,7 +223,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             stepNum++;
         } else {
             double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
-            double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
+            double firstEdgeDistanceFeet = firstEdgeDistancePixels * 2.35;
             returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getLongName() + ".");
             stepNum++;
         }
@@ -245,22 +245,22 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 if(turnAngle > 180.0) turnAngle -= 360;
 
                 if(turnAngle > 5 && turnAngle < 60){
-                    returnList.add(stepNum + ". Make a slight left turn.");
-                    stepNum++;
-                } else if (turnAngle >= 60 && turnAngle < 120){
-                    returnList.add(stepNum + ". Make a left turn.");
-                    stepNum++;
-                } else if (turnAngle >= 120 && turnAngle < 178){
-                    returnList.add(stepNum + ". Make an extreme left turn.");
-                    stepNum++;
-                } else if (turnAngle < 5 && turnAngle > -60){
                     returnList.add(stepNum + ". Make a slight right turn.");
                     stepNum++;
-                } else if (turnAngle <= -60 && turnAngle > -120){
+                } else if (turnAngle >= 60 && turnAngle < 120){
                     returnList.add(stepNum + ". Make a right turn.");
                     stepNum++;
-                } else if (turnAngle <= -120 && turnAngle > -178){
+                } else if (turnAngle >= 120 && turnAngle < 178){
                     returnList.add(stepNum + ". Make an extreme right turn.");
+                    stepNum++;
+                } else if (turnAngle < 5 && turnAngle > -60){
+                    returnList.add(stepNum + ". Make a slight left turn.");
+                    stepNum++;
+                } else if (turnAngle <= -60 && turnAngle > -120){
+                    returnList.add(stepNum + ". Make a left turn.");
+                    stepNum++;
+                } else if (turnAngle <= -120 && turnAngle > -178){
+                    returnList.add(stepNum + ". Make an extreme left turn.");
                     stepNum++;
                 } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
                     returnList.add(stepNum + ". Turn around.");
@@ -268,7 +268,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 }
 
                 double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
-                double edgeDistanceFeet = edgeDistancePixels * 3.75;
+                double edgeDistanceFeet = edgeDistancePixels * 2.35;
 
                 returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getLongName() + ".");
                 stepNum++;
