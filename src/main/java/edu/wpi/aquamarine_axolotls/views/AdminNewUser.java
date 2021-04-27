@@ -12,6 +12,9 @@ import javafx.scene.Parent;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class AdminNewUser extends SPage {
@@ -37,7 +40,7 @@ public class AdminNewUser extends SPage {
 
         DatabaseController db;
         @FXML
-        public void submit_button(ActionEvent actionEvent) {
+        public void submit_button(ActionEvent actionEvent) throws SQLException {
             String email = emailAddress.getText();
             String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -52,19 +55,25 @@ public class AdminNewUser extends SPage {
             else if (!password.getText().equals(confirmPassword.getText())) {
                 popUp("Account Creation Failed", "\n\n\n\n\n\nPlease type in the same password for both fields");
             }
-
-            //if(!password.equals(confirmPassword)) Account is already in DB
             else if(!db.checkUserExists ( userName.getText ())) {
                 popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUsername already exists." );
             }
             else{
-                //Map<String,String> user = new Map<String, String>();
-                // if(        if(db.checkNotPreexistingUser(CUusername)){
-                //        //.addUser (  );}
+                Map<String, String> user = new HashMap<String, String> ();
+                user.put("USERNAME", userName.getText ());
+                user.put("FIRSTNAME", firstName.getText ());
+                user.put("LASTNAME", lastName.getText ());
+                user.put("EMAIL", emailAddress.getText ());
+                user.put("USERTYPE", "Employee");
+                user.put("PASSWORD", password.getText ());
+
+                db.addUser(user);
+
                 sceneSwitch("LogIn");
 
             }
         }
+
 
         @FXML
         public void initialize() {

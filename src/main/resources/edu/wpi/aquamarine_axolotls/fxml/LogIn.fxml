@@ -20,7 +20,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="888.0" prefWidth="1640.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="100.0" prefWidth="200.0">
+            <HBox prefHeight="152.0" prefWidth="1319.0">
                <children>
                   <Rectangle fill="#003da6" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1319.0" y="600.0" />
                </children>
@@ -62,7 +62,7 @@
                   <Font name="Times New Roman" size="30.0" />
                </font>
             </JFXPasswordField>
-            <JFXButton fx:id="submit" minHeight="30.0" onAction="#submit_button" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+            <JFXButton fx:id="submit" minHeight="30.0" onAction="#confirmUser" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
                <font>
                   <Font name="Times New Roman" size="40.0" />
                </font>

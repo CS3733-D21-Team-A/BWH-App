@@ -53,7 +53,7 @@ public class FoodDelivery extends SServiceRequest {
     @FXML
     private ArrayList<String> nodeIDS;
 
-
+    @FXML private JFXTextField contactNumber;
     @FXML
     JFXHamburger burger;
 
@@ -101,7 +101,9 @@ public class FoodDelivery extends SServiceRequest {
         int room = roomNumber.getSelectionModel().getSelectedIndex();
         String food = foodOptions.getSelectionModel().getSelectedItem().toString();
         String rest = dietaryRestA.getText();
-
+        String fo = foodOptions.getSelectionModel ().getSelectedItem ().toString ();
+        String cn = contactNumber.getText();
+        String dop = drinkOptions.getSelectionModel ().getSelectedItem ().toString ();
         if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
                 || dt.isEmpty()){
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
@@ -126,6 +128,11 @@ public class FoodDelivery extends SServiceRequest {
             foodR.put("DELIVERYTIME", dt);
             foodR.put("DIETARYRESTRICTIONS", rest);
             foodR.put("NOTE", rest);
+            foodR.put ( "FOODOPTION", food);
+            foodR.put ("NUMBEROFSERVINGS", fo);
+            foodR.put ( "CONTACTNUMBER", cn );
+            foodR.put ( "DRINKOPTIONS", dop );
+
             db.addServiceRequest(shared, foodR);
             db.close();
             submit();

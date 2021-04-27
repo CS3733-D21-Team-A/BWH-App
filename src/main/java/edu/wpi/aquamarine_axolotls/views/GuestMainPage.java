@@ -17,7 +17,6 @@ public class GuestMainPage extends SMainPage {
 
     @FXML
     public void initialize() {
-        popUp("Fill out Covid", "fill it out");
     }
 
     public void covidSurveyPage(ActionEvent actionEvent) {

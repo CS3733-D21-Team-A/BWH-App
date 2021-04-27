@@ -38,17 +38,6 @@ public class LogIn extends SPage{
     @FXML private JFXPasswordField password;
 
     DatabaseController db;
-    @FXML
-    public void submit_button(ActionEvent actionEvent) {
-
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/PatientMainPage.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-    }
 
     @FXML
     public void initialize() {
@@ -58,16 +47,27 @@ public class LogIn extends SPage{
     public void confirmUser ( ) throws SQLException {
         String CUusername = username.getText ( );
         String CUpassword = password.getText ( );
-        if ( db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
-            popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
 
-        //update user to loggedin    db.getUserByUsername ( CUusername ).set
+        if ( username.getText ( ).isEmpty ( ) || password.getText ( ).isEmpty ( ) ) {
+            popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have not filled in both the username and password fields" );
         }
-        else {
-            popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
-                                          + "or the account does not exist" );
+        //   if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
+      //  popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
+         //                             + "or the account does not exist" );
+//WHY IS THIS NOT WORKING
+        //update user to loggedin    db.getUserByUsername ( CUusername ).set
+        //  }
+else{
+            popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
+            try {
+                Parent root = FXMLLoader.load ( getClass ( ).getResource ( "/edu/wpi/aquamarine_axolotls/fxml/PatientMainPage.fxml" ) );
+                Aapp.getPrimaryStage ( ).getScene ( ).setRoot ( root );
+            } catch (IOException ex) {
+                ex.printStackTrace ( );
+            }
         }
     }
+
 
 
 

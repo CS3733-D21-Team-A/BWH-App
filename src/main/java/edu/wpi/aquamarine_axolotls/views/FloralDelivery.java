@@ -45,6 +45,9 @@ public class FloralDelivery extends SServiceRequest {
     @FXML
     private JFXComboBox flowerOptions;
 
+    @FXML private JFXDatePicker deliveryDate;
+
+    @FXML private JFXTextField contactNumber;
     @FXML
     private JFXComboBox vaseOptions;
     HamburgerBasicCloseTransition transition;
@@ -78,20 +81,23 @@ public class FloralDelivery extends SServiceRequest {
 
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-        if(roomNumber.getSelectionModel().getSelectedItem() == null || deliveryTime.getValue() == null){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number");
+        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || deliveryTime.getValue ( ) == null ) {
+            errorFields ( "- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number" );
             return;
         }
-
-        String fn = firstName.getText();
-        String ln = lastName.getText();
-        String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-        int room = roomNumber.getSelectionModel().getSelectedIndex();
-        String pmsg = persMessage.getText();
+        String fn = firstName.getText ( );
+        String ln = lastName.getText ( );
+        String dt = deliveryTime.getValue ( ).format ( DateTimeFormatter.ofPattern ( "HH.mm" ) );
+        String dd = deliveryDate.getValue ().format ( DateTimeFormatter.ofPattern ( "yyyy-MM-dd" ) );
+        String fo = flowerOptions.getSelectionModel ().getSelectedItem ().toString ();
+        int room = roomNumber.getSelectionModel ( ).getSelectedIndex ( );
+        String vo = vaseOptions.getSelectionModel ().getSelectedItem ().toString ();
+        String pmsg = persMessage.getText ( );
+        String  co = contactNumber.getText();
 
         //TODO: make pop up here
-        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+") || dt.isEmpty()){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number");
+        if ( !fn.matches ( "[a-zA-Z]+" ) || !ln.matches ( "[a-zA-Z]+" ) || dt.isEmpty ( ) ) {
+            errorFields ( "- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number" );
             return;
         }
 
@@ -112,6 +118,11 @@ public class FloralDelivery extends SServiceRequest {
             floral.put("REQUESTID", String.valueOf(id));
             floral.put("DELIVERYTIME", dt);
             floral.put("NOTE", pmsg);
+            floral.put("DELIVERYDATE", dd);
+            floral.put ( "FLOWEROPTION", fo );
+            floral.put ( "VASEOPTION", vo );
+            floral.put ( "CONTACTNUMBER", co );
+
             db.addServiceRequest(shared, floral);
             db.close();
             submit();
@@ -119,6 +130,8 @@ public class FloralDelivery extends SServiceRequest {
             e.printStackTrace();
         }
     }
+
+
 
     public void menu(){
         if(transition.getRate() == -1) menuDrawer.open();
