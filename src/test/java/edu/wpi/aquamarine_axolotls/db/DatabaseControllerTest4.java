@@ -722,4 +722,38 @@ public class DatabaseControllerTest4 {
             fail();
         }
     }
+
+
+    //Test getServiceRequestsByAuthor
+    @Test
+    public void testGetServiceRequestsByAuthor()
+    {
+        try {
+            Map<String, String> sharedValues = new HashMap<>();
+            sharedValues.put("REQUESTID", "12345");
+            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
+            sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("AUTHORID", "John123");
+            sharedValues.put("LOCATIONID", "aPARK009GG");
+            sharedValues.put("FIRSTNAME", "Bob");
+            sharedValues.put("LASTNAME", "Jones");
+            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
+
+            Map<String, String> requestValues = new HashMap<String, String>();
+            requestValues.put("REQUESTID", "23456");
+            requestValues.put("DELIVERYTIME", "NOW");
+            requestValues.put("DIETARYRESTRICTIONS", "PEANUTS");
+            requestValues.put("NOTE", "BLAH BLAH BLAH");
+            db.addServiceRequest(sharedValues, requestValues);
+
+            List<Map<String, String>> expectedResult = new ArrayList<Map<String, String>>();
+            expectedResult.add(sharedValues);
+
+            assertEquals(expectedResult, db.getServiceRequestsByAuthor("John123"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
+
 }

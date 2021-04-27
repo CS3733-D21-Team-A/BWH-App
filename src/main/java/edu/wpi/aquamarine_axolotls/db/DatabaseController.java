@@ -377,6 +377,15 @@ public class DatabaseController implements AutoCloseable {
 		//Service requests cascade, so we don't need to clear request-specific tables
 	}
 
+	/**
+	 * Gets all service requests made by given author
+	 * @return List of Maps representing the service requests
+	 */
+	public List<Map<String, String>> getServiceRequestsByAuthor(String author) throws SQLException
+	{
+		return serviceRequestsTable.getEntriesByValue("AUTHORID", author);
+	}
+
 
 	// ===== NODE / EDGE ATTRIBUTES =====
 
