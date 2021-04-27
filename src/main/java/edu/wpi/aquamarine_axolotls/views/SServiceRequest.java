@@ -44,19 +44,19 @@ public abstract class SServiceRequest extends SPage{
     }
 
     @FXML
-    public void submit() throws IOException {
+    public void submit() {
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
         sceneSwitch("DefaultServicePage");
     }
 
     @FXML
-    public void errorFields(String reqFields) throws IOException {
+    public void errorFields(String reqFields) {
         popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields.\n" + reqFields);
     }
 
 
     @FXML
-    public void loadHelp() throws IOException{
+    public void loadHelp() {
         popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, time you would like to receive the request patient's room number, and an optional message ");
     }
     @FXML
