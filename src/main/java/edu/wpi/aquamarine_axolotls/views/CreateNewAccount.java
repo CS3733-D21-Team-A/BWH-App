@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -66,7 +67,7 @@ public class CreateNewAccount extends SPage {
         }
 
         //if(!password.equals(confirmPassword)) Account is already in DB
-        else if(!db.checkUserExists ( userName.getText ())) {
+        else if(db.checkUserExists ( userName.getText ())) {
             popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUsername already exists." );
         }
         else{
@@ -75,7 +76,7 @@ public class CreateNewAccount extends SPage {
             user.put("FIRSTNAME", firstName.getText ());
             user.put("LASTNAME", lastName.getText ());
             user.put("EMAIL", emailAddress.getText ());
-            user.put("USERTYPE", userType.getSelectionModel ().toString ()); //// Should i ask this in the login???
+        //    user.put("USERTYPE", userType.getSelectionModel ().toString ()); //// Should i ask this in the login???
             user.put("PASSWORD", password.getText ());
 
             db.addUser(user);
@@ -86,7 +87,8 @@ public class CreateNewAccount extends SPage {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException, IOException, URISyntaxException {
+        db = new DatabaseController ();
         userType.setItems( FXCollections
                 .observableArrayList("Patient","Employee")
         );

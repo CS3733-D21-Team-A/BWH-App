@@ -81,8 +81,8 @@ public class FloralDelivery extends SServiceRequest {
 
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || deliveryTime.getValue ( ) == null ) {
-            errorFields ( "- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number" );
+        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || firstName.getText ().isEmpty () || contactNumber.getText ().isEmpty () ||lastName.getText ().isEmpty() || deliveryTime.getValue ( ) == null ) {
+            errorFields ( "- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number\n- Contact Number\n- Delivery Date\n- Flower Options\n- Vase Options"  );
             return;
         }
         String fn = firstName.getText ( );

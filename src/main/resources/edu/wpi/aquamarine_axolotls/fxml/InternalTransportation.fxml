@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,9 +17,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="myAnchorPane" maxHeight="-Infinity" maxWidth="1300.0" minWidth="130.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.InternalTransportation">
-    <children>
-      <BorderPane prefHeight="905.0" prefWidth="1301.0">
+<BorderPane maxWidth="1300.0" minHeight="900.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.InternalTransportation">
          <bottom>
             <Pane prefHeight="900.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                <children>
@@ -68,7 +65,7 @@
                               <Font name="Times New Roman" size="60.0" />
                           </font>
                       </Label>
-                        <JFXButton fx:id="submitB" layoutX="968.0" layoutY="778.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                        <JFXButton fx:id="submitB" layoutX="954.0" layoutY="696.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                             <font>
                                 <Font name="Times New Roman" size="30.0" />
                             </font>
@@ -80,12 +77,12 @@
                         <Font name="Times New Roman" size="20.0" />
                      </font>
                         </JFXButton>
-                          <ImageView fitHeight="77.0" fitWidth="60.0" layoutX="27.0" layoutY="48.0" pickOnBounds="true" preserveRatio="true">
+                  <Line endX="773.8856201171875" endY="1.17156982421875" layoutX="198.0" layoutY="229.0" startX="115.32846069335938" startY="1.17156982421875" stroke="#c4c4c4" strokeWidth="4.0" />
+                          <ImageView fitHeight="53.0" fitWidth="79.0" layoutX="21.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
                               <image>
                                   <Image url="@../img/back icon.jpg" />
                               </image>
                           </ImageView>
-                  <Line endX="773.8856201171875" endY="1.17156982421875" layoutX="198.0" layoutY="229.0" startX="115.32846069335938" startY="1.17156982421875" stroke="#c4c4c4" strokeWidth="4.0" />
                </children>
             </Pane>
          </bottom>
@@ -120,5 +117,3 @@
             </HBox>
          </top>
       </BorderPane>
-    </children>
-</AnchorPane>

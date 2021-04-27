@@ -16,9 +16,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.DefaultServicePage">
-   <children>
-      <BorderPane prefHeight="900.0" prefWidth="1300.0">
+      <BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.DefaultServicePage">
          <center>
             <Pane prefHeight="528.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                <children>
@@ -43,47 +41,47 @@
                            </font>
                         </JFXButton>
             
-                              <JFXButton fx:id="foodDeliveryB" mnemonicParsing="false" onAction="#foodDelivery" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Food Delivery" textFill="WHITE" GridPane.columnIndex="2">
+                              <JFXButton fx:id="foodDeliveryB" mnemonicParsing="false" onAction="#foodDeliveryP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Food Delivery" textFill="WHITE" GridPane.columnIndex="2">
                            <font>
                               <Font name="Times Roman" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB1" maxWidth="310.0" mnemonicParsing="false" onAction="#giftDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#giftDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Gift Delivery" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB2" maxWidth="310.0" mnemonicParsing="false" onAction="#medicineDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Medicine Delivery" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#medicineDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Medicine Delivery" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB3" maxWidth="310.0" mnemonicParsing="false" onAction="#facilityMain" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Maintenance" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#facilityMainP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Maintenance" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB4" maxWidth="310.0" mnemonicParsing="false" onAction="#internalTransport" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Internal Transport" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#internalTransport" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Language Translator" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB5" maxWidth="310.0" mnemonicParsing="false" onAction="#floralDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#externalTransP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="External Transport" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB6" maxWidth="310.0" mnemonicParsing="false" onAction="#floralDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#internalTransport" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Internal Transport" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB7" maxWidth="310.0" mnemonicParsing="false" onAction="#floralDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#floralDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="floralDeliveryB8" maxWidth="310.0" mnemonicParsing="false" onAction="#floralDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" text="Floral Delivery" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                        <JFXButton maxWidth="310.0" mnemonicParsing="false" onAction="#floralDelivP" prefHeight="90.0" prefWidth="310.0" style="-fx-background-color: #003da6; -fx-background-radius: 7px;" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <font>
                               <Font name="Optima Regular" size="30.0" />
                            </font>
@@ -137,5 +135,4 @@
             </HBox>
          </top>
       </BorderPane>
-   </children>
-</AnchorPane>
+

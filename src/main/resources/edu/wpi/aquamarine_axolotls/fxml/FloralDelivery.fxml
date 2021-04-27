@@ -93,7 +93,7 @@
                                 <Insets right="25.0" top="40.0" />
                             </GridPane.margin>
                         </JFXComboBox>
-                        <JFXTextField fx:id="contactNumber" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Last Name" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" text="Contact Number" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="contactNumber" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Contact Number" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets right="25.0" top="40.0" />
                             </GridPane.margin>

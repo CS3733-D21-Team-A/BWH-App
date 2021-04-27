@@ -68,14 +68,12 @@ public class DefaultServicePage extends SPage {
     // NOTE: code feels redundant, maybe make method?
 
     @FXML
-    public void foodDelivery(ActionEvent actionEvent) { sceneSwitch("FoodDelivery"); }
+    public void foodDeliveryP(ActionEvent actionEvent) { sceneSwitch("FoodDelivery"); }
 
-    @FXML
-    public void floralDelivP(ActionEvent actionEvent) {
-        sceneSwitch("FloralDelivery");
-    }
+    public void floralDelivP(ActionEvent actionEvent) { sceneSwitch("FloralDelivery"); }
 
-    @FXML
+    public void externalTransP(ActionEvent actionEvent) { sceneSwitch("ExternalTransport"); }
+
     public void medicineDelivP(ActionEvent actionEvent) {
         sceneSwitch("MedicineDelivery");
     }
@@ -84,17 +82,16 @@ public class DefaultServicePage extends SPage {
         sceneSwitch("GiftDelivery");
     }
 
-    public void facilityMain(ActionEvent actionEvent) {
+    public void facilityMainP(ActionEvent actionEvent) {
         sceneSwitch ( "FacilitiesMaintenance" );
     }
 
-    @FXML
     public void viewReqP(ActionEvent actionEvent) {
         sceneSwitch("EmployeeRequests");
     }
 
     public void internalTransport(ActionEvent actionEvent) {
-        sceneSwitch("InternalTransport");
+        sceneSwitch("InternalTransportation");
     }
 
     public void menu(){

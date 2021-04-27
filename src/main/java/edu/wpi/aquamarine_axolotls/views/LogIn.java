@@ -22,6 +22,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 
@@ -40,7 +41,8 @@ public class LogIn extends SPage{
     DatabaseController db;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException, IOException, URISyntaxException {
+        db = new DatabaseController ();
     }
 
 
@@ -51,13 +53,13 @@ public class LogIn extends SPage{
         if ( username.getText ( ).isEmpty ( ) || password.getText ( ).isEmpty ( ) ) {
             popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have not filled in both the username and password fields" );
         }
-        //   if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
-      //  popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
-         //                             + "or the account does not exist" );
+           if ( ! db.checkUserMatchesPass ( CUusername ,CUpassword ) ) {
+        popUp ( "Submission Failed!" ,"\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
+                                      + "or the account does not exist" );
 //WHY IS THIS NOT WORKING
         //update user to loggedin    db.getUserByUsername ( CUusername ).set
-        //  }
-else{
+          }
+        else{
             popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
             try {
                 Parent root = FXMLLoader.load ( getClass ( ).getResource ( "/edu/wpi/aquamarine_axolotls/fxml/PatientMainPage.fxml" ) );
