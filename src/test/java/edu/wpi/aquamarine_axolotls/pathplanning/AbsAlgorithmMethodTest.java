@@ -17,24 +17,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AbsAlgorithmMethodTest {
 
-    private SearchAlgorithmContext searchAlgorithm;
     private AStar aStar = new AStar();
-    private Dijkstra dijkstra;
-
-    {
-        try {
-            dijkstra = new Dijkstra();
-        } catch (SQLException | IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
-    }
+    private Dijkstra dijkstra = new Dijkstra();
 
     private DepthFirstSearch dfs = new DepthFirstSearch();
     private BreadthFirstSearch bfs = new BreadthFirstSearch();
 
     @BeforeEach
     void testSetup() {
-        searchAlgorithm = new SearchAlgorithmContext();
     }
 
     @Test
@@ -92,14 +82,14 @@ public class AbsAlgorithmMethodTest {
         double totalLength = edge1Length + edge2Length + edge3Length + edge4Length;
         double expectedVal = totalLength / 825.0;
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(dijkstra);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(bfs);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(dfs);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
     }
 
     @Test
@@ -112,14 +102,14 @@ public class AbsAlgorithmMethodTest {
 
         double expectedVal = 0.0;
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(dijkstra);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(bfs);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(dfs);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(dijkstra);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(bfs);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(dfs);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
     }
 
     @Test
@@ -129,14 +119,14 @@ public class AbsAlgorithmMethodTest {
 
         double expectedVal = 0.0;
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(dijkstra);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(bfs);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
-        searchAlgorithm.setContext(dfs);
-        assertEquals(expectedVal, searchAlgorithm.getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(dijkstra);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(bfs);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(dfs);
+        assertEquals(expectedVal, SearchAlgorithmContext.getSearchAlgorithmContext().getETA(nodeList), 0.0001);
     }
 
     @Test
@@ -318,8 +308,8 @@ public class AbsAlgorithmMethodTest {
 
         List<String> expectedValue = new ArrayList<String>();
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedValue, searchAlgorithm.getTextDirections(nodeList));
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
+        assertEquals(expectedValue, SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(nodeList));
     }
 
     @Test
@@ -332,8 +322,8 @@ public class AbsAlgorithmMethodTest {
 
         List<String> expectedValue = new ArrayList<String>();
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedValue, searchAlgorithm.getTextDirections(nodeList));
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
+        assertEquals(expectedValue, SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(nodeList));
     }
 
     @Test
@@ -349,8 +339,8 @@ public class AbsAlgorithmMethodTest {
         List<String> expectedValue = new ArrayList<String>();
         expectedValue.add("1. Walk 19 feet towards TN2.");
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedValue, searchAlgorithm.getTextDirections(nodeList));
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
+        assertEquals(expectedValue, SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(nodeList));
     }
 
     @Test
@@ -378,8 +368,8 @@ public class AbsAlgorithmMethodTest {
         expectedValue.add("6. Make an extreme right turn.");
         expectedValue.add("7. Walk 273 feet towards TN5.");
 
-        searchAlgorithm.setContext(aStar);
-        assertEquals(expectedValue, searchAlgorithm.getTextDirections(nodeList));
+        SearchAlgorithmContext.getSearchAlgorithmContext().setContext(aStar);
+        assertEquals(expectedValue, SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(nodeList));
     }
 
 

@@ -215,48 +215,64 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             }
         }
 
-        double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
-        double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
-        returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getShortName() + ".");
-        stepNum++;
+        if(path.get(0).getNodeType().equals("ELEV") && path.get(1).getNodeType().equals("ELEV")){
+            returnList.add(stepNum + ". Take the elevator to floor " + path.get(1).getFloor() + ".");
+            stepNum++;
+        } else if(path.get(0).getNodeType().equals("STAI") && path.get(1).getNodeType().equals("STAI")){
+            returnList.add(stepNum + ". Take the stairs to floor " + path.get(1).getFloor() + ".");
+            stepNum++;
+        } else {
+            double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
+            double firstEdgeDistanceFeet = firstEdgeDistancePixels * 3.75;
+            returnList.add(stepNum + ". Walk " + Math.round(firstEdgeDistanceFeet) + " feet towards " + path.get(1).getShortName() + ".");
+            stepNum++;
+        }
 
         for (int i = 1; i < path.size() - 1; i++){
 
-            double angleIn = absAngleEdge(path.get(i-1), path.get(i));
-            double angleOut = absAngleEdge(path.get(i), path.get(i+1));
-            double turnAngle = angleOut - angleIn;
+            if(path.get(i).getNodeType().equals("ELEV") && path.get(i+1).getNodeType().equals("ELEV")){
+                returnList.add(stepNum + ". Take the elevator to floor " + path.get(i+1).getFloor() + ".");
+                stepNum++;
+            } else if(path.get(i).getNodeType().equals("STAI") && path.get(i+1).getNodeType().equals("STAI")){
+                returnList.add(stepNum + ". Take the stairs to floor " + path.get(i+1).getFloor() + ".");
+                stepNum++;
+            } else{
+                double angleIn = absAngleEdge(path.get(i-1), path.get(i));
+                double angleOut = absAngleEdge(path.get(i), path.get(i+1));
+                double turnAngle = angleOut - angleIn;
 
-            if(turnAngle <= -180.0) turnAngle += 360;
-            if(turnAngle > 180.0) turnAngle -= 360;
+                if(turnAngle <= -180.0) turnAngle += 360;
+                if(turnAngle > 180.0) turnAngle -= 360;
 
-            if(turnAngle > 5 && turnAngle < 60){
-                returnList.add(stepNum + ". Make a slight left turn.");
-                stepNum++;
-            } else if (turnAngle >= 60 && turnAngle < 120){
-                returnList.add(stepNum + ". Make a left turn.");
-                stepNum++;
-            } else if (turnAngle >= 120 && turnAngle < 178){
-                returnList.add(stepNum + ". Make an extreme left turn.");
-                stepNum++;
-            } else if (turnAngle < 5 && turnAngle > -60){
-                returnList.add(stepNum + ". Make a slight right turn.");
-                stepNum++;
-            } else if (turnAngle <= -60 && turnAngle > -120){
-                returnList.add(stepNum + ". Make a right turn.");
-                stepNum++;
-            } else if (turnAngle <= -120 && turnAngle > -178){
-                returnList.add(stepNum + ". Make an extreme right turn.");
-                stepNum++;
-            } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
-                returnList.add(stepNum + ". Turn around.");
+                if(turnAngle > 5 && turnAngle < 60){
+                    returnList.add(stepNum + ". Make a slight left turn.");
+                    stepNum++;
+                } else if (turnAngle >= 60 && turnAngle < 120){
+                    returnList.add(stepNum + ". Make a left turn.");
+                    stepNum++;
+                } else if (turnAngle >= 120 && turnAngle < 178){
+                    returnList.add(stepNum + ". Make an extreme left turn.");
+                    stepNum++;
+                } else if (turnAngle < 5 && turnAngle > -60){
+                    returnList.add(stepNum + ". Make a slight right turn.");
+                    stepNum++;
+                } else if (turnAngle <= -60 && turnAngle > -120){
+                    returnList.add(stepNum + ". Make a right turn.");
+                    stepNum++;
+                } else if (turnAngle <= -120 && turnAngle > -178){
+                    returnList.add(stepNum + ". Make an extreme right turn.");
+                    stepNum++;
+                } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
+                    returnList.add(stepNum + ". Turn around.");
+                    stepNum++;
+                }
+
+                double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
+                double edgeDistanceFeet = edgeDistancePixels * 3.75;
+
+                returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getShortName() + ".");
                 stepNum++;
             }
-
-            double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
-            double edgeDistanceFeet = edgeDistancePixels * 3.75;
-
-            returnList.add(stepNum + ". Walk " + Math.round(edgeDistanceFeet) + " feet towards " + path.get(i+1).getShortName() + ".");
-            stepNum++;
         }
         return returnList;
     }
