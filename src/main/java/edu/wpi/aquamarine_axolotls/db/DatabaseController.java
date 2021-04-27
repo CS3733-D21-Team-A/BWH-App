@@ -383,7 +383,11 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public List<Map<String, String>> getServiceRequestsByAuthor(String author) throws SQLException
 	{
-		return serviceRequestsTable.getEntriesByValue("AUTHORID", author);
+		if(userTable.getEntry(author) != null) {
+			return serviceRequestsTable.getEntriesByValue("AUTHORID", author);
+		} else {
+			throw new SQLException();
+		}
 	}
 
 

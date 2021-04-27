@@ -729,31 +729,201 @@ public class DatabaseControllerTest4 {
     public void testGetServiceRequestsByAuthor()
     {
         try {
-            Map<String, String> sharedValues = new HashMap<>();
-            sharedValues.put("REQUESTID", "12345");
-            sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
-            sharedValues.put("EMPLOYEEID", "WONG123");
-            sharedValues.put("AUTHORID", "John123");
-            sharedValues.put("LOCATIONID", "aPARK009GG");
-            sharedValues.put("FIRSTNAME", "Bob");
-            sharedValues.put("LASTNAME", "Jones");
-            sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
+            Map<String, String> user = new HashMap<String, String>();
+            user.put("USERNAME", "Seansta18");
+            user.put("FIRSTNAME", "Sean");
+            user.put("LASTNAME", "McMillan");
+            user.put("EMAIL", "Sean@gmail.com");
+            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user.put("PASSWORD", "PasswordIsMyPassword");
+            db.addUser(user);
 
-            Map<String, String> requestValues = new HashMap<String, String>();
-            requestValues.put("REQUESTID", "23456");
-            requestValues.put("DELIVERYTIME", "NOW");
-            requestValues.put("DIETARYRESTRICTIONS", "PEANUTS");
-            requestValues.put("NOTE", "BLAH BLAH BLAH");
-            db.addServiceRequest(sharedValues, requestValues);
+            Map<String, String> user2 = new HashMap<String, String>();
+            user.put("USERNAME", "JohnH");
+            user.put("FIRSTNAME", "John");
+            user.put("LASTNAME", "H");
+            user.put("EMAIL", "John@gmail.com");
+            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user.put("PASSWORD", "Chris");
+            db.addUser(user);
+
+            Map<String, String> sharedValues1 = new HashMap<String, String>();
+            sharedValues1.put("REQUESTID", "1");
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
+            sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
+            sharedValues1.put("LOCATIONID", "aPARK001GG");
+            sharedValues1.put("FIRSTNAME", "Tim");
+            sharedValues1.put("LASTNAME", "Smith");
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
+
+            Map<String, String> requestValues1 = new HashMap<String, String>();
+            requestValues1.put("REQUESTID", "1");
+            requestValues1.put("DELIVERYTIME", "NOW");
+            requestValues1.put("NUMBEROFSERVINGS", "2");
+            requestValues1.put("DRINKOPTIONS", "aqua");
+            requestValues1.put("CONTACTNUMBER", "1-800");
+            requestValues1.put("FOODOPTION", "Pizza");
+            requestValues1.put("DIETARYRESTRICTIONS", "PEANUTS");
+            requestValues1.put("NOTE", "BLAH BLAH BLAH");
+            db.addServiceRequest(sharedValues1, requestValues1);
+
+            Map<String, String> sharedValues2 = new HashMap<String, String>();
+            sharedValues2.put("REQUESTID", "2");
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
+            sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
+            sharedValues2.put("LOCATIONID", "aPARK010GG");
+            sharedValues2.put("FIRSTNAME", "Bob");
+            sharedValues2.put("LASTNAME", "Jones");
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
+
+            Map<String, String> requestValues2 = new HashMap<String, String>();
+            requestValues2.put("REQUESTID", "2");
+            requestValues2.put("DELIVERYTIME", "MEH");
+            requestValues2.put("DELIVERYDATE", "NOW");
+            requestValues2.put("VASEOPTION", "Pink");
+            requestValues2.put("FLOWEROPTION", null);
+            requestValues2.put("CONTACTNUMBER", null);
+            requestValues2.put("NOTE", "HELLO");
+            db.addServiceRequest(sharedValues2, requestValues2);
+
+            Map<String, String> sharedValues3 = new HashMap<String, String>();
+            sharedValues3.put("REQUESTID", "3");
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
+            sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "JohnH");
+            sharedValues3.put("LOCATIONID", "aPARK002GG");
+            sharedValues3.put("FIRSTNAME", "Mary");
+            sharedValues3.put("LASTNAME", "Quinn");
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
+
+            Map<String, String> requestValues3 = new HashMap<String, String>();
+            requestValues3.put("REQUESTID", "3");
+            requestValues3.put("DELIVERYTIME", "LATER");
+            requestValues3.put("DELIVERYDATE", "NOW");
+            requestValues3.put("VASEOPTION", "Pink");
+            requestValues3.put("FLOWEROPTION", null);
+            requestValues3.put("CONTACTNUMBER", null);
+            requestValues3.put("NOTE", "GOODBYE");
+            db.addServiceRequest(sharedValues3, requestValues3);
 
             List<Map<String, String>> expectedResult = new ArrayList<Map<String, String>>();
-            expectedResult.add(sharedValues);
+            expectedResult.add(sharedValues1);
+            expectedResult.add(sharedValues2);
 
-            assertEquals(expectedResult, db.getServiceRequestsByAuthor("John123"));
+            assertEquals(expectedResult, db.getServiceRequestsByAuthor("Seansta18"));
+
+            expectedResult = new ArrayList<Map<String, String>>();
+            expectedResult.add(sharedValues3);
+
+            assertEquals(expectedResult, db.getServiceRequestsByAuthor("JohnH"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
         }
     }
 
+    @Test
+    public void testGetServiceRequestsByAuthorDNE()
+    {
+        try {
+            Map<String, String> user = new HashMap<String, String>();
+            user.put("USERNAME", "Seansta18");
+            user.put("FIRSTNAME", "Sean");
+            user.put("LASTNAME", "McMillan");
+            user.put("EMAIL", "Sean@gmail.com");
+            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user.put("PASSWORD", "PasswordIsMyPassword");
+            db.addUser(user);
+
+            Map<String, String> user2 = new HashMap<String, String>();
+            user.put("USERNAME", "JohnH");
+            user.put("FIRSTNAME", "John");
+            user.put("LASTNAME", "H");
+            user.put("EMAIL", "John@gmail.com");
+            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user.put("PASSWORD", "Chris");
+            db.addUser(user);
+
+            Map<String, String> sharedValues1 = new HashMap<String, String>();
+            sharedValues1.put("REQUESTID", "1");
+            sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
+            sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
+            sharedValues1.put("LOCATIONID", "aPARK001GG");
+            sharedValues1.put("FIRSTNAME", "Tim");
+            sharedValues1.put("LASTNAME", "Smith");
+            sharedValues1.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
+
+            Map<String, String> requestValues1 = new HashMap<String, String>();
+            requestValues1.put("REQUESTID", "1");
+            requestValues1.put("DELIVERYTIME", "NOW");
+            requestValues1.put("NUMBEROFSERVINGS", "2");
+            requestValues1.put("DRINKOPTIONS", "aqua");
+            requestValues1.put("CONTACTNUMBER", "1-800");
+            requestValues1.put("FOODOPTION", "Pizza");
+            requestValues1.put("DIETARYRESTRICTIONS", "PEANUTS");
+            requestValues1.put("NOTE", "BLAH BLAH BLAH");
+            db.addServiceRequest(sharedValues1, requestValues1);
+
+            Map<String, String> sharedValues2 = new HashMap<String, String>();
+            sharedValues2.put("REQUESTID", "2");
+            sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
+            sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
+            sharedValues2.put("LOCATIONID", "aPARK010GG");
+            sharedValues2.put("FIRSTNAME", "Bob");
+            sharedValues2.put("LASTNAME", "Jones");
+            sharedValues2.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
+
+            Map<String, String> requestValues2 = new HashMap<String, String>();
+            requestValues2.put("REQUESTID", "2");
+            requestValues2.put("DELIVERYTIME", "MEH");
+            requestValues2.put("DELIVERYDATE", "NOW");
+            requestValues2.put("VASEOPTION", "Pink");
+            requestValues2.put("FLOWEROPTION", null);
+            requestValues2.put("CONTACTNUMBER", null);
+            requestValues2.put("NOTE", "HELLO");
+            db.addServiceRequest(sharedValues2, requestValues2);
+
+            Map<String, String> sharedValues3 = new HashMap<String, String>();
+            sharedValues3.put("REQUESTID", "3");
+            sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
+            sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "JohnH");
+            sharedValues3.put("LOCATIONID", "aPARK002GG");
+            sharedValues3.put("FIRSTNAME", "Mary");
+            sharedValues3.put("LASTNAME", "Quinn");
+            sharedValues3.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
+
+            Map<String, String> requestValues3 = new HashMap<String, String>();
+            requestValues3.put("REQUESTID", "3");
+            requestValues3.put("DELIVERYTIME", "LATER");
+            requestValues3.put("DELIVERYDATE", "NOW");
+            requestValues3.put("VASEOPTION", "Pink");
+            requestValues3.put("FLOWEROPTION", null);
+            requestValues3.put("CONTACTNUMBER", null);
+            requestValues3.put("NOTE", "GOODBYE");
+            db.addServiceRequest(sharedValues3, requestValues3);
+
+            List<Map<String, String>> expectedResult = new ArrayList<Map<String, String>>();
+            expectedResult.add(sharedValues1);
+            expectedResult.add(sharedValues2);
+
+            assertEquals(expectedResult, db.getServiceRequestsByAuthor("Seansta18"));
+
+            expectedResult = new ArrayList<Map<String, String>>();
+            expectedResult.add(sharedValues3);
+
+            assertEquals(expectedResult, db.getServiceRequestsByAuthor("JohnH"));
+
+            assertThrows(SQLException.class, () -> {
+                db.getServiceRequestsByAuthor("BillyCross");
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 }

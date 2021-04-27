@@ -25,6 +25,18 @@ public class DatabaseControllerTest3 {
         db.emptyEdgeTable();
         db.emptyNodeTable();
         db.emptyServiceRequestsTable();
+        db.emptyUserTable();
+
+        Map<String, String> user1 = new HashMap<String, String>();
+        user1.put("USERNAME", "Seansta18");
+        user1.put("FIRSTNAME", "Sean");
+        user1.put("LASTNAME", "McMillan");
+        user1.put("EMAIL", "Sean@gmail.com");
+        user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+        user1.put("PASSWORD", "PasswordIsMyPassword");
+
+        db.addUser(user1);
+
 
         CSVHandler csvHandler = new CSVHandler(db);
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
@@ -84,6 +96,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "12345");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("AUTHORID", "123");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
@@ -105,6 +118,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "23456");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
@@ -136,6 +150,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "34567");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("LOCATIONID", "aPARK009GG");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
 
@@ -189,6 +204,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "123");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
@@ -222,6 +238,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "56789");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
@@ -341,6 +358,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "24680");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("EMPLOYEEID", "WONG123");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("LOCATIONID", "aPARK009GG");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
@@ -412,6 +430,7 @@ public class DatabaseControllerTest3 {
             sharedValues.put("REQUESTID", "753");
             sharedValues.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues.put("LOCATIONID", "aPARK009GG");
+            sharedValues.put("AUTHORID", "Seansta18");
             sharedValues.put("FIRSTNAME", "Bob");
             sharedValues.put("LASTNAME", "Jones");
             sharedValues.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
@@ -483,6 +502,7 @@ public class DatabaseControllerTest3 {
             sharedValues1.put("REQUESTID", "1");
             sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
@@ -499,6 +519,7 @@ public class DatabaseControllerTest3 {
             sharedValues2.put("REQUESTID", "2");
             sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
@@ -514,6 +535,7 @@ public class DatabaseControllerTest3 {
             sharedValues3.put("REQUESTID", "3");
             sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "Seansta18");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
@@ -551,6 +573,7 @@ public class DatabaseControllerTest3 {
             sharedValues1.put("REQUESTID", "1");
             sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
@@ -567,6 +590,7 @@ public class DatabaseControllerTest3 {
             sharedValues2.put("REQUESTID", "2");
             sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
@@ -582,6 +606,7 @@ public class DatabaseControllerTest3 {
             sharedValues3.put("REQUESTID", "3");
             sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "Seansta18");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
@@ -620,6 +645,7 @@ public class DatabaseControllerTest3 {
             sharedValues1.put("REQUESTID", "1");
             sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
@@ -636,6 +662,7 @@ public class DatabaseControllerTest3 {
             sharedValues2.put("REQUESTID", "2");
             sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
@@ -651,6 +678,7 @@ public class DatabaseControllerTest3 {
             sharedValues3.put("REQUESTID", "3");
             sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "Seansta18");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
@@ -672,7 +700,7 @@ public class DatabaseControllerTest3 {
 
             expectedResult.remove(sharedValues1);
 
-            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.IN_PROGRESS));
+            assertEquals(expectedResult, db.getServiceRequestsWithStatus(STATUS.UNASSIGNED));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -688,6 +716,7 @@ public class DatabaseControllerTest3 {
             sharedValues1.put("REQUESTID", "1");
             sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
@@ -703,6 +732,7 @@ public class DatabaseControllerTest3 {
             sharedValues2.put("REQUESTID", "2");
             sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
@@ -718,6 +748,7 @@ public class DatabaseControllerTest3 {
             sharedValues3.put("REQUESTID", "3");
             sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "Seansta18");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
@@ -746,6 +777,7 @@ public class DatabaseControllerTest3 {
             sharedValues1.put("REQUESTID", "1");
             sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
@@ -754,6 +786,10 @@ public class DatabaseControllerTest3 {
             Map<String, String> requestValues1 = new HashMap<String, String>();
             requestValues1.put("REQUESTID", "1");
             requestValues1.put("DELIVERYTIME", "NOW");
+            requestValues1.put("NUMBEROFSERVINGS", "2");
+            requestValues1.put("DRINKOPTIONS", "aqua");
+            requestValues1.put("CONTACTNUMBER", "1-800");
+            requestValues1.put("FOODOPTION", "Pizza");
             requestValues1.put("DIETARYRESTRICTIONS", "PEANUTS");
             requestValues1.put("NOTE", "BLAH BLAH BLAH");
             db.addServiceRequest(sharedValues1, requestValues1);
@@ -762,6 +798,7 @@ public class DatabaseControllerTest3 {
             sharedValues2.put("REQUESTID", "2");
             sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
@@ -770,6 +807,10 @@ public class DatabaseControllerTest3 {
             Map<String, String> requestValues2 = new HashMap<String, String>();
             requestValues2.put("REQUESTID", "2");
             requestValues2.put("DELIVERYTIME", "MEH");
+            requestValues2.put("DELIVERYDATE", "NOW");
+            requestValues2.put("VASEOPTION", "Pink");
+            requestValues2.put("FLOWEROPTION", null);
+            requestValues2.put("CONTACTNUMBER", null);
             requestValues2.put("NOTE", "HELLO");
             db.addServiceRequest(sharedValues2, requestValues2);
 
@@ -777,6 +818,7 @@ public class DatabaseControllerTest3 {
             sharedValues3.put("REQUESTID", "3");
             sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "Seansta18");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
@@ -785,20 +827,18 @@ public class DatabaseControllerTest3 {
             Map<String, String> requestValues3 = new HashMap<String, String>();
             requestValues3.put("REQUESTID", "3");
             requestValues3.put("DELIVERYTIME", "LATER");
+            requestValues3.put("DELIVERYDATE", "NOW");
+            requestValues3.put("VASEOPTION", "Pink");
+            requestValues3.put("FLOWEROPTION", null);
+            requestValues3.put("CONTACTNUMBER", null);
             requestValues3.put("NOTE", "GOODBYE");
             db.addServiceRequest(sharedValues3, requestValues3);
 
             List<Map<String, String>> expectedResult = new ArrayList<Map<String, String>>();
-            expectedResult.add(sharedValues1);
-            expectedResult.add(sharedValues2);
-            expectedResult.add(sharedValues3);
 
-            assertEquals(expectedResult, db.getServiceRequests());
-
-            expectedResult.remove(sharedValues1);
-            expectedResult.remove(sharedValues2);
-            expectedResult.remove(sharedValues3);
+            //expectedResult.add(sharedValues2);
             expectedResult.add(requestValues2);
+            //expectedResult.add(sharedValues3);
             expectedResult.add(requestValues3);
 
             assertEquals(expectedResult, db.getServiceRequestsByType(SERVICEREQUEST.FLORAL_DELIVERY));
@@ -806,7 +846,7 @@ public class DatabaseControllerTest3 {
             expectedResult = new ArrayList<Map<String, String>>();
             expectedResult.add(requestValues1);
 
-            assertEquals(expectedResult, db.getServiceRequestsByType(SERVICEREQUEST.FOOD_DELIVERY));
+           assertEquals(expectedResult, db.getServiceRequestsByType(SERVICEREQUEST.FOOD_DELIVERY));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -822,6 +862,7 @@ public class DatabaseControllerTest3 {
             sharedValues1.put("REQUESTID", "1");
             sharedValues1.put("STATUS", STATUS_NAMES.get(STATUS.ASSIGNED));
             sharedValues1.put("EMPLOYEEID", "WONG123");
+            sharedValues1.put("AUTHORID", "Seansta18");
             sharedValues1.put("LOCATIONID", "aPARK001GG");
             sharedValues1.put("FIRSTNAME", "Tim");
             sharedValues1.put("LASTNAME", "Smith");
@@ -837,6 +878,7 @@ public class DatabaseControllerTest3 {
             sharedValues2.put("REQUESTID", "2");
             sharedValues2.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues2.put("EMPLOYEEID", "BONAVENTURA123");
+            sharedValues2.put("AUTHORID", "Seansta18");
             sharedValues2.put("LOCATIONID", "aPARK010GG");
             sharedValues2.put("FIRSTNAME", "Bob");
             sharedValues2.put("LASTNAME", "Jones");
@@ -852,6 +894,7 @@ public class DatabaseControllerTest3 {
             sharedValues3.put("REQUESTID", "3");
             sharedValues3.put("STATUS", STATUS_NAMES.get(STATUS.UNASSIGNED));
             sharedValues3.put("EMPLOYEEID", "DIAMOND456");
+            sharedValues3.put("AUTHORID", "Seansta18");
             sharedValues3.put("LOCATIONID", "aPARK002GG");
             sharedValues3.put("FIRSTNAME", "Mary");
             sharedValues3.put("LASTNAME", "Quinn");
