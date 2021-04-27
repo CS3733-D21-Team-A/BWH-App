@@ -140,8 +140,12 @@
          <menus>
             <Menu mnemonicParsing="false" text="Change Floor">
                <items>
+                  <MenuItem fx:id="lowerLevel2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Lower Lever 2" />
+                  <MenuItem fx:id="lowerLevel1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Lower Lever 1" />
                   <MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />
                   <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                  <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
+                  <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
                </items>
             </Menu>
          </menus>

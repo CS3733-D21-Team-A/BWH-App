@@ -74,8 +74,12 @@ public class Navigation extends SPage {
 
             }
             floors = new HashMap<>();
+            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+            floors.put("L1","edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
             floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
 
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
@@ -162,6 +166,18 @@ public class Navigation extends SPage {
         //FLOOR = floor;
     }
 
+    public void changeFloor3() throws FileNotFoundException {
+        FLOOR = "3";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("3");
+    }
+
+    public void changeFloor2() throws FileNotFoundException {
+        FLOOR = "2";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("2");
+    }
+
     public void changeFloor1() throws FileNotFoundException {
         FLOOR = "1";
         drawFloor(FLOOR);
@@ -172,6 +188,18 @@ public class Navigation extends SPage {
         FLOOR = "G";
         drawFloor(FLOOR);
         //resetMapAndDraw("G");
+    }
+
+    public void changeFloorL1() throws FileNotFoundException {
+        FLOOR = "L1";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("L1");
+    }
+
+    public void changeFloorL2() throws FileNotFoundException {
+        FLOOR = "L2";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("L2");
     }
 
     public void findPath() {
