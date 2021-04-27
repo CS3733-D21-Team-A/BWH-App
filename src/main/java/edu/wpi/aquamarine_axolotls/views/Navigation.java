@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,7 @@ public class Navigation extends SPage {
     @FXML private VBox stepByStep;
     @FXML private VBox listDirVBox;
     @FXML private VBox listOfDirections;
+    @FXML private Menu curFloor;
 
     private Group zoomGroup;
     private int zoom;
@@ -90,7 +92,6 @@ public class Navigation extends SPage {
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
             floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
             floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
-
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
             zoomGroup = new Group();
@@ -165,6 +166,7 @@ public class Navigation extends SPage {
 
     public void drawFloor(String floor){
         resetMap(FLOOR);
+        curFloor.setText( "Cur Floor : " + FLOOR);
         if (activePath == 0) {
             for (Node n: validNodes) {
                 if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D(), Color.BLUE);
@@ -576,6 +578,17 @@ public class Navigation extends SPage {
         }else{
             unHighlightDirection();
             dirIndex += 1;
+            String curNode = currPathDir.get(1).get(dirIndex);
+            String curFloor;
+            if (curNode.contains(",")) {
+                int index = curNode.indexOf(",");
+                curFloor = getNodeFromValidID(curNode.substring(0, index)).getFloor();
+            }
+            else curFloor = getNodeFromValidID(curNode).getFloor();
+            if(!curFloor.equals(FLOOR)){
+                FLOOR = curFloor;
+                drawFloor(FLOOR);
+            }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
@@ -588,6 +601,17 @@ public class Navigation extends SPage {
         }else{
             unHighlightDirection();
             dirIndex -= 1;
+            String curNode = currPathDir.get(1).get(dirIndex);
+            String curFloor;
+            if (curNode.contains(",")) {
+                int index = curNode.indexOf(",");
+                curFloor = getNodeFromValidID(curNode.substring(0, index)).getFloor();
+            }
+            else curFloor = getNodeFromValidID(curNode).getFloor();
+            if(!curFloor.equals(FLOOR)){
+                FLOOR = curFloor;
+                drawFloor(FLOOR);
+            }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();

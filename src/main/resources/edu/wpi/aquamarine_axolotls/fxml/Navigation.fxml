@@ -93,11 +93,11 @@
                         <Canvas fx:id="mapCanvas" height="668.0" onMouseClicked="#getNearestNode" width="1093.0" />
                      </content>
                   </ScrollPane>
-                  <ToolBar layoutX="980.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="162.0" prefWidth="96.0">
+                  <ToolBar layoutX="970.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="162.0" prefWidth="112.0">
                      <items>
                         <MenuBar prefHeight="33.0" prefWidth="86.0">
                            <menus>
-                              <Menu mnemonicParsing="false" text="Floor">
+                              <Menu fx:id="curFloor" mnemonicParsing="false" text="Floor">
                                  <items>
                                     <MenuItem fx:id="lowerLevel2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Lower Lever 2" />
                                     <MenuItem fx:id="lowerLevel1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Lower Lever 1" />
