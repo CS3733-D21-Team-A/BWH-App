@@ -57,10 +57,10 @@ public class Navigation extends SPage {
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if ((node.get("NODETYPE").equals("WALK"))
-                        || node.get("NODETYPE").equals("PARK")
-                        || (node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
-                        || (node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
+//                if ((node.get("NODETYPE").equals("WALK"))
+//                        || node.get("NODETYPE").equals("PARK")
+//                        || (node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
+//                        || (node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
                     options.add(node.get("LONGNAME"));
                     validNodes.add(new Node(node.get("NODEID"),
                             Integer.parseInt(node.get("XCOORD")),
@@ -70,7 +70,7 @@ public class Navigation extends SPage {
                             node.get("NODETYPE"),
                             node.get("LONGNAME"),
                             node.get("SHORTNAME")));
-                }
+                //}
 
             }
             floors = new HashMap<>();
@@ -288,8 +288,8 @@ public class Navigation extends SPage {
 
             //Loop through nodes
             for (Node n : validNodes) {
-                if ((FLOOR == "G" && n.getFloor().equals("G"))
-                        || (FLOOR == "1" && n.getFloor().equals("1"))) {
+                //if ((FLOOR == "G" && n.getFloor().equals("G"))
+                        //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
                     //Get the x and y of that node
                     double currNodeX = xScale(n.getXcoord());
                     double currNodeY = yScale(n.getYcoord());
@@ -310,7 +310,7 @@ public class Navigation extends SPage {
                             currLeastDist = dist;
                         }
                     }
-                }
+                //}
             }
 
             if (currClosest == null) return;
