@@ -182,7 +182,7 @@
             </HBox>
             <Group>
                <children>
-                  <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="778.0" prefWidth="248.0">
+                  <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="388.0" prefWidth="248.0">
                      <children>
                         <ScrollPane prefHeight="429.0" prefWidth="227.0">
                            <VBox.margin>
@@ -203,7 +203,7 @@
                         <Insets top="20.0" />
                      </padding>
                   </VBox>
-                  <VBox fx:id="stepByStep" alignment="TOP_CENTER" prefHeight="778.0" prefWidth="248.0" style="-fx-background-color: c4c4c450;">
+                  <VBox fx:id="stepByStep" alignment="TOP_CENTER" prefHeight="431.0" prefWidth="248.0" style="-fx-background-color: c4c4c450;">
                      <children>
                         <HBox prefHeight="100.0" prefWidth="232.0" style="-fx-background-color: ffffff; -fx-border-radius: 10;">
                            <children>
