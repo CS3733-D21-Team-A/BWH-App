@@ -105,7 +105,6 @@ public class Navigation extends SPage {
 
             startLocation.setItems(options);
             destination.setItems(options);
-            intermediate.setItems(options);
 
             stepByStep.setVisible(false);
             listDirVBox.setVisible(false);
@@ -160,7 +159,6 @@ public class Navigation extends SPage {
         drawFloor(FLOOR);
         startLocation.getSelectionModel().clearSelection();
         destination.getSelectionModel().clearSelection();
-        intermediate.getSelectionModel().clearSelection();
         listDirVBox.setVisible(false);
     }
 
@@ -558,7 +556,6 @@ public class Navigation extends SPage {
 
         startLocation.setDisable(false);
         destination.setDisable(false);
-        intermediate.setDisable(false);
         findPathButton.setDisable(false);
         cancelPath.setDisable(false);
 
@@ -572,7 +569,6 @@ public class Navigation extends SPage {
 
         startLocation.setDisable(true);
         destination.setDisable(true);
-        intermediate.setDisable(true);
         findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 

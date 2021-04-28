@@ -1,40 +1,40 @@
 nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName
-aPARK001GG,3244,1112,G,Parking,PARK,Parking Spot 1 45 Francis Street Lobby,45FSL01
-aPARK002GG,3304,1112,G,Parking,PARK,Parking Spot 2 45 Francis Street Lobby,45FSL02
-aPARK003GG,3304,1155,G,Parking,PARK,Parking Spot 3 45 Francis Street Lobby,45FSL03
-aPARK004GG,3304,1198,G,Parking,PARK,Parking Spot 4 45 Francis Street Lobby,45FSL04
-aPARK005GG,3304,1241,G,Parking,PARK,Parking Spot 5 45 Francis Street Lobby,45FSL05
-aPARK006GG,3304,1284,G,Parking,PARK,Parking Spot 6 45 Francis Street Lobby,45FSL06
-aPARK007GG,3390,1107,G,Parking,PARK,Parking Spot 7 45 Francis Street Lobby,45FSL07
-aPARK008GG,3390,1157,G,Parking,PARK,Parking Spot 8 45 Francis Street Lobby,45FSL08
-aPARK009GG,3390,1207,G,Parking,PARK,Parking Spot 9 45 Francis Street Lobby,45FSL09
-aPARK010GG,3390,1257,G,Parking,PARK,Parking Spot 10 45 Francis Street Lobby,45FSL10
-aPARK011GG,3390,1307,G,Parking,PARK,Parking Spot 11 45 Francis Street Lobby,45FSL11
-aPARK012GG,3390,1357,G,Parking,PARK,Parking Spot 12 45 Francis Street Lobby,45FSL12
-aPARK013GG,3353,1414,G,Parking,PARK,Parking Spot 13 45 Francis Street Lobby,45FSL13
-aPARK014GG,3302,1414,G,Parking,PARK,Parking Spot 14 45 Francis Street Lobby,45FSL14
-aPARK015GG,3237,1155,G,Parking,PARK,Parking Spot 15 45 Francis Street Lobby,45FSL15
-aPARK016GG,125,1755,G,Parking,PARK,Parking Spot 1 80 Francis Parking,SPL01
-aPARK017GG,125,1885,G,Parking,PARK,Parking Spot 2 80 Francis Parking,SPL02
-aPARK018GG,195,1755,G,Parking,PARK,Parking Spot 3 80 Francis Parking,SPL03
-aPARK019GG,195,1885,G,Parking,PARK,Parking Spot 4 80 Francis Parking,SPL04
-aPARK020GG,265,1755,G,Parking,PARK,Parking Spot 5 80 Francis Parking,SPL05
-aPARK021GG,265,1885,G,Parking,PARK,Parking Spot 6 80 Francis Parking,SPL06
-aPARK022GG,335,1755,G,Parking,PARK,Parking Spot 7 80 Francis Parking,SPL07
-aPARK023GG,335,1885,G,Parking,PARK,Parking Spot 8 80 Francis Parking,SPL08
-aPARK024GG,405,1755,G,Parking,PARK,Parking Spot 9 80 Francis Parking,SPL09
-aPARK025GG,405,1885,G,Parking,PARK,Parking Spot 10 80 Francis Parking,SPL10
-aWALK001GG,3063,1340,G,Parking,WALK,Intermediate Francis,INT-45FSL
-aWALK002GG,3063,1618,G,Parking,WALK,Walkway from Right parking 1,INT1-FS
-aWALK003GG,1927,1618,G,Parking,WALK,Walkway from Right parking 2,INT2-FS
-aWALK004GG,1927,1444,G,Parking,WALK,Walkway from Right parking 3,INT3-FS
-aWALK005GG,773,1618,G,Parking,WALK,Walkway from Right parking 4,INT4-FS
-aWALK007GG,668,1726,G,Parking,WALK,Stairs walkway from garage,STAIRS-SPL
-aWALK008GG,193,1823,G,Parking,WALK,Walkway from garage 1,INT1-SPL
-aWALK009GG,354,1823,G,Parking,WALK,Walkway from garage 2,INT2-SPL
-aWALK010GG,549,1823,G,Parking,WALK,Walkway from garage 3,INT3-SPL
-aWALK011GG,3337,1163,G,Parking,WALK,1 Intermediate,INT1-45FSL
-aWALK012GG,3337,1340,G,Parking,WALK,2 Intermediate,INT2-45FSL
+aPARK001GG,3244,1112,1,Parking,PARK,Parking Spot 1 45 Francis Street Lobby,45FSL01
+aPARK002GG,3304,1112,1,Parking,PARK,Parking Spot 2 45 Francis Street Lobby,45FSL02
+aPARK003GG,3304,1155,1,Parking,PARK,Parking Spot 3 45 Francis Street Lobby,45FSL03
+aPARK004GG,3304,1198,1,Parking,PARK,Parking Spot 4 45 Francis Street Lobby,45FSL04
+aPARK005GG,3304,1241,1,Parking,PARK,Parking Spot 5 45 Francis Street Lobby,45FSL05
+aPARK006GG,3304,1284,1,Parking,PARK,Parking Spot 6 45 Francis Street Lobby,45FSL06
+aPARK007GG,3390,1107,1,Parking,PARK,Parking Spot 7 45 Francis Street Lobby,45FSL07
+aPARK008GG,3390,1157,1,Parking,PARK,Parking Spot 8 45 Francis Street Lobby,45FSL08
+aPARK009GG,3390,1207,1,Parking,PARK,Parking Spot 9 45 Francis Street Lobby,45FSL09
+aPARK010GG,3390,1257,1,Parking,PARK,Parking Spot 10 45 Francis Street Lobby,45FSL10
+aPARK011GG,3390,1307,1,Parking,PARK,Parking Spot 11 45 Francis Street Lobby,45FSL11
+aPARK012GG,3390,1357,1,Parking,PARK,Parking Spot 12 45 Francis Street Lobby,45FSL12
+aPARK013GG,3353,1414,1,Parking,PARK,Parking Spot 13 45 Francis Street Lobby,45FSL13
+aPARK014GG,3302,1414,1,Parking,PARK,Parking Spot 14 45 Francis Street Lobby,45FSL14
+aPARK015GG,3237,1155,1,Parking,PARK,Parking Spot 15 45 Francis Street Lobby,45FSL15
+aPARK016GG,125,1755,1,Parking,PARK,Parking Spot 1 80 Francis Parking,SPL01
+aPARK017GG,125,1885,1,Parking,PARK,Parking Spot 2 80 Francis Parking,SPL02
+aPARK018GG,195,1755,1,Parking,PARK,Parking Spot 3 80 Francis Parking,SPL03
+aPARK019GG,195,1885,1,Parking,PARK,Parking Spot 4 80 Francis Parking,SPL04
+aPARK020GG,265,1755,1,Parking,PARK,Parking Spot 5 80 Francis Parking,SPL05
+aPARK021GG,265,1885,1,Parking,PARK,Parking Spot 6 80 Francis Parking,SPL06
+aPARK022GG,335,1755,1,Parking,PARK,Parking Spot 7 80 Francis Parking,SPL07
+aPARK023GG,335,1885,1,Parking,PARK,Parking Spot 8 80 Francis Parking,SPL08
+aPARK024GG,405,1755,1,Parking,PARK,Parking Spot 9 80 Francis Parking,SPL09
+aPARK025GG,405,1885,1,Parking,PARK,Parking Spot 10 80 Francis Parking,SPL10
+aWALK001GG,3063,1340,1,Parking,WALK,Intermediate Francis,INT-45FSL
+aWALK002GG,3063,1618,1,Parking,WALK,Walkway from Right parking 1,INT1-FS
+aWALK003GG,1927,1618,1,Parking,WALK,Walkway from Right parking 2,INT2-FS
+aWALK004GG,1927,1444,1,Parking,WALK,Walkway from Right parking 3,INT3-FS
+aWALK005GG,773,1618,1,Parking,WALK,Walkway from Right parking 4,INT4-FS
+aWALK007GG,668,1726,1,Parking,WALK,Stairs walkway from garage,STAIRS-SPL
+aWALK008GG,193,1823,1,Parking,WALK,Walkway from garage 1,INT1-SPL
+aWALK009GG,354,1823,1,Parking,WALK,Walkway from garage 2,INT2-SPL
+aWALK010GG,549,1823,1,Parking,WALK,Walkway from garage 3,INT3-SPL
+aWALK011GG,3337,1163,1,Parking,WALK,1 Intermediate,INT1-45FSL
+aWALK012GG,3337,1340,1,Parking,WALK,2 Intermediate,INT2-45FSL
 ACONF00102,1580,2538,2,BTM,HALL,Hall,Hall
 ACONF00103,1648,2968,3,BTM,CONF,BTM Conference Center,BTM Conference
 ADEPT00101,1401,2628,1,BTM,DEPT,Neuroscience Waiting Room,Neuro Waiting Room
