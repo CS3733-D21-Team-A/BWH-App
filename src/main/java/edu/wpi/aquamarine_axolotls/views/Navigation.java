@@ -154,11 +154,14 @@ public class Navigation extends SPage {
     public void clearNodes() {
         stopList.clear();
         currPath.clear();
+        currPathDir.clear();
         activePath = 0;
         etaLabel.setText("");
         drawFloor(FLOOR);
-        startLocation.getSelectionModel().clearSelection();
-        destination.getSelectionModel().clearSelection();
+        if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
+            startLocation.getSelectionModel().clearSelection();
+            destination.getSelectionModel().clearSelection();
+        }
         listDirVBox.setVisible(false);
     }
 
