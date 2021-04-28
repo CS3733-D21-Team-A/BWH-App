@@ -96,7 +96,7 @@ public class LanguageInterpreter extends SServiceRequest {
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
+            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.LANGUAGE_INTERPRETER));
 
             Map<String, String> langR = new HashMap<String, String>();
             langR.put("REQUESTID", id);
