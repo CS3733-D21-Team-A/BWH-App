@@ -158,7 +158,7 @@ class DatabaseControllerTest {
 		try {
 			Map<String,String> before = db.getNode("aPARK019GG");
 			assertEquals("195", before.get("XCOORD"));
-			assertEquals("G", before.get("FLOOR"));
+			assertEquals("1", before.get("FLOOR"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -210,7 +210,7 @@ class DatabaseControllerTest {
 			Map<String,String> node = db.getNode("aPARK009GG");
 			assertEquals("3390", node.get("XCOORD"));
 			assertEquals("1207", node.get("YCOORD"));
-			assertEquals("G", node.get("FLOOR"));
+			assertEquals("1", node.get("FLOOR"));
 			assertEquals("Parking", node.get("BUILDING"));
 			assertEquals("PARK", node.get("NODETYPE"));
 			assertEquals("Parking Spot 9 45 Francis Street Lobby", node.get("LONGNAME"));
