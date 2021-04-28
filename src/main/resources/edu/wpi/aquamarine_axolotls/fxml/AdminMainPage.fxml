@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
@@ -16,8 +15,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.AdminMainPage">
     <children>
-        <JFXDrawer fx:id="menuDrawer" direction="RIGHT" layoutX="1225.0" layoutY="959.0" overLayVisible="false" prefHeight="800.0" prefWidth="290.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0" />
-        <HBox alignment="CENTER_LEFT" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1605.0" AnchorPane.leftAnchor="0.0">
+        <HBox alignment="CENTER_LEFT" layoutY="1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1299.0" AnchorPane.leftAnchor="0.0">
             <children />
             <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                 <image>
@@ -38,6 +36,18 @@
                     <Insets bottom="5.0" />
                 </padding>
             </Label>
+         <JFXButton onAction="#stop" prefHeight="76.0" prefWidth="64.0" text=" ">
+            <HBox.margin>
+               <Insets left="680.0" />
+            </HBox.margin>
+            <graphic>
+               <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../img/Blue_X.png" />
+                  </image>
+               </ImageView>
+            </graphic>
+         </JFXButton>
 
         </HBox>
         <VBox alignment="CENTER" layoutX="1.0" layoutY="24.0" prefHeight="956.0" prefWidth="1325.0" AnchorPane.bottomAnchor="-74.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="24.0">
@@ -145,74 +155,7 @@
                 </HBox>
             </children>
         </VBox>
-      <VBox fx:id="box" layoutX="1486.0" layoutY="237.0" prefHeight="516.0" prefWidth="150.0" style="-fx-background-color: #EBEBEB;">
-         <children>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="100.0" prefWidth="150.0" text="  Home">
-               <graphic>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/homeBlue.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#mapP" prefHeight="100.0" prefWidth="300.0" text="Navigation">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@../img/map.PNG" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#serviceReqP" prefHeight="100.0" prefWidth="300.0" text="Service Requests">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@../img/service.PNG" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#mapEditP" prefHeight="100.0" prefWidth="300.0" text="Map Editing">
-               <font>
-                  <Font name="Times New Roman" size="12.0" />
-               </font>
-               <graphic>
-                  <ImageView>
-                     <image>
-                        <Image url="@../img/wrench.PNG" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-                <JFXButton fx:id="shutDownB" alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" onAction="#stop" prefHeight="100.0" prefWidth="300.0" text="Shut Down">
-                    <graphic>
-                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/Blue_X.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <font>
-                        <Font name="Times New Roman" size="12.0" />
-                    </font>
-                </JFXButton>
-         </children>
-      </VBox>
-        <JFXHamburger fx:id="burger" layoutX="1609.0" layoutY="10.0" onMouseClicked="#menu" prefHeight="69.0" prefWidth="72.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="10.0" />
         <Rectangle fill="#003da6" height="35.0" layoutY="79.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" AnchorPane.bottomAnchor="803.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="79.0" />
+      <StackPane fx:id="stackPane" layoutX="492.0" layoutY="-176.0" prefHeight="150.0" prefWidth="200.0" />
     </children>
 </AnchorPane>
