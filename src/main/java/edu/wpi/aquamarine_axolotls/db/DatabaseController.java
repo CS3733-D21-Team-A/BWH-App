@@ -666,10 +666,8 @@ public class DatabaseController implements AutoCloseable {
 			}
 		}
 		for (String SQL : DatabaseInfo.SERVICEREQUEST_SQL.values()) { // for each service request table
-			if (SQL != null) { // if we have written SQL code for it
-				try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
-					smnt.execute(); // create the table
-				}
+			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
+				smnt.execute(); // create the table
 			}
 		}
 	}
@@ -683,6 +681,33 @@ public class DatabaseController implements AutoCloseable {
 		CSVHandler csvHandler = new CSVHandler(this);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
+
+		userTable.addEntry(new HashMap<String,String>() {{
+			put("USERNAME", "admin");
+			put("FIRSTNAME", "admin");
+			put("LASTNAME", "admin");
+			put("EMAIL", "admin@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.ADMIN));
+			put("PASSWORD", "admin");
+		}});
+
+		userTable.addEntry(new HashMap<String,String>() {{
+			put("USERNAME", "patient");
+			put("FIRSTNAME", "patient");
+			put("LASTNAME", "patient");
+			put("EMAIL", "patient@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
+			put("PASSWORD", "patient");
+		}});
+
+		userTable.addEntry(new HashMap<String,String>() {{
+			put("USERNAME", "employee");
+			put("FIRSTNAME", "employee");
+			put("LASTNAME", "employee");
+			put("EMAIL", "employee@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
+			put("PASSWORD", "employee");
+		}});
 	}
 
 }
