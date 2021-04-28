@@ -104,7 +104,7 @@
                         </JFXTextField>
                     </children>
                 </GridPane>
-                <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="65.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="Food Delivery Service" textAlignment="CENTER">
+                <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="65.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="Laundry Service" textAlignment="CENTER">
                     <font>
                         <Font name="Times New Roman" size="60.0" />
                     </font>
