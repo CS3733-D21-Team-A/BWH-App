@@ -33,6 +33,7 @@ public class Aapp extends Application {
       Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
+      primaryStage.setResizable(false);
       primaryStage.show();
     } catch (IOException e) {
       e.printStackTrace();
