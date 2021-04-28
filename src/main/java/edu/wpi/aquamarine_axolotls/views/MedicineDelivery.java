@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.SERVICEREQUEST_NAMES;
 
 
 public class MedicineDelivery extends SServiceRequest {
@@ -118,13 +121,13 @@ public class MedicineDelivery extends SServiceRequest {
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", "Medicine Delivery");
+            shared.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.MEDICINE_DELIVERY));
 
             Map<String, String> medicineR = new HashMap<String, String>();
             medicineR.put("REQUESTID", id);
             medicineR.put("DELIVERYTIME", dt);
             medicineR.put("MEDICATION", med);
-            medicineR.put("DOSESIZE", dose);
+            medicineR.put("DOSAGE", dose);
             medicineR.put("DOCFIRSTNAME", dfn);
             medicineR.put("DOCLASTNAME", dln);
             db.addServiceRequest(shared, medicineR);

@@ -51,7 +51,7 @@ public class FacilitiesMaintenance extends SServiceRequest {
             List<Map<String, String>> nodes = db.getNodes();
             ObservableList<String> locos = FXCollections.observableArrayList();
             for (Map<String, String> node : nodes) {
-                locos.add(node.get("LONGNAME"));
+                locos.add(node.get("NODEID"));
             }
             locationDropdown.setItems(locos);
         } catch (SQLException | IOException | URISyntaxException e) {

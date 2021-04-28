@@ -1,4 +1,4 @@
-﻿nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName
+nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName
 aPARK001GG,3244,1112,G,Parking,PARK,Parking Spot 1 45 Francis Street Lobby,45FSL01
 aPARK002GG,3304,1112,G,Parking,PARK,Parking Spot 2 45 Francis Street Lobby,45FSL02
 aPARK003GG,3304,1155,G,Parking,PARK,Parking Spot 3 45 Francis Street Lobby,45FSL03
@@ -435,7 +435,7 @@ GHALL01302,1450,1781,2,Shapiro,HALL,Hall Node 13 Floor 2,Hall
 GHALL01402,1450,1820,2,Shapiro,HALL,Hall Node 14 Floor 2,Hall
 GHALL01502,1502,1781,2,Shapiro,HALL,Hall Node 15 Floor 2,Hall
 GHALL01602,1502,1820,2,Shapiro,HALL,Hall Node 16 Floor 2,Hall
-GHALL01702,1578,1820,2,Shapiro,HALL,Hall Node 17 (Exit?) Floor 2,Hall
+GHALL01702,1578,1820,2,Shapiro,HALL,Hall Node 17 Floor 2,Hall
 GHALL01802,1630,1801,2,Shapiro,HALL,Hall Node 18 Floor 2,Hall
 GHALL02002,1684,1801,2,Shapiro,HALL,Hall Node 20 Floor 2,Hall
 GHALL02102,1683,1821,2,Shapiro,HALL,Hall Node 21 Floor 2,Hall

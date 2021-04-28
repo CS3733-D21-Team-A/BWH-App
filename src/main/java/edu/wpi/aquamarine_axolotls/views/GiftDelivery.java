@@ -116,7 +116,8 @@ public class GiftDelivery extends SServiceRequest {
 
             Map<String, String> giftR = new HashMap<String, String>();
             giftR.put("REQUESTID", id);
-            giftR.put("DELIVERYTIME", dt);
+            giftR.put("DELIVERYTIME", dt); //TODO: MISSING NOTE
+            giftR.put("GIFTTYPE", giftOptions.getSelectionModel().getSelectedItem().toString());
             db.addServiceRequest(shared, giftR);
             db.close();
             submit();

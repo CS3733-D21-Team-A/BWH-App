@@ -52,7 +52,7 @@ public class LanguageInterpreter extends SServiceRequest {
     @FXML
     public void initialize() {
         languageSelect.setItems(FXCollections
-                .observableArrayList("Español", "Português", "Français", "عربى", "עִברִית", "Polskie"));
+                .observableArrayList("Espanol", "Portugues", "Francais", "Polskie"));
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
@@ -101,7 +101,7 @@ public class LanguageInterpreter extends SServiceRequest {
             Map<String, String> langR = new HashMap<String, String>();
             langR.put("REQUESTID", id);
             langR.put("NOTE", prefs);
-            langR.put ( "CONTACTNUMBER", cn );
+            langR.put("CONTACTNUMBER", cn );
             langR.put("LANGUAGE", lang);
 
             db.addServiceRequest(shared, langR);

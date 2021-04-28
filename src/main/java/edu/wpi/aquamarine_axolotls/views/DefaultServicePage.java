@@ -103,7 +103,7 @@ public class DefaultServicePage extends SPage {
     }
 
     public void languageP(ActionEvent actionEvent) {
-        sceneSwitch("LanguageService");
+        sceneSwitch("LanguageInterpreter");
     }
 
 

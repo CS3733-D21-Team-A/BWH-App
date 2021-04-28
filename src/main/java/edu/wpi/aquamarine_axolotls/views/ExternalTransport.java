@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+
+import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.SERVICEREQUEST_NAMES;
 
 public class ExternalTransport extends SServiceRequest{
 
@@ -129,7 +132,7 @@ public class ExternalTransport extends SServiceRequest{
             shared.put("LOCATIONID", nodeIDS.get(room));
             shared.put("FIRSTNAME", fn);
             shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", "External Transport");
+            shared.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.EXTERNAL_TRANSPORT));
 
             Map<String, String> medicineR = new HashMap<String, String>();
             medicineR.put("REQUESTID", id);

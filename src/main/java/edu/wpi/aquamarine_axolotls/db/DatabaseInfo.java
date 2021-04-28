@@ -52,7 +52,7 @@ final class DatabaseInfo {
 			"LOCATIONID VARCHAR(25)," +
 			"FIRSTNAME VARCHAR(30)," +
 			"LASTNAME VARCHAR(50)," +
-			"REQUESTTYPE VARCHAR(20) NOT NULL," + //TODO: MAKE THIS USE ENUM
+			"REQUESTTYPE VARCHAR(40) NOT NULL," + //TODO: MAKE THIS USE ENUM
 			"FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT," +
 			"FOREIGN KEY (AUTHORID) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON UPDATE RESTRICT" +
 			//TODO: Constraint to replace ENUM('Unassigned','Assigned','In Progress','Done','Canceled') for STATUS
@@ -163,6 +163,7 @@ final class DatabaseInfo {
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
 					"GIFTTYPE VARCHAR(25)," +
 					"NOTE VARCHAR(300)," +
+					"DELIVERYTIME VARCHAR(20)," +
 					"FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 
@@ -172,7 +173,9 @@ final class DatabaseInfo {
 	static final String LANGUAGE_INTERPRETER_TABLE_SQL =
 			"CREATE TABLE " + SERVICEREQUEST.LANGUAGE_INTERPRETER.name() + " (" +
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
-					"LANGUAGES VARCHAR(50)," +
+					"LANGUAGE VARCHAR(50)," +
+					"NOTE VARCHAR(300)," +
+					"CONTACTNUMBER VARCHAR(15)," +
 					"FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 
@@ -192,8 +195,11 @@ final class DatabaseInfo {
 	static final String MEDICINE_DELIVERY_TABLE_SQL =
 			"CREATE TABLE " + SERVICEREQUEST.MEDICINE_DELIVERY.name() + " (" +
 					"REQUESTID VARCHAR(25) PRIMARY KEY," +
-					"TYPE VARCHAR(100)," +
+					"MEDICATION VARCHAR(100)," +
 					"DOSAGE VARCHAR(100)," +
+					"DELIVERYTIME VARCHAR(20)," +
+					"DOCFIRSTNAME VARCHAR(50)," +
+					"DOCLASTNAME VARCHAR(50)," +
 					"FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 					")";
 
@@ -274,12 +280,12 @@ final class DatabaseInfo {
 	/**
 	 * Path to default node CSV resource.
 	 */
-	static final String DEFAULT_NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/bwAnodes.csv";
+	static final String DEFAULT_NODE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAAllNodes.csv";
 
 	/**
 	 * Path to default edge CSV resource.
 	 */
-	static final String DEFAULT_EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/bwAedges.csv";
+	static final String DEFAULT_EDGE_RESOURCE_PATH = "edu/wpi/aquamarine_axolotls/csv/MapAAllEdges.csv";
 
 	/**
 	 * Path to test node CSV resource.
