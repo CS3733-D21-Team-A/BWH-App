@@ -137,7 +137,7 @@ public class CSVHandler {
 				values.put(columns[i].toUpperCase(),inp[i]); //add value to map indexed by column
 			}
 			if (!deleteAllOld && insertionStrategy.exists(values.get(insertionStrategy.getPrimaryKey()))) {
-				insertionStrategy.delete(values.get(insertionStrategy.getPrimaryKey())); //TODO: Change this to use edit so we only need to call one method.
+				insertionStrategy.delete(values.get(insertionStrategy.getPrimaryKey())); //TODO: Change this to use edit so we only need to call one method AND SO EDGES DON'T GET DELETED
 			}
 			insertionStrategy.add(values);
 		}
