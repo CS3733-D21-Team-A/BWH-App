@@ -496,8 +496,18 @@ public class Navigation extends SPage {
         xPoints[2] = xCenter - 7 * Math.sqrt(2.0) / 2.0;
         double yPoints[] = new double[3];
 
-        if (start.getFloor().equals(FLOOR)){
-            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+        String startFloor = start.getFloor();
+        String endFloor = end.getFloor();
+
+        if(startFloor.equals("G")) startFloor = "0";
+        if(startFloor.equals("L1")) startFloor = "-1";
+        if(startFloor.equals("L2")) startFloor = "-2";
+        if(endFloor.equals("G")) endFloor = "0";
+        if(endFloor.equals("L1")) endFloor = "-1";
+        if(endFloor.equals("L2")) endFloor = "-2";
+
+        if (startFloor.equals(FLOOR)){
+            if(Integer.parseInt(startFloor) < Integer.parseInt(endFloor)){
 
                 gc.setFill(Color.GREEN);
 
@@ -505,7 +515,7 @@ public class Navigation extends SPage {
                 yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
                 yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
             }
-            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+            else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)){
 
                 gc.setFill(Color.RED);
 
@@ -513,24 +523,24 @@ public class Navigation extends SPage {
                 yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
                 yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
             }
-        } else if(end.getFloor().equals(FLOOR)){
-            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
-
-                gc.setFill(Color.RED);
-
-                yPoints[0] = yCenter + 7;
-                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-            }
-            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
-
-                gc.setFill(Color.GREEN);
-
-                yPoints[0] = yCenter - 7;
-                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-            }
-        }
+        } //else if(end.getFloor().equals(FLOOR)){
+//            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+//
+//                gc.setFill(Color.RED);
+//
+//                yPoints[0] = yCenter + 7;
+//                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+//                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+//            }
+//            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+//
+//                gc.setFill(Color.GREEN);
+//
+//                yPoints[0] = yCenter - 7;
+//                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+//                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+//            }
+//        }
         gc.fillPolygon(xPoints, yPoints, 3);
     }
 
