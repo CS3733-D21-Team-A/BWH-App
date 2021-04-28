@@ -556,7 +556,7 @@ public class NodeEditing extends SEditing {
 
 
     public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
-        if (event.getButton().equals(MouseButton.SECONDARY)) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
             if (state.equals("add")) {
                 //System.out.println("Clicked map");
 

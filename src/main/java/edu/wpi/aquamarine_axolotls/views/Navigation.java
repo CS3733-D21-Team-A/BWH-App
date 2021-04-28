@@ -336,7 +336,7 @@ public class Navigation extends SPage {
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
-        if (event.getButton().equals(MouseButton.SECONDARY)) { // CHanged from primary to secondary, makes more sense
+        if (event.getButton().equals(MouseButton.PRIMARY)) { // CHanged from primary to secondary, makes more sense
             //System.out.println("Clicked map");
 
             //double x = xScale(event.getX());
