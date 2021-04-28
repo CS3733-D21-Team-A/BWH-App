@@ -35,13 +35,7 @@ public class AdminMainPage extends SMainPage{
     private HamburgerBasicCloseTransition transition;
 
 
-    // credit : https://www.youtube.com/watch?v=tgV8dDP9DtM
     public void initialize() throws IOException {
-        menuDrawer.setSidePane(box);
-        transition = new HamburgerBasicCloseTransition(burger);
-        transition.setRate(-1);
-        menuDrawer.close();
-
     }
 
 
