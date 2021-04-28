@@ -140,8 +140,8 @@ public class ExternalTransport extends SServiceRequest{
             medicineR.put("DESTINATION", med);
             medicineR.put("DOCFIRSTNAME", dfn);
             medicineR.put("DOCLASTNAME", dln);
-            medicineR.put("MODEOFTRANSP",modtrans);
-            medicineR.put("LVLOFEMERG",lemr);
+            medicineR.put("MODEOFTRANSPORT",modtrans);
+            medicineR.put("EMERGENCYLEVEL",lemr);
             db.addServiceRequest(shared, medicineR);
             db.close();
             submit();
