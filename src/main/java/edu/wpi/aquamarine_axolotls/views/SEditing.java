@@ -12,6 +12,7 @@ public abstract class SEditing extends SPage{
     @FXML AnchorPane anchor;
     @FXML JFXToggleButton toggleButton;
 
+
     @FXML
     public void adminHome(ActionEvent actionEvent) {
         sceneSwitch("AdminMainPage");

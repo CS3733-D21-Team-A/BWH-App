@@ -28,7 +28,7 @@ public class CSVHandler {
 
 		/**
 		 * Checks if the entry with the provided ID exists.
-		 * @param id ID to check for the existance of.
+		 * @param id ID to check for the existence of.
 		 * @return Whether or not an entry with the provided ID exists.
 		 * @throws SQLException Something went wrong.
 		 */

@@ -2,153 +2,124 @@ package edu.wpi.aquamarine_axolotls.views;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
-import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
-import javafx.animation.*;
+import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
-import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.time.LocalTime;
 import java.util.*;
 
-public class Navigation  extends SPage {
+public class Navigation extends SPage {
 
-    @FXML
-    private AnchorPane anchor;
-    @FXML
-    private AnchorPane nodeGridAnchor;
-    @FXML
-    private ImageView groundFloor;
-    @FXML
-    private ImageView floor1;
-    @FXML
-    private JFXButton homeButton;
-    @FXML
-    private JFXButton helpB;
-    @FXML
-    private JFXComboBox startLocation;
-    @FXML
-    private JFXComboBox destination;
-    @FXML
-    private JFXButton findPathButton;
-    @FXML
-    private JFXDrawer drawer;
-    @FXML
-    private AnchorPane anchor1;
-    @FXML
-    private JFXButton addStopbtn;
-    @FXML
-    private JFXComboBox intermediate;
-    @FXML
-    private Label etaLabel;
-    @FXML
-    private AnchorPane mainAnchor;
-    @FXML
-    private JFXHamburger hamburger;
-    @FXML
-    private Text time;
-    @FXML
-    private ScrollPane scrollPane;
-    @FXML
-    private Image img;
+    @FXML private JFXComboBox startLocation;
+    @FXML private JFXComboBox destination;
+    @FXML private JFXComboBox intermediate;
+    @FXML private JFXButton findPathButton;
+    @FXML private JFXButton cancelPath;
+    @FXML private Label etaLabel;
+    @FXML Canvas mapCanvas;
+    @FXML ScrollPane mapScrollPane;
+    @FXML private Label curDirection;
+    @FXML private ImageView arrow;
+    @FXML private VBox stepByStep;
+    @FXML private VBox listDirVBox;
+    @FXML private VBox listOfDirections;
 
+    private Group zoomGroup;
+    private int zoom;
 
     ObservableList<String> options = FXCollections.observableArrayList();
     DatabaseController db;
-    List<Map<String, String>> validNodes = new ArrayList<>();
+    List<Node> validNodes = new ArrayList<>();
     private int firstNodeSelect = 0;
     private String firstNode;
-    private List<String> pathList = new ArrayList<>();
+    private List<String> stopList = new ArrayList<>();
+    private List<Node> currPath = new ArrayList<>();
     private int activePath = 0;
+    private Map<String, String> floors;
 
-
-    @FXML
-    private JFXHamburger burger;
-    @FXML
-    private JFXDrawer menuDrawer;
-
-    @FXML
-    private VBox box;
-
-    private HamburgerBasicCloseTransition transition;
-    static Double SCALE_DELTA = 1.25;
-    static Double SCALE_TOTAL = 2.0;
-    //final Double w = img.getWidth();
-    //final Double h = img.getHeight();
+    static String FLOOR = "1";
+    private List<List<String>> currPathDir = new ArrayList<>();
+    static int dirIndex = 0;
 
     @FXML
     public void initialize() {
+
+        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
+            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
         try {
             db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
-                if ((node.get("NODETYPE").equals("WALK"))
-                        || node.get("NODETYPE").equals("PARK")
-                        || (node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
-                        || (node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
-                    options.add(node.get("NODEID"));
-                    validNodes.add(node);
-                }
+//                if ((node.get("NODETYPE").equals("WALK"))
+//                        || node.get("NODETYPE").equals("PARK")
+//                        || (node.get("BUILDING").equals("45 Francis") && node.get("FLOOR").equals("1"))
+//                        || (node.get("BUILDING").equals("Tower") && node.get("FLOOR").equals("1"))) {
+                    options.add(node.get("LONGNAME"));
+                    validNodes.add(new Node(node.get("NODEID"),
+                            Integer.parseInt(node.get("XCOORD")),
+                            Integer.parseInt(node.get("YCOORD")),
+                            node.get("FLOOR"),
+                            node.get("BUILDING"),
+                            node.get("NODETYPE"),
+                            node.get("LONGNAME"),
+                            node.get("SHORTNAME")));
+                //}
 
             }
-            floor1.setVisible(false);
-            changeFloorNodes();
+            floors = new HashMap<>();
+            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+            floors.put("L1","edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
+            //floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
+
+            mapScrollPane.pannableProperty().set(true);
+            Group contentGroup = new Group();
+            zoomGroup = new Group();
+            contentGroup.getChildren().add(zoomGroup);
+            zoomGroup.getChildren().add(mapCanvas);
+            mapScrollPane.setContent(contentGroup);
+            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+
+            drawFloor(FLOOR);
+            zoom = 1;
 
             startLocation.setItems(options);
             destination.setItems(options);
             intermediate.setItems(options);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+
+            stepByStep.setVisible(false);
+            listDirVBox.setVisible(false);
+            listDirVBox.toFront();
+
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
     }
 
-    public void zoom() {
-
-//        //Adds functionality to scrolling
-//        scrollPane.addEventFilter(ScrollEvent.ANY, e ->{
-//            //Consumes the event
-//            e.consume();
-//            if(e.getDeltaY() == 0) return;
-//            double scaleFactor = (e.getDeltaY() > 0) ? SCALE_DELTA : 1/SCALE_DELTA;
-        double newWidth = 1102.0 * SCALE_DELTA;
-        double newHeight = 669.0 * SCALE_DELTA;
-
-        System.out.println(String.valueOf(groundFloor.getFitHeight()) + "   " + newHeight);
-        //Ensures that you do not exceed the limits of the map
-        if (SCALE_DELTA * SCALE_TOTAL >= 1) {
-            groundFloor.setFitWidth(newWidth);
-            groundFloor.setFitHeight(newHeight);
+    private Node getNodeFromValidID(String ID) {
+        for (Node n : validNodes) {
+            if (n.getNodeID().equals(ID)) return n;
         }
-        //});
+        return null;
     }
 
     /**
@@ -157,125 +128,134 @@ public class Navigation  extends SPage {
      * @param xCoord x coordinate from table
      * @return scaled X coordinate
      */
-    public Double xScale(int xCoord) {
-        Double xCoordDouble = new Double(xCoord);
-        Double imgWidth = 438.0;
-        Double proportion = imgWidth / 5000;
+    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
+    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
 
-        Double newXCoord = xCoordDouble * proportion; //may need to add margins depending on how it's placed on
-
-        return newXCoord;
+    public void zoomIn(ActionEvent actionEvent) {
+        if(zoom < 3){
+            zoomGroup.setScaleX(++zoom);
+            zoomGroup.setScaleY(zoom);
+        }
     }
 
-    public Double yScale(int yCoord) {
-        Double yCoordDouble = new Double(yCoord);
-        Double imgWidth = 298.0;
-        Double proportion = imgWidth / 3400;
-
-        Double newYCoord = yCoordDouble * proportion; //may need to add margins depending on how it's placed on
-
-        return newYCoord;
+    public void resetZoom(){
+        zoom = 1;
+        zoomGroup.setScaleX(1);
+        zoomGroup.setScaleY(1);
     }
 
-
-    public Double xScaleDouble(double xCoord) {
-        Double imgWidth = 438.0;
-        Double proportion = imgWidth / 5000;
-
-        Double newXCoord = xCoord * proportion; //may need to add margins depending on how it's placed on
-
-        return newXCoord;
+    public void zoomOut(ActionEvent actionEvent) {
+        if(zoom > 1){
+            zoomGroup.setScaleX(--zoom);
+            zoomGroup.setScaleY(zoom);
+        }
     }
 
-
-    public Double yScaleDouble(double yCoord) {
-        Double imgWidth = 298.0;
-        Double proportion = imgWidth / 3400;
-
-        Double newYCoord = yCoord * proportion; //may need to add margins depending on how it's placed on
-
-        return newYCoord;
+    public void clearNodes() {
+        stopList.clear();
+        currPath.clear();
+        activePath = 0;
+        etaLabel.setText("");
+        drawFloor(FLOOR);
+        startLocation.getSelectionModel().clearSelection();
+        destination.getSelectionModel().clearSelection();
+        intermediate.getSelectionModel().clearSelection();
+        listDirVBox.setVisible(false);
     }
 
+    public void drawFloor(String floor){
+        resetMap(FLOOR);
+        if (activePath == 0) {
+            for (Node n: validNodes) {
+                if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D(), Color.BLUE);
+            }
+        }
+
+        if (activePath == 1) {
+            for (Node n: validNodes) {
+                if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D(), new Color(0.0 , 0.0, 1.0, 0.4));
+            }
+            for (int i = 0; i < currPath.size() - 1; i++) {
+                if (currPath.get(i).getFloor().equals(FLOOR) &&
+                    currPath.get(i + 1).getFloor().equals(FLOOR)) {
+                    drawNodes(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
+                }
+                if ((currPath.get(i).getNodeType().equals("STAI") && currPath.get(i+1).getNodeType().equals("STAI")) ||
+                        (currPath.get(i).getNodeType().equals("ELEV") && currPath.get(i+1).getNodeType().equals("ELEV"))){
+                    drawArrow(currPath.get(i), currPath.get(i+1));
+                }
+            }
+        }
+    }
+
+    public void resetMap(String floor) {
+        //resetZoom();
+        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        //FLOOR = floor;
+    }
+
+    public void changeFloor3() throws FileNotFoundException {
+        FLOOR = "3";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("3");
+    }
+
+    public void changeFloor2() throws FileNotFoundException {
+        FLOOR = "2";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("2");
+    }
+
+    public void changeFloor1() throws FileNotFoundException {
+        FLOOR = "1";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("1");
+    }
+
+//    public void changeGroundFloor() throws FileNotFoundException {
+//        FLOOR = "G";
+//        drawFloor(FLOOR);
+//        //resetMapAndDraw("G");
+//    }
+
+    public void changeFloorL1() throws FileNotFoundException {
+        FLOOR = "L1";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("L1");
+    }
+
+    public void changeFloorL2() throws FileNotFoundException {
+        FLOOR = "L2";
+        drawFloor(FLOOR);
+        //resetMapAndDraw("L2");
+    }
 
     public void findPath() {
+        currPath.clear();
+        stopList.clear();
+        activePath = 0;
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
             return;
         }
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
-        anchor.getChildren().clear();
-        pathList.clear();
-        pathList.add(start);
-        if (intermediate.getSelectionModel().getSelectedItem() != null) {
-            pathList.add(intermediate.getSelectionModel().getSelectedItem().toString());
-        }
-        pathList.add(end);
-        SearchAlgorithm searchAlgorithm;
-        double etaTotal;
-        double minutes;
-        double seconds;
-        List<Node> pathNodes = new ArrayList<>();
-        try {
-            searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++) {
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
-            }
-            etaTotal = searchAlgorithm.getETA(pathNodes);
-            minutes = Math.floor(etaTotal);
-            seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);
-
-
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
-
-
-        Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
-
-
-        for (Node node : pathNodes) {
-            Circle circ = new Circle();
-            Line line = new Line();
-            Double scaledX = xScale(node.getXcoord());
-            Double scaledY = yScale(node.getYcoord());
-
-            circ.setCenterX(scaledX);
-            circ.setCenterY(scaledY);
-            circ.setRadius(2);
-            circ.setFill(Color.RED);
-
-            line.setStartX(scaledX);
-            line.setStartY(scaledY);
-            line.setEndX(prevX);
-            line.setEndY(prevY);
-            line.setStroke(Color.RED);
-
-
-            anchor.getChildren().addAll(circ, line);
-            prevX = scaledX;
-            prevY = scaledY;
-        }
-        firstNodeSelect = 0;
-        activePath = 1;
+        stopList.add(start);
+        stopList.add(end);
+        findPathSingleSegment(start, end);
+        drawFloor(FLOOR);
     }
 
 
     public void startEndlocation() {
-        if (activePath == 0) anchor.getChildren().clear();
+/*        if (activePath == 0) anchor.getChildren().clear();
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
         String end = destination.getSelectionModel().getSelectedItem().toString();
-        SearchAlgorithm searchAlgorithm;
+        SearchAlgorithmContext searchAlgorithmContext;
         List<Node> pathNodes = new ArrayList<>();
         try {
-            searchAlgorithm = new SearchAlgorithm();
-            pathNodes = searchAlgorithm.getPath(start, end);
+            searchAlgorithmContext = new SearchAlgorithmContext(new AStar());
+            pathNodes = searchAlgorithmContext.getPath(start, end);
 
         } catch (IOException ie) {
             ie.printStackTrace();
@@ -311,256 +291,359 @@ public class Navigation  extends SPage {
             prevX = scaledX;
             prevY = scaledY;
         }
-        firstNodeSelect = 0;
+        firstNodeSelect = 0;*/
     }
 
 
     /**
      * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
-     *
      * @param start String, long name of start node
      * @param end   String, long name of end node
      */
-    public void findPath(String start, String end) {
-        if (activePath == 0) anchor.getChildren().clear();
-        SearchAlgorithm searchAlgorithm;
-        List<Node> pathNodes = new ArrayList<>();
-        double etaTotal;
-        double minutes;
-        double seconds;
-        try {
-            searchAlgorithm = new SearchAlgorithm();
-            for (int i = 0; i < pathList.size() - 1; i++) {
-                pathNodes.addAll(searchAlgorithm.getPath(pathList.get(i), pathList.get(i + 1)));
-            }
-            etaTotal = searchAlgorithm.getETA(pathNodes);
-            minutes = Math.floor(etaTotal);
-            seconds = Math.floor((etaTotal - minutes) * 60);
-            etaLabel.setText((int) minutes + ":" + (int) seconds);
+    public void findPathSingleSegment(String start, String end) {
+        double etaTotal, minutes, seconds;
+        //currPath.clear();
+        //for (int i = 0; i < stopList.size() - 1; i++) {
+            //currPath.addAll(searchAlgorithmContext.getPath(stopList.get(i), stopList.get(i + 1)));
+        //}
 
 
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
+        currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
+        System.out.println(SearchAlgorithmContext.getSearchAlgorithmContext().context);
 
 
-        Double prevX = xScaleDouble(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScaleDouble(pathNodes.get(0).getYcoord());
+        etaTotal = SearchAlgorithmContext.getSearchAlgorithmContext().getETA(currPath);
+        minutes = Math.floor(etaTotal);
+        seconds = Math.floor((etaTotal - minutes) * 60);
+        etaLabel.setText((int) minutes + " min " + (int) seconds + " sec");
 
+        if(currPath.isEmpty()) return;
 
-        for (Node node : pathNodes) {
-            Circle circ = new Circle();
-            Line line = new Line();
-            Double scaledX = xScale(node.getXcoord());
-            Double scaledY = yScale(node.getYcoord());
-
-            circ.setCenterX(scaledX);
-            circ.setCenterY(scaledY);
-            circ.setRadius(2);
-            circ.setFill(Color.RED);
-
-            line.setStartX(scaledX);
-            line.setStartY(scaledY);
-            line.setEndX(prevX);
-            line.setEndY(prevY);
-            line.setStroke(Color.RED);
-
-
-            anchor.getChildren().addAll(circ, line);
-            prevX = scaledX;
-            prevY = scaledY;
-        }
         firstNodeSelect = 0;
         activePath = 1;
+        //drawFloor(FLOOR);
+        //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
+        currPathDir.clear();
+        currPathDir = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currPath);
+//        List<String> textDir = new ArrayList<String>();
+//        textDir.add("left 1");
+//        textDir.add("left 2");
+//         = textDir;
+        initializeDirections();
     }
-
 
     /**
      * Gets the closest node to the mouse cursor when clicked
      */
     public void getNearestNode(javafx.scene.input.MouseEvent event) {
+        if (event.getButton().equals(MouseButton.SECONDARY)) { // CHanged from primary to secondary, makes more sense
+            //System.out.println("Clicked map");
 
-        System.out.println("Clicked map");
+            //double x = xScale(event.getX());
+            //double y = yScale(event.getY());
+            double x = event.getX();
+            double y = event.getY();
 
-        //double x = xScaleDouble(event.getX());
-        //double y = yScaleDouble(event.getY());
-        double x = event.getX();
-        double y = event.getY();
+            //System.out.println(x + " " + y);
+            double radius = 20;
 
-        System.out.println(x + " " + y);
-        double radius = 20;
+            //Establish current closest recorded node and current least distance
+            Node currClosest = null;
+            double currLeastDist = 100000;
 
-        //Establish current closest recorded node and current least distance
-        Map<String, String> currClosest = new HashMap<>();
-        double currLeastDist = 100000;
+            //Loop through nodes
+            for (Node n : validNodes) {
+                //if ((FLOOR == "G" && n.getFloor().equals("G"))
+                        //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
+                    //Get the x and y of that node
+                    double currNodeX = xScale(n.getXcoord());
+                    double currNodeY = yScale(n.getYcoord());
 
-        //Loop through nodes
-        for (Map<String, String> n : validNodes) {
-            if ((groundFloor.isVisible() && n.get("FLOOR").equals("G"))
-                    || (floor1.isVisible() && n.get("FLOOR").equals("1"))) {
-                //Get the x and y of that node
-                double currNodeX = xScaleDouble(Double.parseDouble(n.get("XCOORD")));
-                double currNodeY = yScaleDouble(Double.parseDouble(n.get("YCOORD")));
+                    //Get the difference in x and y between input coords and current node coords
+                    double xOff = x - currNodeX;
+                    double yOff = y - currNodeY;
 
-                //Get the difference in x and y between input coords and current node coords
-                double xOff = x - currNodeX;
-                double yOff = y - currNodeY;
+                    //Give 'em the ol' pythagoras maneuver
+                    double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                    dist = Math.sqrt(dist);
 
-                //Give 'em the ol' pythagoras maneuver
-                double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
-                dist = Math.sqrt(dist);
-
-                //If the distance is LESS than the given radius...
-                if (dist < radius) {
-                    //...AND the distance is less than the current min, update current closest node
-                    if (dist < currLeastDist) {
-                        currClosest = n;
-                        currLeastDist = dist;
-                    }
-                }
-            }
-        }
-
-        if (currClosest.isEmpty()) return;
-
-        String currCloseName = currClosest.get("LONGNAME");
-        System.out.println(currClosest.get("LONGNAME"));
-
-        if (activePath == 0) {
-            if (this.firstNodeSelect == 0) {
-                firstNodeSelect = 1;
-                this.firstNode = currCloseName;
-            } else if (this.firstNodeSelect == 1) {
-                if (this.firstNode != null && currCloseName != null) {
-                    firstNodeSelect = 0;
-                    pathList.add(this.firstNode);
-                    pathList.add(currCloseName);
-                    findPath(pathList.get(0), pathList.get(1));
-                    activePath = 1;
-                }
-            }
-        } else if (activePath == 1) {
-            anchor.getChildren().clear();
-            pathList.add(pathList.size() - 1, currCloseName);
-            for (int i = 0; i < pathList.size() - 1; i++) {
-                findPath(pathList.get(i), pathList.get(i + 1));
-            }
-        }
-    }
-
-
-    public void changeFloorNodes() {
-        nodeGridAnchor.getChildren().clear();
-        int count = 0;
-        try {
-            List<Map<String, String>> edges = db.getEdges();
-            List<String> nodesList = new ArrayList<>();
-            for (Map<String, String> edge : edges) {
-                String startNode = edge.get("STARTNODE");
-                String endNode = edge.get("ENDNODE");
-                String bothNodes = startNode.concat(endNode);
-                if (!nodesList.contains(bothNodes) || (!nodesList.contains(endNode.concat(startNode)))) { //??
-                    try {
-                        Map<String, String> snode = db.getNode(startNode);
-                        Map<String, String> enode = db.getNode(endNode);
-                        if (floor1.isVisible() &&
-                                ((snode.get("FLOOR").equals("1")) && (snode.get("BUILDING").equals("Tower") || snode.get("BUILDING").equals("45 Francis"))) &&
-                                ((enode.get("FLOOR").equals("1")) && (enode.get("BUILDING").equals("Tower") || enode.get("BUILDING").equals("45 Francis")))) {
-                            drawNodes(snode, enode);
-                            nodesList.add(startNode + endNode);
-                            count++;
-                        } else if (groundFloor.isVisible() &&
-                                (snode.get("FLOOR").equals("G") && enode.get("FLOOR").equals("G"))) {
-                            drawNodes(snode, enode);
-                            nodesList.add(startNode + endNode);
-                            count++;
+                    //If the distance is LESS than the given radius...
+                    if (dist < radius) {
+                        //...AND the distance is less than the current min, update current closest node
+                        if (dist < currLeastDist) {
+                            currClosest = n;
+                            currLeastDist = dist;
                         }
-                    } catch (SQLException sq) {
-                        sq.printStackTrace();
+                    }
+                //}
+            }
+
+            if (currClosest == null) return;
+
+            else {
+                String currCloseName = currClosest.getLongName();
+
+                if (activePath == 0) { //if there's no active path, we'll handle that
+                    if (firstNodeSelect == 0) {
+                        firstNode = currCloseName;
+                        firstNodeSelect = 1;
+                    } else if (firstNodeSelect == 1) {
+                        stopList.clear();
+                        stopList.add(firstNode);
+                        stopList.add(currCloseName);
+                        currPath.clear();
+                        findPathSingleSegment(stopList.get(0), stopList.get(1));
+                        drawFloor(FLOOR);
                     }
                 }
+                else if (activePath == 1) {
+                    stopList.add(stopList.size() - 1, currCloseName);
+                    currPath.clear();
+                    for (int i = 0; i < stopList.size() - 1; i++) {
+                        findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
+                    }
+                    drawFloor(FLOOR);
+                }
             }
-        } catch (SQLException sq) {
-            sq.printStackTrace();
+
+            //System.out.println(currClosest.get("LONGNAME"));
+
+//        if (activePath == 0) {
+//            if (this.firstNodeSelect == 0) {
+//                firstNodeSelect = 1;
+//                this.firstNode = currCloseName;
+//            } else if (this.firstNodeSelect == 1) {
+//                if (this.firstNode != null && currCloseName != null) {
+//                    firstNodeSelect = 0;
+//                    pathList.add(this.firstNode);
+//                    pathList.add(currCloseName);
+//                    findPath(pathList.get(0), pathList.get(1));
+//                    activePath = 1;
+//                }
+//            }
+//        } else if (activePath == 1) {
+//            anchor.getChildren().clear();
+//            pathList.add(pathList.size() - 1, currCloseName);
+//            for (int i = 0; i < pathList.size() - 1; i++) {
+//                findPath(pathList.get(i), pathList.get(i + 1));
+//            }
+//        }
         }
-        System.out.println(count);
     }
 
-    public void drawNodes(Map<String, String> snode, Map<String, String> enode) {
-        Circle circ1 = new Circle();
-        Circle circ2 = new Circle();
+    private double getDistBetweenNodes(Node snode, Node enode) {
 
-        Double startX = xScale((int) Double.parseDouble(snode.get("XCOORD")));
-        Double startY = yScale((int) Double.parseDouble(snode.get("YCOORD")));
-        Double endX = xScale((int) Double.parseDouble(enode.get("XCOORD")));
-        Double endY = yScale((int) Double.parseDouble(enode.get("YCOORD")));
+        double sNodeX = xScale(snode.getXcoord());
+        double sNodeY = yScale(snode.getYcoord());
 
-        circ1.setCenterX(startX);
-        circ1.setCenterY(startY);
-        circ2.setCenterX(endX);
-        circ2.setCenterY(endY);
-        circ1.setRadius(2);
-        circ2.setRadius(2);
-        circ1.setFill(Color.RED);
-        circ2.setFill(Color.RED);
+        double eNodeX = xScale(enode.getXcoord());
+        double eNodeY = yScale(enode.getYcoord());
 
-        Line line = new Line();
-        line.setStartX(startX);
-        line.setStartY(startY);
-        line.setEndX(endX);
-        line.setEndY(endY);
-        line.setStroke(Color.WHITE);
-        nodeGridAnchor.getChildren().addAll(circ1, circ2, line);
+        //Get the difference in x and y between input coords and current node coords
+        double xOff = eNodeX - sNodeX;
+        double yOff = eNodeY - sNodeY;
 
+        //Give 'em the ol' pythagoras maneuver
+        double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+        dist = Math.sqrt(dist);
+
+        return dist;
     }
 
-    public void clearNodes() {
-        anchor.getChildren().clear();
-        pathList.clear();
-        startLocation.getSelectionModel().clearSelection();
-        destination.getSelectionModel().clearSelection();
-        intermediate.getSelectionModel().clearSelection();
-        activePath = 0;
+    public void drawSingleNode(Node node, GraphicsContext gc, Color c) {
+        double x = xScale(node.getXcoord());
+        double y = yScale(node.getYcoord());
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        gc.setFill(c);
+        gc.fillOval(x, y, radius, radius);
     }
+
+    public void drawSingleEdge(Node snode, Node enode, Color c) {
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setStroke(c);
+        gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
+    }
+
+    public void drawNodes(Node snode, Node enode, Color snodeCol, Color enodeCol, Color edgeCol) {
+        if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
+            GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+            /*gc.moveTo(xScale(snode.getXcoord()), yScale(snode.getYcoord()));
+            gc.lineTo(xScale(enode.getXcoord()), yScale(enode.getYcoord()));
+            gc.stroke();*/
+            gc.setStroke(edgeCol);
+            gc.strokeLine(xScale(snode.getXcoord()), yScale(snode.getYcoord()), xScale(enode.getXcoord()), yScale(enode.getYcoord()));
+
+            drawSingleNode(snode, gc, snodeCol);
+            drawSingleNode(enode, gc, enodeCol);
+        }
+    }
+
+    private void drawArrow(Node start, Node end) {
+
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.strokeLine(xScale(start.getXcoord()), yScale(start.getYcoord()), xScale(end.getXcoord()), yScale(end.getYcoord()));
+
+        double xCenter = xScale(start.getXcoord());
+        double yCenter = yScale(start.getYcoord());
+
+        double xPoints[] = new double[3];
+        xPoints[0] = xCenter;
+        xPoints[1] = xCenter + 7 * Math.sqrt(2.0) / 2.0;
+        xPoints[2] = xCenter - 7 * Math.sqrt(2.0) / 2.0;
+        double yPoints[] = new double[3];
+
+        if (start.getFloor().equals(FLOOR)){
+            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.GREEN);
+
+                yPoints[0] = yCenter - 7;
+                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+            }
+            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.RED);
+
+                yPoints[0] = yCenter + 7;
+                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+            }
+        } else if(end.getFloor().equals(FLOOR)){
+            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.RED);
+
+                yPoints[0] = yCenter + 7;
+                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+            }
+            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+
+                gc.setFill(Color.GREEN);
+
+                yPoints[0] = yCenter - 7;
+                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+            }
+        }
+        gc.fillPolygon(xPoints, yPoints, 3);
+    }
+
 
     public void addStop() {
-        if (!(startLocation.getSelectionModel().getSelectedItem() == null) && (!(destination.getSelectionModel().getSelectedItem() == null))) {
+/*        if (!(startLocation.getSelectionModel().getSelectedItem() == null) && (!(destination.getSelectionModel().getSelectedItem() == null))) {
             intermediate.setVisible(true);
+        }*/
+    }
+
+    public void cancelDir() {
+        stepByStep.setVisible(false);
+        listDirVBox.setVisible(true);
+        listDirVBox.toFront();
+
+        startLocation.setDisable(false);
+        destination.setDisable(false);
+        intermediate.setDisable(false);
+        findPathButton.setDisable(false);
+        cancelPath.setDisable(false);
+
+        unHighlightDirection();
+    }
+
+    public void startDir() {
+        stepByStep.setVisible(true);
+        listDirVBox.setVisible(false);
+        stepByStep.toFront();
+
+        startLocation.setDisable(true);
+        destination.setDisable(true);
+        intermediate.setDisable(true);
+        findPathButton.setDisable(true);
+        cancelPath.setDisable(true);
+
+        dirIndex = 0;
+        changeArrow(currPathDir.get(0).get(dirIndex));
+        curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
+        highlightDirection();
+    }
+
+    public void progress() {
+        if (dirIndex >= currPathDir.get(0).size() - 1){
+           return;
+        }else{
+            unHighlightDirection();
+            dirIndex += 1;
+            changeArrow(currPathDir.get(0).get(dirIndex));
+            curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
+            highlightDirection();
         }
     }
 
-    public void menu(MouseEvent mouseEvent) {
-        if (transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
+    public void regress() {
+        if (dirIndex == 0){
+            return;
+        }else{
+            unHighlightDirection();
+            dirIndex -= 1;
+            changeArrow(currPathDir.get(0).get(dirIndex));
+            curDirection.setText(currPathDir.get(0).get(dirIndex));
+            highlightDirection();
+        }
     }
 
-    public void zoomIn(ActionEvent actionEvent) {
-        SCALE_DELTA += 0.1;
-        zoom();
+    public void changeArrow(String direction){ //update arrow
+        Image arrowImg;
+        if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
+        else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
+        else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
+        else if (direction.contains("Turn around")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+        else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
+
+        arrow.setImage(arrowImg);
     }
 
-    public void zoomOut(ActionEvent actionEvent) {
-        SCALE_DELTA -= 0.1;
-        zoom();
+    public void initializeDirections() {                    // adds each step to the list of direction
+        cancelDir();
+        listOfDirections.getChildren().clear();
+        for (int i = 0; i < currPathDir.get(0).size(); i++) {
+            Label l = new Label(currPathDir.get(0).get(i));
+            l.setWrapText(true);
+            listOfDirections.getChildren().add(l);
+        }
     }
 
+    public void highlightDirection(){
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        String curNode = currPathDir.get(1).get(dirIndex);
+        if (curNode.contains(",")){
+            int index = curNode.indexOf(",");
+            Node start = getNodeFromValidID(curNode.substring(0,index));
+            System.out.println(start);
 
-    public void changeFloor1() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
-
-        groundFloor.setImage(image);
+            Node end = getNodeFromValidID(curNode.substring(index+1));
+            System.out.println(end);
+            drawNodes(start, end, Color.RED, Color.BLUE, Color.RED );
+            //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
+            return;
+        }
+        drawSingleNode(getNodeFromValidID(curNode), gc, Color.RED);
     }
 
-    public void changeGroundFloor() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
+    public void unHighlightDirection(){
+        String curNode = currPathDir.get(1).get(dirIndex);
+        if (curNode.contains(",")){
+            int index = curNode.indexOf(",");
+            Node start = getNodeFromValidID(curNode.substring(0,index));
+            Node end = getNodeFromValidID(curNode.substring(index+1));
+            drawNodes(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
+        }
 
-        groundFloor.setImage(image);
     }
+
 }
+
 

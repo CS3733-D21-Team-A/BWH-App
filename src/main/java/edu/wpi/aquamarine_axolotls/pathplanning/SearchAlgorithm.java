@@ -1,3 +1,6 @@
+//TODO: MOVE THIS CLASS'SFUNCTIONALITY INTO NEW CLASS
+//TODO: DELETE THIS CLASS
+
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
@@ -12,43 +15,42 @@ public class SearchAlgorithm{
     private List<Node> nodes = new ArrayList<>();
     private List<Edge> edges = new ArrayList<>();
 
-    public SearchAlgorithm() throws SQLException, IOException, URISyntaxException {
-        DatabaseController dbControl = new DatabaseController();
-
-        List<Map<String, String>> nodeMap = new ArrayList<>();
-        List<Map<String, String>> edgeMap = new ArrayList<>();
+    public SearchAlgorithm() {
 
         try {
+            DatabaseController dbControl = new DatabaseController();
+
+            List<Map<String, String>> nodeMap = new ArrayList<>();
+            List<Map<String, String>> edgeMap = new ArrayList<>();
+
             nodeMap = dbControl.getNodes();
             edgeMap = dbControl.getEdges();
-        } catch (SQLException e) {
+
+            for (int i = 0; i < nodeMap.size(); i++) {
+                Map<String, String> currNodeMap = nodeMap.get(i);
+                this.nodes.add(new Node(
+                                currNodeMap.get("NODEID"),
+                                Integer.parseInt(currNodeMap.get("XCOORD")),
+                                Integer.parseInt(currNodeMap.get("YCOORD")),
+                                currNodeMap.get("FLOOR"),
+                                currNodeMap.get("BUILDING"),
+                                currNodeMap.get("NODETYPE"),
+                                currNodeMap.get("LONGNAME"),
+                                currNodeMap.get("SHORTNAME")
+                        )
+                );
+            }
+
+            for (int j = 0; j < edgeMap.size(); j++) {
+                Map<String, String> currEdgeMap = edgeMap.get(j);
+                this.edges.add(new Edge(
+                        edgeMap.get(j).get("EDGEID"),
+                        edgeMap.get(j).get("STARTNODE"),
+                        edgeMap.get(j).get("ENDNODE")
+                ));
+            }
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
-        }
-
-
-
-        for (int i = 0; i < nodeMap.size(); i++) {
-            Map<String, String> currNodeMap = nodeMap.get(i);
-            this.nodes.add(new Node(
-                    currNodeMap.get("NODEID"),
-                    Integer.parseInt(currNodeMap.get("XCOORD")),
-                    Integer.parseInt(currNodeMap.get("YCOORD")),
-                    currNodeMap.get("FLOOR"),
-                    currNodeMap.get("BUILDING"),
-                    currNodeMap.get("NODETYPE"),
-                    currNodeMap.get("LONGNAME"),
-                    currNodeMap.get("SHORTNAME")
-                    )
-            );
-        }
-
-        for (int j = 0; j < edgeMap.size(); j++) {
-            Map<String, String> currEdgeMap = edgeMap.get(j);
-            this.edges.add(new Edge(
-                    edgeMap.get(j).get("EDGEID"),
-                    edgeMap.get(j).get("STARTNODE"),
-                    edgeMap.get(j).get("ENDNODE")
-            ));
         }
     }
 
@@ -111,7 +113,7 @@ public class SearchAlgorithm{
      * Cost pair definition, the pair consist of a node and the cost
      * Used in priority queue
      * */
-    protected static class CostPair implements Comparable<CostPair>{
+    /*protected static class CostPair implements Comparable<CostPair>{
         private final Node item; //The item
         private final double cost; //The current cost to get to that item from the starting node
 
@@ -142,6 +144,7 @@ public class SearchAlgorithm{
          * @param o
          * @return
          */
+    /*
         @Override
         public boolean equals(Object o) {
             if (this == o) {
@@ -158,7 +161,7 @@ public class SearchAlgorithm{
         public int hashCode() {
             return Objects.hash(item);
         }
-    }
+    }*/
 
     //Define the priority queue used for the algorithm, called the "frontier"
     private final PriorityQueue<CostPair> frontier = new PriorityQueue<CostPair>();
@@ -237,6 +240,21 @@ public class SearchAlgorithm{
                 return this.nodes.get(j);
             }
         }
+
+        //If we go through everything without finding the node with that ID, we'll instead look for it
+        //based on its long name instead
+        String nodeLongName;
+        //Loop through the list of nodes
+        for (int j = 0; j < this.nodes.size(); j++) {
+            //Get the name of the current node we're looking at
+            nodeLongName = this.nodes.get(j).getLongName();
+
+            //If this node is the one we're looking for, return it
+            if (nodeLongName.equals(id)) {
+                return this.nodes.get(j);
+            }
+        }
+
         //If we go through all the nodes and don't find the one we were looking for, return null
         System.out.println("Couldn't find that node");
         return null;
@@ -373,7 +391,7 @@ public class SearchAlgorithm{
                 }
             }
         }
-        System.out.println("pathfound");
+        System.out.println("pathfound:" + cameFrom);
         //Build the actual path that we can return
         List<Node> foundPath = buildPath(cameFrom, goal);
         //Check if the created path is valid and return if it is
@@ -432,6 +450,12 @@ public class SearchAlgorithm{
         return startNodeisEqual && goalNodeisEqual;
     }
 
+    /**
+     * Calculate the time estimation of one edge based on Euclidean distance and 2 miles/hour walking speed
+     * @param start The start node
+     * @param goal The end node
+     * @return double, returns the estimated time of one edge
+     */
     private double getETASingleEdge(Node start, Node goal){
         double walkingSpeed = 220 * 3.75; //2 miles/h
         double distance = getCostTo(start,goal);
@@ -440,7 +464,11 @@ public class SearchAlgorithm{
         ETASingleEdge = distance/walkingSpeed;
         return ETASingleEdge;
     }
-
+    /**
+     * Calculate the time estimation of sum of edges
+     * @param path A list of path
+     * @return double, returns the estimated time of one edge
+     */
     public double getETA(List<Node> path){
         double ETASoFar = 0.0;
         for(int i = 0; i < path.size()-1;i++){

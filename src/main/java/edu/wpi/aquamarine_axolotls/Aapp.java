@@ -48,9 +48,6 @@ public class Aapp extends Application {
     return primaryStage;
   }
 
-
-
-
   @Override
   public void stop() {
     System.out.println("Shutting Down");

@@ -4,15 +4,19 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.*;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -20,11 +24,10 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,7 @@ public class NodeEditing extends SEditing {
     @FXML public JFXButton deleteButton;
     @FXML private JFXButton addButton;
     @FXML private JFXButton editButton;
-
+    @FXML private JFXComboBox algoSelectBox;
     @FXML private HBox nodeT;
     @FXML private HBox nodeD;
     @FXML private JFXButton edgesButton;
@@ -54,12 +57,6 @@ public class NodeEditing extends SEditing {
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
 
-    @FXML ImageView groundFloor;
-    @FXML ImageView floor1;
-
-    @FXML private AnchorPane anchor;
-    @FXML private AnchorPane nodeGridAnchor;
-
     @FXML private TableView table;
     @FXML private TableColumn nodeIDCol;
     @FXML private TableColumn lNameCol;
@@ -70,24 +67,57 @@ public class NodeEditing extends SEditing {
     @FXML private TableColumn buildingCol;
     @FXML private TableColumn typeCol;
 
-    @FXML private Image image1;
+    @FXML private JFXButton clearButton;
+
+    @FXML private ScrollPane mapScrollPane;
+    @FXML private Canvas mapCanvas;
+
+
+
+    private Map<String, String> floors;
+    static String FLOOR = "1";
+    private Group zoomGroup;
+    private int zoom;
+    List<Node> validNodes = new ArrayList<>();
+    private Node prevSelected;
+    private Node currSelected;
+
+
     String state = "";
     DatabaseController db;
     CSVHandler csvHandler;
 
-
-    String floorString;
     @FXML
     public void initialize() {
-        floorString = "ground";
+
         table.setEditable(false);
         table.getItems().clear();
 
         ObservableList<String> options = FXCollections.observableArrayList();
+        ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
+
         submissionlabel.setVisible(true);
-        anchor.setVisible(false);
-        groundFloor.setVisible(true);
-        floor1.setVisible(false);
+
+        searchAlgorithms.add("A-Star");
+        searchAlgorithms.add("Dijkstra");
+        searchAlgorithms.add("Breadth First");
+        searchAlgorithms.add("Depth First");
+        algoSelectBox.setItems(searchAlgorithms);
+
+
+        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
+            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
+
+        String algo = SearchAlgorithmContext.getSearchAlgorithmContext().context.toString();
+
+        if(algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0);
+        else if(algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
+        else if(algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
+        else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
+
+
+
 
         nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
         lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
@@ -107,6 +137,8 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(false);
         floor.setVisible(false);
         building.setVisible(false);
+        submissionButton.setVisible(false);
+        clearButton.setVisible(false);
 
         try {
             db = new DatabaseController();
@@ -115,20 +147,112 @@ public class NodeEditing extends SEditing {
 
             for (Map<String, String> node : nodes) {
                 options.add(node.get("NODEID"));
-                table.getItems().add(new Node(
-                        node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")),
-                        node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"), node.get("LONGNAME"), node.get("SHORTNAME")
-                ));
-                drawNodes(node);
+                Node cur = new Node(node.get("NODEID"),
+                        Integer.parseInt(node.get("XCOORD")),
+                        Integer.parseInt(node.get("YCOORD")),
+                        node.get("FLOOR"), node.get("BUILDING"),
+                        node.get("NODETYPE"), node.get("LONGNAME"),
+                        node.get("SHORTNAME")
+                );
+                table.getItems().add(cur);
+                validNodes.add(cur);
+                drawSingleNode(cur);
             }
             nodeDropdown.setItems(options);
-            changeFloorNodes();
+            floors = new HashMap<>();
+            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
+            //floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
+            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
+
+            mapScrollPane.pannableProperty().set(true);
+            Group contentGroup = new Group();
+            zoomGroup = new Group();
+            contentGroup.getChildren().add(zoomGroup);
+            zoomGroup.getChildren().add(mapCanvas);
+            mapScrollPane.setContent(contentGroup);
+            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+            drawFloor(FLOOR);
+            zoom = 1;
+
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
 
+    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
+    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
 
+    public void zoomIn(ActionEvent actionEvent) {
+        if(zoom < 3){
+            zoomGroup.setScaleX(++zoom);
+            zoomGroup.setScaleY(zoom);
+        }
+    }
+
+    public void resetZoom(){
+        zoom = 1;
+        zoomGroup.setScaleX(1);
+        zoomGroup.setScaleY(1);
+    }
+
+    public void zoomOut(ActionEvent actionEvent) {
+        if(zoom > 1){
+            zoomGroup.setScaleX(--zoom);
+            zoomGroup.setScaleY(zoom);
+        }
+    }
+
+    public void resetMap(String floor) {
+        resetZoom();
+        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        FLOOR = floor;
+    }
+
+    public void resetMapAndDraw(String floor) {
+        resetMap(floor);
+        drawFloor(floor);
+    }
+
+    public void drawFloor(String floor){
+        resetMap(floor);
+
+        try {
+            for( Map<String, String> node : db.getNodes()){ if(node.get("FLOOR").equals(floor)) drawSingleNode(node); }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void changeFloor1() {
+        resetMapAndDraw("1");
+    }
+
+    public void changeFloorL2(ActionEvent actionEvent) {
+        resetMapAndDraw("L2");
+    }
+
+    public void changeFloorL1(ActionEvent actionEvent) {
+        resetMapAndDraw("L1");
+    }
+
+    public void changeFloor2(ActionEvent actionEvent) {
+        resetMapAndDraw("2");
+    }
+
+    public void changeFloor3(ActionEvent actionEvent) {
+        resetMapAndDraw("3");
+    }
+
+//    public void changeGroundFloor() {
+//        resetMapAndDraw("G");
+//    }
+
+    @FXML
     public void clearfields(){
         longName.clear();
         shortName.clear();
@@ -152,6 +276,8 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(false);
         floor.setVisible(false);
         building.setVisible(false);
+        submissionButton.setVisible(true);
+        clearButton.setVisible(false);
 
         state = "delete";
     }
@@ -168,6 +294,8 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(true);
         floor.setVisible(true);
         building.setVisible(true);
+        submissionButton.setVisible(true);
+        clearButton.setVisible(true);
 
         state = "add";
     }
@@ -184,9 +312,12 @@ public class NodeEditing extends SEditing {
         nodeType.setVisible(true);
         floor.setVisible(true);
         building.setVisible(true);
+        submissionButton.setVisible(true);
+        clearButton.setVisible(true);
 
         state = "edit";
     }
+
 
     public void newCSV() {
         FileChooser fileChooser = new FileChooser();
@@ -237,7 +368,7 @@ public class NodeEditing extends SEditing {
                 db.deleteNode(current_nodeID);
                 submissionlabel.setText("You have deleted " + current_nodeID);
             }else{
-                submissionlabel.setText("Edge does not exist");
+                submissionlabel.setText("Node does not exist");
             }
         }catch (SQLException sq){
             sq.printStackTrace();
@@ -336,14 +467,15 @@ public class NodeEditing extends SEditing {
         switch (state){
             case "delete":
                 delete(nodeDropdown.getSelectionModel().getSelectedItem().toString());
+                drawFloor(FLOOR);
                 break;
             case "add":
                 add(nodeID.getText());
-                drawNodes(db.getNode(nodeID.getText()));
+                drawFloor(FLOOR);
                 break;
             case "edit":
                 edit(nodeDropdown.getSelectionModel().getSelectedItem().toString());
-                drawNodes(db.getNode(nodeDropdown.getSelectionModel().getSelectedItem().toString()));
+                drawFloor(FLOOR);
                 break;
             case "":
                 submissionlabel.setText("Invalid submission");
@@ -355,56 +487,130 @@ public class NodeEditing extends SEditing {
     }
 
     @FXML
+    public void selectAlgorithm() {
+        if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
+            if(algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            }
+        }
+    }
+
+    @FXML
+    public void highLightNodeFromSelector() {
+        if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
+            for (Node n : validNodes) {
+                if (n.getNodeID().equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
+                    prevSelected = currSelected;
+                    currSelected = n;
+                    drawSingleNode(prevSelected);
+                    drawSingleNodeRed(currSelected);
+                }
+            }
+        }
+    }
+
+    @FXML
     public void pressEdgeButton(ActionEvent actionEvent) {
         sceneSwitch("EdgeEditing");
     }
 
-    public void changeFloorNodes(){
-        nodeGridAnchor.getChildren().clear();
-        int count = 0;
-        try {
-            List<Map<String, String>> nodes = db.getNodes();
-            for (Map<String, String> node : nodes) {
-                if (floorString.equals("first") && node.get("FLOOR").equals("1")) {
-                    drawNodes(node);
-                } else if (floorString.equals("ground") && groundFloor.isVisible() && (node.get("FLOOR").equals("G"))) {
-                    drawNodes(node);
-                    count++;
-                }
+    public void drawSingleNode(Map<String, String> node) {
+        double x = xScale(Integer.parseInt(node.get("XCOORD")));
+        double y = yScale(Integer.parseInt(node.get("YCOORD")));
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillOval(x, y, radius, radius);
+    }
+
+    public void drawSingleNode(Node node) {
+        double x = xScale(node.getXcoord());
+        double y = yScale(node.getYcoord());
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLUE);
+        gc.fillOval(x, y, radius, radius);
+    }
+
+
+    public void drawSingleNodeRed(Node node) {
+        double x = xScale(node.getXcoord());
+        double y = yScale(node.getYcoord());
+        double radius = 3;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+        gc.setFill(Color.RED);
+        gc.fillOval(x, y, radius, radius);
+    }
+
+
+    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
+        if (event.getButton().equals(MouseButton.SECONDARY)) {
+            if (state.equals("add")) {
+                //System.out.println("Clicked map");
+
+                //double x = xScale(event.getX());
+                //double y = yScale(event.getY());
+                int x = (int) Math.floor(event.getX() / (mapCanvas.getWidth()/5000));
+                int y = (int) Math.floor(event.getY() / (mapCanvas.getHeight()/3400));
+
+                if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
+                if (yCoor.isVisible()) yCoor.setText(Integer.toString(y));
             }
-        }catch (SQLException sq) {
-            sq.printStackTrace();
-        } System.out.println(count);
+            else if (state.equals("edit") || state.equals("delete")) {
+                double x = event.getX();
+                double y = event.getY();
+
+                double radius = 20;
+
+                Node currClosest = null;
+                double currLeastDist = 100000;
+
+                for (Node n : validNodes) {
+                    //if ((FLOOR == "G" && n.getFloor().equals("G"))
+                    //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
+                    //Get the x and y of that node
+                    double currNodeX = xScale(n.getXcoord());
+                    double currNodeY = yScale(n.getYcoord());
+
+                    //Get the difference in x and y between input coords and current node coords
+                    double xOff = x - currNodeX;
+                    double yOff = y - currNodeY;
+
+                    //Give 'em the ol' pythagoras maneuver
+                    double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                    dist = Math.sqrt(dist);
+
+                    //If the distance is LESS than the given radius...
+                    if (dist < radius) {
+                        //...AND the distance is less than the current min, update current closest node
+                        if (dist < currLeastDist) {
+                            currClosest = n;
+                            currLeastDist = dist;
+                        }
+                    }
+                }
+
+                if (currClosest == null) return;
+                else {
+                    nodeDropdown.setValue(currClosest.getNodeID());
+                }
+                prevSelected = currSelected;
+                currSelected = currClosest;
+                drawSingleNode(prevSelected);
+                drawSingleNodeRed(currSelected);
+            }
+        }
     }
-
-    public void drawNodes(Map<String, String> node) {
-        Circle circ1 = new Circle();
-
-        Double startX = xScale((int) Double.parseDouble(node.get("XCOORD")));
-        Double startY = yScale((int) Double.parseDouble(node.get("YCOORD")));
-
-        circ1.setCenterX(startX);
-        circ1.setCenterY(startY);
-        circ1.setRadius(2);
-        circ1.setFill(Color.RED);
-
-        nodeGridAnchor.getChildren().addAll(circ1);
-
-    }
-
-    public void changeFloor1() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/lowerLevel1.png"));
-        floorString = "first";
-        groundFloor.setImage(image);
-        changeFloorNodes();
-    }
-
-    public void changeGroundFloor() throws FileNotFoundException {
-        Image image = new Image(new FileInputStream("src/main/resources/edu/wpi/aquamarine_axolotls/img/groundFloor.png"));
-        floorString = "ground";
-        groundFloor.setImage(image);
-        changeFloorNodes();
-
-    }
-
 }

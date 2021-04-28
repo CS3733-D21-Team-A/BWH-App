@@ -88,7 +88,7 @@ public abstract class SPage {
         myDialog.centerOnScreen();
         myDialog.setTitle(title);
         Text text1 = new Text(disp);
-        text1.setStyle("-fx-font-size: 20; -fx-fill: black; -fx-font-family: Times; -fx-alignment: center");
+        text1.setStyle("-fx-font-size: 20; -fx-fill: blue; -fx-font-family: Comic Sans; -fx-alignment: center");
         TextFlow textFlow = new TextFlow(text1);
         textFlow.setTextAlignment(TextAlignment.CENTER);
         myDialog.setScene(new Scene(textFlow, 400, 300));
