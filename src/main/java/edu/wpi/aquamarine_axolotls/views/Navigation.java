@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,6 +40,7 @@ public class Navigation extends SPage {
     @FXML private VBox stepByStep;
     @FXML private VBox listDirVBox;
     @FXML private VBox listOfDirections;
+    @FXML private Menu curFloor;
 
     private Group zoomGroup;
     private int zoom;
@@ -90,7 +92,6 @@ public class Navigation extends SPage {
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
             floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
             floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
-
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
             zoomGroup = new Group();
@@ -165,6 +166,7 @@ public class Navigation extends SPage {
 
     public void drawFloor(String floor){
         resetMap(FLOOR);
+        curFloor.setText( "Cur Floor : " + FLOOR);
         if (activePath == 0) {
             for (Node n: validNodes) {
                 if (n.getFloor().equals(floor)) drawSingleNode(n, mapCanvas.getGraphicsContext2D(), Color.BLUE);
@@ -494,8 +496,18 @@ public class Navigation extends SPage {
         xPoints[2] = xCenter - 7 * Math.sqrt(2.0) / 2.0;
         double yPoints[] = new double[3];
 
-        if (start.getFloor().equals(FLOOR)){
-            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+        String startFloor = start.getFloor();
+        String endFloor = end.getFloor();
+
+        if(startFloor.equals("G")) startFloor = "0";
+        if(startFloor.equals("L1")) startFloor = "-1";
+        if(startFloor.equals("L2")) startFloor = "-2";
+        if(endFloor.equals("G")) endFloor = "0";
+        if(endFloor.equals("L1")) endFloor = "-1";
+        if(endFloor.equals("L2")) endFloor = "-2";
+
+        if (startFloor.equals(FLOOR)){
+            if(Integer.parseInt(startFloor) < Integer.parseInt(endFloor)){
 
                 gc.setFill(Color.GREEN);
 
@@ -503,7 +515,7 @@ public class Navigation extends SPage {
                 yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
                 yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
             }
-            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+            else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)){
 
                 gc.setFill(Color.RED);
 
@@ -511,24 +523,24 @@ public class Navigation extends SPage {
                 yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
                 yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
             }
-        } else if(end.getFloor().equals(FLOOR)){
-            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
-
-                gc.setFill(Color.RED);
-
-                yPoints[0] = yCenter + 7;
-                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-            }
-            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
-
-                gc.setFill(Color.GREEN);
-
-                yPoints[0] = yCenter - 7;
-                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-            }
-        }
+        } //else if(end.getFloor().equals(FLOOR)){
+//            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
+//
+//                gc.setFill(Color.RED);
+//
+//                yPoints[0] = yCenter + 7;
+//                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+//                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+//            }
+//            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
+//
+//                gc.setFill(Color.GREEN);
+//
+//                yPoints[0] = yCenter - 7;
+//                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+//                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+//            }
+//        }
         gc.fillPolygon(xPoints, yPoints, 3);
     }
 
@@ -576,6 +588,17 @@ public class Navigation extends SPage {
         }else{
             unHighlightDirection();
             dirIndex += 1;
+            String curNode = currPathDir.get(1).get(dirIndex);
+            String curFloor;
+            if (curNode.contains(",")) {
+                int index = curNode.indexOf(",");
+                curFloor = getNodeFromValidID(curNode.substring(0, index)).getFloor();
+            }
+            else curFloor = getNodeFromValidID(curNode).getFloor();
+            if(!curFloor.equals(FLOOR)){
+                FLOOR = curFloor;
+                drawFloor(FLOOR);
+            }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
@@ -588,6 +611,17 @@ public class Navigation extends SPage {
         }else{
             unHighlightDirection();
             dirIndex -= 1;
+            String curNode = currPathDir.get(1).get(dirIndex);
+            String curFloor;
+            if (curNode.contains(",")) {
+                int index = curNode.indexOf(",");
+                curFloor = getNodeFromValidID(curNode.substring(0, index)).getFloor();
+            }
+            else curFloor = getNodeFromValidID(curNode).getFloor();
+            if(!curFloor.equals(FLOOR)){
+                FLOOR = curFloor;
+                drawFloor(FLOOR);
+            }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
