@@ -250,54 +250,6 @@ public class Navigation extends SPage {
     }
 
 
-    public void startEndlocation() {
-/*        if (activePath == 0) anchor.getChildren().clear();
-        String start = startLocation.getSelectionModel().getSelectedItem().toString();
-        String end = destination.getSelectionModel().getSelectedItem().toString();
-        SearchAlgorithmContext searchAlgorithmContext;
-        List<Node> pathNodes = new ArrayList<>();
-        try {
-            searchAlgorithmContext = new SearchAlgorithmContext(new AStar());
-            pathNodes = searchAlgorithmContext.getPath(start, end);
-
-        } catch (IOException ie) {
-            ie.printStackTrace();
-        } catch (URISyntaxException ue) {
-            ue.printStackTrace();
-        } catch (SQLException sq) {
-            sq.printStackTrace();
-        }
-
-
-        Double prevX = xScale(pathNodes.get(0).getXcoord()); // TODO : fix this jank code
-        Double prevY = yScale(pathNodes.get(0).getYcoord());
-
-        for (Node node : pathNodes) {
-            Circle circ = new Circle();
-            Line line = new Line();
-            Double scaledX = xScale(node.getXcoord());
-            Double scaledY = yScale(node.getYcoord());
-
-            circ.setCenterX(scaledX);
-            circ.setCenterY(scaledY);
-            circ.setRadius(2);
-            circ.setFill(Color.RED);
-
-            line.setStartX(scaledX);
-            line.setStartY(scaledY);
-            line.setEndX(prevX);
-            line.setEndY(prevY);
-            line.setStroke(Color.RED);
-
-
-            anchor.getChildren().addAll(circ, line);
-            prevX = scaledX;
-            prevY = scaledY;
-        }
-        firstNodeSelect = 0;*/
-    }
-
-
     /**
      * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
      * @param start String, long name of start node
@@ -408,29 +360,6 @@ public class Navigation extends SPage {
                     drawFloor(FLOOR);
                 }
             }
-
-            //System.out.println(currClosest.get("LONGNAME"));
-
-//        if (activePath == 0) {
-//            if (this.firstNodeSelect == 0) {
-//                firstNodeSelect = 1;
-//                this.firstNode = currCloseName;
-//            } else if (this.firstNodeSelect == 1) {
-//                if (this.firstNode != null && currCloseName != null) {
-//                    firstNodeSelect = 0;
-//                    pathList.add(this.firstNode);
-//                    pathList.add(currCloseName);
-//                    findPath(pathList.get(0), pathList.get(1));
-//                    activePath = 1;
-//                }
-//            }
-//        } else if (activePath == 1) {
-//            anchor.getChildren().clear();
-//            pathList.add(pathList.size() - 1, currCloseName);
-//            for (int i = 0; i < pathList.size() - 1; i++) {
-//                findPath(pathList.get(i), pathList.get(i + 1));
-//            }
-//        }
         }
     }
 
@@ -524,24 +453,7 @@ public class Navigation extends SPage {
                 yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
                 yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
             }
-        } //else if(end.getFloor().equals(FLOOR)){
-//            if(Integer.parseInt(start.getFloor()) < Integer.parseInt(end.getFloor())){
-//
-//                gc.setFill(Color.RED);
-//
-//                yPoints[0] = yCenter + 7;
-//                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-//                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-//            }
-//            else if (Integer.parseInt(start.getFloor()) > Integer.parseInt(end.getFloor())){
-//
-//                gc.setFill(Color.GREEN);
-//
-//                yPoints[0] = yCenter - 7;
-//                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-//                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-//            }
-//        }
+        }
         gc.fillPolygon(xPoints, yPoints, 3);
     }
 
@@ -582,9 +494,7 @@ public class Navigation extends SPage {
     }
 
     public void progress() {
-        if (dirIndex >= currPathDir.get(0).size() - 1){
-           return;
-        }else{
+        if (dirIndex < currPathDir.get(0).size() - 1){
             unHighlightDirection();
             dirIndex += 1;
             String curNode = currPathDir.get(1).get(dirIndex);

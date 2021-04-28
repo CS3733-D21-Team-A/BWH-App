@@ -222,11 +222,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         int stepNum = 1;
 
+
+        List<Node> modifiedPath = new ArrayList<Node>();
         for(int i = 0; i < path.size(); i++) {
-            if(nodeIsUnimportant(path, path.get(i))){
-                path.remove(i);
+            if(!nodeIsUnimportant(path, path.get(i))){
+                modifiedPath.add(path.get(i));
             }
         }
+        path = modifiedPath;
+
 
         if(path.get(0).getNodeType().equals("ELEV") && path.get(1).getNodeType().equals("ELEV")){
             instructions.add(stepNum + ". Take the elevator to floor " + path.get(1).getFloor() + ".");
