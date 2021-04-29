@@ -7,6 +7,7 @@ public class PatientMainPage extends SMainPage{
     public void goHome(){
         sceneSwitch("PatientMainPage");
     }
+
     public void covidSurveyPage(ActionEvent actionEvent) {
         sceneSwitch("CovidSurvey");
     }

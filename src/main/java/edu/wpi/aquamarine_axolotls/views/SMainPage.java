@@ -34,14 +34,11 @@ public abstract class SMainPage extends SPage{
     @FXML
     public void mapP(ActionEvent actionEvent) {
         sceneSwitch("Navigation");
-
     }
-
 
     @FXML
     public void serviceReqP(ActionEvent actionEvent) {
         sceneSwitch("DefaultServicePage");
-
     }
 
 

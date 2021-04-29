@@ -10,12 +10,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class GuestMainPage extends SMainPage {
+
     public void goHome() {
         sceneSwitch("GuestMainPage");
-    }
-
-    @FXML
-    public void initialize() {
     }
 
     public void covidSurveyPage(ActionEvent actionEvent) {
