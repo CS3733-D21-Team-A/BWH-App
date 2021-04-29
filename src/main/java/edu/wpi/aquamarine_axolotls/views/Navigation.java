@@ -58,13 +58,9 @@ public class Navigation extends GenericMap {
         startLocation.setItems(options);
         destination.setItems(options);
 
-            stepByStep.setVisible(false);
-            listDirVBox.setVisible(false);
-            listDirVBox.toFront();
-
-        } catch (SQLException | IOException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+        stepByStep.setVisible(false);
+        listDirVBox.setVisible(false);
+        listDirVBox.toFront();
     }
 
     /**

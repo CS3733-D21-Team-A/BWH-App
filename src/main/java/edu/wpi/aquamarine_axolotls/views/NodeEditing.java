@@ -38,7 +38,6 @@ public class NodeEditing extends GenericMap {
     @FXML private JFXComboBox algoSelectBox;
     @FXML private HBox nodeT;
     @FXML private HBox nodeD;
-    @FXML private JFXButton edgesButton;
     @FXML private JFXComboBox nodeDropdown;
     @FXML private JFXTextField nodeID;
     @FXML private JFXTextField longName;
@@ -49,9 +48,6 @@ public class NodeEditing extends GenericMap {
     @FXML private JFXTextField floor;
     @FXML private JFXTextField building;
 
-    @FXML private RadioMenuItem exportButton;
-    @FXML private RadioMenuItem newCSVButton;
-    @FXML private RadioMenuItem mergeCSVButton;
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
 
@@ -139,76 +135,9 @@ public class NodeEditing extends GenericMap {
 
     }
 
-    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
-    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
-
-    public void zoomIn(ActionEvent actionEvent) {
-        if(zoom < 3){
-            zoomGroup.setScaleX(++zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
-
-    public void resetZoom(){
-        zoom = 1;
-        zoomGroup.setScaleX(1);
-        zoomGroup.setScaleY(1);
-    }
-
-    public void zoomOut(ActionEvent actionEvent) {
-        if(zoom > 1){
-            zoomGroup.setScaleX(--zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
-
-    public void resetMap(String floor) {
-        resetZoom();
-        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
-        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
-        FLOOR = floor;
-    }
-
-    public void resetMapAndDraw(String floor) {
-        resetMap(floor);
-        drawFloor(floor);
-    }
-
-    public void drawFloor(String floor){
-        resetMap(floor);
-
-        try {
-            for( Map<String, String> node : db.getNodes()){ if(node.get("FLOOR").equals(floor)) drawSingleNode(node); }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void changeFloor1() {
-        resetMapAndDraw("1");
-    }
-
-    public void changeFloorL2(ActionEvent actionEvent) {
-        resetMapAndDraw("L2");
-    }
-
-    public void changeFloorL1(ActionEvent actionEvent) {
-        resetMapAndDraw("L1");
-    }
-
-    public void changeFloor2(ActionEvent actionEvent) {
-        resetMapAndDraw("2");
-    }
-
-    public void changeFloor3(ActionEvent actionEvent) {
-        resetMapAndDraw("3");
-    }
-
-//    public void changeGroundFloor() {
-//        resetMapAndDraw("G");
-//    }
-
+    /**
+     * Clears all JFXTextFields in the node editing menu
+     */
     @FXML
     public void clearfields(){
         longName.clear();
