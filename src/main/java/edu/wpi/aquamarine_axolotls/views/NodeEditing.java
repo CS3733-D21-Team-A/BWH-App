@@ -75,6 +75,9 @@ public class NodeEditing extends GenericMap {
 
     CSVHandler csvHandler;
 
+    /**
+     * Initializes the node editing page by filling in dropdown boxes and importing data from the database
+     */
     @FXML
     public void initialize() {
 
@@ -218,6 +221,10 @@ public class NodeEditing extends GenericMap {
         building.clear();
     }
 
+    /**
+     * Handles the input of the user pressing the Delete button in the node editing screen by making appropriate
+     * text fields and dropdown boxes visible.
+     */
     @FXML
     public void pressDeleteButton(){
         nodeD.toFront();
@@ -236,6 +243,10 @@ public class NodeEditing extends GenericMap {
         state = "delete";
     }
 
+    /**
+     * Handles the event of the user pressing the Add button in the node editing screen by making appropriate
+     * text fields and dropdown boxes visible.
+     */
     @FXML
     public void pressAddButton(){
         nodeT.toFront();
@@ -254,6 +265,10 @@ public class NodeEditing extends GenericMap {
         state = "add";
     }
 
+    /**
+     * Handles the event of the user pressing the Add button in the node editing screen by making appropriate
+     * text fields and dropdown boxes visible.
+     */
     @FXML
     public void pressEditButton(){
         nodeD.toFront();
@@ -272,7 +287,10 @@ public class NodeEditing extends GenericMap {
         state = "edit";
     }
 
-
+    /**
+     * Handles the user pressing the Import and Overwrite button while in the node editing page by grabbing
+     * the node data from the CSV file and using that data to replace the existing node table
+     */
     public void newCSV() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -288,6 +306,10 @@ public class NodeEditing extends GenericMap {
         initialize(); //REFRESH TABLE
     }
 
+    /**
+     * Handles the user pressing the Import and Merge button while in the node editing page by grabbing
+     * the node data from the CSV file and adding that data to the existing node table
+     */
     public void mergeCSV() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -303,6 +325,10 @@ public class NodeEditing extends GenericMap {
         initialize(); //REFRESH TABLE
     }
 
+    /**
+     * Handles the user pressing the Export button while on the node editing page by extracting the node data from the
+     * database and saving it as a CSV file.
+     */
     public void exportCSV() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -316,6 +342,10 @@ public class NodeEditing extends GenericMap {
         }
     }
 
+    /**
+     * Deletes a given node from the database and map.
+     * @param current_nodeID The ID of the node to be deleted
+     */
     public void delete(String current_nodeID){
         try{
             if (db.nodeExists(current_nodeID) ) {
@@ -330,6 +360,10 @@ public class NodeEditing extends GenericMap {
         return;
     }
 
+    /**
+     * Adds a node to the map and database
+     * @param current_nodeID The ID of the node to be added
+     */
     public void add(String current_nodeID){
         int x=Integer.parseInt(xCoor.getText());
         int y=Integer.parseInt(yCoor.getText());
@@ -359,6 +393,11 @@ public class NodeEditing extends GenericMap {
         return;
     }
 
+    /**
+     * Updates the values of row in the node table based on the current values of the text field and dropdown box
+     * selections
+     * @param current_nodeID The ID of the node to be edited
+     */
     public void edit(String current_nodeID){
         try {
             if (db.nodeExists(current_nodeID)) {
@@ -416,6 +455,11 @@ public class NodeEditing extends GenericMap {
         }
     }
 
+    /**
+     * Handles the user pressing the Submit button while in th enode editing page based on whether the user was
+     * adding, editing, or deleting a node
+     * @throws SQLException If there is an error getting node data from the database
+     */
     @FXML
     public void submitfunction() throws SQLException {
         switch (state){
@@ -440,6 +484,9 @@ public class NodeEditing extends GenericMap {
         return;
     }
 
+    /**
+     * Sets the strategy to be used when pathfinding based on the current state of the algorithm selectio dropdown box
+     */
     @FXML
     public void selectAlgorithm() {
         if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
@@ -455,6 +502,9 @@ public class NodeEditing extends GenericMap {
         }
     }
 
+    /**
+     * Highlights the node selected by the user in the dropdown box
+     */
     @FXML
     public void highLightNodeFromSelector() {
         if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
@@ -470,6 +520,10 @@ public class NodeEditing extends GenericMap {
         }
     }
 
+    /**
+     * Switches the active page to EdgeEditing, allowing the user to edit edges instead of nodes
+     * @param actionEvent The user's mouse click on the dropdown box
+     */
     @FXML
     public void pressEdgeButton(ActionEvent actionEvent) {
         sceneSwitch("EdgeEditing");
@@ -497,7 +551,10 @@ public class NodeEditing extends GenericMap {
         gc.fillOval(x, y, radius, radius);
     }*/
 
-
+    /**
+     * Calculates the coordinates (rounded to the nearest int) of the location f the cursor when the mouse is clicked
+     * @param event The mouse click that triggers this action
+     */
     public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
         if (event.getButton().equals(MouseButton.PRIMARY)) {
             if (state.equals("add")) {
@@ -549,10 +606,12 @@ public class NodeEditing extends GenericMap {
                 else {
                     nodeDropdown.setValue(currClosest.getNodeID());
                 }
+
                 prevSelected = currSelected;
                 currSelected = currClosest;
-                drawSingleNode(prevSelected);
-                drawSingleNodeRed(currSelected);
+                GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+                drawSingleNode(prevSelected, gc, Color.BLUE);
+                drawSingleNode(currSelected, gc, Color.RED);
             }
         }
     }

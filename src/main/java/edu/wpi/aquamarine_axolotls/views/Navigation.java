@@ -17,6 +17,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -39,8 +40,6 @@ public class Navigation extends GenericMap {
     @FXML private VBox listOfDirections;
 
     ObservableList<String> options = FXCollections.observableArrayList();
-    DatabaseController db;
-    List<Node> validNodes = new ArrayList<>();
     private int firstNodeSelect = 0;
     private String firstNode;
     private List<String> stopList = new ArrayList<>();
@@ -313,7 +312,6 @@ public class Navigation extends GenericMap {
             Node end = getNodeFromValidID(curNode.substring(index+1));
             drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
         }
-
     }
 
     /**

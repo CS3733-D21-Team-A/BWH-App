@@ -90,7 +90,7 @@
                <children>
                   <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="1045.0">
                      <content>
-                        <Canvas fx:id="mapCanvas" height="706.0" onMouseClicked="#getNearestNode" width="1056.0" />
+                        <Canvas fx:id="mapCanvas" height="706.0" onMouseClicked="#addDestination" width="1056.0" />
                      </content>
                   </ScrollPane>
                   <ToolBar layoutX="910.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="162.0" prefWidth="112.0">
