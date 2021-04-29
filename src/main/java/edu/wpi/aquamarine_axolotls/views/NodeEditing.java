@@ -107,8 +107,6 @@ public class NodeEditing extends GenericMap {
         else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
 
 
-
-
         nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
         lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
         sNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
@@ -464,8 +462,9 @@ public class NodeEditing extends GenericMap {
                 if (n.getNodeID().equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = n;
-                    drawSingleNode(prevSelected);
-                    drawSingleNodeRed(currSelected);
+                    GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+                    drawSingleNode(prevSelected, gc, Color.BLUE);
+                    drawSingleNode(currSelected, gc, Color.RED);
                 }
             }
         }

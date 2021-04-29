@@ -25,7 +25,7 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 
-public class Navigation extends SPage {
+public class Navigation extends GenericMap {
 
     @FXML private JFXComboBox startLocation;
     @FXML private JFXComboBox destination;
@@ -68,43 +68,10 @@ public class Navigation extends SPage {
         }
     }
 
-    private Node getNodeFromValidID(String ID) {
-        for (Node n : validNodes) {
-            if (n.getNodeID().equals(ID)) return n;
-        }
-        return null;
-    }
-
     /**
-     * Scales the x coordinate from table for image (5000,3400)
-     *
-     * @param xCoord x coordinate from table
-     * @return scaled X coordinate
+     * Clears out everything relating to navigation, including the stop list and path, and redraws the current floor
      */
-    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
-    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
-
-    public void zoomIn(ActionEvent actionEvent) {
-        if(zoom < 3){
-            zoomGroup.setScaleX(++zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
-
-    public void resetZoom(){
-        zoom = 1;
-        zoomGroup.setScaleX(1);
-        zoomGroup.setScaleY(1);
-    }
-
-    public void zoomOut(ActionEvent actionEvent) {
-        if(zoom > 1){
-            zoomGroup.setScaleX(--zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
-
-    public void clearNodes() {
+    public void clearNav() {
         stopList.clear();
         currPath.clear();
         currPathDir.clear();
@@ -157,28 +124,22 @@ public class Navigation extends SPage {
 
 
     /**
-     * Alternate declaration of findPath() that takes a specific start and end, used for clicking nodes on the map directly
+     * Uses the A-star algorithm to find the shortest path between a given start and end node
      * @param start String, long name of start node
      * @param end   String, long name of end node
      */
     public void findPathSingleSegment(String start, String end) {
         double etaTotal, minutes, seconds;
-        //currPath.clear();
-        //for (int i = 0; i < stopList.size() - 1; i++) {
-            //currPath.addAll(searchAlgorithmContext.getPath(stopList.get(i), stopList.get(i + 1)));
-        //}
-
 
         currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
         System.out.println(SearchAlgorithmContext.getSearchAlgorithmContext().context);
-
 
         etaTotal = SearchAlgorithmContext.getSearchAlgorithmContext().getETA(currPath);
         minutes = Math.floor(etaTotal);
         seconds = Math.floor((etaTotal - minutes) * 60);
         etaLabel.setText((int) minutes + " min " + (int) seconds + " sec");
 
-        if(currPath.isEmpty()) return;
+        if (currPath.isEmpty()) return;
 
         firstNodeSelect = 0;
         activePath = 1;
@@ -209,6 +170,9 @@ public class Navigation extends SPage {
         unHighlightDirection();
     }
 
+    /**
+     * Starts the text directions once they're initialized
+     */
     public void startDir() {
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
@@ -243,6 +207,9 @@ public class Navigation extends SPage {
         }
     }
 
+    /**
+     * Moves back to the previous step in the text directions
+     */
     public void regress() {
         if (dirIndex == 0){
             return;
@@ -286,6 +253,10 @@ public class Navigation extends SPage {
         return curFloor;
     }
 
+    /**
+     * Changes the icon for the current text direction
+     * @param direction The current text direction, used to determine what icon is needed
+     */
     public void changeArrow(String direction){ //update arrow
         Image arrowImg;
         if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
@@ -298,6 +269,9 @@ public class Navigation extends SPage {
         arrow.setImage(arrowImg);
     }
 
+    /**
+     * Adds all of the text directions to the visual list of directions on the screen
+     */
     public void initializeDirections() {                    // adds each step to the list of direction
         cancelDir();
         listOfDirections.getChildren().clear();
@@ -308,6 +282,9 @@ public class Navigation extends SPage {
         }
     }
 
+    /**
+     * Highlights the current portion of the map that the current direction is on
+     */
     public void highlightDirection(){
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         String curNode = currPathDir.get(1).get(dirIndex);
@@ -318,20 +295,23 @@ public class Navigation extends SPage {
 
             Node end = getNodeFromValidID(curNode.substring(index+1));
             System.out.println(end);
-            drawNodes(start, end, Color.RED, Color.BLUE, Color.RED );
+            drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
             return;
         }
         drawSingleNode(getNodeFromValidID(curNode), gc, Color.RED);
     }
 
+    /**
+     * Removes the highlight from the current part of the map
+     */
     public void unHighlightDirection(){
         String curNode = currPathDir.get(1).get(dirIndex);
         if (curNode.contains(",")){
             int index = curNode.indexOf(",");
             Node start = getNodeFromValidID(curNode.substring(0,index));
             Node end = getNodeFromValidID(curNode.substring(index+1));
-            drawNodes(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
+            drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
         }
 
     }
