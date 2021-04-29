@@ -9,54 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
 public class EmployeeServiceRequestPage extends SPage {
-        @FXML
-        private JFXButton foodDeliveryB;
+
 
         @FXML
-        private JFXButton languageInterpretersB;
-
-        @FXML
-        private JFXButton giftDeliveryButton;
-
-        @FXML
-        private JFXButton sanitationB;
-
-        @FXML
-        private JFXButton laundryB;
-
-        @FXML
-        private JFXButton medicineB;
-        @FXML
-        private JFXButton floralDeliveryB;
-
-        @FXML
-        private JFXButton religiousReqB;
-
-        @FXML
-        private JFXButton internalTranB;
-
-        @FXML
-        private JFXButton externalTranB;
-
-        @FXML
-        private JFXButton backB;
-
-        @FXML
-        private JFXHamburger burger;
-
-        @FXML
-        private JFXButton shutDownB;
-        @FXML
-        private VBox box;
-
-        @FXML
-        HamburgerBasicCloseTransition transition;
-
-        @FXML
-        private JFXDrawer menuDrawer;
-        @FXML
-        private JFXButton viewReqB;
-
+        HamburgerBasicCloseTransition transition
         // Button Presses for Default Service Page, each button leads to its service request form
         // NOTE: code feels redundant, maybe make method?
 
@@ -67,7 +23,6 @@ public class EmployeeServiceRequestPage extends SPage {
         public void floralDelivP(ActionEvent actionEvent) {
             sceneSwitch("FloralDelivery");
         }
-
 
         @FXML
         public void viewReqP(ActionEvent actionEvent) {

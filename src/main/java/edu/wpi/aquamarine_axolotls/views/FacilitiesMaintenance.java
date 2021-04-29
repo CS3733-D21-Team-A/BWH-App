@@ -48,12 +48,6 @@ public class FacilitiesMaintenance extends GenericServiceRequest {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-    }
-
-
-    public void loadHelp(ActionEvent actionEvent) {
-        popUp("Helpful information:", "\nPlease provide your...\n first name\n  Last name\n   the location of service\n   if the maintenance is urgent\n  and a brief description");
     }
 
 
@@ -73,22 +67,11 @@ public class FacilitiesMaintenance extends GenericServiceRequest {
             return;
         }
 
-        Random r = new Random();
-        int id = Math.abs(r.nextInt());
-        Map<String, String> shared = new HashMap<String, String>();
-        shared.put("REQUESTID", String.valueOf(id));
-        shared.put("AUTHORID", Aapp.username);
-        shared.put("STATUS", "Unassigned");
-        shared.put("LOCATIONID", loc);
-        shared.put("FIRSTNAME", fn);
-        shared.put("LASTNAME", ln);
-        shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FACILITIES_MAINTENANCE));
-
+        Map<String, String> shared = getSharedValues(SERVICEREQUEST.FACILITIES_MAINTENANCE);
         Map<String, String> facilities = new HashMap<String, String>();
         facilities.put("REQUESTID", shared.get("REQUESTID"));
         facilities.put("URGENT", Boolean.toString(yes));
         facilities.put("DESCRIPTION", description.toString());
-
 
         try {
             db.addServiceRequest(shared, facilities);

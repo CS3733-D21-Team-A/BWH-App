@@ -22,19 +22,12 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class InternalTransportation extends SServiceRequest {
+public class InternalTransportation extends GenericServiceRequest {
 
     @FXML
     private TextField doctorFirstName;
     @FXML
     private TextField doctorLastName;
-
-    @FXML
-    private TextField patientFirstName;
-
-    @FXML
-    private TextField patientLastName;
-
     @FXML
     private TextField currentRoom;
     @FXML
@@ -43,20 +36,15 @@ public class InternalTransportation extends SServiceRequest {
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
-
-        db = new DatabaseController();
-
+     startUp();
     }
 
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
         String dfn = doctorFirstName.getText();
         String dln = doctorLastName.getText();
-        String pfn = patientFirstName.getText();
-        String pln = patientLastName.getText();
+        String pfn = firstName.getText();
+        String pln = lastName.getText();
         String crn = currentRoom.getText();
         String nrn = newRoom.getText();
 

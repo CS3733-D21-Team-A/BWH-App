@@ -19,21 +19,6 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 
 public class AdminMainPage extends SMainPage {
-    @FXML
-    private JFXButton nodeEditing;
-
-    @FXML
-    private JFXButton edgeEditing;
-
-    @FXML
-    private JFXHamburger burger;
-    @FXML
-    private JFXDrawer menuDrawer;
-
-    @FXML
-    private VBox box;
-
-    private HamburgerBasicCloseTransition transition;
 
 
     public void initialize() throws IOException {
@@ -59,8 +44,6 @@ public class AdminMainPage extends SMainPage {
     public void addUser(ActionEvent actionEvent) {
         sceneSwitch("AdminNewUser");
     }
-
-
 
 
 }

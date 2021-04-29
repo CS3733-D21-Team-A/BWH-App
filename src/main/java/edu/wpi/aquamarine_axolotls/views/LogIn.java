@@ -29,8 +29,6 @@ import java.util.Map;
 
 public class LogIn extends SPage{
 
-    @FXML private StackPane stackPane;
-    @FXML private JFXButton backB;
     @FXML private JFXTextField username;
     @FXML private JFXPasswordField password;
     DatabaseController db;
@@ -63,14 +61,9 @@ public class LogIn extends SPage{
 
     }
 
-
-
-
    public void  forgottenPassword(){
         sceneSwitch ( "ForgotPassword" );
    }
-
-
 
     public void goHome(javafx.event.ActionEvent event){
         try {

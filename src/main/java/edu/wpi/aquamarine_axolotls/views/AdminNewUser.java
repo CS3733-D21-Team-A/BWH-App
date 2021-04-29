@@ -92,10 +92,6 @@ public class AdminNewUser extends SPage {
 
         popUp ( "Account Success", "\n\n\n\n\nAdmin, the account you submitted was successfully created." );
         sceneSwitch("AdminMainPage");
-
     }
-
-
-
-    }
+}
 

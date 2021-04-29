@@ -30,13 +30,7 @@ import java.util.Random;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.SERVICEREQUEST_NAMES;
 
 
-public class GiftDelivery extends SServiceRequest {
-
-    @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
+public class GiftDelivery extends GenericServiceRequest {
 
     @FXML
     private JFXTimePicker deliveryTime;
@@ -49,19 +43,13 @@ public class GiftDelivery extends SServiceRequest {
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController ();
+        startUp();
         giftOptions.setItems(FXCollections
                 .observableArrayList("Hospital T-Shirt", "Teddy Bear", "Hospital Mug"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
         locationDropdown.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
     }
-
-
-
 
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
@@ -85,34 +73,17 @@ public class GiftDelivery extends SServiceRequest {
 
         try {
             //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            String id = String.valueOf(Math.abs(r.nextInt()));
-            shared.put("REQUESTID", id);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(room));
-            shared.put("FIRSTNAME", fn);
-            shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.GIFT_DELIVERY));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.GIFT_DELIVERY);
             Map<String, String> giftR = new HashMap<String, String>();
             giftR.put("REQUESTID", shared.get("REQUESTID"));
             giftR.put("DELIVERYTIME", dt); //TODO: MISSING NOTE
             giftR.put("GIFTTYPE", giftOptions.getSelectionModel().getSelectedItem().toString());
             db.addServiceRequest(shared, giftR);
-            db.close();
             submit();
-
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
     }
 
 }

@@ -10,6 +10,4 @@ public class PatientMainPage extends SMainPage{
     public void covidSurveyPage(ActionEvent actionEvent) {
         sceneSwitch("CovidSurvey");
     }
-
-
 }

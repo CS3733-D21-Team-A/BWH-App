@@ -42,8 +42,6 @@ public class FloralDelivery extends GenericServiceRequest {
         vaseOptions.setItems(FXCollections
                 .observableArrayList("Bouquet Vase","Square Vase", "Cylinder Vase", "Milk Bottle", "Pedestal Vase")
         );
-
-
     }
 
 

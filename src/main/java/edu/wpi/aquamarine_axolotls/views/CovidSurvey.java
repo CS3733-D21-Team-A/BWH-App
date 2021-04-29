@@ -79,12 +79,6 @@ public class CovidSurvey extends SPage {
     private JFXRadioButton no11;
 
 
-    @FXML
-    private GridLayout grid;
-
-    @FXML
-    private JFXScrollPane scrollPane;
-
     HamburgerBasicCloseTransition transition;
     private ArrayList<String> nodeIDS;
 
@@ -102,9 +96,6 @@ public class CovidSurvey extends SPage {
         final ToggleGroup group9 = new ToggleGroup();
         final ToggleGroup group10 = new ToggleGroup();
         final ToggleGroup group11 = new ToggleGroup();
-
-
-
 
         yes1.setToggleGroup(group1);
         no1.setToggleGroup(group1);

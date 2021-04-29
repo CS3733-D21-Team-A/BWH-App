@@ -20,14 +20,7 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class LaundryService extends SServiceRequest {
-
-    @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
-
+public class LaundryService extends GenericServiceRequest {
     @FXML
     private JFXTimePicker deliveryTime;
 
@@ -53,11 +46,9 @@ public class LaundryService extends SServiceRequest {
 
     @FXML
     public void initialize() { //TODO: fill these out
+        startUp();
         loadOptions.setItems(FXCollections
                 .observableArrayList("Delicates", "Light", "Heavy"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );

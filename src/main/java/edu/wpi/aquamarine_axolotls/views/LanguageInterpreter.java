@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class LanguageInterpreter extends SServiceRequest {
+public class LanguageInterpreter extends GenericServiceRequest {
 
     @FXML
     public JFXComboBox languageSelect;
@@ -36,16 +36,14 @@ public class LanguageInterpreter extends SServiceRequest {
 
     @FXML
     public void initialize() {
+        startUp();
         languageSelect.setItems(FXCollections
                 .observableArrayList("Espanol", "Portugues", "Francais", "Polskie"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
+
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
     }
-
 
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {

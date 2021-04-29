@@ -17,17 +17,10 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class Sanitation extends SServiceRequest {
+public class Sanitation extends GenericServiceRequest {
 
 	@FXML
 	private JFXComboBox<String> biohazard;
-
-	@FXML
-	private JFXTextField firstName;
-
-	@FXML
-	private JFXTextField lastName;
-
 	@FXML
 	private JFXComboBox<String> sanitLocation; //note: location is a reserved keyword and cannot be used
 	@FXML
@@ -36,9 +29,7 @@ public class Sanitation extends SServiceRequest {
 
 	@FXML
 	public void initialize() {
-		nodeIDS = new ArrayList<>();
-		nodeIDS.add("FINFO00101");
-		nodeIDS.add("EINFO00101");
+		startUp();
 		sanitLocation.setItems(FXCollections.observableArrayList("75 Lobby Information Desk", "Connors Center Security Desk Floor 1"));
 		biohazard.setItems(FXCollections.observableArrayList("Yes", "No"));
 	}
@@ -64,35 +55,18 @@ public class Sanitation extends SServiceRequest {
 		}
 
 		try {
-			DatabaseController db = new DatabaseController();
-			Map<String, String> shared = new HashMap<>();
-			Random r = new Random();
-			int id = Math.abs(r.nextInt());
-			shared.put("REQUESTID", String.valueOf(id));
-			shared.put("STATUS", "Unassigned");
-			shared.put("LOCATIONID", String.valueOf(nodeIDS.get(loc)));
-			shared.put("FIRSTNAME", fn);
-			shared.put("LASTNAME", ln);
-			shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.SANITATION));
-
-			Map<String, String> sanitation = new HashMap<>();
-
-			sanitation.put("REQUESTID", String.valueOf(id));
+			Map<String, String> shared = getSharedValues(SERVICEREQUEST.SANITATION);
+			Map<String, String> sanitation = new HashMap<String, String>();
+			sanitation.put("REQUESTID", shared.get("REQUESTID"));
 			sanitation.put("BIOHAZARD", bioh);
 			sanitation.put("NOTE", desc);
 			db.addServiceRequest(shared, sanitation);
 			submit();
-		} catch (SQLException | URISyntaxException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void menu() {
-		if (transition.getRate() == -1) menuDrawer.open();
-		else menuDrawer.close();
-		transition.setRate(transition.getRate() * -1);
-		transition.play();
-	}
 
 
 }

@@ -112,10 +112,8 @@ public class ExternalTransport extends GenericServiceRequest{
             medicineR.put("EMERGENCYLEVEL",lemr);
             db.addServiceRequest(shared, medicineR);
             submit();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
+            }
+        catch (SQLException e) {
             e.printStackTrace();
         }
     }

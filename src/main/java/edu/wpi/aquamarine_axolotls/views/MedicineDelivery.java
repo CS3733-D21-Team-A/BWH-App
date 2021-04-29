@@ -30,13 +30,7 @@ import java.util.Random;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.SERVICEREQUEST_NAMES;
 
 
-public class MedicineDelivery extends SServiceRequest {
-
-    @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
+public class MedicineDelivery extends GenericServiceRequest {
 
     @FXML
     private TextField docFirstName;
@@ -59,12 +53,10 @@ public class MedicineDelivery extends SServiceRequest {
 
     @FXML
     public void initialize() {
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
-        roomNumber.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
-        );
+        startUp();
+        //roomNumber.setItems(FXCollections
+          //      .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
+        //);
     }
 
 
@@ -95,25 +87,16 @@ public class MedicineDelivery extends SServiceRequest {
         try {
             DatabaseController db = new DatabaseController();
             //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            String id = String.valueOf(Math.abs(r.nextInt()));
-            shared.put("REQUESTID", id);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(room));
-            shared.put("FIRSTNAME", fn);
-            shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.MEDICINE_DELIVERY));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.MEDICINE_DELIVERY);
             Map<String, String> medicineR = new HashMap<String, String>();
-            medicineR.put("REQUESTID", id);
+            medicineR.put("REQUESTID", shared.get("REQUESTID"));
             medicineR.put("DELIVERYTIME", dt);
             medicineR.put("MEDICATION", med);
             medicineR.put("DOSAGE", dose);
             medicineR.put("DOCFIRSTNAME", dfn);
             medicineR.put("DOCLASTNAME", dln);
+
             db.addServiceRequest(shared, medicineR);
-            db.close();
             submit();
 
         } catch (SQLException e) {
@@ -122,11 +105,6 @@ public class MedicineDelivery extends SServiceRequest {
             e.printStackTrace();
         }
     }
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
+
 
 }

@@ -55,10 +55,7 @@ public abstract class SServiceRequest extends SPage{
     }
 
 
-    @FXML
-    public void loadHelp() {
-        popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, time you would like to receive the request patient's room number, and an optional message ");
-    }
+
     @FXML
     public void popUp(String title, String disp){
         final Stage myDialog = new Stage();
