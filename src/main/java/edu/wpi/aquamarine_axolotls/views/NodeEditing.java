@@ -33,10 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class NodeEditing extends SEditing {
-    @FXML public JFXButton deleteButton;
+public class NodeEditing extends GenericMap {
     @FXML private JFXButton addButton;
-    @FXML private JFXButton editButton;
     @FXML private JFXComboBox algoSelectBox;
     @FXML private HBox nodeT;
     @FXML private HBox nodeD;
@@ -69,26 +67,18 @@ public class NodeEditing extends SEditing {
 
     @FXML private JFXButton clearButton;
 
-    @FXML private ScrollPane mapScrollPane;
-    @FXML private Canvas mapCanvas;
-
-
-
-    private Map<String, String> floors;
-    static String FLOOR = "1";
-    private Group zoomGroup;
-    private int zoom;
-    List<Node> validNodes = new ArrayList<>();
     private Node prevSelected;
     private Node currSelected;
 
 
     String state = "";
-    DatabaseController db;
+
     CSVHandler csvHandler;
 
     @FXML
     public void initialize() {
+
+        startUp();
 
         table.setEditable(false);
         table.getItems().clear();
@@ -140,46 +130,12 @@ public class NodeEditing extends SEditing {
         submissionButton.setVisible(false);
         clearButton.setVisible(false);
 
-        try {
-            db = new DatabaseController();
-            csvHandler = new CSVHandler(db);
-            List<Map<String, String>> nodes = db.getNodes();
 
-            for (Map<String, String> node : nodes) {
-                options.add(node.get("NODEID"));
-                Node cur = new Node(node.get("NODEID"),
-                        Integer.parseInt(node.get("XCOORD")),
-                        Integer.parseInt(node.get("YCOORD")),
-                        node.get("FLOOR"), node.get("BUILDING"),
-                        node.get("NODETYPE"), node.get("LONGNAME"),
-                        node.get("SHORTNAME")
-                );
-                table.getItems().add(cur);
-                validNodes.add(cur);
-                drawSingleNode(cur);
-            }
-            nodeDropdown.setItems(options);
-            floors = new HashMap<>();
-            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
-            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
-            //floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
-            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
-            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
-            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
-
-            mapScrollPane.pannableProperty().set(true);
-            Group contentGroup = new Group();
-            zoomGroup = new Group();
-            contentGroup.getChildren().add(zoomGroup);
-            zoomGroup.getChildren().add(mapCanvas);
-            mapScrollPane.setContent(contentGroup);
-            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
-            drawFloor(FLOOR);
-            zoom = 1;
-
-        } catch (SQLException | IOException | URISyntaxException e) {
-            e.printStackTrace();
+        for (Map<String, String> node : nodes) {
+            drawSingleNode(node, mapCanvas.getGraphicsContext2D(), Color.RED);
         }
+        nodeDropdown.setItems(options);
+
     }
 
     public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
@@ -520,7 +476,7 @@ public class NodeEditing extends SEditing {
         sceneSwitch("EdgeEditing");
     }
 
-    public void drawSingleNode(Map<String, String> node) {
+/*    public void drawSingleNode(Map<String, String> node) {
         double x = xScale(Integer.parseInt(node.get("XCOORD")));
         double y = yScale(Integer.parseInt(node.get("YCOORD")));
         double radius = 3;
@@ -540,19 +496,7 @@ public class NodeEditing extends SEditing {
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         gc.setFill(Color.BLUE);
         gc.fillOval(x, y, radius, radius);
-    }
-
-
-    public void drawSingleNodeRed(Node node) {
-        double x = xScale(node.getXcoord());
-        double y = yScale(node.getYcoord());
-        double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.RED);
-        gc.fillOval(x, y, radius, radius);
-    }
+    }*/
 
 
     public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {

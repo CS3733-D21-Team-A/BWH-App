@@ -183,6 +183,17 @@ public class DatabaseController implements AutoCloseable {
 		nodeTable.emptyTable();
 	}
 
+	/**
+	 * Returns all nodes that contain the input value in the provided column
+	 * @param column a column name for a given
+	 * @param value a value to query for in a given column
+	 * @return all rows that contain value in the provided column .
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getNodesByValue(String column, String value) throws SQLException {
+		return nodeTable.getEntriesByValue(column, value);
+	} // TODO : add test cases for this
+
 	// ===== EDGES =====
 
 	/**

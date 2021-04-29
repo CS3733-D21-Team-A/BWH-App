@@ -1,8 +1,9 @@
 package edu.wpi.aquamarine_axolotls.views;
 
+import edu.wpi.aquamarine_axolotls.views.SMainPage;
 import javafx.event.ActionEvent;
 
-public class EmployeeMainPage extends SMainPage{
+public class EmployeeMainPage extends SMainPage {
 
     public void goHome(){
         sceneSwitch("PatientMainPage");

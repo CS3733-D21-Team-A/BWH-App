@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EdgeEditing extends SEditing{
+public class EdgeEditing extends GenericMap{
     @FXML public JFXButton deleteButton;
     @FXML public JFXComboBox algoSelectBox;
     @FXML private JFXButton addButton;
@@ -53,21 +53,12 @@ public class EdgeEditing extends SEditing{
     @FXML private Label submissionlabel;
     @FXML private JFXButton submissionButton;
 
-    @FXML Canvas mapCanvas;
-    @FXML ScrollPane mapScrollPane;
-
-
     @FXML private TableView table;
     @FXML private TableColumn edgeIdCol;
     @FXML private TableColumn startNodeCol;
     @FXML private TableColumn endNodeCol;
 
-    private Map<String, String> floors;
-    static String FLOOR = "1";
-    private Group zoomGroup;
-    private int zoom;
     List<Edge> validEdges = new ArrayList<>();
-    List<Node> validNodes = new ArrayList<>();
 
     String state = "";
 
@@ -76,6 +67,8 @@ public class EdgeEditing extends SEditing{
 
     @FXML
     public void initialize() {
+
+        startUp();
 
         ObservableList<String> options = FXCollections.observableArrayList();
         ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
@@ -138,22 +131,6 @@ public class EdgeEditing extends SEditing{
             endNodeDropdown.setItems(nodeOptions);
             edgeDropdown.setItems(edgeOptions);
             floors = new HashMap<>();
-            //floors.put("G", "edu/wpi/aquamarine_axolotls/img/groundFloor.png");
-            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
-            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
-            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
-            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
-            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
-
-            mapScrollPane.pannableProperty().set(true);
-            Group contentGroup = new Group();
-            zoomGroup = new Group();
-            contentGroup.getChildren().add(zoomGroup);
-            zoomGroup.getChildren().add(mapCanvas);
-            mapScrollPane.setContent(contentGroup);
-            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
-            drawFloor(FLOOR);
-            zoom = 1;
         } catch (SQLException | IOException | URISyntaxException e){
             e.printStackTrace();
         }
@@ -203,53 +180,8 @@ public class EdgeEditing extends SEditing{
 //        }
     }
 
-    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
-    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
 
-    public void resetMap(String floor) {
-        resetZoom();
-        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
-        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(floor)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
-        FLOOR = floor;
-    }
-
-    public void resetMapAndDraw(String floor) {
-        resetMap(floor);
-        drawFloor(floor);
-    }
-
-    public void zoomIn(ActionEvent actionEvent) {
-        if(zoom < 3){
-            zoomGroup.setScaleX(++zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
-
-    public void resetZoom(){
-        zoom = 1;
-        zoomGroup.setScaleX(1);
-        zoomGroup.setScaleY(1);
-    }
-
-    public void zoomOut(ActionEvent actionEvent) {
-        if(zoom > 1){
-            zoomGroup.setScaleX(--zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
-
-    public void drawFloor(String floor){
-        resetMap(floor);
-        try {
-            for( Map<String, String> edge : db.getEdges()){
-                drawSingleEdge(edge);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void drawSingleEdge(Edge edge) {
+/*    private void drawSingleEdge(Edge edge) {
         Line line = new Line();
         try {
             Map<String, String> startNode = db.getNode(edge.getStartNode());
@@ -264,9 +196,9 @@ public class EdgeEditing extends SEditing{
             e.printStackTrace();
         }
         line.setStroke(Color.RED);
-    }
+    }*/
 
-    private void drawSingleEdge(Map<String, String> edge) {
+/*    private void drawSingleEdge(Map<String, String> edge) {
         Line line = new Line();
         try {
             Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
@@ -282,8 +214,8 @@ public class EdgeEditing extends SEditing{
             e.printStackTrace();
         }
         line.setStroke(Color.RED);
-    }
-
+    }*/
+/*
     public void drawSingleNode(Map<String, String> node) {
         double x = xScale(Integer.parseInt(node.get("XCOORD")));
         double y = yScale(Integer.parseInt(node.get("YCOORD")));
@@ -293,32 +225,12 @@ public class EdgeEditing extends SEditing{
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         gc.setFill(Color.BLUE);
         gc.fillOval(x, y, radius, radius);
-    }
+    }*/
 
-    //public void changeGroundFloor() {
-//        resetMapAndDraw("G");
-//    }
-
-    public void changeFloor1() {
-        resetMapAndDraw("1");
-    }
-
-    public void changeFloor2() {
-        resetMapAndDraw("2");
-    }
-
-    public void changeFloor3() {
-        resetMapAndDraw("3");
-    }
-
-    public void changeFloorL1() {
-        resetMapAndDraw("L1");
-    }
-
-    public void changeFloorL2() {
-        resetMapAndDraw("L2");
-    }
-
+    /**
+     * Button press that sets unused fields to be hidden, and needed fields to be visible. Also sets
+     * state so that the desired add action will happen.
+     */
     public void pressAddButton() {
         edgeT.toFront();
         edgeDropdown.setVisible(false);
@@ -330,6 +242,10 @@ public class EdgeEditing extends SEditing{
         state = "add";
     }
 
+    /**
+     * Button press that sets unused fields to be hidden, and needed fields to be visible. Also sets
+     * state so that upon submition the desired edit will happen.
+     */
     public void pressEditButton() {
         edgeD.toFront();
         edgeDropdown.setVisible(true);
@@ -341,6 +257,60 @@ public class EdgeEditing extends SEditing{
         state = "edit";
     }
 
+    /**
+     * Button press that sets unused fields to be hidden, and needed fields to be visible. Also sets
+     * state so that upon submission the desired deletion will happen.
+     */
+    @FXML
+    public void pressDeleteButton(){
+        edgeD.toFront();
+        edgeDropdown.setVisible(true);
+        edgeIDtextbox.setVisible(false);
+        startNodeDropdown.setVisible(false);
+        endNodeDropdown.setVisible(false);
+        submissionButton.setVisible(true);
+
+        state = "delete";
+    }
+
+    /**
+     * Clears user inputs from all editable fields
+     */
+    @FXML
+    public void clearfields(){
+        edgeIDtextbox.clear();
+        startNodeDropdown.getSelectionModel().clearSelection();
+        endNodeDropdown.getSelectionModel().clearSelection();
+    }
+
+    /**
+     * switches to node editing
+     */
+    public void pressNodeButton() {
+        sceneSwitch("NodeEditing");
+    }
+
+    /**
+     * Changes the algorithm that will be used for navigation.
+     */
+    public void selectAlgorithm() {
+        if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
+            if(algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            }
+        }
+    }
+}
+
+    /**
+     * Overwrites current csv with the selected csv
+     */
     public void newCSV() { //still in the works
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -358,6 +328,9 @@ public class EdgeEditing extends SEditing{
         initialize(); //REFRESH TABLE
     }
 
+    /**
+     * Merges the selected CSV together with the existing one
+     */
     public void mergeCSV() { //still in the works
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -375,6 +348,9 @@ public class EdgeEditing extends SEditing{
         initialize(); //REFRESH TABLE
     }
 
+    /**
+     * Downloads the current list of edges to a CSV
+     */
     public void exportCSV() { //still in the works
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
@@ -390,6 +366,9 @@ public class EdgeEditing extends SEditing{
         }
     }
 
+    /**
+     * Deletes a edge based on user selection
+     */
     public void delete(){
         String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString();
         System.out.println(edgeID);
@@ -407,6 +386,9 @@ public class EdgeEditing extends SEditing{
         return;
     }
 
+    /**
+     * Adds an edge based on user selection
+     */
     public void add(){
         String edgeID = edgeIDtextbox.getText();
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem().toString();
@@ -436,6 +418,9 @@ public class EdgeEditing extends SEditing{
         }
     }
 
+    /**
+     * Edits an edge based on user selection
+     */
     public void edit(){
         String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString(); //TODO: GIVE WARNING ON NULL EDGEID
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem() == null ? "" : startNodeDropdown.getSelectionModel().getSelectedItem().toString();
@@ -468,6 +453,9 @@ public class EdgeEditing extends SEditing{
 
     }
 
+    /**
+     * Facilitates changing the edge map based on the current state of the program
+     */
     @FXML
     public void submitfunction() {
         switch(state){
@@ -488,28 +476,7 @@ public class EdgeEditing extends SEditing{
         initialize();
     }
 
-    @FXML
-    public void clearfields(){
-        edgeIDtextbox.clear();
-        startNodeDropdown.getSelectionModel().clearSelection();
-        endNodeDropdown.getSelectionModel().clearSelection();
-    }
 
-    @FXML
-    public void pressDeleteButton(){
-        edgeD.toFront();
-        edgeDropdown.setVisible(true);
-        edgeIDtextbox.setVisible(false);
-        startNodeDropdown.setVisible(false);
-        endNodeDropdown.setVisible(false);
-        submissionButton.setVisible(true);
-
-        state = "delete";
-    }
-
-    public void pressNodeButton() {
-        sceneSwitch("NodeEditing");
-    }
 
 //    public void changeFloorNodes(){
 //        edgeGridAnchor.getChildren().clear();
@@ -577,24 +544,4 @@ public class EdgeEditing extends SEditing{
 //
 //    }
 
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
 
-    public void selectAlgorithm(ActionEvent actionEvent) {
-        if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
-            if(algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")){
-                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
-            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")){
-                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
-            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")){
-                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
-            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
-                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
-            }
-        }
-    }
-}
