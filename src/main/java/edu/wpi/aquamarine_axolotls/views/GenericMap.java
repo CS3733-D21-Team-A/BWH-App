@@ -164,7 +164,7 @@ public class GenericMap extends SPage{
      */
     public void drawNodes(Color colorOfNodes) throws SQLException{
         for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
-            drawSingleNode(node, mapCanvas.getGraphicsContext2D(), colorOfNodes);
+            drawSingleNode(node, colorOfNodes);
         }
     }
 
@@ -207,7 +207,7 @@ public class GenericMap extends SPage{
      * @param y y coord
      * @param color color to fill the cicle
      */
-    private void drawSingleNode(double x, double y, Color color){
+    public void drawSingleNode(double x, double y, Color color){
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
@@ -228,7 +228,7 @@ public class GenericMap extends SPage{
             GraphicsContext gc = mapCanvas.getGraphicsContext2D();
             gc.setStroke(edgeCol);
             gc.strokeLine(xScale(Integer.parseInt(snode.get("XCOORD"))), yScale(Integer.parseInt(snode.get("YCOORD"))),
-                            xScale(Integer.parseInt(enode.get("XCOORD"))), yScale(Integer.parseInt()enode.get("YCOORD")));
+                            xScale(Integer.parseInt(enode.get("XCOORD"))), yScale(Integer.parseInt(enode.get("YCOORD"))));
 
             drawSingleNode(snode, snodeCol);
             drawSingleNode(enode, enodeCol);
@@ -335,7 +335,7 @@ public class GenericMap extends SPage{
         double eNodeX = xScale(Integer.parseInt(enode.get("XCOORD")));
         double eNodeY = yScale(Integer.parseInt(enode.get("YCOORD")));
 
-        return findDistance(sNodeX, sNodeY, eNodeX, eNodeY);;
+        return findDistance(sNodeX, sNodeY, eNodeX, eNodeY);
     }
 
     /**

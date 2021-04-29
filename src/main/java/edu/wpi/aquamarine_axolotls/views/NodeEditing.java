@@ -129,7 +129,7 @@ public class NodeEditing extends GenericMap {
 
 
         for (Map<String, String> node : nodes) {
-            drawSingleNode(node, mapCanvas.getGraphicsContext2D(), Color.RED);
+            drawSingleNode(node, Color.RED);
         }
         nodeDropdown.setItems(options);
 
