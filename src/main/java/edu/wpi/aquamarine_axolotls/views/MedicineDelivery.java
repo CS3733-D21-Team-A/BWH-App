@@ -56,24 +56,6 @@ public class MedicineDelivery extends SServiceRequest {
     @FXML
     private JFXComboBox roomNumber;
 
-    @FXML
-    private AnchorPane myAnchorPane;
-
-    @FXML
-    private ArrayList<String> nodeIDS;
-
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
-    HamburgerBasicCloseTransition transition;
-
-
 
     @FXML
     public void initialize() {

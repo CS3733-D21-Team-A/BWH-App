@@ -25,36 +25,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class FacilitiesMaintenance extends SServiceRequest {
+public class FacilitiesMaintenance extends GenericServiceRequest {
 
-    @FXML private JFXTextField firstName;
-    @FXML private JFXTextField lastName;
     @FXML private JFXComboBox locationDropdown;
     @FXML private JFXRadioButton yesRadioB;
     @FXML private JFXRadioButton noRadioB;
     @FXML private JFXTextArea description;
 
-    DatabaseController db;
-
 
     public void initialize() {
-        try {
-            db = new DatabaseController();
-        } catch (SQLException | IOException | URISyntaxException throwables) {
-            throwables.printStackTrace();
-        }
+        startUp();
         final ToggleGroup radioButtons = new ToggleGroup();
         yesRadioB.setToggleGroup(radioButtons);
         noRadioB.setToggleGroup(radioButtons);
         try {
-            DatabaseController db = new DatabaseController();
             List<Map<String, String>> nodes = db.getNodes();
             ObservableList<String> locos = FXCollections.observableArrayList();
             for (Map<String, String> node : nodes) {
                 locos.add(node.get("NODEID"));
             }
             locationDropdown.setItems(locos);
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -94,7 +85,7 @@ public class FacilitiesMaintenance extends SServiceRequest {
         shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FACILITIES_MAINTENANCE));
 
         Map<String, String> facilities = new HashMap<String, String>();
-        facilities.put("REQUESTID", String.valueOf(id));
+        facilities.put("REQUESTID", shared.get("REQUESTID"));
         facilities.put("URGENT", Boolean.toString(yes));
         facilities.put("DESCRIPTION", description.toString());
 

@@ -22,11 +22,6 @@ import java.util.regex.Pattern;
 
 public class AdminNewUser extends SPage {
 
-        @FXML
-        private StackPane stackPane;
-
-        @FXML
-        private JFXButton backB;
 
         @FXML private JFXTextField firstName;
 
@@ -41,7 +36,6 @@ public class AdminNewUser extends SPage {
         @FXML private JFXPasswordField confirmPassword;
 
         @FXML private JFXComboBox userType;
-
 
         DatabaseController db;
 

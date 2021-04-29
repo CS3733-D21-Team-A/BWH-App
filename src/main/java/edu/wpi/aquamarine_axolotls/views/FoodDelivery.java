@@ -21,10 +21,8 @@ import java.util.Map;
 import java.util.Random;
 
 
-public class FoodDelivery extends SServiceRequest {
+public class FoodDelivery extends GenericServiceRequest {
 
-    @FXML private TextField firstName;
-    @FXML private TextField lastName;
     @FXML private JFXTimePicker deliveryTime;
     @FXML private JFXComboBox roomNumber;
     @FXML private JFXComboBox foodOptions;
@@ -33,30 +31,11 @@ public class FoodDelivery extends SServiceRequest {
     @FXML private JFXTextArea dietaryRestA;
     @FXML private ArrayList<String> nodeIDS;
     @FXML private JFXTextField contactNumber;
-    @FXML JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
-    HamburgerBasicCloseTransition transition;
-
-    DatabaseController db;
 
 
     @FXML
     public void initialize() {
-        try {
-            db = new DatabaseController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        startUp();
 
         foodOptions.setItems(FXCollections
                 .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
@@ -101,20 +80,9 @@ public class FoodDelivery extends SServiceRequest {
         }
 
         try {
-         //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            String id = String.valueOf(Math.abs(r.nextInt()));
-            shared.put("REQUESTID", id);
-            shared.put("AUTHORID", Aapp.username);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(room));
-            shared.put("FIRSTNAME", fn);
-            shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FOOD_DELIVERY));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.FOOD_DELIVERY);
             Map<String, String> foodR = new HashMap<String, String>();
-            foodR.put("REQUESTID", id);
+            foodR.put("REQUESTID", shared.get("REQUESTID"));
             foodR.put("DELIVERYTIME", dt);
             foodR.put("DIETARYRESTRICTIONS", rest);
             foodR.put("NOTE", rest);
@@ -130,13 +98,5 @@ public class FoodDelivery extends SServiceRequest {
         }
     }
 
-
-
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
 }
 

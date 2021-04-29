@@ -29,25 +29,10 @@ public class LanguageInterpreter extends SServiceRequest {
     public JFXTextArea preferences;
 
     @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
-
-    @FXML
     private JFXComboBox roomNumber;
 
     @FXML
-    private ArrayList<String> nodeIDS;
-
-    @FXML
     private JFXTextField contactNumber;
-
-    @FXML
-    JFXHamburger burger;
-
-    HamburgerBasicCloseTransition transition;
-
 
     @FXML
     public void initialize() {
@@ -86,36 +71,17 @@ public class LanguageInterpreter extends SServiceRequest {
         }
 
         try {
-            DatabaseController db = new DatabaseController();
-            //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            String id = String.valueOf(Math.abs(r.nextInt()));
-            shared.put("REQUESTID", id);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(room));
-            shared.put("FIRSTNAME", fn);
-            shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.LANGUAGE_INTERPRETER));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.LANGUAGE_INTERPRETER);
             Map<String, String> langR = new HashMap<String, String>();
-            langR.put("REQUESTID", id);
+            langR.put("REQUESTID", shared.get("REQUESTID"));
             langR.put("NOTE", prefs);
             langR.put("CONTACTNUMBER", cn );
             langR.put("LANGUAGE", lang);
-
             db.addServiceRequest(shared, langR);
-            db.close();
-            submit();
-        } catch (SQLException | URISyntaxException e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
 }

@@ -43,27 +43,12 @@ public class LaundryService extends SServiceRequest {
     @FXML
     private JFXComboBox articlesOfClothing;
 
-
     @FXML
     private JFXTextArea specialRequest;
 
     @FXML
-    private AnchorPane myAnchorPane;
-
-    @FXML
     private ArrayList<String> nodeIDS;
 
-
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
-    HamburgerBasicCloseTransition transition;
 
 
     @FXML
@@ -109,38 +94,18 @@ public class LaundryService extends SServiceRequest {
         }
 
         try {
-            DatabaseController db = new DatabaseController();
             //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            String id = String.valueOf(Math.abs(r.nextInt()));
-            shared.put("REQUESTID", id);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(room));
-            shared.put("FIRSTNAME", fn);
-            shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.LAUNDRY));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.LAUNDRY);
             Map<String, String> foodR = new HashMap<String, String>();
-            foodR.put("REQUESTID", id);
+            foodR.put("REQUESTID", shared.get("REQUESTID"));
             foodR.put("DELIVERYTIME", dt);
             foodR.put("ARTICLESOFCLOTHING", rest);
             foodR.put("NOTE", rest);
             db.addServiceRequest(shared, foodR);
-            db.close();
             submit();
-        } catch (SQLException | URISyntaxException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-
-
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
     }
 }
 

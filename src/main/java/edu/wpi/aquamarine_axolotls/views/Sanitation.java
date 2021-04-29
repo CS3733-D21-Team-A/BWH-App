@@ -30,20 +30,8 @@ public class Sanitation extends SServiceRequest {
 
 	@FXML
 	private JFXComboBox<String> sanitLocation; //note: location is a reserved keyword and cannot be used
-
 	@FXML
 	private JFXTextArea description;
-
-	@FXML
-	JFXHamburger burger;
-
-	@FXML
-	JFXDrawer menuDrawer;
-
-	@FXML
-	private AnchorPane myAnchorPane;
-
-	private ArrayList<String> nodeIDS;
 
 
 	@FXML
@@ -93,7 +81,6 @@ public class Sanitation extends SServiceRequest {
 			sanitation.put("BIOHAZARD", bioh);
 			sanitation.put("NOTE", desc);
 			db.addServiceRequest(shared, sanitation);
-			db.close();
 			submit();
 		} catch (SQLException | URISyntaxException e) {
 			e.printStackTrace();

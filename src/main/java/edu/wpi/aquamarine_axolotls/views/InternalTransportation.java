@@ -26,7 +26,6 @@ public class InternalTransportation extends SServiceRequest {
 
     @FXML
     private TextField doctorFirstName;
-
     @FXML
     private TextField doctorLastName;
 
@@ -38,27 +37,8 @@ public class InternalTransportation extends SServiceRequest {
 
     @FXML
     private TextField currentRoom;
-
     @FXML
     private TextField newRoom;
-
-    @FXML
-    private AnchorPane myAnchorPane;
-
-    @FXML
-    private ArrayList<String> nodeIDS;
-
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
-    HamburgerBasicCloseTransition transition;
-    DatabaseController db;
 
 
     @FXML
@@ -70,9 +50,6 @@ public class InternalTransportation extends SServiceRequest {
         db = new DatabaseController();
 
     }
-
-
-
 
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
@@ -91,34 +68,18 @@ public class InternalTransportation extends SServiceRequest {
 
         try {
          //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            String id = String.valueOf(Math.abs(r.nextInt()));
-            shared.put("REQUESTID", id);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", nodeIDS.get(0));
-            shared.put("FIRSTNAME", dfn);
-            shared.put("LASTNAME", dln);
-            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.INTERNAL_TRANSPORT));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.INTERNAL_TRANSPORT);
             Map<String, String> internalTransportR = new HashMap<String, String>();
-            internalTransportR.put("REQUESTID", id);
+            internalTransportR.put("REQUESTID", shared.get("REQUESTID"));
             internalTransportR.put("CURRENTLOCATION", crn);
             internalTransportR.put("NEWLOCATION", nrn);
-            db.addServiceRequest(shared, internalTransportR);
-            db.close();
+            db.addServiceRequest(shared, internalTransportR);;
             submit();
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
     }
 
 }

@@ -48,25 +48,6 @@ public class GiftDelivery extends SServiceRequest {
     private JFXComboBox giftOptions;
 
     @FXML
-    private AnchorPane myAnchorPane;
-
-    @FXML
-    private ArrayList<String> nodeIDS;
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
-    HamburgerBasicCloseTransition transition;
-
-
-    DatabaseController db;
-
-    @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = new DatabaseController ();
         giftOptions.setItems(FXCollections
@@ -115,7 +96,7 @@ public class GiftDelivery extends SServiceRequest {
             shared.put("REQUESTTYPE", SERVICEREQUEST_NAMES.get(SERVICEREQUEST.GIFT_DELIVERY));
 
             Map<String, String> giftR = new HashMap<String, String>();
-            giftR.put("REQUESTID", id);
+            giftR.put("REQUESTID", shared.get("REQUESTID"));
             giftR.put("DELIVERYTIME", dt); //TODO: MISSING NOTE
             giftR.put("GIFTTYPE", giftOptions.getSelectionModel().getSelectedItem().toString());
             db.addServiceRequest(shared, giftR);

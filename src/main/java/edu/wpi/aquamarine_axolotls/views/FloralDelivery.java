@@ -18,47 +18,23 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
-public class FloralDelivery extends SServiceRequest {
+public class FloralDelivery extends GenericServiceRequest {
 
-    @FXML private JFXTextField firstName;
-    @FXML private JFXTextField lastName;
     @FXML private JFXTimePicker deliveryTime;
-    @FXML private JFXComboBox roomNumber;
+    //@FXML private JFXComboBox roomNumber;
     @FXML private JFXTextArea persMessage;
-    @FXML JFXHamburger burger;
     @FXML private JFXComboBox flowerOptions;
     @FXML private JFXDatePicker deliveryDate;
     @FXML private JFXTextField contactNumber;
     @FXML private JFXComboBox vaseOptions;
-    HamburgerBasicCloseTransition transition;
-
-
-    @FXML
-    private AnchorPane myAnchorPane;
-
-    private ArrayList<String> nodeIDS;
-
-    DatabaseController db;
 
 
     @FXML
     public void initialize() {
-        try {
-            db = new DatabaseController();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
-        roomNumber.setItems(FXCollections
+        startUp();
+      /*roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
-        );
+        );*/
         flowerOptions.setItems(FXCollections
                 .observableArrayList("Roses","Sunflowers", "Peruvian Lilies", "Hydrangeas", "Orchids")
         );
@@ -71,11 +47,9 @@ public class FloralDelivery extends SServiceRequest {
     }
 
 
-
-
     @FXML
     public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || flowerOptions.getSelectionModel ( ).getSelectedItem ( ) == null|| vaseOptions.getSelectionModel ().getSelectedItem () ==null||firstName.getText ().isEmpty () || contactNumber.getText ().isEmpty () ||lastName.getText ().isEmpty() || deliveryTime.getValue ( ) == null ) {
+        if ( /*roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null ||*/ flowerOptions.getSelectionModel ( ).getSelectedItem ( ) == null|| vaseOptions.getSelectionModel ().getSelectedItem () ==null||firstName.getText ().isEmpty () || contactNumber.getText ().isEmpty () ||lastName.getText ().isEmpty() || deliveryTime.getValue ( ) == null ) {
             errorFields ( "- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number\n- Contact Number\n- Delivery Date\n- Flower Options\n- Vase Options"  );
             return;
         }
@@ -84,7 +58,7 @@ public class FloralDelivery extends SServiceRequest {
         String dt = deliveryTime.getValue ( ).format ( DateTimeFormatter.ofPattern ( "HH.mm" ) );
         String dd = deliveryDate.getValue ().format ( DateTimeFormatter.ofPattern ( "yyyy-MM-dd" ) );
         String fo = flowerOptions.getSelectionModel ().getSelectedItem ().toString ();
-        int room = roomNumber.getSelectionModel ( ).getSelectedIndex ( );
+        //int room = roomNumber.getSelectionModel ( ).getSelectedIndex ( );
         String vo = vaseOptions.getSelectionModel ().getSelectedItem ().toString ();
         String pmsg = persMessage.getText ( );
         String  co = contactNumber.getText();
@@ -96,20 +70,9 @@ public class FloralDelivery extends SServiceRequest {
         }
 
         try {
-            Map<String, String> shared = new HashMap<String, String>();
-            Random r = new Random();
-            int id = Math.abs(r.nextInt());
-            shared.put("REQUESTID", String.valueOf(id));
-            shared.put("AUTHORID", Aapp.username);
-            shared.put("STATUS", "Unassigned");
-            shared.put("LOCATIONID", String.valueOf(nodeIDS.get(room)));
-            shared.put("FIRSTNAME", fn);
-            shared.put("LASTNAME", ln);
-            shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(SERVICEREQUEST.FLORAL_DELIVERY));
-
+            Map<String, String> shared = getSharedValues(SERVICEREQUEST.FLORAL_DELIVERY);
             Map<String, String> floral = new HashMap<String, String>();
-
-            floral.put("REQUESTID", String.valueOf(id));
+            floral.put("REQUESTID", shared.get("REQUESTID"));
             floral.put("DELIVERYTIME", dt);
             floral.put("NOTE", pmsg);
             floral.put("DELIVERYDATE", dd);
@@ -123,17 +86,6 @@ public class FloralDelivery extends SServiceRequest {
             e.printStackTrace();
         }
     }
-
-
-
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
-
-
 }
 
 
