@@ -49,11 +49,16 @@ public class Navigation extends GenericMap {
     static int dirIndex = 0;
 
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException {
 
         startUp();
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
+        for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
+            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
+                options.add(node.get("LONGNAME"));
+            }
         }
         startLocation.setItems(options);
         destination.setItems(options);
@@ -78,7 +83,7 @@ public class Navigation extends GenericMap {
         currPathDir.clear();
         activePath = 0;
         etaLabel.setText("");
-        drawFloor(FLOOR);
+        drawNodesAndFloor(FLOOR, Color.BLUE);
         if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
             startLocation.getSelectionModel().clearSelection();
             destination.getSelectionModel().clearSelection();
@@ -104,6 +109,7 @@ public class Navigation extends GenericMap {
         stopList.add(end);
         drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
         findPathSingleSegment(start, end);
+        drawPath(FLOOR);
         //drawFloor(FLOOR); // do we need this?
     }
 
@@ -161,7 +167,7 @@ public class Navigation extends GenericMap {
     /**
      * Cancels the current set of text directions
      */
-    public void cancelDir() {
+    public void cancelDir() throws SQLException {
         stepByStep.setVisible(false);
         listDirVBox.setVisible(true);
         listDirVBox.toFront();
@@ -177,7 +183,7 @@ public class Navigation extends GenericMap {
     /**
      * Starts the text directions once they're initialized
      */
-    public void startDir() {
+    public void startDir() throws SQLException{
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         stepByStep.toFront();
@@ -199,7 +205,7 @@ public class Navigation extends GenericMap {
     /**
      * Progresses to the next step in the text directions
      */
-    public void progress() {
+    public void progress() throws SQLException {
         if (dirIndex < currPathDir.get(0).size() - 1){
             unHighlightDirection();
             dirIndex += 1;
@@ -217,7 +223,7 @@ public class Navigation extends GenericMap {
     /**
      * Moves back to the previous step in the text directions
      */
-    public void regress() {
+    public void regress() throws SQLException{
         if (dirIndex == 0){
             return;
         }else{
@@ -292,17 +298,16 @@ public class Navigation extends GenericMap {
     /**
      * Highlights the current portion of the map that the current direction is on
      */
-    public void highlightDirection(){
+    public void highlightDirection() throws SQLException{
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         String curNode = currPathDir.get(1).get(dirIndex);
         // draws an edge on map
         if (curNode.contains(",")) {
             int index = curNode.indexOf(",");
-            Node start = getNodeFromValidID(curNode.substring(0,index));
-            System.out.println(start);
-
-            Node end = getNodeFromValidID(curNode.substring(index+1));
-            System.out.println(end);
+            Map<String, String> start = db.getNode(curNode.substring(0,index));
+            //System.out.println(start);
+            Map<String, String> end = db.getNode(curNode.substring(index+1));
+            //System.out.println(end);
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
         } else {
@@ -330,7 +335,7 @@ public class Navigation extends GenericMap {
      */
     public void addDestination(javafx.scene.input.MouseEvent event) throws SQLException{
 
-        Node newDestination = getNearestNode(event.getX(), event.getY());
+        Map<String, String> newDestination = getNearestNode(event.getX(), event.getY());
 
         if (newDestination == null) return;
 
@@ -347,7 +352,7 @@ public class Navigation extends GenericMap {
                     stopList.add(currCloseName);
                     currPath.clear();
                     findPathSingleSegment(stopList.get(0), stopList.get(1));
-                    drawFloor(FLOOR);
+                    drawPath(FLOOR);
                 }
             }
             else if (activePath == 1) {
@@ -356,7 +361,7 @@ public class Navigation extends GenericMap {
                 for (int i = 0; i < stopList.size() - 1; i++) {
                     findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
                 }
-                drawFloor(FLOOR);
+                drawPath(FLOOR);
             }
         }
     }

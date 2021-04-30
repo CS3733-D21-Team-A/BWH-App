@@ -189,17 +189,21 @@ public class GenericMap extends SPage{
 
     /**
      * Draws a single node as a colored dot
+     * This version takes a map of string to string
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
     public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(xScale(Integer.parseInt(node.get("XCOORD"))), yScale(Integer.parseInt(node.get("YCOORD"))), color); }
 
+
     /**
      * Draws a single node as a colored dot
+     * This version takes a node
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
     public void drawSingleNode(Node node, Color color) { drawSingleNode(xScale(node.getXcoord()), yScale(node.getYcoord()), color); }
+
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -216,7 +220,8 @@ public class GenericMap extends SPage{
     }
 
     /**
-     * Draws two nodes as dots, and connects them with a line
+     * Draws two nodes as dots, and connects them with a l
+     * This version takes two maps of string to string
      * @param snode Node to start with
      * @param enode Node to end at
      * @param snodeCol Color of the start node
@@ -272,7 +277,7 @@ public class GenericMap extends SPage{
      * @param start start node
      * @param end end node
      */
-    private void drawArrow(Map<String, String> start, Map<String, String> end) { // TODO : investigate stairs arrows not being drawn
+    void drawArrow(Map<String, String> start, Map<String, String> end) { // TODO : investigate stairs arrows not being drawn
 
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         int startX = Integer.parseInt(start.get("XCOORD"));

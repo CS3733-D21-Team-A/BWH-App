@@ -436,10 +436,10 @@ public class NodeEditing extends GenericMap {
      * Highlights the node selected by the user in the dropdown box
      */
     @FXML
-    public void highLightNodeFromSelector() {
+    public void highLightNodeFromSelector() throws SQLException{
         if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
-            for (Node n : validNodes) {
-                if (n.getNodeID().equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
+            for (Map<String, String> node: db.getNodes()) { // TODO : maybe preformance issue?
+                if (node.get("NODEID").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = n;
                     GraphicsContext gc = mapCanvas.getGraphicsContext2D();
@@ -534,7 +534,7 @@ public class NodeEditing extends GenericMap {
 
                 if (currClosest == null) return;
                 else {
-                    nodeDropdown.setValue(currClosest.getNodeID());
+                    nodeDropdown.setValue(currClosest.get("NODEID"));
                 }
 
                 prevSelected = currSelected;

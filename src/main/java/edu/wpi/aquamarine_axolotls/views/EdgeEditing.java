@@ -35,28 +35,46 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EdgeEditing extends GenericMap{
-    @FXML public JFXButton deleteButton;
-    @FXML public JFXComboBox algoSelectBox;
-    @FXML private JFXButton addButton;
-    @FXML private JFXButton editButton;
+public class EdgeEditing extends GenericMap {
+    @FXML
+    public JFXButton deleteButton;
+    @FXML
+    public JFXComboBox algoSelectBox;
+    @FXML
+    private JFXButton addButton;
+    @FXML
+    private JFXButton editButton;
 
-    @FXML private HBox edgeT;
-    @FXML private HBox edgeD;
-    @FXML private JFXComboBox edgeDropdown;
-    @FXML private JFXTextField edgeIDtextbox;
-    @FXML private JFXComboBox startNodeDropdown;
-    @FXML private JFXComboBox endNodeDropdown;
+    @FXML
+    private HBox edgeT;
+    @FXML
+    private HBox edgeD;
+    @FXML
+    private JFXComboBox edgeDropdown;
+    @FXML
+    private JFXTextField edgeIDtextbox;
+    @FXML
+    private JFXComboBox startNodeDropdown;
+    @FXML
+    private JFXComboBox endNodeDropdown;
 
-    @FXML public RadioMenuItem importButton; // TODO: whats going on?
-    @FXML public RadioMenuItem exportButton;
-    @FXML private Label submissionlabel;
-    @FXML private JFXButton submissionButton;
+    @FXML
+    public RadioMenuItem importButton; // TODO: whats going on?
+    @FXML
+    public RadioMenuItem exportButton;
+    @FXML
+    private Label submissionlabel;
+    @FXML
+    private JFXButton submissionButton;
 
-    @FXML private TableView table;
-    @FXML private TableColumn edgeIdCol;
-    @FXML private TableColumn startNodeCol;
-    @FXML private TableColumn endNodeCol;
+    @FXML
+    private TableView table;
+    @FXML
+    private TableColumn edgeIdCol;
+    @FXML
+    private TableColumn startNodeCol;
+    @FXML
+    private TableColumn endNodeCol;
 
     List<Edge> validEdges = new ArrayList<>();
 
@@ -80,16 +98,16 @@ public class EdgeEditing extends GenericMap{
         algoSelectBox.setItems(searchAlgorithms);
 
 
-        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
+        if (SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
         String algo = SearchAlgorithmContext.getSearchAlgorithmContext().context.toString();
 
-        if(algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0);
-        else if(algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
-        else if(algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
-        else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
+        if (algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0);
+        else if (algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
+        else if (algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
+        else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
 
         table.setEditable(false);
         table.getItems().clear();
@@ -109,13 +127,13 @@ public class EdgeEditing extends GenericMap{
         endNodeDropdown.setVisible(false);
         submissionButton.setVisible(false);
 
-        try{
+        try {
             db = new DatabaseController();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
             List<Map<String, String>> nodes = db.getNodes();
 
-            for(Map<String, String> edge : edges){
+            for (Map<String, String> edge : edges) {
                 edgeOptions.add(edge.get("EDGEID"));
                 Edge cur = new Edge(edge.get("EDGEID"),
                         edge.get("STARTNODE"),
@@ -131,7 +149,7 @@ public class EdgeEditing extends GenericMap{
             endNodeDropdown.setItems(nodeOptions);
             edgeDropdown.setItems(edgeOptions);
             floors = new HashMap<>();
-        } catch (SQLException | IOException | URISyntaxException e){
+        } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
 
@@ -262,7 +280,7 @@ public class EdgeEditing extends GenericMap{
      * state so that upon submission the desired deletion will happen.
      */
     @FXML
-    public void pressDeleteButton(){
+    public void pressDeleteButton() {
         edgeD.toFront();
         edgeDropdown.setVisible(true);
         edgeIDtextbox.setVisible(false);
@@ -277,7 +295,7 @@ public class EdgeEditing extends GenericMap{
      * Clears user inputs from all editable fields
      */
     @FXML
-    public void clearfields(){
+    public void clearfields() {
         edgeIDtextbox.clear();
         startNodeDropdown.getSelectionModel().clearSelection();
         endNodeDropdown.getSelectionModel().clearSelection();
@@ -294,19 +312,18 @@ public class EdgeEditing extends GenericMap{
      * Changes the algorithm that will be used for navigation.
      */
     public void selectAlgorithm() {
-        if(algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null){
-            if(algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")){
+        if (algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null) {
+            if (algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
-            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")){
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
-            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")){
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Breadth First")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
-            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
             }
         }
     }
-}
 
     /**
      * Overwrites current csv with the selected csv
@@ -317,11 +334,11 @@ public class EdgeEditing extends GenericMap{
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
-        try{
+        try {
             csvHandler.importCSV(csv, TABLES.EDGES, true);
-        }catch(IOException ie){
+        } catch (IOException ie) {
             ie.printStackTrace();
-        }catch(SQLException sq){
+        } catch (SQLException sq) {
             sq.printStackTrace();
         }
 
@@ -337,11 +354,11 @@ public class EdgeEditing extends GenericMap{
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
         File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
-        try{
+        try {
             csvHandler.importCSV(csv, TABLES.EDGES, false);
-        }catch(IOException ie){
+        } catch (IOException ie) {
             ie.printStackTrace();
-        }catch(SQLException sq){
+        } catch (SQLException sq) {
             sq.printStackTrace();
         }
 
@@ -357,11 +374,11 @@ public class EdgeEditing extends GenericMap{
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
         File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
-        try{
+        try {
             csvHandler.exportCSV(csv, TABLES.EDGES);
-        }catch(IOException ie){
+        } catch (IOException ie) {
             ie.printStackTrace();
-        }catch(SQLException sq){
+        } catch (SQLException sq) {
             sq.printStackTrace();
         }
     }
@@ -369,18 +386,18 @@ public class EdgeEditing extends GenericMap{
     /**
      * Deletes a edge based on user selection
      */
-    public void delete(){
+    public void delete() {
         String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString();
         System.out.println(edgeID);
-        try{
-            if (db.edgeExists(edgeID)){
+        try {
+            if (db.edgeExists(edgeID)) {
                 db.deleteEdge(edgeID);
                 drawFloor(FLOOR);
-                submissionlabel.setText("You have deleted "+ edgeID);
-            }else{
+                submissionlabel.setText("You have deleted " + edgeID);
+            } else {
                 submissionlabel.setText("Edge does not exist");
             }
-        }catch (SQLException sq){
+        } catch (SQLException sq) {
             sq.printStackTrace();
         }
         return;
@@ -389,15 +406,15 @@ public class EdgeEditing extends GenericMap{
     /**
      * Adds an edge based on user selection
      */
-    public void add(){
+    public void add() {
         String edgeID = edgeIDtextbox.getText();
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem().toString();
         String endNode = endNodeDropdown.getSelectionModel().getSelectedItem().toString();
 
-        if (edgeID.equals("") || startNode.equals("") || endNode.equals("")){
+        if (edgeID.equals("") || startNode.equals("") || endNode.equals("")) {
             submissionlabel.setText("Did not fill out all required fields");
             return;
-        }else {
+        } else {
             try {
                 if (!db.edgeExists(edgeID)) {
                     Map<String, String> edge = new HashMap<String, String>();
@@ -421,20 +438,20 @@ public class EdgeEditing extends GenericMap{
     /**
      * Edits an edge based on user selection
      */
-    public void edit(){
+    public void edit() {
         String edgeID = edgeDropdown.getSelectionModel().getSelectedItem().toString(); //TODO: GIVE WARNING ON NULL EDGEID
         String startNode = startNodeDropdown.getSelectionModel().getSelectedItem() == null ? "" : startNodeDropdown.getSelectionModel().getSelectedItem().toString();
         String endNode = endNodeDropdown.getSelectionModel().getSelectedItem() == null ? "" : endNodeDropdown.getSelectionModel().getSelectedItem().toString();
 
-        try{
-            if (startNode.equals("")){
+        try {
+            if (startNode.equals("")) {
                 startNode = db.getEdge(edgeID).get("STARTNODE");
             }
-            if (endNode.equals("")){
+            if (endNode.equals("")) {
                 endNode = db.getEdge(edgeID).get("ENDNODE");
             }
 
-            if (db.edgeExists(edgeID)){
+            if (db.edgeExists(edgeID)) {
                 Map<String, String> edge = new HashMap<String, String>();
                 edge.put("EDGEID", edgeID);
                 edge.put("STARTNODE", startNode);
@@ -442,11 +459,11 @@ public class EdgeEditing extends GenericMap{
 
                 drawFloor(FLOOR);
                 db.editEdge(edgeID, edge);
-                submissionlabel.setText("You have edited "+ edgeID);
-            }else{
+                submissionlabel.setText("You have edited " + edgeID);
+            } else {
                 submissionlabel.setText("Edge does not exist");
             }
-        }catch (SQLException sq){
+        } catch (SQLException sq) {
             sq.printStackTrace();
         }
         return;
@@ -458,7 +475,7 @@ public class EdgeEditing extends GenericMap{
      */
     @FXML
     public void submitfunction() {
-        switch(state){
+        switch (state) {
             case "delete":
                 delete();
                 break;
@@ -475,6 +492,7 @@ public class EdgeEditing extends GenericMap{
         clearfields();
         initialize();
     }
+}
 
 
 
