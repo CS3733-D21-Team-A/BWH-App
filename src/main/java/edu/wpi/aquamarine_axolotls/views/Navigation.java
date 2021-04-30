@@ -139,7 +139,7 @@ public class Navigation extends GenericMap {
      * @param start String, long name of start node
      * @param end   String, long name of end node
      */
-    public void findPathSingleSegment(String start, String end) {
+    public void findPathSingleSegment(String start, String end) throws SQLException {
         double etaTotal, minutes, seconds;
 
         currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
@@ -324,12 +324,12 @@ public class Navigation extends GenericMap {
     /**
      * Removes the highlight from the current part of the map
      */
-    public void unHighlightDirection(){
+    public void unHighlightDirection() throws SQLException{
         String curNode = currPathDir.get(1).get(dirIndex);
         if (curNode.contains(",")){
             int index = curNode.indexOf(",");
-            Node start = getNodeFromValidID(curNode.substring(0,index));
-            Node end = getNodeFromValidID(curNode.substring(index+1));
+            Map<String, String> start = db.getNode(curNode.substring(0,index));
+            Map<String, String> end = db.getNode(curNode.substring(index+1));
             drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
         }
     }

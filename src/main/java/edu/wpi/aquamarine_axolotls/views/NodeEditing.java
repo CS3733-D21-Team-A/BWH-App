@@ -221,26 +221,7 @@ public class NodeEditing extends GenericMap {
      * Handles the user pressing the Import and Overwrite button while in the node editing page by grabbing
      * the node data from the CSV file and using that data to replace the existing node table
      */
-    public void newCSV() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
-        );
-        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
-        try{
-            csvHandler.importCSV(csv, TABLES.NODES, true);
-        }catch(IOException | SQLException ie){
-            ie.printStackTrace();
-        }
-
-        initialize(); //REFRESH TABLE
-    }
-
-    /**
-     * Handles the user pressing the Import and Merge button while in the node editing page by grabbing
-     * the node data from the CSV file and adding that data to the existing node table
-     */
-    public void mergeCSV() {
+    public void newCSV() throws SQLException{
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
