@@ -1,34 +1,24 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
-import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.SERVICEREQUEST_NAMES;
-
-public class ExternalTransport extends GenericServiceRequest{
-    @FXML
-    private TextField docFirstName;
+public class ExternalTransport extends GenericServiceRequest {
 
     @FXML
-    private TextField docLastName;
+    private TextField patientFirstName;
+
+    @FXML
+    private TextField patientLastName;
 
     @FXML
     private TextField destination;
@@ -51,7 +41,6 @@ public class ExternalTransport extends GenericServiceRequest{
 
     @FXML
     public void initialize() {
-
         startUp();
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
@@ -68,6 +57,8 @@ public class ExternalTransport extends GenericServiceRequest{
     }
 
 
+
+
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
@@ -76,8 +67,8 @@ public class ExternalTransport extends GenericServiceRequest{
             modeOfTrans.getSelectionModel().getSelectedItem() == null||
                 firstName.getText().isEmpty()||
                 lastName.getText().isEmpty()||
-                docFirstName.getText().isEmpty()||
-                docLastName.getText().isEmpty()||
+                patientFirstName.getText().isEmpty()||
+                patientLastName.getText().isEmpty()||
                 destination.getText().isEmpty()||
                 transpTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm")).isEmpty()) {
             errorFields("- First Name\n- Last Name\n-Transport Time\n- Room Number");
@@ -86,8 +77,8 @@ public class ExternalTransport extends GenericServiceRequest{
 
         String fn = firstName.getText();
         String ln = lastName.getText();
-        String dfn = docFirstName.getText();
-        String dln = docLastName.getText();
+        String pfn = patientFirstName.getText();
+        String pln = patientLastName.getText();
         String med = destination.getText();
         String dt = transpTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
         int room = roomNumber.getSelectionModel().getSelectedIndex();
@@ -100,22 +91,20 @@ public class ExternalTransport extends GenericServiceRequest{
             return;
         }
 
+        ArrayList<String> fields = new ArrayList<String>();
+        fields.add(med); // destination
+        fields.add(pfn); // doctor first name
+        fields.add(pln); // doctor last name //TODO : update SQL TABLE TO BE patient name
+        fields.add(lemr); // level of emergency
+        fields.add(modtrans); // mode of transport
+        fields.add(dt); // delivery time
+
         try {
-            Map<String, String> shared = getSharedValues(SERVICEREQUEST.EXTERNAL_TRANSPORT);
-            Map<String, String> medicineR = new HashMap<String, String>();
-            medicineR.put("REQUESTID", shared.get("REQUESTID"));
-            medicineR.put("TRANSPORTTIME", dt);
-            medicineR.put("DESTINATION", med);
-            medicineR.put("DOCFIRSTNAME", dfn);
-            medicineR.put("DOCLASTNAME", dln);
-            medicineR.put("MODEOFTRANSPORT",modtrans);
-            medicineR.put("EMERGENCYLEVEL",lemr);
-            db.addServiceRequest(shared, medicineR);
+            createServiceRequest(SERVICEREQUEST.EXTERNAL_TRANSPORT, fields);
             submit();
-            }
-        catch (SQLException e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }

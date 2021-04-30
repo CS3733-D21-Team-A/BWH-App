@@ -1,23 +1,16 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.views.servicerequests.GenericServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 
 public class LanguageInterpreter extends GenericServiceRequest {
@@ -29,21 +22,35 @@ public class LanguageInterpreter extends GenericServiceRequest {
     public JFXTextArea preferences;
 
     @FXML
+    private TextField firstName;
+
+    @FXML
+    private TextField lastName;
+
+    @FXML
     private JFXComboBox roomNumber;
 
     @FXML
+    private ArrayList<String> nodeIDS;
+
+    @FXML
     private JFXTextField contactNumber;
+
+
 
     @FXML
     public void initialize() {
         startUp();
         languageSelect.setItems(FXCollections
                 .observableArrayList("Espanol", "Portugues", "Francais", "Polskie"));
-
+        nodeIDS = new ArrayList<String>();
+        nodeIDS.add("FINFO00101");
+        nodeIDS.add("EINFO00101");
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
     }
+
 
     @FXML
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
@@ -67,19 +74,16 @@ public class LanguageInterpreter extends GenericServiceRequest {
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
             return;
         }
+        ArrayList<String> fields = new ArrayList<String>();
+        fields.add(cn); // contact number
+        fields.add(lang); // language
+        fields.add(prefs); //Note
 
         try {
-            Map<String, String> shared = getSharedValues(SERVICEREQUEST.LANGUAGE_INTERPRETER);
-            Map<String, String> langR = new HashMap<String, String>();
-            langR.put("REQUESTID", shared.get("REQUESTID"));
-            langR.put("NOTE", prefs);
-            langR.put("CONTACTNUMBER", cn );
-            langR.put("LANGUAGE", lang);
-            db.addServiceRequest(shared, langR);
-
+            createServiceRequest(SERVICEREQUEST.LANGUAGE_INTERPRETER, fields);
+            submit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }

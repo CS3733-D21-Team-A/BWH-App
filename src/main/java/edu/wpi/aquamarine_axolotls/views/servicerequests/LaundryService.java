@@ -1,26 +1,27 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.views.servicerequests.GenericServiceRequest;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 
 public class LaundryService extends GenericServiceRequest {
+
+    @FXML
+    private TextField firstName;
+
+    @FXML
+    private TextField lastName;
+
     @FXML
     private JFXTimePicker deliveryTime;
 
@@ -36,6 +37,7 @@ public class LaundryService extends GenericServiceRequest {
     @FXML
     private JFXComboBox articlesOfClothing;
 
+
     @FXML
     private JFXTextArea specialRequest;
 
@@ -49,6 +51,9 @@ public class LaundryService extends GenericServiceRequest {
         startUp();
         loadOptions.setItems(FXCollections
                 .observableArrayList("Delicates", "Light", "Heavy"));
+        nodeIDS = new ArrayList<String>();
+        nodeIDS.add("FINFO00101");
+        nodeIDS.add("EINFO00101");
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
@@ -67,7 +72,9 @@ public class LaundryService extends GenericServiceRequest {
     public void handleButtonAction(ActionEvent actionEvent) throws IOException {
 
         if(loadOptions.getSelectionModel().getSelectedItem() == null
-                || roomNumber.getSelectionModel().getSelectedItem() == null){
+                || roomNumber.getSelectionModel().getSelectedItem() == null
+                || detergentType.getSelectionModel().getSelectedItem() == null
+                || articlesOfClothing.getSelectionModel().getSelectedItem() == null){
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
             return;
         }
@@ -75,8 +82,9 @@ public class LaundryService extends GenericServiceRequest {
         String ln = lastName.getText();
         String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
         int room = roomNumber.getSelectionModel().getSelectedIndex();
-        String food = loadOptions.getSelectionModel().getSelectedItem().toString();
-        String rest = specialRequest.getText();
+        String ac = articlesOfClothing.getSelectionModel().getSelectedItem().toString();
+        String ldo = loadOptions.getSelectionModel().getSelectedItem().toString();
+        String sprq = specialRequest.getText();
 
         if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
                 || dt.isEmpty()){
@@ -84,19 +92,18 @@ public class LaundryService extends GenericServiceRequest {
             return;
         }
 
+        ArrayList<String> fields = new ArrayList<String>();
+        fields.add(ac);
+        fields.add(dt);
+        fields.add(sprq); // TODO add other fields to DB
+
         try {
-            //   Aapp.num++; // TODO: better way of establishing request ID
-            Map<String, String> shared = getSharedValues(SERVICEREQUEST.LAUNDRY);
-            Map<String, String> foodR = new HashMap<String, String>();
-            foodR.put("REQUESTID", shared.get("REQUESTID"));
-            foodR.put("DELIVERYTIME", dt);
-            foodR.put("ARTICLESOFCLOTHING", rest);
-            foodR.put("NOTE", rest);
-            db.addServiceRequest(shared, foodR);
+            createServiceRequest(SERVICEREQUEST.LAUNDRY, fields);
             submit();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 }
 

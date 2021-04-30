@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxWidth="1300.0" minHeight="900.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.InternalTransportation">
+<BorderPane maxWidth="1300.0" minHeight="900.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.InternalTransportation">
          <top>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                <children>
@@ -57,19 +57,19 @@
                               <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                           <children>
-                              <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1">
+                              <JFXTextField fx:id="patientFirstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1">
                            <GridPane.margin>
                               <Insets top="40.0" />
                            </GridPane.margin></JFXTextField>
-                        <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2">
+                        <JFXTextField fx:id="patientLastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets top="40.0" />
                            </GridPane.margin></JFXTextField>
-                              <JFXTextField fx:id="doctorFirstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets top="40.0" />
                            </GridPane.margin></JFXTextField>
-                              <JFXTextField fx:id="doctorLastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets top="40.0" />
                            </GridPane.margin></JFXTextField>
