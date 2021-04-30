@@ -13,7 +13,6 @@ import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
  * Controller class for working with the BWH database.
  */
 public class DatabaseController implements AutoCloseable {
-	private static DatabaseController dbinstance;
 	final private Connection connection;
 	final private Table nodeTable;
 	final private Table edgeTable;
@@ -70,28 +69,8 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
-	/**
-	 * Singleton pattern for obtaining a connection
-	 * @throws SQLException
-	 */
-	public static DatabaseController getInstance() throws SQLException, IOException, URISyntaxException {
-		if(dbinstance == null){
-			dbinstance = new DatabaseController();
-		}
-		return dbinstance;
-	}
 
-	/**
-	 * closing connection to db
-	 * @throws SQLException
-	 */
-	public static void closeConn(Connection conn) throws SQLException {
-		try {
-			conn.close();
-		} catch (SQLException e){
 
-		}
-	}
 
 	@Override
 	public void close() throws SQLException {
