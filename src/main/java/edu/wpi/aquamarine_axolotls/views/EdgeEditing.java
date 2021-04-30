@@ -123,7 +123,7 @@ public class EdgeEditing extends GenericMap{
 
                 table.getItems().add(cur);
                 validEdges.add(cur);
-                drawSingleEdge(cur);
+                drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")),Color.BLUE , Color.BLUE , Color.BLACK);
             }
             for (Map<String, String> node : nodes) nodeOptions.add(node.get("NODEID"));
 

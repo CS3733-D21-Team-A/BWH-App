@@ -10,9 +10,6 @@ import javafx.scene.layout.VBox;
 
 public class EmployeeServiceRequestPage extends SPage {
 
-
-        @FXML
-        HamburgerBasicCloseTransition transition
         // Button Presses for Default Service Page, each button leads to its service request form
         // NOTE: code feels redundant, maybe make method?
 

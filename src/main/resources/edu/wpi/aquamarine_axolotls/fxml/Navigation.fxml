@@ -144,7 +144,7 @@
             </JFXComboBox>
             <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
                <children>
-                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
+                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNav" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
                      <font>
                         <Font size="14.0" />
                      </font>

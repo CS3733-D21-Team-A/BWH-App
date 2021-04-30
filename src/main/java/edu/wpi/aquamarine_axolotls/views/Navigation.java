@@ -63,10 +63,16 @@ public class Navigation extends GenericMap {
         listDirVBox.toFront();
     }
 
+    public void changeFloor(String floor) throws SQLException{
+        drawFloor(floor);
+        if(activePath == 1) drawPath(floor);
+        else drawNodes(Color.BLUE);
+    }
+
     /**
      * Clears out everything relating to navigation, including the stop list and path, and redraws the current floor
      */
-    public void clearNav() {
+    public void clearNav() throws SQLException{
         stopList.clear();
         currPath.clear();
         currPathDir.clear();
@@ -84,9 +90,10 @@ public class Navigation extends GenericMap {
     /**
      * Takes the selections from the start and end dropdowns and uses them to find the full path from start to finish
      */
-    public void findPath() {
+    public void findPath() throws SQLException{
         currPath.clear();
         stopList.clear();
+
         activePath = 0;
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
             return;
@@ -95,19 +102,21 @@ public class Navigation extends GenericMap {
         String end = destination.getSelectionModel().getSelectedItem().toString();
         stopList.add(start);
         stopList.add(end);
+        drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
         findPathSingleSegment(start, end);
         //drawFloor(FLOOR); // do we need this?
     }
 
 
     // draw path method
-    public void drawPath() throws SQLException{
+    public void drawPath(String floor) throws SQLException{
         if(currPath.isEmpty()) return;
-        drawNodesAndFloor(currPath.get(0).getFloor(), new Color(0.0 , 0.0, 1.0, 0.4));
+        FLOOR = floor;
+        drawNodesAndFloor(FLOOR, new Color(0.0 , 0.0, 1.0, 0.4));
         for (int i = 0; i < currPath.size() - 1; i++) {
             if (currPath.get(i).getFloor().equals(FLOOR) &&
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
-                drawNodes(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
+                drawTwoNodesWithEdge(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
             }
             if ((currPath.get(i).getNodeType().equals("STAI") && currPath.get(i+1).getNodeType().equals("STAI")) ||
                     (currPath.get(i).getNodeType().equals("ELEV") && currPath.get(i+1).getNodeType().equals("ELEV"))){
@@ -162,7 +171,7 @@ public class Navigation extends GenericMap {
         findPathButton.setDisable(false);
         cancelPath.setDisable(false);
 
-        unHighlightDirection();
+        //unHighlightDirection();
     }
 
     /**
@@ -180,6 +189,9 @@ public class Navigation extends GenericMap {
 
         dirIndex = 0;
         changeArrow(currPathDir.get(0).get(dirIndex));
+        String nodeID = currPathDir.get(1).get(0);
+        if(currPathDir.get(1).get(0).contains(",")) nodeID = nodeID.substring(0, currPathDir.get(1).get(0).indexOf(","));
+        changeFloor(db.getNode(nodeID).get("FLOOR"));
         curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
         highlightDirection();
     }
@@ -192,9 +204,9 @@ public class Navigation extends GenericMap {
             unHighlightDirection();
             dirIndex += 1;
             String curNode = currPathDir.get(1).get(dirIndex);
-            String curFloor = String curFloor = getInstructionsFloor(curNode);
+            String curFloor = getInstructionsFloor(curNode);
 
-            if(!curFloor.equals(FLOOR)); //drawFloor(FLOOR); // TODO: update to be method in navigation
+            if(!curFloor.equals(FLOOR)) drawPath(curFloor);
 
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
@@ -267,7 +279,7 @@ public class Navigation extends GenericMap {
     /**
      * Adds all of the text directions to the visual list of directions on the screen
      */
-    public void initializeDirections() {                    // adds each step to the list of direction
+    public void initializeDirections() throws SQLException { // adds each step to the list of direction
         cancelDir();
         listOfDirections.getChildren().clear();
         for (int i = 0; i < currPathDir.get(0).size(); i++) {
@@ -283,7 +295,8 @@ public class Navigation extends GenericMap {
     public void highlightDirection(){
         GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         String curNode = currPathDir.get(1).get(dirIndex);
-        if (curNode.contains(",")){
+        // draws an edge on map
+        if (curNode.contains(",")) {
             int index = curNode.indexOf(",");
             Node start = getNodeFromValidID(curNode.substring(0,index));
             System.out.println(start);
@@ -292,9 +305,9 @@ public class Navigation extends GenericMap {
             System.out.println(end);
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
-            return;
+        } else {
+            drawSingleNode(db.getNode(curNode), Color.RED);
         }
-        drawSingleNode(getNodeFromValidID(curNode), gc, Color.RED);
     }
 
     /**
@@ -315,7 +328,7 @@ public class Navigation extends GenericMap {
      * If there's no active path, this function will define a new one -- otherwise, it will add more stops
      * @param event The mouseevent from the map when clicked on
      */
-    public void addDestination(javafx.scene.input.MouseEvent event) {
+    public void addDestination(javafx.scene.input.MouseEvent event) throws SQLException{
 
         Node newDestination = getNearestNode(event.getX(), event.getY());
 

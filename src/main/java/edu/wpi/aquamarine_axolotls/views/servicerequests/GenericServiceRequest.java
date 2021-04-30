@@ -66,7 +66,7 @@ public class GenericServiceRequest extends SPage {
      * @return a unique id
      */
     private String getID(List<String> fields){ // giving neg values?
-        String hash = fields.toString() + java.time.LocalDateTime.now().toString();
+        String hash = fields.toString() + java.time.LocalDateTime.now().toString(); // ask Nyoma
         return Integer.toString(hash.hashCode());
     }
 
@@ -97,7 +97,7 @@ public class GenericServiceRequest extends SPage {
      * @return
      * @throws SQLException
      */
-    private Map<String, String> createRequest(SERVICEREQUEST serviceRequestType, ArrayList<String> fields, String reqID) throws SQLException{
+    private Map<String, String> createRequest(SERVICEREQUEST serviceRequestType, ArrayList<String> fields, String reqID) {
         ArrayList<String> sortedKeys = new ArrayList<>(db.getServiceRequestColumns(serviceRequestType).keySet());
         sortedKeys.remove("REQUESTID");
         //if(fields.size() != sortedKeys.size()) throw new Error("ERROR in GENERIC SERVICE REQUEST SIZE OF VALUES AND COLUMNS" + fields.size() + " " + sortedKeys.size());
@@ -123,9 +123,9 @@ public class GenericServiceRequest extends SPage {
         String reqID = getID(fields);
         db.addServiceRequest(createGeneric(serviceRequestType, reqID), createRequest(serviceRequestType, fields, reqID));
         Map<String, String> serviceRequest = db.getServiceRequest(serviceRequestType, reqID);
-        for(String s : serviceRequest.keySet()){
+/*        for(String s : serviceRequest.keySet()){
             System.out.println(s + " " + serviceRequest.get(s));
-        }
+        }*/
     }
 
 }

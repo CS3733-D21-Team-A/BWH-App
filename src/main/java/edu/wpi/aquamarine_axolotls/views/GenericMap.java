@@ -64,7 +64,7 @@ public class GenericMap extends SPage{
 
             floors = new HashMap<>();                   // stores map images
             floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
-            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1");
+            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
             floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
             floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
             floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
@@ -207,7 +207,7 @@ public class GenericMap extends SPage{
      * @param y y coord
      * @param color color to fill the cicle
      */
-    public void drawSingleNode(double x, double y, Color color){
+    private void drawSingleNode(double x, double y, Color color){
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
@@ -223,16 +223,48 @@ public class GenericMap extends SPage{
      * @param enodeCol Color of the end node
      * @param edgeCol Color of the edge
      */
-    public void drawTwoNodesWithEdge(Map<String, String> snode, Map<String, String> enode, Color snodeCol, Color enodeCol, Color edgeCol) {
+    void drawTwoNodesWithEdge(Map<String, String> snode, Map<String, String> enode, Color snodeCol, Color enodeCol, Color edgeCol) {
         if (snode.get("FLOOR").equals(FLOOR) && enode.get("FLOOR").equals(FLOOR)){
+            double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
+            double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
+            double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
+            drawTwoNodesWithEdge(startX, startY, endX, endY, snodeCol, enodeCol, edgeCol);
+        }
+    }
+
+    /**
+     * Draws two nodes as dots, and connects them with a line
+     * This version takes two node objects
+     * @param snode Node to start with
+     * @param enode Node to end at
+     * @param snodeCol Color of the start node
+     * @param enodeCol Color of the end node
+     * @param edgeCol Color of the edge
+     */
+    void drawTwoNodesWithEdge(Node snode, Node enode, Color snodeCol, Color enodeCol, Color edgeCol) {
+        if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
+            double startX = xScale(snode.getXcoord());
+            double startY = yScale(snode.getYcoord());
+            double endX = xScale(enode.getXcoord());
+            double endY = yScale(enode.getYcoord());
+            drawTwoNodesWithEdge(startX, startY, endX, endY, snodeCol, enodeCol, edgeCol);
+        }
+    }
+
+    /**
+     * Draws two nodes as dots, and connects them with a line
+     * @param snodeCol Color of the start node
+     * @param enodeCol Color of the end node
+     * @param edgeCol Color of the edge
+     */
+    private void drawTwoNodesWithEdge(double startX, double startY, double endX, double endY, Color snodeCol, Color enodeCol, Color edgeCol) {
             GraphicsContext gc = mapCanvas.getGraphicsContext2D();
             gc.setStroke(edgeCol);
-            gc.strokeLine(xScale(Integer.parseInt(snode.get("XCOORD"))), yScale(Integer.parseInt(snode.get("YCOORD"))),
-                            xScale(Integer.parseInt(enode.get("XCOORD"))), yScale(Integer.parseInt(enode.get("YCOORD"))));
+            gc.strokeLine(startX, startY, endX, endY);
 
-            drawSingleNode(snode, snodeCol);
-            drawSingleNode(enode, enodeCol);
-        }
+            drawSingleNode(startX, startY, snodeCol);
+            drawSingleNode(endX, endY, enodeCol);
     }
 
     /**
@@ -246,19 +278,8 @@ public class GenericMap extends SPage{
         int startX = Integer.parseInt(start.get("XCOORD"));
         int startY = Integer.parseInt(start.get("YCOORD"));
 
-        int endX = Integer.parseInt(start.get("XCOORD"));
-        int endY = Integer.parseInt(start.get("YCOORD"));
-
-        gc.strokeLine(xScale(startX), yScale(startY), xScale(endX), yScale(endY));
-
-        double xCenter = startX;
-        double yCenter = startY;
-
-        double xPoints[] = new double[3];
-        xPoints[0] = xCenter;
-        xPoints[1] = xCenter + 7 * Math.sqrt(2.0) / 2.0;
-        xPoints[2] = xCenter - 7 * Math.sqrt(2.0) / 2.0;
-        double yPoints[] = new double[3];
+        double endX = xScale(Integer.parseInt(start.get("XCOORD")));
+        double endY = yScale(Integer.parseInt(start.get("YCOORD")));
 
         String startFloor = start.get("FLOOR");
         String endFloor = end.get("FLOOR");
@@ -328,7 +349,7 @@ public class GenericMap extends SPage{
      * @param enode The ending node
      * @return The Euclidean distance between the given nodes
      */
-    private double getDistBetweenNodes(Map<String, String> snode, Map<String, String> enode) {
+    double getDistBetweenNodes(Map<String, String> snode, Map<String, String> enode) {
 
         double sNodeX = xScale(Integer.parseInt(snode.get("XCOORD")));
         double sNodeY = yScale(Integer.parseInt(snode.get("YCOORD")));
@@ -346,7 +367,7 @@ public class GenericMap extends SPage{
      * @param endY The second pairs y value
      * @return The Euclidean distance between the two pairs of coordinates
      */
-    private double findDistance(double startX, double startY, double endX, double endY){
+    double findDistance(double startX, double startY, double endX, double endY){
         // find differnce between two coordinates
         double xOff = endX - startX;
         double yOff = endY - startY;

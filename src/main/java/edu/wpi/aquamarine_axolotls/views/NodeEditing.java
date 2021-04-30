@@ -62,9 +62,10 @@ public class NodeEditing extends GenericMap {
     @FXML private TableColumn typeCol;
 
     @FXML private JFXButton clearButton;
+    private Map<String, String> prevSelected;
+    private Map<String, String> currSelected;
 
-    private Node prevSelected;
-    private Node currSelected;
+    private
 
 
     String state = "";
@@ -75,7 +76,7 @@ public class NodeEditing extends GenericMap {
      * Initializes the node editing page by filling in dropdown boxes and importing data from the database
      */
     @FXML
-    public void initialize() {
+    public void initialize() throws SQLException{
 
         startUp();
 
@@ -128,7 +129,7 @@ public class NodeEditing extends GenericMap {
         clearButton.setVisible(false);
 
 
-        for (Map<String, String> node : nodes) {
+        for (Map<String, String> node : db.getNodes()) {
             drawSingleNode(node, Color.RED);
         }
         nodeDropdown.setItems(options);
@@ -484,7 +485,7 @@ public class NodeEditing extends GenericMap {
      * Calculates the coordinates (rounded to the nearest int) of the location f the cursor when the mouse is clicked
      * @param event The mouse click that triggers this action
      */
-    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) {
+    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) throws SQLException{
         if (event.getButton().equals(MouseButton.PRIMARY)) {
             if (state.equals("add")) {
                 //System.out.println("Clicked map");
@@ -506,12 +507,12 @@ public class NodeEditing extends GenericMap {
                 Node currClosest = null;
                 double currLeastDist = 100000;
 
-                for (Node n : validNodes) {
+                for (Map<String, String> n : db.getNodes()) {
                     //if ((FLOOR == "G" && n.getFloor().equals("G"))
                     //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
                     //Get the x and y of that node
-                    double currNodeX = xScale(n.getXcoord());
-                    double currNodeY = yScale(n.getYcoord());
+                    double currNodeX = xScale(Integer.parseInt(n.get("XCOORD")));
+                    double currNodeY = yScale(Integer.parseInt(n.get("YCOORD")));
 
                     //Get the difference in x and y between input coords and current node coords
                     double xOff = x - currNodeX;
