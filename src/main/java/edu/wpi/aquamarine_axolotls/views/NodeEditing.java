@@ -441,10 +441,10 @@ public class NodeEditing extends GenericMap {
             for (Map<String, String> node: db.getNodes()) { // TODO : maybe preformance issue?
                 if (node.get("NODEID").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
-                    currSelected = n;
+                    currSelected = node;
                     GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-                    drawSingleNode(prevSelected, gc, Color.BLUE);
-                    drawSingleNode(currSelected, gc, Color.RED);
+                    drawSingleNode(prevSelected, Color.BLUE);
+                    drawSingleNode(currSelected, Color.RED);
                 }
             }
         }
@@ -504,7 +504,7 @@ public class NodeEditing extends GenericMap {
 
                 double radius = 20;
 
-                Node currClosest = null;
+                Map<String, String> currClosest = null;
                 double currLeastDist = 100000;
 
                 for (Map<String, String> n : db.getNodes()) {
@@ -540,8 +540,8 @@ public class NodeEditing extends GenericMap {
                 prevSelected = currSelected;
                 currSelected = currClosest;
                 GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-                drawSingleNode(prevSelected, gc, Color.BLUE);
-                drawSingleNode(currSelected, gc, Color.RED);
+                drawSingleNode(prevSelected, Color.BLUE);
+                drawSingleNode(currSelected, Color.RED);
             }
         }
     }

@@ -279,15 +279,58 @@ public class GenericMap extends SPage{
      */
     void drawArrow(Map<String, String> start, Map<String, String> end) { // TODO : investigate stairs arrows not being drawn
 
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        int startX = Integer.parseInt(start.get("XCOORD"));
-        int startY = Integer.parseInt(start.get("YCOORD"));
+        double startX = xScale(Integer.parseInt(start.get("XCOORD")));
+        double startY = yScale(Integer.parseInt(start.get("YCOORD")));
 
         double endX = xScale(Integer.parseInt(start.get("XCOORD")));
         double endY = yScale(Integer.parseInt(start.get("YCOORD")));
 
         String startFloor = start.get("FLOOR");
         String endFloor = end.get("FLOOR");
+
+        drawArrow(startX, startY, endX, endY, startFloor, endFloor);
+    }
+
+    /**
+     * Draws up and down arrows to signify floor change for a given edge (two nodes)
+     * @param start start node
+     * @param end end node
+     */
+    void drawArrow(Node start, Node end) { // TODO : investigate stairs arrows not being drawn
+
+        double startX = xScale(start.getXcoord());
+        double startY = yScale(start.getYcoord());
+
+        double endX = xScale(end.getXcoord());
+        double endY = yScale(end.getYcoord());
+
+        String startFloor = start.getFloor();
+        String endFloor = end.getFloor();
+
+        drawArrow(startX, startY, endX, endY, startFloor, endFloor);
+    }
+
+    /**
+     * Draws up and down arrows to signify floor change for a given edge (two nodes)
+     * This is a private method that takes coordinates and floors derived from the Node or Map passed to the public
+     * methods.
+     * @param startX x-coordinate of the start node
+     * @param startY y-coordinate of the start node
+     * @param endX x-coordinate of the end node
+     * @param endY y-coordinate of the end node
+     * @param startFloor floor of the start node
+     * @param endFloor floor of the end node
+     */
+    private void drawArrow(double startX, double startY, double endX, double endY, String startFloor, String endFloor){
+        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
+
+        gc.strokeLine(startX, startY, endX, endY);
+
+        double xPoints[] = new double[3];
+        xPoints[0] = startX;
+        xPoints[1] = startX + 7 * Math.sqrt(2.0) / 2.0;
+        xPoints[2] = startX - 7 * Math.sqrt(2.0) / 2.0;
+        double yPoints[] = new double[3];
 
         if (startFloor.equals("G")) startFloor = "0";
         if (startFloor.equals("L1")) startFloor = "-1";
@@ -301,16 +344,16 @@ public class GenericMap extends SPage{
 
                 gc.setFill(Color.GREEN);
 
-                yPoints[0] = yCenter - 7;
-                yPoints[1] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = yCenter + 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[0] = startY - 7;
+                yPoints[1] = startY + 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = startY + 7 * Math.sqrt(2.0) / 2.0;
             } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
 
                 gc.setFill(Color.RED);
 
-                yPoints[0] = yCenter + 7;
-                yPoints[1] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = yCenter - 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[0] = startY + 7;
+                yPoints[1] = startY - 7 * Math.sqrt(2.0) / 2.0;
+                yPoints[2] = startY - 7 * Math.sqrt(2.0) / 2.0;
             }
         }
         gc.fillPolygon(xPoints, yPoints, 3);

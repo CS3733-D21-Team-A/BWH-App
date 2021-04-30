@@ -63,6 +63,8 @@ public class Navigation extends GenericMap {
         startLocation.setItems(options);
         destination.setItems(options);
 
+        drawNodesAndFloor("1", Color.BLUE);
+
         stepByStep.setVisible(false);
         listDirVBox.setVisible(false);
         listDirVBox.toFront();
@@ -124,8 +126,7 @@ public class Navigation extends GenericMap {
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
                 drawTwoNodesWithEdge(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
             }
-            if ((currPath.get(i).getNodeType().equals("STAI") && currPath.get(i+1).getNodeType().equals("STAI")) ||
-                    (currPath.get(i).getNodeType().equals("ELEV") && currPath.get(i+1).getNodeType().equals("ELEV"))){
+            if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
         }
@@ -153,6 +154,11 @@ public class Navigation extends GenericMap {
 
         firstNodeSelect = 0;
         activePath = 1;
+        List<Node> toRemove = new ArrayList<>();
+        for(Node n : currPath){ // TODO : move this to
+            if(SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(currPath, n)) toRemove.add(n);
+        }
+        currPath.removeAll(toRemove);
         //drawFloor(FLOOR);
         //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
         currPathDir.clear();
@@ -340,7 +346,7 @@ public class Navigation extends GenericMap {
         if (newDestination == null) return;
 
         else {
-            String currCloseName = newDestination.getLongName();
+            String currCloseName = newDestination.get("LONGNAME");
 
             if (activePath == 0) { //if there's no active path, we'll handle that
                 if (firstNodeSelect == 0) {
@@ -365,6 +371,8 @@ public class Navigation extends GenericMap {
             }
         }
     }
+
+
 }
 
 

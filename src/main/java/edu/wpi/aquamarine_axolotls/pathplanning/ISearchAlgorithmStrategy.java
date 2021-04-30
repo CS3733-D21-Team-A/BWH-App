@@ -14,4 +14,6 @@ public interface ISearchAlgorithmStrategy {
     public Node getNodeByLongName(String longName);
 
     public List<Node> getConnected(Node node);
+
+    public boolean nodeIsUnimportant(List<Node> path, Node n);
 }
