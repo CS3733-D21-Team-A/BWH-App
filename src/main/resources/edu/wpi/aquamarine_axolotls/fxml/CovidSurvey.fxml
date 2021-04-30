@@ -25,12 +25,12 @@
             <children>
                 <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="COVID-19 Survey" textAlignment="CENTER">
                     <font>
-                        <Font name="Times New Roman" size="60.0" />
+                        <Font name="Baskerville" size="60.0" />
                     </font>
                 </Label>
                 <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please fill this out to the best of your ability" textAlignment="CENTER" wrapText="true">
                     <font>
-                        <Font name="Times Roman" size="30.0" />
+                        <Font name="Baskerville" size="30.0" />
                     </font>
                     <padding>
                         <Insets left="20.0" right="20.0" />
@@ -77,167 +77,167 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Have you had a fever greater than 100F / 37.8C?" wrappingWidth="419.1102600097656" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Have you had a severe cough that had started or has gotten worse in the past 48 hours?" wrappingWidth="460.2884521484375" GridPane.rowIndex="2">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do you have shortness of breath that started in the last 48 hours? " wrappingWidth="384.6588134765625" GridPane.rowIndex="3">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do you have muscle aches that started or has gotten worse in the last 48 hours" wrappingWidth="440.66680908203125" GridPane.rowIndex="4">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="In the last 48 hours have you felt significiantly more tired than usual?" wrappingWidth="380.03570556640625" GridPane.rowIndex="5">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do you have a runny nose or nasal congestion that started or hasgotten worse in the last 48 hours?" wrappingWidth="473.608642578125" GridPane.rowIndex="6">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do you have a sore throat that started or has gotten worse in thelast 48 hours?" wrappingWidth="448.42877197265625" GridPane.rowIndex="7">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Do you have nausea or diarrhea that started or has gotten worsein the last 48 hours?" wrappingWidth="468.7393798828125" GridPane.rowIndex="8">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="In the last 48 hours, have you had new loss of taste or smell?" wrappingWidth="365.132568359375" GridPane.rowIndex="9">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="In the last 48 hours, have you had chills that are new or are gettingworse?" wrappingWidth="465.947998046875" GridPane.rowIndex="10">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Are you currently being advised to quarantine or self-isolate by ahealth care provider or public health recommendation (i.e. Centersfor Disease Control and Prevention, Health Department)?" wrappingWidth="456.03509521484375" GridPane.rowIndex="11">
                            <font>
-                              <Font name="Times New Roman" size="15.0" />
+                              <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
                         <JFXRadioButton fx:id="yes1" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no1" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="No" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes2" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no2" text="No" GridPane.columnIndex="2" GridPane.rowIndex="2" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes4" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no3" text="No" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no4" text="No" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;"  GridPane.columnIndex="2" GridPane.rowIndex="4">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no5" text="No" GridPane.columnIndex="2" GridPane.rowIndex="5"  style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no6" text="No" GridPane.columnIndex="2" GridPane.rowIndex="6" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes3" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes5" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes6" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes7" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes8" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes9" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="9">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes10" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="yes11" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="11">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no7" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;"  text="No" GridPane.columnIndex="2" GridPane.rowIndex="7">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no8" text="No" GridPane.columnIndex="2" GridPane.rowIndex="8" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no9" text="No" GridPane.columnIndex="2" GridPane.rowIndex="9" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no10" text="No" GridPane.columnIndex="2" GridPane.rowIndex="10" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="no11" text="No" GridPane.columnIndex="2" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" GridPane.rowIndex="11">
                            <font>
-                              <Font name="Times Roman" size="23.0" />
+                              <Font name="Baskerville" size="23.0" />
                            </font>
                         </JFXRadioButton>
                      </children>
@@ -257,7 +257,7 @@
                         </ImageView>
                     </graphic>
                     <font>
-                        <Font name="Times New Roman" size="12.0" />
+                        <Font name="Baskerville" size="12.0" />
                     </font>
                     <VBox.margin>
                         <Insets />
@@ -265,7 +265,7 @@
                 </JFXButton>
                 <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="300.0" text="Navigation">
                     <font>
-                        <Font name="Times New Roman" size="12.0" />
+                        <Font name="Baskerville" size="12.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -277,7 +277,7 @@
                 </JFXButton>
                 <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="300.0" text="Service Requests">
                     <font>
-                        <Font name="Times New Roman" size="12.0" />
+                        <Font name="Baskerville" size="12.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -289,7 +289,7 @@
                 </JFXButton>
                 <JFXButton alignment="BASELINE_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" prefWidth="300.0" text="Map Editing">
                     <font>
-                        <Font name="Times New Roman" size="12.0" />
+                        <Font name="Baskerville" size="12.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -308,7 +308,7 @@
                         </ImageView>
                     </graphic>
                     <font>
-                        <Font name="Times New Roman" size="12.0" />
+                        <Font name="Baskerville" size="12.0" />
                     </font>
                 </JFXButton>
             </children>
@@ -317,7 +317,7 @@
         <JFXDrawer fx:id="menuDrawer" direction="RIGHT" overLayVisible="false" prefHeight="800.0" prefWidth="290.0" AnchorPane.rightAnchor="-300.0" AnchorPane.topAnchor="90.0" />
         <JFXButton fx:id="submitB" layoutX="953.0" layoutY="779.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submitButton" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE" AnchorPane.leftAnchor="1000.0" AnchorPane.topAnchor="800.0">
             <font>
-                <Font name="Times New Roman" size="30.0" />
+                <Font name="Baskerville" size="30.0" />
             </font>
         </JFXButton>
         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1605.0">
@@ -332,7 +332,7 @@
                 </ImageView>
                 <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                     <font>
-                        <Font name="Times New Roman" size="24.0" />
+                        <Font name="Baskerville" size="24.0" />
                     </font>
                     <HBox.margin>
                         <Insets bottom="12.0" left="5.0" top="20.0" />
@@ -346,7 +346,7 @@
         <Rectangle fill="#003da6" height="35.0" layoutY="89.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
         <JFXButton layoutX="1188.0" layoutY="105.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#helpButton" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE" AnchorPane.leftAnchor="1150.0" AnchorPane.topAnchor="140.0">
             <font>
-                <Font name="Times New Roman" size="20.0" />
+                <Font name="Baskerville" size="20.0" />
             </font>
         </JFXButton>
         <JFXButton fx:id="backB" layoutX="9.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" ">

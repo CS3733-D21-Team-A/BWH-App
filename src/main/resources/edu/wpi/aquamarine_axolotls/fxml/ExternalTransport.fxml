@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.geometry.Insets?>
@@ -15,13 +14,33 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.ExternalTransport">
-   
-            <bottom>
+            <top>
+                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+                    <children>
+                        <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../img/logo.png" />
+                            </image>
+                            <HBox.margin>
+                                <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+                            </HBox.margin>
+                        </ImageView>
+                        <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="560.0" style="-fx-font-family: Baskerville; -fx-font-size: 25;" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                            <HBox.margin>
+                                <Insets bottom="12.0" left="5.0" top="20.0" />
+                            </HBox.margin>
+                            <padding>
+                                <Insets bottom="5.0" />
+                            </padding>
+                        </Label>
+                    </children>
+                </HBox>
+            </top>
+   <center>
                 <Pane prefHeight="900.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                     <children>
                         <GridPane alignment="CENTER" layoutX="12.0" layoutY="228.0" maxHeight="903.0" minHeight="169.0" prefHeight="360.0" prefWidth="1265.0">
@@ -38,51 +57,61 @@
                   <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's First Name" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="1">
+                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's First Name" style="-fx-font-family: Baskerville;" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets top="40.0" />
+                                    </GridPane.margin>
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font></JFXTextField>
+                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" minWidth="280.0" prefHeight="100.0" prefWidth="267.0" promptText="Patient's Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2">
                                     <GridPane.margin>
                                         <Insets top="40.0" />
                                     </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="docFirstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's First Name" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <JFXTextField fx:id="docFirstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets top="40.0" />
                                     </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's Last Name" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="2">
+                                <JFXTextField fx:id="docLastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" minWidth="280.0" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's Last Name" style="-fx-font-family: Baskerville; -fx-font-size: 20;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets top="40.0" />
                                     </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="docLastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's Last Name" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <JFXTextField fx:id="destination" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Destination" style="-fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                     <GridPane.margin>
                                         <Insets top="40.0" />
-                                    </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="destination" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Destination" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                    <GridPane.margin>
-                                        <Insets top="40.0" />
-                                    </GridPane.margin></JFXTextField>
-                  <JFXComboBox fx:id="modeOfTrans" prefHeight="72.0" prefWidth="295.0" promptText="Mode of Transportation" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                    </GridPane.margin>
+                     <font>
+                        <Font name="Hiragino Sans GB W3" size="20.0" />
+                     </font></JFXTextField>
+                  <JFXComboBox fx:id="modeOfTrans" maxWidth="320.0" minWidth="280.0" prefHeight="50.0" prefWidth="320.0" promptText="Mode of Transportation" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets right="25.0" top="40.0" />
                      </GridPane.margin>
                   </JFXComboBox>
-                  <JFXComboBox fx:id="levelOfEmergency" prefHeight="72.0" prefWidth="295.0" promptText="Level of Emergency" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                  <JFXComboBox fx:id="levelOfEmergency" prefHeight="72.0" prefWidth="295.0" promptText="Level of Emergency" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="25.0" top="40.0" />
                      </GridPane.margin>
                   </JFXComboBox>
-                  <JFXComboBox fx:id="roomNumber" prefHeight="72.0" prefWidth="295.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Times;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                  <JFXComboBox fx:id="roomNumber" minWidth="280.0" prefHeight="72.0" prefWidth="295.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="25.0" top="40.0" />
                      </GridPane.margin>
                   </JFXComboBox>
                             </children>
                         </GridPane>
-                        <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="2.0" layoutY="157.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="74.0" prefWidth="1296.0" text="External Transportation" textAlignment="CENTER">
+            <JFXTimePicker fx:id="transpTime" defaultColor="#003da6" layoutX="495.0" layoutY="613.0" prefHeight="45.0" prefWidth="274.0" promptText="Transportation Time" style="-fx-font-size: 20; -fx-font-family: Baskerville;">
+               <padding>
+                  <Insets top="20.0" />
+               </padding></JFXTimePicker>
+                        <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="2.0" layoutY="137.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="74.0" prefWidth="1296.0" text="External Transportation" textAlignment="CENTER">
                             <font>
-                                <Font name="Times New Roman" size="60.0" />
+                                <Font name="Baskerville" size="50.0" />
                             </font>
                         </Label>
-                        <JFXButton fx:id="submitB" layoutX="974.0" layoutY="696.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                        <JFXButton fx:id="submitB" layoutX="974.0" layoutY="696.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7; -fx-font-family: Baskerville;" text="Submit" textFill="WHITE">
                             <font>
-                                <Font name="Times New Roman" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXButton>
                         <Rectangle fill="#003da6" height="35.0" layoutX="-47.0" layoutY="8.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1341.0" />
@@ -94,44 +123,12 @@
                                   </image>
                               </ImageView>
                </graphic></JFXButton>
-                        <JFXButton layoutX="1146.0" layoutY="52.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
+                        <JFXButton layoutX="1146.0" layoutY="52.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7; -fx-font-family: Baskerville;" text="Help" textFill="WHITE">
                             <font>
-                                <Font name="Times New Roman" size="20.0" />
+                                <Font name="Verdana" size="20.0" />
                             </font>
                         </JFXButton>
-                        <Line endX="773.8856201171875" endY="1.17156982421875" layoutX="198.0" layoutY="229.0" startX="115.32846069335938" startY="1.17156982421875" stroke="#c4c4c4" strokeWidth="4.0" />
-            <JFXTimePicker fx:id="transpTime" defaultColor="#003da6" layoutX="495.0" layoutY="613.0" prefHeight="45.0" prefWidth="274.0" promptText="Transportation Time" style="-fx-font-size: 20; -fx-font-family: Times;" />
                     </children>
                 </Pane>
-            </bottom>
-            <top>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
-                    <children>
-                        <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/logo.png" />
-                            </image>
-                            <HBox.margin>
-                                <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
-                            </HBox.margin>
-                        </ImageView>
-                        <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                            <font>
-                                <Font name="Times New Roman" size="24.0" />
-                            </font>
-                            <HBox.margin>
-                                <Insets bottom="12.0" left="5.0" top="20.0" />
-                            </HBox.margin>
-                            <padding>
-                                <Insets bottom="5.0" />
-                            </padding>
-                        </Label>
-                        <JFXHamburger fx:id="burger" prefHeight="87.0" prefWidth="96.0">
-                            <HBox.margin>
-                                <Insets left="650.0" />
-                            </HBox.margin>
-                        </JFXHamburger>
-                    </children>
-                </HBox>
-            </top>
+   </center>
         </BorderPane>

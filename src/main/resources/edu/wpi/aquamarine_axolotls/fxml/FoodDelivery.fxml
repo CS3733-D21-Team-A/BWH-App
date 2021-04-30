@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXHamburger?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTimePicker?>
@@ -31,9 +30,9 @@
                               <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
                           </HBox.margin>
                       </ImageView>
-                      <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="596.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                      <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="596.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                           <font>
-                              <Font name="Times New Roman" size="24.0" />
+                              <Font name="Baskerville" size="24.0" />
                           </font>
                           <HBox.margin>
                               <Insets bottom="12.0" left="5.0" top="20.0" />
@@ -42,10 +41,6 @@
                               <Insets bottom="5.0" />
                           </padding>
                       </Label>
-                    <JFXHamburger fx:id="burger" prefHeight="70.0" prefWidth="75.0">
-                     <HBox.margin>
-                        <Insets left="550.0" />
-                     </HBox.margin></JFXHamburger>
                   </children>
               </HBox>
          </top>
@@ -65,69 +60,69 @@
                         <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="267.0" promptText="First Name" style="-fx-font-size: 20; -fx-font-family: Times  New Roman;" GridPane.columnIndex="1">
+                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="267.0" promptText="First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Last Name" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2">
+                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2">
                            <GridPane.margin>
                               <Insets right="25.0" top="40.0" />
                            </GridPane.margin></JFXTextField>
-                        <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="50.0" prefWidth="324.0" promptText="Delivery Time" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets right="25.0" top="40.0" />
-                           </GridPane.margin></JFXTimePicker>
-                        <JFXComboBox fx:id="roomNumber" prefHeight="50.0" prefWidth="300.0" promptText="Room Options" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXComboBox fx:id="roomNumber" prefHeight="50.0" prefWidth="300.0" promptText="Room Options" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="25.0" top="40.0" />
                            </GridPane.margin>
                         </JFXComboBox>
-                          <JFXComboBox fx:id="foodOptions" prefHeight="50.0" prefWidth="308.0" promptText="Food Options" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets right="25.0" top="40.0" />
-                           </GridPane.margin>
-                        </JFXComboBox>
-                        <JFXComboBox fx:id="drinkOptions" prefHeight="50.0" prefWidth="294.0" promptText="Drink Options" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.rowIndex="3">
-                           <GridPane.margin>
-                              <Insets right="25.0" top="40.0" />
-                           </GridPane.margin>
-                        </JFXComboBox>
-                        <JFXComboBox fx:id="numberServings" prefHeight="50.0" prefWidth="308.0" promptText="Number of Servings" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets right="25.0" top="40.0" />
-                           </GridPane.margin>
-                        </JFXComboBox>
-                        <JFXTextField fx:id="contactNumber" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Contact Number" style="-fx-font-size: 20; -fx-font-family: Times New Roman;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="contactNumber" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Contact Number" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="25.0" top="40.0" />
                            </GridPane.margin>
                         </JFXTextField>
+                        <JFXComboBox fx:id="numberServings" prefHeight="50.0" prefWidth="308.0" promptText="Number of Servings" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets right="25.0" top="40.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="50.0" prefWidth="324.0" promptText="Delivery Time" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets right="25.0" top="40.0" />
+                           </GridPane.margin></JFXTimePicker>
+                          <JFXComboBox fx:id="foodOptions" prefHeight="50.0" prefWidth="308.0" promptText="Food Options" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets right="25.0" top="40.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="drinkOptions" prefHeight="50.0" prefWidth="294.0" promptText="Drink Options" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets right="25.0" top="40.0" />
+                           </GridPane.margin>
+                        </JFXComboBox>
                             </children>
                         </GridPane>
-                      <Label fx:id="formName" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="65.0" layoutY="121.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1243.0" text="Food Delivery Service" textAlignment="CENTER">
-                          <font>
-                              <Font name="Times New Roman" size="60.0" />
-                          </font>
-                      </Label>
-                      <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" layoutY="179.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="61.0" prefWidth="1306.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
-                          <font>
-                              <Font name="Times Roman" size="30.0" />
-                          </font>
-                          <padding>
-                              <Insets left="20.0" right="20.0" />
-                          </padding>
-                      </Label>
                   <JFXTextArea fx:id="dietaryRestA" layoutX="350.0" layoutY="606.0" prefHeight="71.0" prefWidth="582.0" promptText="Please list any dietary restrictions, alergies or preferences. ">
                      <font>
-                        <Font name="Times New Roman" size="20.0" />
+                        <Font name="Baskerville" size="20.0" />
                      </font>
                      <padding>
                         <Insets top="20.0" />
                      </padding>
                   </JFXTextArea>
+                      <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutY="121.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="90.0" prefWidth="1308.0" text="Food Delivery Service" textAlignment="CENTER">
+                          <font>
+                              <Font name="Baskerville" size="50.0" />
+                          </font>
+                      </Label>
+                      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" layoutY="179.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="98.0" prefWidth="1306.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
+                          <font>
+                              <Font name="Baskerville" size="25.0" />
+                          </font>
+                          <padding>
+                              <Insets left="20.0" right="20.0" />
+                          </padding>
+                      </Label>
                     <JFXButton layoutX="1133.0" layoutY="67.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="60.0" prefWidth="126.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
                         <font>
-                            <Font name="Times New Roman" size="23.0" />
+                            <Font name="Baskerville" size="23.0" />
                         </font>
                     </JFXButton>
                     <JFXButton fx:id="backB" layoutX="27.0" layoutY="44.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="56.0" prefWidth="65.0" text=" ">
@@ -141,7 +136,7 @@
                     <Rectangle fill="#003da6" height="35.0" layoutX="2.0" layoutY="1.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
                     <JFXButton fx:id="submitB" layoutX="996.0" layoutY="702.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                         <font>
-                            <Font name="Times New Roman" size="30.0" />
+                            <Font name="Baskerville" size="30.0" />
                         </font>
                     </JFXButton>
                </children>

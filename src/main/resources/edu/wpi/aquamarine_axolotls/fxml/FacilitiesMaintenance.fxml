@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
@@ -32,7 +31,7 @@
                   </ImageView>
                   <Label fx:id="text1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="573.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                      <font>
-                        <Font name="Times New Roman" size="24.0" />
+                        <Font name="Baskerville" size="25.0" />
                      </font>
                      <padding>
                         <Insets bottom="5.0" />
@@ -67,7 +66,7 @@
                         <Insets left="1100.0" top="5.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="21.0" />
+                        <Font name="Baskerville" size="20.0" />
                      </font>
                   </JFXButton>
                </children>
@@ -80,20 +79,15 @@
             </HBox>
             <Label fx:id="formName" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="600.0" text="Facilities Maintenance" textAlignment="RIGHT">
                <font>
-                  <Font name="Times New Roman" size="57.0" />
+                  <Font name="Baskerville" size="57.0" />
                </font>
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Label>
-            <Line endX="879.3048706054688" stroke="#c4c4c4" strokeWidth="4.0">
-               <VBox.margin>
-                  <Insets bottom="5.0" left="200.0" />
-               </VBox.margin>
-            </Line>
             <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="Times New Roman" size="30.0" />
+                  <Font name="Baskerville" size="30.0" />
                </font>
                <padding>
                   <Insets bottom="10.0" left="20.0" right="20.0" />
@@ -112,7 +106,7 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                      <font>
-                        <Font size="20.0" />
+                        <Font name="Baskerville" size="20.0" />
                      </font>
                   </JFXTextField>
                   <JFXTextField fx:id="lastName" prefHeight="44.0" prefWidth="400.0" promptText="Last Name">
@@ -127,7 +121,7 @@
             </HBox>
             <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="1300.0">
                <children>
-                  <JFXComboBox fx:id="locationDropdown" prefHeight="45.0" prefWidth="400.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Times;">
+                  <JFXComboBox fx:id="locationDropdown" prefHeight="45.0" prefWidth="400.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Baskerville;">
                      <HBox.margin>
                         <Insets right="20.0" />
                      </HBox.margin>
@@ -141,7 +135,7 @@
                <children>
                   <Label prefHeight="56.0" prefWidth="252.0" text="Is the maintenance urgent?">
                      <font>
-                        <Font name="Times New Roman" size="20.0" />
+                        <Font name="Baskerville" size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets right="20.0" />
@@ -149,17 +143,17 @@
                   </Label>
                   <HBox prefHeight="0.0" prefWidth="164.0">
                      <children>
-                        <JFXRadioButton fx:id="yesRadioB" text="Yes ">
+                        <JFXRadioButton fx:id="yesRadioB" style="-jfx-selected-color: #003da6; -jfx-unselected-color: #003da6;" text="Yes ">
                            <HBox.margin>
                               <Insets right="10.0" />
                            </HBox.margin>
                            <font>
-                              <Font name="Times New Roman" size="20.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
                         </JFXRadioButton>
-                        <JFXRadioButton fx:id="noRadioB" selected="true" text=" No">
+                        <JFXRadioButton fx:id="noRadioB" selected="true" style="-jfx-selected-color: #003da6; -jfx-unselected-color: #003da6;" text=" No">
                            <font>
-                              <Font name="Times New Roman" size="20.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
                         </JFXRadioButton>
                      </children>
@@ -177,7 +171,7 @@
                   <Insets top="40.0" />
                </VBox.margin>
                <font>
-                  <Font name="Times Roman" size="20.0" />
+                  <Font name="Baskerville" size="20.0" />
                </font>
             </JFXTextArea>
          </children>
@@ -191,7 +185,7 @@
          <children>
             <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="69.0" prefWidth="235.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                <font>
-                  <Font size="21.0" />
+                  <Font name="Baskerville" size="20.0" />
                </font>
                <HBox.margin>
                   <Insets right="35.0" />

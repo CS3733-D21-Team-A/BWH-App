@@ -50,9 +50,9 @@
                               <Image url="@../img/logo.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="text" prefHeight="27.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                        <Label minWidth="500.0" prefHeight="27.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                            <font>
-                              <Font name="Times New Roman" size="12.0" />
+                              <Font name="Baskerville" size="25.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="5.0" />

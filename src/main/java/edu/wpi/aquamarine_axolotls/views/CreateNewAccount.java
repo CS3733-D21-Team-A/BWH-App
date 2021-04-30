@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.USERTYPE;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,10 +27,6 @@ import java.util.regex.Pattern;
 public class CreateNewAccount extends SPage {
 
     @FXML
-    private StackPane stackPane;
-    @FXML
-    private JFXButton backB;
-    @FXML
     private JFXTextField firstName;
     @FXML
     private JFXTextField lastName;
@@ -37,8 +34,6 @@ public class CreateNewAccount extends SPage {
     private JFXTextField emailAddress;
     @FXML
     private JFXTextField userName;
-    @FXML
-    private JFXComboBox userType;
     @FXML
     private JFXPasswordField password;
     @FXML
@@ -49,9 +44,6 @@ public class CreateNewAccount extends SPage {
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = new DatabaseController();
-        userType.setItems(FXCollections
-                .observableArrayList("Patient", "Employee")
-        );
     }
 
 
@@ -67,8 +59,7 @@ public class CreateNewAccount extends SPage {
 
         }*/
         if (firstName.getText().isEmpty() || lastName.getText().isEmpty() ||
-                emailAddress.getText().isEmpty() || userName.getText().isEmpty() ||
-                userType.getSelectionModel().getSelectedItem() == null) {
+                emailAddress.getText().isEmpty() || userName.getText().isEmpty()) {
             popUp("Failed Submission.", "\n\n\n\n\nPlease fill out all fields listed.");
             return;
         }
@@ -95,7 +86,7 @@ public class CreateNewAccount extends SPage {
         user.put("FIRSTNAME", firstName.getText());
         user.put("LASTNAME", lastName.getText());
         user.put("EMAIL", emailAddress.getText());
-        user.put("USERTYPE", userType.getSelectionModel().getSelectedItem().toString());
+        user.put("USERTYPE", "Patient" );
         user.put("PASSWORD", password.getText());
         db.addUser(user);
         popUp ( "Account Success", "\n\n\n\n\n\nThe account you submitted was successfully created." );
