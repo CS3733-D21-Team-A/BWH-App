@@ -69,6 +69,30 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	/**
+	 * Static nested class for databasecontrollerSingleton
+	 * @throws SQLException
+	 */
+	public static class DBControllerSingleton{
+
+		private static DatabaseController instance;
+		private Connection connection;
+
+		/**
+		 * getinstance of dbcontroller to then use
+		 * @return instance of dbcontroller
+		 * @throws SQLException
+		 * @throws IOException
+		 * @throws URISyntaxException
+		 */
+		public static DatabaseController getInstance() throws SQLException, IOException, URISyntaxException {
+			if(instance == null){
+				instance = new DatabaseController();
+			}
+			return instance;
+		}
+	}
+
 
 
 

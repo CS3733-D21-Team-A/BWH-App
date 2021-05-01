@@ -34,11 +34,4 @@ public class DatabaseControllerSingleton {
         return instance;
     }
 
-
-
-
-
-
-
-
 }
