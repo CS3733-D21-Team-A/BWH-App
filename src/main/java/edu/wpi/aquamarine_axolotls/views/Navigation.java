@@ -349,7 +349,7 @@ public class Navigation extends GenericMap {
                 String currCloseName = newDestination.get("LONGNAME");
 
             if (activePath == 0) { //if there's no active path, we'll handle that
-                if (firstNodeSelect == 0) {
+                if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
                 }
