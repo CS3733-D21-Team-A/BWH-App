@@ -94,7 +94,13 @@ public class NodeEditing extends GenericMap {
         searchAlgorithms.add("Depth First");
         algoSelectBox.setItems(searchAlgorithms);
 
+        List<Map<String, String>> nodes = db.getNodesByValue("FLOOR", FLOOR);
 
+        for (Map<String, String> node : nodes) {
+            options.add ( node.get ( "LONGNAME" ) );
+            Node cur = new Node(node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("LONGNAME"), node.get("SHORTNAME"),  node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"));
+            table.getItems().add(cur);
+        }
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
@@ -128,11 +134,8 @@ public class NodeEditing extends GenericMap {
         submissionButton.setVisible(false);
         clearButton.setVisible(false);
 
-
-        for (Map<String, String> node : db.getNodes()) {
-            drawSingleNode(node, Color.RED);
-        }
         nodeDropdown.setItems(options);
+
 
     }
 

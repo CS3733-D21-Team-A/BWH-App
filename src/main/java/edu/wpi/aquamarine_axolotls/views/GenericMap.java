@@ -56,10 +56,7 @@ public class GenericMap extends SPage{
         try {
             db = new DatabaseController();
 
-  /*          List<Map<String, String>> nodes = db.getNodesByValue("FLOOR", FLOOR);
-
-            for (Map<String, String> node : nodes) {
-                options.add(node.get("LONGNAME"));
+  /*
             }*/
 
             floors = new HashMap<>();                   // stores map images

@@ -273,7 +273,7 @@
          <children>
             <MenuBar prefHeight="26.0" prefWidth="130.0">
                <menus>
-                  <Menu mnemonicParsing="false" text="       Change Floor">
+                  <Menu fx:id="curFloor" mnemonicParsing="false" text="       Change Floor">
                      <items>
                         <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
                         <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
