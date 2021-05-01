@@ -77,7 +77,8 @@ public class GenericMap extends SPage{
             mapScrollPane.setContent(contentGroup);
             mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
 
-            drawFloor(FLOOR);
+            //drawFloor(FLOOR);
+            drawNodesAndFloor ( FLOOR, Color.BLUE );
             zoom = 1;
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
