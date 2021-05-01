@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.views.CovidSurvey;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;
@@ -620,7 +621,6 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
-	// Emily
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
@@ -707,7 +707,11 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public Map<String, String> getSurvey(String username) throws SQLException
 	{
-		return covidSurveyTable.getEntry(username);
+		if(covidSurveyTable.getEntry(username) != null) {
+			return covidSurveyTable.getEntry(username);
+		} else {
+			throw new SQLException();
+		}
 	}
 
 
