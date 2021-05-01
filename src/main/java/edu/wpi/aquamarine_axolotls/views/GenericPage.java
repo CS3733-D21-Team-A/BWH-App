@@ -12,6 +12,7 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class GenericPage {
@@ -29,8 +30,13 @@ public class GenericPage {
     }
 
     @FXML
-    public void goBack(){
+    public void goBack(String currentPage){
+        //this should b done in initialize, is there a way to get the current pg we are on w/o passing it in
+        Aapp.prevPage = Aapp.currPage;
+        Aapp.currPage = currentPage;
+        sceneSwitch ( Aapp.prevPage);
         // TODO: implement this
+
     }
     @FXML  //TODO: make this look better
     public void popUp(String title, String disp){
@@ -39,14 +45,14 @@ public class GenericPage {
         myDialog.centerOnScreen();
         myDialog.setTitle(title);
         Text text1 = new Text(disp);
-        text1.setStyle("-fx-font-size: 20; -fx-fill: blue; -fx-font-family: Comic Sans; -fx-alignment: center");
+        text1.setStyle("-fx-font-size: 20; -fx-fill: blue; -fx-font-background: cream; -fx-font-family: Baskerville; -fx-alignment: center");
         TextFlow textFlow = new TextFlow(text1);
         textFlow.setTextAlignment(TextAlignment.CENTER);
         myDialog.setScene(new Scene(textFlow, 400, 300));
         myDialog.show();
     }
 
-    // TODO : Logout/closedown application on every page
+    // TODO : closedown application on every page
     public void signOutPage(){
         popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
         Aapp.username = null;
