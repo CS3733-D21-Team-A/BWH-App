@@ -344,10 +344,10 @@ public class Navigation extends GenericMap {
         if(event.getButton().equals(MouseButton.PRIMARY)) {
             Map<String, String> newDestination = getNearestNode(event.getX(), event.getY());
 
-        if (newDestination == null) return;
+            if (newDestination == null) return;
 
-        else {
-            String currCloseName = newDestination.get("LONGNAME");
+            else {
+                String currCloseName = newDestination.get("LONGNAME");
 
             if (activePath == 0) { //if there's no active path, we'll handle that
                 if (firstNodeSelect == 0) {

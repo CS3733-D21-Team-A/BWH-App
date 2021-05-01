@@ -422,7 +422,7 @@ public class NodeEditing extends GenericMap {
     public void highLightNodeFromSelector() throws SQLException{
         if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
             for (Map<String, String> node: db.getNodes()) { // TODO : maybe preformance issue?
-                if (node.get("NODEID").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
+                if (node.get("LONGNAME").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = node;
                     if (prevSelected != null) drawSingleNode(prevSelected, Color.BLUE);
@@ -516,7 +516,7 @@ public class NodeEditing extends GenericMap {
 
                 if (currClosest == null) return;
                 else {
-                    nodeDropdown.setValue(currClosest.get("NODEID"));
+                    nodeDropdown.setValue(currClosest.get("LONGNAME"));
                 }
 
                 prevSelected = currSelected;
