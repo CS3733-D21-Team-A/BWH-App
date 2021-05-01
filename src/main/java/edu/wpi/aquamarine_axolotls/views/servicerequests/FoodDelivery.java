@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.*;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -16,19 +17,15 @@ import java.util.ArrayList;
 public class FoodDelivery extends GenericServiceRequest {
 
     @FXML
-    private TextField firstName;
-    @FXML
-    private TextField lastName;
-    @FXML
     private JFXTimePicker deliveryTime;
     @FXML
     private JFXComboBox roomNumber;
     @FXML
-    private JFXComboBox foodOptions;
+    private JFXComboBox<String> foodOptions;
     @FXML
-    private JFXComboBox drinkOptions;
+    private JFXComboBox<String> drinkOptions;
     @FXML
-    private JFXComboBox numberServings;
+    private JFXComboBox<Integer> numberServings;
     @FXML
     private JFXTextArea dietaryRestA;
     @FXML
@@ -39,6 +36,14 @@ public class FoodDelivery extends GenericServiceRequest {
 
     @FXML
     public void initialize() {
+        requestFieldList.add(new FieldTemplate<JFXTimePicker>("DELIVERYTIME", deliveryTime, (a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm"))));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>("FOODOPTION", foodOptions, (a) -> a.getSelectionModel().getSelectedItem()));
+        requestFieldList.add(new FieldTemplate<JFXTextArea>("DIETARYRESTRICTIONS", dietaryRestA, (a) -> a.getText()));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<Integer>>("NUMBEROFSERVINGS", numberServings, (a) -> a.getSelectionModel().getSelectedItem().toString()));
+        requestFieldList.add(new FieldTemplate<JFXTextField>("CONTACTNUMBER", contactNumber, (a) -> a.getText()));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>("DRINKOPTIONS", drinkOptions, (a) -> a.getSelectionModel().getSelectedItem()));
+
+        serviceRequestType = SERVICEREQUEST.FOOD_DELIVERY;
         startUp();
         foodOptions.setItems(FXCollections
                 .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
@@ -52,7 +57,7 @@ public class FoodDelivery extends GenericServiceRequest {
                 .observableArrayList("Water", "Coca-Cola", "Sprite", "Milk", "Orange Juice")
         );
         numberServings.setItems(FXCollections
-                .observableArrayList("1", "2", "3", "4", "5")
+                .observableArrayList(1, 2, 3, 4, 5)
         );
     }
 
@@ -68,30 +73,19 @@ public class FoodDelivery extends GenericServiceRequest {
         String fn = firstName.getText();
         String ln = lastName.getText();
         String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-        int room = roomNumber.getSelectionModel().getSelectedIndex();
+        /*int room = roomNumber.getSelectionModel().getSelectedIndex();
         String food = foodOptions.getSelectionModel().getSelectedItem().toString();
         String rest = dietaryRestA.getText();
         String servings = numberServings.getSelectionModel().getSelectedItem().toString();
         String cn = contactNumber.getText();
-        String dop = drinkOptions.getSelectionModel().getSelectedItem().toString();
+        String dop = drinkOptions.getSelectionModel().getSelectedItem().toString();*/ //TODO: REFACTOR SYNTAX CHECKING
         if (!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
                 || dt.isEmpty()) {
             errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
             return;
         }
 
-        ArrayList<String> fields = new ArrayList<String>();
-        fields.add(cn); // Contact number
-        fields.add(dt); // Deiverytime
-        fields.add(rest); // dietary restriction
-        fields.add(dop); // drink option
-        fields.add(food); // food option
-        fields.add("NOTE"); // Note // TODO : see if we should remove
-        // TODO add location
-        fields.add(servings); // number of servicngs
-
         try {
-            createServiceRequest(SERVICEREQUEST.FOOD_DELIVERY, fields);
             submit();
         } catch (SQLException e) {
             e.printStackTrace();
