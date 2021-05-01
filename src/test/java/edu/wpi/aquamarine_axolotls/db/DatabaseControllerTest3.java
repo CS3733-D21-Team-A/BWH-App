@@ -15,7 +15,7 @@ import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 public class DatabaseControllerTest3 {
 
-    private final DatabaseController db = new DatabaseController();
+    private final DatabaseController db = DatabaseController.getInstance();
 
     public DatabaseControllerTest3() throws SQLException, IOException, URISyntaxException {
     }

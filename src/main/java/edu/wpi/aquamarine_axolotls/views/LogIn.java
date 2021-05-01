@@ -37,7 +37,7 @@ public class LogIn extends SPage{
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController ();
+        db = DatabaseController.getInstance();
     }
 
 

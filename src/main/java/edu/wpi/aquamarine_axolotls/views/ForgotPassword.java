@@ -25,7 +25,7 @@ public class ForgotPassword extends SPage{
         @FXML
         public void initialize() {
             try {
-                db = new DatabaseController ();
+                db = DatabaseController.getInstance();
             } catch (SQLException | IOException | URISyntaxException throwables) {
                 throwables.printStackTrace ( );
             }

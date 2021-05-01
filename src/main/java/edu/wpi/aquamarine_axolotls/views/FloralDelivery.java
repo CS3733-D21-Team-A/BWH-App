@@ -44,7 +44,7 @@ public class FloralDelivery extends SServiceRequest {
     @FXML
     public void initialize() {
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {

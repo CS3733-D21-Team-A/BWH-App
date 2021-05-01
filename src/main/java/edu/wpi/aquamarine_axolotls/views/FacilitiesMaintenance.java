@@ -39,7 +39,7 @@ public class FacilitiesMaintenance extends SServiceRequest {
 
     public void initialize() {
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
         } catch (SQLException | IOException | URISyntaxException throwables) {
             throwables.printStackTrace();
         }
@@ -47,7 +47,7 @@ public class FacilitiesMaintenance extends SServiceRequest {
         yesRadioB.setToggleGroup(radioButtons);
         noRadioB.setToggleGroup(radioButtons);
         try {
-            DatabaseController db = new DatabaseController();
+            DatabaseController db = DatabaseController.getInstance();
             List<Map<String, String>> nodes = db.getNodes();
             ObservableList<String> locos = FXCollections.observableArrayList();
             for (Map<String, String> node : nodes) {

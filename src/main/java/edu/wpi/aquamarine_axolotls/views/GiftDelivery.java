@@ -68,7 +68,7 @@ public class GiftDelivery extends SServiceRequest {
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController ();
+        db = DatabaseController.getInstance();
         giftOptions.setItems(FXCollections
                 .observableArrayList("Hospital T-Shirt", "Teddy Bear", "Hospital Mug"));
         nodeIDS = new ArrayList<String>();

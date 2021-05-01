@@ -86,7 +86,7 @@ public class LanguageInterpreter extends SServiceRequest {
         }
 
         try {
-            DatabaseController db = new DatabaseController();
+            DatabaseController db = DatabaseController.getInstance();
             //   Aapp.num++; // TODO: better way of establishing request ID
             Map<String, String> shared = new HashMap<String, String>();
             Random r = new Random();

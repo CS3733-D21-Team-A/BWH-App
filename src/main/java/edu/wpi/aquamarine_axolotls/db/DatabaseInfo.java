@@ -114,7 +114,7 @@ final class DatabaseInfo {
 					"SORETHROAT VARCHAR(25)," +
 					"NASALCONGEST VARCHAR(25)," +
 					"MORETIRED VARCHAR(25)," +
-					"MUSCLEACHES VARCHAR(25)," +
+					"MUSCLEACHES VARCHAR(25)" +
 					")";
 
 	// ========== SERVICE REQUESTS ==========

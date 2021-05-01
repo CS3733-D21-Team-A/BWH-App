@@ -40,7 +40,7 @@ public class EmployeeRequests extends SPage{
     @FXML
     public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
 
             if(Aapp.userType.equals("Patient")){ // only display their service requests
                 assignB.setVisible(false);
@@ -121,7 +121,7 @@ public class EmployeeRequests extends SPage{
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
 
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
             refresh();
             db.close();
@@ -137,7 +137,7 @@ public class EmployeeRequests extends SPage{
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
 
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();

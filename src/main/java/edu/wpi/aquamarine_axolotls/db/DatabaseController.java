@@ -75,26 +75,32 @@ public class DatabaseController implements AutoCloseable {
 	 * Static nested class for databasecontrollerSingleton
 	 * @throws SQLException
 	 */
-	public static class DBControllerSingleton{
-
+	private static class DBControllerSingleton{
 		private static DatabaseController instance;
-		private Connection connection;
-
-		/**
-		 * getinstance of dbcontroller to then use
-		 * @return instance of dbcontroller
-		 * @throws SQLException
-		 * @throws IOException
-		 * @throws URISyntaxException
-		 */
-		public static DatabaseController getInstance() throws SQLException, IOException, URISyntaxException {
-			if(instance == null){
-				instance = new DatabaseController();
-			}
-			return instance;
-		}
 	}
 
+	/**
+	 * getinstance of dbcontroller to then use
+	 * @return instance of dbcontroller
+	 * @throws SQLException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public static DatabaseController getInstance() throws SQLException, IOException, URISyntaxException {
+		if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
+			DBControllerSingleton.instance = new DatabaseController();
+		}
+		return DBControllerSingleton.instance;
+	}
+
+	/** Checks to see if the Database Controller is closed
+	 *
+	 * @return True if the database is closed, otherwise false
+	 * @throws SQLException
+	 */
+	private boolean isClosed() throws SQLException {
+		return connection.isClosed();
+	}
 
 
 

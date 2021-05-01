@@ -67,7 +67,7 @@ public class InternalTransportation extends SServiceRequest {
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
 
-        db = new DatabaseController();
+        db = DatabaseController.getInstance();
 
     }
 

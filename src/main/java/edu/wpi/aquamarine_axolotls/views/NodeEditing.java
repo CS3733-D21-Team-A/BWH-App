@@ -141,7 +141,7 @@ public class NodeEditing extends SEditing {
         clearButton.setVisible(false);
 
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> nodes = db.getNodes();
 

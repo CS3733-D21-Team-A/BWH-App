@@ -26,6 +26,8 @@ import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.apache.derby.iapi.db.Database;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -117,7 +119,7 @@ public class EdgeEditing extends SEditing{
         submissionButton.setVisible(false);
 
         try{
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
             List<Map<String, String>> nodes = db.getNodes();

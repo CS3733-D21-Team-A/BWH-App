@@ -76,7 +76,7 @@ public class Sanitation extends SServiceRequest {
 		}
 
 		try {
-			DatabaseController db = new DatabaseController();
+			DatabaseController db = DatabaseController.getInstance();
 			Map<String, String> shared = new HashMap<>();
 			Random r = new Random();
 			int id = Math.abs(r.nextInt());

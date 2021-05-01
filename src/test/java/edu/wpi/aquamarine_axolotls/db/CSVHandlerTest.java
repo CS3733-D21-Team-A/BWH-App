@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CSVHandlerTest {
-	private final DatabaseController db = new DatabaseController();
+	private final DatabaseController db = DatabaseController.getInstance();
 	private CSVHandler csvHandler;
 	private InputStream nodeStream;
 	private InputStream edgeStream;

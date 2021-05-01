@@ -25,7 +25,7 @@ class DatabaseControllerTest2 {
 		if (dir.exists()) {
 			assertTrue(FileUtil.removeDirectory(dir));
 		}
-		try (DatabaseController db = new DatabaseController()) {
+		try (DatabaseController db = DatabaseController.getInstance()) {
 			assertTrue(dir.exists());
 		} catch (SQLException | IOException | URISyntaxException e) {
 			e.printStackTrace();
@@ -38,8 +38,8 @@ class DatabaseControllerTest2 {
 
 	@Test
 	void closingWithMultipleControllers() {
-		try (DatabaseController db1 = new DatabaseController()) {
-			try (DatabaseController db2 = new DatabaseController()) {
+		try (DatabaseController db1 = DatabaseController.getInstance()) {
+			try (DatabaseController db2 = DatabaseController.getInstance()) {
 				assertNotNull(db2.getNodes());
 			}
 			assertNotNull(db1.getNodes());

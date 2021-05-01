@@ -48,7 +48,7 @@ public class CreateNewAccount extends SPage {
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController();
+        db = DatabaseController.getInstance();
         userType.setItems(FXCollections
                 .observableArrayList("Patient", "Employee")
         );

@@ -66,7 +66,7 @@ public class Navigation extends SPage {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             List<Map<String, String>> nodes = db.getNodes();
             for (Map<String, String> node : nodes) {
 //                if ((node.get("NODETYPE").equals("WALK"))
