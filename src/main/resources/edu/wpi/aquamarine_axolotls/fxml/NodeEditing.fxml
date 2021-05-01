@@ -63,7 +63,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
+                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
                            <HBox.margin>
                               <Insets right="100.0" />
                            </HBox.margin>
@@ -109,7 +109,7 @@
                         <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="55.0" style="-fx-background-color: f0f0f0;" text="File" textFill="#8b8b8b">
                            <items>
                               <RadioMenuItem fx:id="newCSVButton" mnemonicParsing="false" onAction="#newCSV" style="-fx-font-size: 26;" text="Import and Overwrite" />
-                              <RadioMenuItem fx:id="mergeCSVButton" mnemonicParsing="false" onAction="#mergeCSV" text="Import and Merge" />
+                              <RadioMenuItem fx:id="mergeCSVButton" mnemonicParsing="false" text="Import and Merge" />
                               <RadioMenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
                            </items>
                            <font>
