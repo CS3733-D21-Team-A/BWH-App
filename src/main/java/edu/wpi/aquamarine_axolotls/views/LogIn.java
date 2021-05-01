@@ -79,7 +79,9 @@ public class LogIn extends SPage{
                                           + "or the account does not exist" );
             return;
         }
-        smsPane.setVisible ( true );
+
+        sceneSwitch ("PatientMainPage");
+      /*  smsPane.setVisible ( true );
         String r = "123";
         if ( smsSubmit.isPressed ( ) ) {
             smsSubmit(CUusername);
@@ -89,7 +91,9 @@ public class LogIn extends SPage{
         }
     }
 
+       */
 
+    }
 
 
 
