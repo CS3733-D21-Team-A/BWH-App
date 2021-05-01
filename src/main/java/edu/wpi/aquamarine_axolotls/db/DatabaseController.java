@@ -33,7 +33,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws IOException Something went wrong.
 	 * @throws URISyntaxException Something went wrong.
 	 */
-	public DatabaseController() throws SQLException, IOException, URISyntaxException {
+	private DatabaseController() throws SQLException, IOException, URISyntaxException {
 		DriverManager.registerDriver(new EmbeddedDriver());
 
 		boolean dbExists;
