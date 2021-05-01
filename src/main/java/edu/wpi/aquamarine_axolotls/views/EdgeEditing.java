@@ -95,6 +95,7 @@ public class EdgeEditing extends GenericMap {
         searchAlgorithms.add("Dijkstra");
         searchAlgorithms.add("Breadth First");
         searchAlgorithms.add("Depth First");
+        searchAlgorithms.add("Best First");
         algoSelectBox.setItems(searchAlgorithms);
 
 
@@ -108,6 +109,7 @@ public class EdgeEditing extends GenericMap {
         else if (algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
         else if (algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
         else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
+        else if (algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
 
         table.setEditable(false);
         table.getItems().clear();
@@ -321,6 +323,8 @@ public class EdgeEditing extends GenericMap {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
             } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            }else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Best First")) {
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BestFirstSearch());
             }
         }
     }
