@@ -24,6 +24,7 @@ import java.util.Map;
 import java.io.IOException;
 
 public abstract class SServiceRequest extends SPage{
+    //
     @FXML
     public JFXButton backB;
     
