@@ -13,10 +13,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class GenericServiceRequest extends SPage {
     @FXML
@@ -35,17 +32,25 @@ public class GenericServiceRequest extends SPage {
     SERVICEREQUEST serviceRequestType = null;
 
 
-    class FieldTemplate<T extends Object> {
+
+    class FieldTemplate<T> {
         private String column;
         private Function<T,String> valueGetter;
-        //private Predicate<T> syntaxChecker; //TODO: Syntax Checking
+        private Predicate<T> syntaxChecker; //TODO: Syntax Checking , Predicate<String> syntaxChecker
         private T field;
 
        public FieldTemplate(String column, T field, Function<T,String> valueGetter) {
             this.column = column;
             this.valueGetter = valueGetter;
             this.field = field;
-            //this.syntaxChecker = syntaxChecker;
+            this.syntaxChecker = (a) -> getValue() != null;
+        }
+
+        public FieldTemplate(String column, T field, Function<T,String> valueGetter, Predicate<T> syntaxChecker) {
+            this.column = column;
+            this.valueGetter = valueGetter;
+            this.field = field;
+            this.syntaxChecker = syntaxChecker;
         }
 
        String getColumn() {
@@ -54,9 +59,9 @@ public class GenericServiceRequest extends SPage {
        String getValue() {
             return valueGetter.apply(field);
        }
-       /*boolean checkSyntax() {
+       boolean checkSyntax() {
            return syntaxChecker.test(field);
-       }*/
+       }
     }
 
     List<FieldTemplate> requestFieldList = new ArrayList<>();
@@ -72,6 +77,15 @@ public class GenericServiceRequest extends SPage {
 
     @FXML
     public void submit() throws SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        for(FieldTemplate field : requestFieldList){
+            if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
+        }
+        if(errorMessage.length() != 0){
+            errorFields(errorMessage.toString());
+            return;
+        }
+
         for (FieldTemplate field : requestFieldList) {
             requestValues.put(field.getColumn(), field.getValue());
         }
@@ -95,7 +109,7 @@ public class GenericServiceRequest extends SPage {
 
     @FXML
     public void errorFields(String reqFields) {
-        popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields.\n" + reqFields);
+        popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields." + reqFields);
     }
 
 
@@ -124,15 +138,14 @@ public class GenericServiceRequest extends SPage {
     private String generateRequestID(){ // giving neg values?
         StringBuilder sb = new StringBuilder();
 
-        sharedValues.forEach((k,v) -> { //sharedValues is accessible, we can just pull it.
+        BiConsumer<String,String> appender = (k, v) -> {
             sb.append(k);
             sb.append(v);
-        });
+        };
 
-        requestValues.forEach((k,v) -> { //same with request-specific values
-            sb.append(k);
-            sb.append(v);
-        });
+        sharedValues.forEach(appender);
+
+        requestValues.forEach(appender);
 
         sb.append(System.currentTimeMillis());
 
