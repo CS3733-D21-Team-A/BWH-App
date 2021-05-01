@@ -238,7 +238,7 @@ public class Navigation extends GenericMap {
             String curNode = currPathDir.get(1).get(dirIndex);
             String curFloor = getInstructionsFloor(curNode);
             if(!curFloor.equals(FLOOR)){
-                //drawFloor(FLOOR); //TODO: update to be method in navigation
+                drawPath(curFloor); 
             }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
