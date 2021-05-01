@@ -19,6 +19,7 @@ public class DatabaseController implements AutoCloseable {
 	final private Table attrTable;
 	final private Table userTable;
 	final private Table serviceRequestsTable;
+	final private Table covidSurveyTable;
 	/*
 	 * Map for getting service request tables.
 	 * Key: Service Request enumeration.
@@ -55,6 +56,7 @@ public class DatabaseController implements AutoCloseable {
 		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		userTable = tableFactory.getTable(TABLES.USERS);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+		covidSurveyTable = tableFactory.getTable(TABLES.COVID_SURVEY);
 
 
 		requestsTables = new HashMap<>();
@@ -636,7 +638,6 @@ public class DatabaseController implements AutoCloseable {
 		return userTable.getEntry(username);
 	}
 
-	// Sean
 	/**
 	 * gets a user by email
 	 * @param email
@@ -677,6 +678,31 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	// ======= COVID SURVEY ==========
+
+	/** Adds a survey that the user took to the database
+	 *
+	 * @param survey The survey that the user has submitted
+	 * @throws SQLException
+	 */
+	public void addSurvey(Map<String, String> survey) throws SQLException {
+		if(covidSurveyTable.getEntry(survey.get("USERNAME")) != null) {
+			covidSurveyTable.deleteEntry(survey.get("USERNAME")); //TODO: Talk to UI about having users resubmit a survey
+		}
+		//TODO: Make it so guests create a random ID for username
+		covidSurveyTable.addEntry(survey);
+	}
+
+	/** Gets the survey from a specific user
+	 *
+	 * @param username The username of the user
+	 * @return The survey of the user
+	 * @throws SQLException
+	 */
+	public Map<String, String> getSurvey(String username) throws SQLException
+	{
+		return covidSurveyTable.getEntry(username);
+	}
 
 
 	// ===== DATABASE CREATION =====
