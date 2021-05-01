@@ -305,7 +305,6 @@ public class Navigation extends GenericMap {
      * Highlights the current portion of the map that the current direction is on
      */
     public void highlightDirection() throws SQLException{
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         String curNode = currPathDir.get(1).get(dirIndex);
         // draws an edge on map
         if (curNode.contains(",")) {
@@ -375,6 +374,7 @@ public class Navigation extends GenericMap {
     }
 
 
+    }
 }
 
 

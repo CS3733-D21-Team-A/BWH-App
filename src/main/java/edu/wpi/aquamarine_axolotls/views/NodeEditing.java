@@ -136,6 +136,7 @@ public class NodeEditing extends GenericMap {
 
         nodeDropdown.setItems(options);
 
+
     }
 
     /**

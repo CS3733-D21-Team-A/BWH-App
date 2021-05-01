@@ -36,7 +36,9 @@ public class GenericMap extends SPage{
     // valid nodes list
     //canvas stuff
     @FXML
-    Canvas mapCanvas;
+    ImageView mapImage;
+    @FXML
+    Pane mapView;
     @FXML
     ScrollPane mapScrollPane;
     Group zoomGroup;
@@ -356,21 +358,26 @@ public class GenericMap extends SPage{
         if (startFloor.equals(FLOOR)) {
             if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
 
-                gc.setFill(Color.GREEN);
+                arrow.setFill(Color.GREEN);
 
-                yPoints[0] = startY - 7;
-                yPoints[1] = startY + 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = startY + 7 * Math.sqrt(2.0) / 2.0;
+                points[1] = startY - 7;
+                points[3] = startY + 7 * Math.sqrt(2.0) / 2.0;
+                points[5] = startY + 7 * Math.sqrt(2.0) / 2.0;
             } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
 
-                gc.setFill(Color.RED);
+                arrow.setFill(Color.RED);
 
-                yPoints[0] = startY + 7;
-                yPoints[1] = startY - 7 * Math.sqrt(2.0) / 2.0;
-                yPoints[2] = startY - 7 * Math.sqrt(2.0) / 2.0;
+                points[1] = startY + 7;
+                points[3] = startY - 7 * Math.sqrt(2.0) / 2.0;
+                points[5] = startY - 7 * Math.sqrt(2.0) / 2.0;
             }
         }
-        gc.fillPolygon(xPoints, yPoints, 3);
+//        gc.fillPolygon(xPoints, yPoints, 3);
+        for (int i = 0; i < points.length; i++) {
+            arrow.getPoints().add(points[i]);
+        }
+
+        mapView.getChildren().add(arrow);
     }
 
     /**
