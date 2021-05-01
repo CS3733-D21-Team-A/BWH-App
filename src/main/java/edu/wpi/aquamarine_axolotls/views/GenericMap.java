@@ -12,8 +12,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Polygon;
 import org.apache.derby.client.am.Sqlca;
 
 import java.io.FileNotFoundException;
@@ -70,9 +75,11 @@ public class GenericMap extends SPage{
             Group contentGroup = new Group();
             zoomGroup = new Group();
             contentGroup.getChildren().add(zoomGroup);
-            zoomGroup.getChildren().add(mapCanvas);
+            zoomGroup.getChildren().add(mapImage);
+            zoomGroup.getChildren().add(mapView);
             mapScrollPane.setContent(contentGroup);
-            mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
+            mapImage.setImage(new Image(floors.get(FLOOR)));
+
 
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
@@ -99,14 +106,14 @@ public class GenericMap extends SPage{
      * @param xCoord int, the x-coordinate to be scaled
      * @return Double, the coordinate post-scaling
      */
-    public Double xScale(int xCoord) { return (mapCanvas.getWidth()/5000) * xCoord; }
+    public Double xScale(int xCoord) { return (mapImage.getFitWidth()/5000) * xCoord; }
 
     /**
      * Scales a y-coordinate to be in proportion to the dimensions of the map images
      * @param yCoord int, the y-coordinate to be scaled
      * @return Double, the coordinate post-scaling
      */
-    public Double yScale(int yCoord) { return (mapCanvas.getHeight()/3400) * yCoord; }
+    public Double yScale(int yCoord) { return (mapImage.getFitHeight()/3400) * yCoord; }
 
     /**
      * Zooms in on the canvas and its scrollpane
@@ -152,8 +159,8 @@ public class GenericMap extends SPage{
      */
     public void drawFloor(String floor){
         FLOOR = floor;
-        mapCanvas.getGraphicsContext2D().clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
-        mapCanvas.getGraphicsContext2D().drawImage(new Image(floors.get(FLOOR)), 0,0, mapCanvas.getWidth(), mapCanvas.getHeight());
+        mapImage.setImage(new Image(floors.get(FLOOR)));
+        mapView.getChildren().clear();
         curFloor.setText( "Cur Floor : " + FLOOR);
     }
 
@@ -213,8 +220,14 @@ public class GenericMap extends SPage{
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
-        mapCanvas.getGraphicsContext2D().setFill(color);
-        mapCanvas.getGraphicsContext2D().fillOval(x, y, radius, radius);
+
+        Circle c = new Circle();
+        c.setCenterX(x);
+        c.setCenterY(y);
+        c.setRadius(radius);
+        c.setFill(color);
+
+        mapView.getChildren().add(c);
     }
 
     /**
@@ -262,12 +275,17 @@ public class GenericMap extends SPage{
      * @param edgeCol Color of the edge
      */
     private void drawTwoNodesWithEdge(double startX, double startY, double endX, double endY, Color snodeCol, Color enodeCol, Color edgeCol) {
-            GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-            gc.setStroke(edgeCol);
-            gc.strokeLine(startX, startY, endX, endY);
 
-            drawSingleNode(startX, startY, snodeCol);
-            drawSingleNode(endX, endY, enodeCol);
+        Line l = new Line();
+        l.setStartX(startX);
+        l.setStartY(startY);
+        l.setEndX(endX);
+        l.setEndY(endY);
+        l.setStroke(edgeCol);
+        mapView.getChildren().add(l);
+
+        drawSingleNode(startX, startY, snodeCol);
+        drawSingleNode(endX, endY, enodeCol);
     }
 
     /**
@@ -320,15 +338,13 @@ public class GenericMap extends SPage{
      * @param endFloor floor of the end node
      */
     private void drawArrow(double startX, double startY, double endX, double endY, String startFloor, String endFloor){
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
 
-        gc.strokeLine(startX, startY, endX, endY);
+        Polygon arrow = new Polygon();
 
-        double xPoints[] = new double[3];
-        xPoints[0] = startX;
-        xPoints[1] = startX + 7 * Math.sqrt(2.0) / 2.0;
-        xPoints[2] = startX - 7 * Math.sqrt(2.0) / 2.0;
-        double yPoints[] = new double[3];
+        double points[] = new double[6];
+        points[0] = startX;
+        points[2] = startX + 7 * Math.sqrt(2.0) / 2.0;
+        points[4] = startX - 7 * Math.sqrt(2.0) / 2.0;
 
         if (startFloor.equals("G")) startFloor = "0";
         if (startFloor.equals("L1")) startFloor = "-1";

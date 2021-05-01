@@ -28,6 +28,8 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.Pane?>
 <BorderPane prefHeight="845.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.NodeEditing">
    <top>
       <VBox prefHeight="73.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
@@ -264,7 +266,12 @@
    <center>
       <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <content>
-            <Canvas fx:id="mapCanvas" height="507.0" onMouseClicked="#getCoordsFromMap" width="899.0" />
+            <Group>
+               <children>
+                  <ImageView fx:id="mapImage" fitHeight="527.0" fitWidth="823.0" pickOnBounds="true" preserveRatio="true" />
+                  <Pane fx:id="mapView" prefHeight="527.0" prefWidth="836.0" onMouseClicked="#getCoordsFromMap" />
+               </children>
+            </Group>
          </content>
       </ScrollPane>
    </center>

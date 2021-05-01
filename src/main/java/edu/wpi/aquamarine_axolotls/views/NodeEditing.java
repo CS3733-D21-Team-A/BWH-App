@@ -136,7 +136,6 @@ public class NodeEditing extends GenericMap {
 
         nodeDropdown.setItems(options);
 
-
     }
 
     /**
@@ -426,8 +425,7 @@ public class NodeEditing extends GenericMap {
                 if (node.get("NODEID").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = node;
-                    GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-                    drawSingleNode(prevSelected, Color.BLUE);
+                    if (prevSelected != null) drawSingleNode(prevSelected, Color.BLUE);
                     drawSingleNode(currSelected, Color.RED);
                 }
             }
@@ -476,8 +474,8 @@ public class NodeEditing extends GenericMap {
 
                 //double x = xScale(event.getX());
                 //double y = yScale(event.getY());
-                int x = (int) Math.floor(event.getX() / (mapCanvas.getWidth()/5000));
-                int y = (int) Math.floor(event.getY() / (mapCanvas.getHeight()/3400));
+                int x = (int) Math.floor(event.getX() / (mapImage.getFitWidth()/5000));
+                int y = (int) Math.floor(event.getY() / (mapImage.getFitHeight()/3400));
 
                 if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
                 if (yCoor.isVisible()) yCoor.setText(Integer.toString(y));
@@ -523,7 +521,6 @@ public class NodeEditing extends GenericMap {
 
                 prevSelected = currSelected;
                 currSelected = currClosest;
-                GraphicsContext gc = mapCanvas.getGraphicsContext2D();
                 drawSingleNode(prevSelected, Color.BLUE);
                 drawSingleNode(currSelected, Color.RED);
             }
