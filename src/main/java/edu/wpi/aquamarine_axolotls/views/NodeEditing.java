@@ -92,6 +92,7 @@ public class NodeEditing extends GenericMap {
         searchAlgorithms.add("Dijkstra");
         searchAlgorithms.add("Breadth First");
         searchAlgorithms.add("Depth First");
+        searchAlgorithms.add("Best First");
         algoSelectBox.setItems(searchAlgorithms);
 
         List<Map<String, String>> nodes = db.getNodesByValue("FLOOR", FLOOR);
@@ -111,6 +112,7 @@ public class NodeEditing extends GenericMap {
         else if(algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
         else if(algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
         else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
+        else if(algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
 
 
         nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
@@ -412,6 +414,8 @@ public class NodeEditing extends GenericMap {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
             } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            } else if(algoSelectBox.getSelectionModel().getSelectedItem().equals("Best First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BestFirstSearch());
             }
         }
     }

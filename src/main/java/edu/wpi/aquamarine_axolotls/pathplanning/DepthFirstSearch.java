@@ -58,11 +58,18 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
         }
     }
 
-    public List<Node> getPath(String startID, String endID){
+    public List<Node> getPath(String startLongName, String endLongName){
 
         List<Node> visited = new ArrayList<>();
 
         List<Node> result = new ArrayList<>();
+
+        Node startNode = getNodeByLongName(startLongName);
+        Node endNode = getNodeByLongName(endLongName);
+
+        String startID = startNode.getNodeID();
+        String endID = endNode.getNodeID();
+
         //If the start == the end, add that to the result; the result will just be the start ID
         if (startID.equals(endID)) result.add(getNode(startID));
             //Otherwise, actually do the search
