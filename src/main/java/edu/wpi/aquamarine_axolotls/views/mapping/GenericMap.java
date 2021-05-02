@@ -218,7 +218,7 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(xScale(Integer.parseInt(node.get("XCOORD"))), yScale(Integer.parseInt(node.get("YCOORD"))), color); }
+    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), color); }
 
 
     /**
