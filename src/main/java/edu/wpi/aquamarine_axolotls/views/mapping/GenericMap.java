@@ -16,6 +16,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -49,6 +50,7 @@ public class GenericMap extends GenericPage {
     ContextMenu contextMenu = new ContextMenu();
     double contextMenuX = 0;
     double contextMenuY = 0;
+    Map<String, String> currentNode;
 
     // Floor stuff
     Map<String, String> floors;
@@ -96,6 +98,15 @@ public class GenericMap extends GenericPage {
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Hides context menu when left clicked is clicked
+     * @param event the mouse click event
+     */
+    @FXML
+    public void hideContextMenu(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) contextMenu.hide();
     }
 
     /**
@@ -216,8 +227,13 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Node node, Color color) { drawSingleNode(xScale(node.getXcoord()), yScale(node.getYcoord()), color); }
+    public void drawSingleNode(Node node, Color color) { drawSingleNode(node.getXcoord(), node.getYcoord(), color); }
 
+
+
+    public void drawSingleNode(int x, int y, Color color){
+        drawSingleNode(xScale(x), yScale(y), color);
+    }
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
