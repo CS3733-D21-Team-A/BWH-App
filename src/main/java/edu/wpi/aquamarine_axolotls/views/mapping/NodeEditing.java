@@ -15,6 +15,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import sun.awt.HKSCS;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,6 +61,7 @@ public class NodeEditing extends GenericMap {
     String state = "";
 
     CSVHandler csvHandler;
+    private List<Map<String, String>> selectedNodesList = new ArrayList<Map<String, String>>();
 
     /**
      * Initializes the node editing page by filling in dropdown boxes and importing data from the database
@@ -415,15 +417,79 @@ public class NodeEditing extends GenericMap {
     @FXML
     public void highLightNodeFromSelector() throws SQLException{
         if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
-            for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) { // TODO : maybe preformance issue?
+            for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) { // TODO : maybe performance issue?
                 if (node.get("LONGNAME").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = node;
-                    if (prevSelected != null) drawSingleNode(prevSelected, Color.BLUE);
+                    if (prevSelected != null){
+                        drawSingleNode(prevSelected, Color.BLUE);
+                        selectedNodesList.remove(prevSelected);
+                    }
                     drawSingleNode(currSelected, Color.RED);
+                    selectedNodesList.add(currSelected);
                 }
             }
         }
+    }
+
+    public void alignNodesHorizontal(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException{
+        drawFloor(FLOOR);
+        String anchorY = anchorPoint.get("YCOORD");
+        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), Color.RED);
+        for(Map<String, String> node : nodes){
+            Map<String, String> newNode = new HashMap<String, String>();
+            newNode.put("YCOORD", anchorY);
+            drawSingleNode(Double.parseDouble(node.get("XCOORD")), Double.parseDouble(newNode.get("YCOORD")), Color.GREEN);
+            //db.editNode(node.get("NODEID"), newNode);
+        }
+
+    }
+
+    public void alignNodesVertical(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException{
+        drawFloor(FLOOR);
+        String anchorX = anchorPoint.get("XCOORD");
+        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), Color.RED);
+        for(Map<String, String> node : nodes){
+            Map<String, String> newNode = new HashMap<String, String>();
+            newNode.put("XCOORD", anchorX);
+            drawSingleNode(Double.parseDouble(newNode.get("XCOORD")), Double.parseDouble(node.get("YCOORD")), Color.GREEN);
+            //db.editNode(node.get("NODEID"), newNode);
+        }
+
+    }
+
+    public void alignNodesBetweenTwoNodes(List<Map<String, String>> nodes, Map<String, String> anchorPoint1, Map<String, String> anchorPoint2) throws SQLException{
+        drawFloor(FLOOR); //TODO : remove this
+        double anchorX1 = Double.parseDouble(anchorPoint1.get("XCOORD"));
+        double anchorY1 = -1 * Double.parseDouble(anchorPoint1.get("YCOORD"));
+        double anchorX2 = Double.parseDouble(anchorPoint2.get("XCOORD"));
+        double anchorY2 = -1 * Double.parseDouble(anchorPoint2.get("YCOORD"));
+        drawSingleNode(anchorX1, -1 * anchorY1, Color.RED);
+        drawSingleNode(anchorX2, -1 * anchorY2, Color.RED);
+        System.out.println("Node1 coords \n" + "X1 = " + anchorX1  + "  Y2 = " + anchorY1 *-1);
+        System.out.println("Node2 coords \n" + "X2 = " + anchorX2  + "  Y2 = " + anchorY2 * -1 + "\n");
+        double anchorSlope = (anchorY2 - anchorY1) / (anchorX2 - anchorX1);
+        for(Map<String, String> node : nodes){
+            // find vector that is orthogonal to point and anchor line
+            // find solution to vector equation
+
+//            double transformSlope = -1 / anchorSlope;
+
+            double originalX = Double.parseDouble(node.get("XCOORD"));
+            double originalY = -1 * Double.parseDouble(node.get("YCOORD"));
+            System.out.println("Current Node coords \n" + "X3 = " + originalX + "  Y3 = " + originalY * -1 + "\n");
+            double newX = (originalX + Math.pow(anchorSlope, 2) * anchorX1 - anchorSlope * anchorY1 + anchorSlope * originalY) / (1 + Math.pow(anchorSlope, 2));
+            double newY = -1 * (anchorSlope * newX + anchorY1 - anchorSlope * anchorX1);
+            System.out.println("New current Node coords \n" + "X3 = " + newX + "  Y3 = " + newY);
+            drawSingleNode(newX, newY, Color.GREEN);
+/*            Map<String, String> newNode = new HashMap<String, String>();
+            newNode.put("XCOORD", String.valueOf(newX));
+            newNode.put("YCOORD", String.valueOf(newY));
+            db.editNode(node.get("NODEID"), newNode);*/
+        }
+
+
+        //drawFloor(FLOOR);
     }
 
     /**
@@ -483,7 +549,7 @@ public class NodeEditing extends GenericMap {
                 Map<String, String> currClosest = null;
                 double currLeastDist = 100000;
 
-                for (Map<String, String> n : db.getNodes()) {
+                for (Map<String, String> n : db.getNodesByValue("FLOOR", FLOOR)) {
                     //if ((FLOOR == "G" && n.getFloor().equals("G"))
                     //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
                     //Get the x and y of that node
@@ -512,6 +578,14 @@ public class NodeEditing extends GenericMap {
                 else {
                     nodeDropdown.setValue(currClosest.get("LONGNAME"));
                 }
+
+//                if(selectedNodesList.contains(currClosest)){
+//                    drawSingleNode(currClosest, Color.BLUE);
+//                    selectedNodesList.remove(currClosest);
+//                } else {
+//                    drawSingleNode(currClosest, Color.RED);
+//                    selectedNodesList.add(currClosest);
+//                }
 
                 prevSelected = currSelected;
                 currSelected = currClosest;
