@@ -44,10 +44,6 @@ public class Navigation extends GenericMap {
     private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
 
-    ContextMenu contextMenu = new ContextMenu();
-    double contextMenuX = 0;
-    double contextMenuY = 0;
-
     @FXML
     public void initialize() throws SQLException {
 
@@ -73,7 +69,6 @@ public class Navigation extends GenericMap {
         MenuItem item2 = new MenuItem(("Add to Favorites"));
 
 
-
         item1.setOnAction((ActionEvent e)->{
             try {
                 addDestination(contextMenuX, contextMenuY);
@@ -85,6 +80,7 @@ public class Navigation extends GenericMap {
         item2.setOnAction((ActionEvent e)->{
 
         });
+        contextMenu.getItems().clear();
         contextMenu.getItems().addAll(item1,item2);
 
 //        mapImage.setOnContextMenuRequested(new EventHandler() {

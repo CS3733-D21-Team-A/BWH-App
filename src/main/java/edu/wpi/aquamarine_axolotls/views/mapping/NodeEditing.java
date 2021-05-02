@@ -369,6 +369,14 @@ public class NodeEditing extends GenericMap {
      */
     @FXML
     public void submitfunction() throws SQLException {
+        if (nodeID.getText().equals("") ||
+                longName.getText().equals("") ||
+                floor.getText().equals("") ||
+                xCoor.getText().equals("") ||
+                yCoor.getText().equals("")) {
+            submissionlabel.setText("Invalid submission");
+            return;
+        }
         switch (state){
             case "delete":
                 delete(nodeDropdown.getSelectionModel().getSelectedItem().toString());
@@ -423,6 +431,15 @@ public class NodeEditing extends GenericMap {
                     currSelected = node;
                     if (prevSelected != null) drawSingleNode(prevSelected, Color.BLUE);
                     drawSingleNode(currSelected, Color.RED);
+                    nodeDropdown.setValue(currSelected.get("LONGNAME"));
+                    nodeID.setText(currSelected.get("NODEID"));
+                    shortName.setText(currSelected.get("SHORTNAME"));
+                    longName.setText(currSelected.get("LONGNAME"));
+                    xCoor.setText(currSelected.get("XCOORD"));
+                    yCoor.setText(currSelected.get("YCOORD"));
+                    floor.setText(currSelected.get("FLOOR"));
+                    building.setText(currSelected.get("BUILDING"));
+                    nodeType.setText(currSelected.get("NODETYPE"));
                 }
             }
         }
@@ -461,24 +478,8 @@ public class NodeEditing extends GenericMap {
 
     /**
      * Calculates the coordinates (rounded to the nearest int) of the location f the cursor when the mouse is clicked
-     * @param event The mouse click that triggers this action
      */
-    public void getCoordsFromMap(javafx.scene.input.MouseEvent event) throws SQLException{
-        if (event.getButton().equals(MouseButton.PRIMARY)) {
-            if (state.equals("add")) {
-                //System.out.println("Clicked map");
-
-                //double x = xScale(event.getX());
-                //double y = yScale(event.getY());
-                int x = (int) Math.floor(event.getX() / (mapImage.getFitWidth()/5000));
-                int y = (int) Math.floor(event.getY() / (mapImage.getFitHeight()/3400));
-
-                if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
-                if (yCoor.isVisible()) yCoor.setText(Integer.toString(y));
-            }
-            else if (state.equals("edit") || state.equals("delete")) {
-                double x = event.getX();
-                double y = event.getY();
+    public void getCoordsFromMap(double x, double y) throws SQLException{
 
                 double radius = 20;
 
@@ -486,26 +487,28 @@ public class NodeEditing extends GenericMap {
                 double currLeastDist = 100000;
 
                 for (Map<String, String> n : db.getNodes()) {
-                    //if ((FLOOR == "G" && n.getFloor().equals("G"))
-                    //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
-                    //Get the x and y of that node
-                    double currNodeX = xScale(Integer.parseInt(n.get("XCOORD")));
-                    double currNodeY = yScale(Integer.parseInt(n.get("YCOORD")));
+                    if (n.get("FLOOR").equals(FLOOR)) {
+                        //if ((FLOOR == "G" && n.getFloor().equals("G"))
+                        //|| (FLOOR == "1" && n.getFloor().equals("1"))) {
+                        //Get the x and y of that node
+                        double currNodeX = xScale(Integer.parseInt(n.get("XCOORD")));
+                        double currNodeY = yScale(Integer.parseInt(n.get("YCOORD")));
 
-                    //Get the difference in x and y between input coords and current node coords
-                    double xOff = x - currNodeX;
-                    double yOff = y - currNodeY;
+                        //Get the difference in x and y between input coords and current node coords
+                        double xOff = x - currNodeX;
+                        double yOff = y - currNodeY;
 
-                    //Give 'em the ol' pythagoras maneuver
-                    double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
-                    dist = Math.sqrt(dist);
+                        //Give 'em the ol' pythagoras maneuver
+                        double dist = (Math.pow(xOff, 2) + Math.pow(yOff, 2));
+                        dist = Math.sqrt(dist);
 
-                    //If the distance is LESS than the given radius...
-                    if (dist < radius) {
-                        //...AND the distance is less than the current min, update current closest node
-                        if (dist < currLeastDist) {
-                            currClosest = n;
-                            currLeastDist = dist;
+                        //If the distance is LESS than the given radius...
+                        if (dist < radius) {
+                            //...AND the distance is less than the current min, update current closest node
+                            if (dist < currLeastDist) {
+                                currClosest = n;
+                                currLeastDist = dist;
+                            }
                         }
                     }
                 }
@@ -513,6 +516,14 @@ public class NodeEditing extends GenericMap {
                 if (currClosest == null) return;
                 else {
                     nodeDropdown.setValue(currClosest.get("LONGNAME"));
+                    nodeID.setText(currClosest.get("NODEID"));
+                    shortName.setText(currClosest.get("SHORTNAME"));
+                    longName.setText(currClosest.get("LONGNAME"));
+                    xCoor.setText(currClosest.get("XCOORD"));
+                    yCoor.setText(currClosest.get("YCOORD"));
+                    floor.setText(currClosest.get("FLOOR"));
+                    building.setText(currClosest.get("BUILDING"));
+                    nodeType.setText(currClosest.get("NODETYPE"));
                 }
 
                 prevSelected = currSelected;
@@ -520,6 +531,6 @@ public class NodeEditing extends GenericMap {
                 drawSingleNode(prevSelected, Color.BLUE);
                 drawSingleNode(currSelected, Color.RED);
             }
-        }
-    }
+        //}
+    //}
 }

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
@@ -45,6 +46,9 @@ public class GenericMap extends GenericPage {
     Group zoomGroup;
     int zoom;
     DatabaseController db;
+    ContextMenu contextMenu = new ContextMenu();
+    double contextMenuX = 0;
+    double contextMenuY = 0;
 
     // Floor stuff
     Map<String, String> floors;
