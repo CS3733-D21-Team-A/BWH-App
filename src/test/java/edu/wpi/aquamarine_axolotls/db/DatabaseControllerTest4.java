@@ -91,6 +91,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
 
@@ -101,6 +103,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
 
@@ -111,6 +115,8 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
 
             db.addUser(user3);
 
@@ -134,6 +140,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
             assertThrows(SQLException.class, () -> {
@@ -157,6 +165,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "BananasTho");
@@ -187,6 +197,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
             user1.replace("LASTNAME", "DeMaio");
@@ -210,6 +222,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
             user1.replace("LASTNAME", "DeMaio");
@@ -235,6 +249,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
@@ -258,6 +274,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
@@ -282,6 +300,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
             testBoi.add(user1);
@@ -293,6 +313,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
             testBoi.add(user2);
@@ -304,6 +326,8 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
 
             db.addUser(user3);
             testBoi.add(user3);
@@ -326,6 +350,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
 
@@ -336,6 +362,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
 
@@ -346,6 +374,8 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
 
             db.addUser(user3);
 
@@ -366,6 +396,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
 
@@ -376,6 +408,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
 
@@ -386,6 +420,8 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
 
             db.addUser(user3);
 
@@ -407,6 +443,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
 
@@ -417,6 +455,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
 
@@ -427,6 +467,8 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
 
             db.addUser(user3);
 
@@ -447,6 +489,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
 
@@ -457,6 +501,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
 
@@ -467,6 +513,8 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
 
             db.addUser(user3);
 
@@ -487,6 +535,8 @@ public class DatabaseControllerTest4 {
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user1.put("PASSWORD", "PasswordIsMyPassword");
+            user1.put("PRONOUNS","They/Them");
+            user1.put("GENDER","Non-Binary");
 
             db.addUser(user1);
 
@@ -497,6 +547,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "PasswordIsMyPassword");
+            user2.put("PRONOUNS","They/Them");
+            user2.put("GENDER","Non-Binary");
 
             db.addUser(user2);
 
@@ -507,6 +559,9 @@ public class DatabaseControllerTest4 {
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user3.put("PASSWORD", "PasswordIsMyPassword");
+            user3.put("PRONOUNS","They/Them");
+            user3.put("GENDER","Non-Binary");
+
 
             db.addUser(user3);
 
@@ -531,6 +586,8 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "He/Him");
+            user.put("GENDER", "Male");
 
             db.addUser(user);
 
@@ -543,6 +600,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "ILoveSoftEng");
+            user2.put("PRONOUNS", "He/Him");
+            user2.put("GENDER", "Male");
 
             db.addUser(user2);
 
@@ -566,6 +625,8 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "He/Him");
+            user.put("GENDER", "Male");
 
             assertEquals(null, db.getUserByUsername("Seansta18"));
 
@@ -580,6 +641,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "ILoveSoftEng");
+            user2.put("PRONOUNS", "He/Him");
+            user2.put("GENDER", "Male");
 
             assertEquals(null, db.getUserByUsername("EKelley"));
             db.addUser(user2);
@@ -602,6 +665,8 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "He/Him");
+            user.put("GENDER", "Male");
 
             db.addUser(user);
 
@@ -614,6 +679,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "ILoveSoftEng");
+            user2.put("PRONOUNS", "She/Her");
+            user2.put("GENDER", "Female");
 
             db.addUser(user2);
 
@@ -637,6 +704,9 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "He/Him");
+            user.put("GENDER", "Female");
+
 
             db.addUser(user);
 
@@ -650,6 +720,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "ILoveSoftEng");
+            user2.put("PRONOUNS", "He/Her");
+            user2.put("GENDER", "Male");
 
             assertEquals(null, db.getUserByEmail("emily@gmail.com"));
             db.addUser(user2);
@@ -672,6 +744,8 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "Yes");
+            user.put("GENDER", "Yes");
 
             db.addUser(user);
 
@@ -697,6 +771,8 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "Xe/Xers");
+            user.put("GENDER", "Nonbinary");
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -705,6 +781,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "ILoveSoftEng");
+            user2.put("PRONOUNS", "He/Him");
+            user2.put("GENDER", "Male");
 
             db.addUser(user);
             db.addUser(user2);
@@ -736,16 +814,20 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "He/Him");
+            user.put("GENDER", "Male");
             db.addUser(user);
 
             Map<String, String> user2 = new HashMap<String, String>();
-            user.put("USERNAME", "JohnH");
-            user.put("FIRSTNAME", "John");
-            user.put("LASTNAME", "H");
-            user.put("EMAIL", "John@gmail.com");
-            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "Chris");
-            db.addUser(user);
+            user2.put("USERNAME", "JohnH");
+            user2.put("FIRSTNAME", "John");
+            user2.put("LASTNAME", "H");
+            user2.put("EMAIL", "John@gmail.com");
+            user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user2.put("PASSWORD", "Chris");
+            user2.put("PRONOUNS", "He/Him");
+            user2.put("GENDER", "Male");
+            db.addUser(user2);
 
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
@@ -835,16 +917,20 @@ public class DatabaseControllerTest4 {
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user.put("PASSWORD", "PasswordIsMyPassword");
+            user.put("PRONOUNS", "He/Him");
+            user.put("GENDER", "Male");
             db.addUser(user);
 
             Map<String, String> user2 = new HashMap<String, String>();
-            user.put("USERNAME", "JohnH");
-            user.put("FIRSTNAME", "John");
-            user.put("LASTNAME", "H");
-            user.put("EMAIL", "John@gmail.com");
-            user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "Chris");
-            db.addUser(user);
+            user2.put("USERNAME", "JohnH");
+            user2.put("FIRSTNAME", "John");
+            user2.put("LASTNAME", "H");
+            user2.put("EMAIL", "John@gmail.com");
+            user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user2.put("PASSWORD", "Chris");
+            user2.put("PRONOUNS", "He/Him");
+            user2.put("GENDER", "Male");
+            db.addUser(user2);
 
             Map<String, String> sharedValues1 = new HashMap<String, String>();
             sharedValues1.put("REQUESTID", "1");
