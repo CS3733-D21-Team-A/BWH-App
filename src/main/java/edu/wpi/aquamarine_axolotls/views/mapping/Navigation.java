@@ -5,14 +5,20 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import javax.naming.Context;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -38,6 +44,10 @@ public class Navigation extends GenericMap {
     private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
 
+    ContextMenu contextMenu = new ContextMenu();
+    double contextMenuX = 0;
+    double contextMenuY = 0;
+
     @FXML
     public void initialize() throws SQLException {
 
@@ -58,6 +68,40 @@ public class Navigation extends GenericMap {
         stepByStep.setVisible(false);
         listDirVBox.setVisible(false);
         listDirVBox.toFront();
+
+        MenuItem item1 = new MenuItem(("Add Stop"));
+        MenuItem item2 = new MenuItem(("Add to Favorites"));
+
+
+
+        item1.setOnAction((ActionEvent e)->{
+            try {
+                addDestination(contextMenuX, contextMenuY);
+            }
+            catch(SQLException se) {
+                se.printStackTrace();
+            }
+        });
+        item2.setOnAction((ActionEvent e)->{
+
+        });
+        contextMenu.getItems().addAll(item1,item2);
+
+//        mapImage.setOnContextMenuRequested(new EventHandler() {
+//            @Override
+//            public void handle(ContextMenuEvent event) {
+//                contextMenu.show(mapImage, event.getScreenX(), event.getScreenY());
+//            }
+//        });
+        //mapView.setOnContextMenuRequested(e -> contextMenu.show(mapView, e.getScreenX(), e.getScreenY()));
+        mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+            public void handle(ContextMenuEvent event) {
+                contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
+                contextMenuX = event.getX();
+                contextMenuY = event.getY();
+            }
+        });
+
     }
 
     public void changeFloor(String floor) throws SQLException{
@@ -326,12 +370,11 @@ public class Navigation extends GenericMap {
     /**
      * Gets the current closest node to the mouse and uses it to navigate
      * If there's no active path, this function will define a new one -- otherwise, it will add more stops
-     * @param event The mouseevent from the map when clicked on
      */
-    public void addDestination(javafx.scene.input.MouseEvent event) throws SQLException{
+    public void addDestination(double x, double y) throws SQLException{
 
-        if(event.getButton().equals(MouseButton.PRIMARY)) {
-            Map<String, String> newDestination = getNearestNode(event.getX(), event.getY());
+        //if(event.getButton().equals(MouseButton.PRIMARY)) {
+            Map<String, String> newDestination = getNearestNode(x, y);
 
             if (newDestination == null) return;
 
@@ -353,7 +396,7 @@ public class Navigation extends GenericMap {
                 }
             }
             else if (activePath == 1) {
-                stopList.add(stopList.size() - 1, currCloseName);
+                stopList.add(stopList.size(), currCloseName);
                 currPath.clear();
                 for (int i = 0; i < stopList.size() - 1; i++) {
                     findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
@@ -361,9 +404,6 @@ public class Navigation extends GenericMap {
                 drawPath(FLOOR);
             }
         }
-    }
-
-
     }
 }
 
