@@ -83,6 +83,7 @@ public class GenericMap extends SPage{
             mapImage.setPreserveRatio(false);
             mapImage.setImage(new Image(floors.get(FLOOR)));
 
+            curFloor = new Menu();
 
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );

@@ -63,7 +63,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
+                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
                            <HBox.margin>
                               <Insets right="100.0" />
                            </HBox.margin>
