@@ -84,6 +84,9 @@ public class NodeEditing extends GenericMap {
 
     private
 
+    ObservableList<String> options = FXCollections.observableArrayList();
+    ArrayList<String> nodeIDS = new ArrayList<>();
+    ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
 
     String state = "";
 
@@ -102,9 +105,6 @@ public class NodeEditing extends GenericMap {
 
         table.setEditable(false);
         table.getItems().clear();
-
-        ObservableList<String> options = FXCollections.observableArrayList();
-        ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
 
         submissionlabel.setVisible(true);
         if(searchAlgorithms.size() == 0){
@@ -563,7 +563,7 @@ public class NodeEditing extends GenericMap {
     }
 
     /**
-     * Handles the user pressing the Submit button while in th enode editing page based on whether the user was
+     * Handles the user pressing the Submit button while in the node editing page based on whether the user was
      * adding, editing, or deleting a node
      *
      * @throws SQLException If there is an error getting node data from the database
