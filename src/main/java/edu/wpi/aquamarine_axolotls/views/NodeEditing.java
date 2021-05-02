@@ -422,7 +422,7 @@ public class NodeEditing extends GenericMap {
     @FXML
     public void highLightNodeFromSelector() throws SQLException{
         if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
-            for (Map<String, String> node: db.getNodes()) { // TODO : maybe preformance issue?
+            for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) { // TODO : maybe preformance issue?
                 if (node.get("LONGNAME").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = node;

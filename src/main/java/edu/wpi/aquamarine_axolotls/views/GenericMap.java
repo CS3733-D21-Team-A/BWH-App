@@ -80,6 +80,7 @@ public class GenericMap extends SPage{
             zoomGroup.getChildren().add(mapImage);
             zoomGroup.getChildren().add(mapView);
             mapScrollPane.setContent(contentGroup);
+            mapImage.setPreserveRatio(false);
             mapImage.setImage(new Image(floors.get(FLOOR)));
 
 
@@ -228,7 +229,6 @@ public class GenericMap extends SPage{
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
-
         mapView.getChildren().add(c);
     }
 
