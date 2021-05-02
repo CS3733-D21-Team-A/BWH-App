@@ -269,7 +269,7 @@
             <Group>
                <children>
                   <ImageView fx:id="mapImage" fitHeight="527.0" fitWidth="823.0" pickOnBounds="true" preserveRatio="true" />
-                  <Pane fx:id="mapView" prefHeight="527.0" prefWidth="836.0" onMouseClicked="#getCoordsFromMap" />
+                  <Pane fx:id="mapView" prefHeight="527.0" prefWidth="836.0" />
                </children>
             </Group>
          </content>

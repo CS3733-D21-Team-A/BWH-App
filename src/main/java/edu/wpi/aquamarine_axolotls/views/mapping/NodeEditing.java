@@ -8,9 +8,11 @@ import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
@@ -129,6 +131,58 @@ public class NodeEditing extends GenericMap {
 
         nodeDropdown.setItems(options);
 
+
+
+        MenuItem item1 = new MenuItem(("New Node Here"));
+        MenuItem item2 = new MenuItem(("Edit Node"));
+        MenuItem item3 = new MenuItem(("Delete Node"));
+
+        item1.setOnAction((ActionEvent e)->{
+            pressAddButton();
+            int xint = (int) Math.floor(contextMenuX / (mapImage.getFitWidth()/5000));
+            int yint = (int) Math.floor(contextMenuY / (mapImage.getFitHeight()/3400));
+            xCoor.setText(Integer.toString(xint));
+            yCoor.setText(Integer.toString(yint));
+        });
+        item2.setOnAction((ActionEvent e)->{
+            pressEditButton();
+
+            try {
+                getCoordsFromMap(contextMenuX, contextMenuY);
+            }
+            catch(SQLException se) {
+                se.printStackTrace();
+            }
+
+        });
+        item3.setOnAction((ActionEvent e) ->{
+            pressDeleteButton();
+            try {
+                getCoordsFromMap(contextMenuX, contextMenuY);
+            }
+            catch(SQLException se) {
+                se.printStackTrace();
+            }
+
+
+        });
+        contextMenu.getItems().clear();
+        contextMenu.getItems().addAll(item1,item2,item3);
+
+//        mapImage.setOnContextMenuRequested(new EventHandler() {
+//            @Override
+//            public void handle(ContextMenuEvent event) {
+//                contextMenu.show(mapImage, event.getScreenX(), event.getScreenY());
+//            }
+//        });
+        //mapView.setOnContextMenuRequested(e -> contextMenu.show(mapView, e.getScreenX(), e.getScreenY()));
+        mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+            public void handle(ContextMenuEvent event) {
+                contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
+                contextMenuX = event.getX();
+                contextMenuY = event.getY();
+            }
+        });
 
     }
 
