@@ -221,7 +221,7 @@ public class GenericMap extends GenericPage {
      * @param y y coord
      * @param color color to fill the cicle
      */
-    private void drawSingleNode(double x, double y, Color color){
+    public void drawSingleNode(double x, double y, Color color){
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
