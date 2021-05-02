@@ -32,9 +32,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      userType = "Admin"; // TODO : remove these when done testing
-      username = "admin"; // TODO : ^
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/AdminMainPage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);

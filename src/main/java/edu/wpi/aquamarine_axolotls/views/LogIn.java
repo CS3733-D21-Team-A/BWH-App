@@ -40,6 +40,7 @@ public class LogIn extends SPage{
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = new DatabaseController ();
+        smsPane.setVisible(false);
     }
 
     public void smsCancel(){
@@ -79,8 +80,14 @@ public class LogIn extends SPage{
                                           + "or the account does not exist" );
             return;
         }
-
-        sceneSwitch ("PatientMainPage");
+        try {
+            Map<String, String> usr = db.getUserByUsername ( CUusername );
+            Aapp.userType = usr.get ( "USERTYPE" );
+            Aapp.username = usr.get ( "USERNAME" );
+        } catch (SQLException throwables) {
+            throwables.printStackTrace ( );
+        }
+        goHome();
       /*  smsPane.setVisible ( true );
         String r = "123";
         if ( smsSubmit.isPressed ( ) ) {
