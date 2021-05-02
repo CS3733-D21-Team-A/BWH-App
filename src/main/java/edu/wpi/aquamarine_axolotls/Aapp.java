@@ -19,6 +19,8 @@ public class Aapp extends Application {
 
   public static String userType = "Guest";
   public static String username;
+  public static String prevPage;
+  public static String currPage;
 
 
   @Override

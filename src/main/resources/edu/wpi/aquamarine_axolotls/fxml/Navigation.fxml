@@ -22,7 +22,8 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.Navigation">
+<?import javafx.scene.layout.Pane?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
    <top>
       <VBox prefHeight="148.0" prefWidth="1290.0" BorderPane.alignment="CENTER">
          <children>
@@ -90,7 +91,12 @@
                <children>
                   <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="709.0" prefWidth="1045.0">
                      <content>
-                        <Canvas fx:id="mapCanvas" height="706.0" onMouseClicked="#getNearestNode" width="1056.0" />
+                        <Group>
+                           <children>
+                              <ImageView fx:id="mapImage" fitHeight="709.0" fitWidth="1045.0" pickOnBounds="true" preserveRatio="true" />
+                              <Pane fx:id="mapView" prefHeight="709.0" prefWidth="1045.0" onMouseClicked="#addDestination"  />
+                           </children>
+                        </Group>
                      </content>
                   </ScrollPane>
                   <ToolBar layoutX="910.0" layoutY="200.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="162.0" prefWidth="112.0">
@@ -144,7 +150,7 @@
             </JFXComboBox>
             <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
                <children>
-                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNodes" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
+                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNav" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
                      <font>
                         <Font size="14.0" />
                      </font>

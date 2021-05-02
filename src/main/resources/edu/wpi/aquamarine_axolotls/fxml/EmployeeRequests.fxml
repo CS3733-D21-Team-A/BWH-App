@@ -15,15 +15,15 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.EmployeeRequests">
+<BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.EmployeeRequests">
    <center>
       <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0" BorderPane.alignment="CENTER">
          <columns>
-            <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Assigned" />
-            <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Assignee" />
-            <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Status" />
-            <TableColumn fx:id="serviceRequestColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Service Name" />
-            <TableColumn fx:id="locationColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Times;" text="Location" />
+            <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assigned" />
+            <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assignee" />
+            <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Status" />
+            <TableColumn fx:id="serviceRequestColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Service Name" />
+            <TableColumn fx:id="locationColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Location" />
          </columns>
       </TableView>
    </center>
@@ -44,7 +44,7 @@
             </JFXButton>
             <Label text="Service Requests">
                <font>
-                  <Font name="Times New Roman" size="25.0" />
+                  <Font name="Baskerville" size="25.0" />
                </font>
                <VBox.margin>
                   <Insets top="10.0" />
@@ -57,12 +57,12 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                      <font>
-                        <Font name="Times Roman" size="15.0" />
+                        <Font name="Baskerville" size="15.0" />
                      </font>
                   </JFXButton>
                   <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="40.0" prefWidth="133.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE">
                      <font>
-                        <Font name="Times New Roman" size="15.0" />
+                        <Font name="Baskerville" size="15.0" />
                      </font></JFXButton>
                </children>
                <VBox.margin>
@@ -108,7 +108,7 @@
                   </ImageView>
                   <Label fx:id="text1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                      <font>
-                        <Font name="Times New Roman" size="24.0" />
+                        <Font name="Baskerville" size="24.0" />
                      </font>
                      <padding>
                         <Insets bottom="5.0" />

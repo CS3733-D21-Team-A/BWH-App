@@ -180,10 +180,10 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @param goal The end node
      * @return Boolean, whether the path accurately connects the start and the end
      */
-    protected boolean checkPath(List<Node> path, Node start, Node goal){
+    protected boolean checkPath(List<Node> path, Node start, Node goal) {
         //Get the start and end nodes in the path
         Node pathStart = path.get(0);
-        Node pathGoal = path.get(path.size()-1);
+        Node pathGoal = path.get(path.size() - 1);
         System.out.println("pathStart: " + pathStart);
         System.out.println("pathGoal: " + pathGoal);
 
@@ -276,7 +276,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                     instructions.add(stepNum + ". Make an extreme right turn.");
                     stepNum++;
                 } else if (turnAngle < -10 && turnAngle > -60){
-                     instructions.add(stepNum + ". Make a slight left turn.");
+                    instructions.add(stepNum + ". Make a slight left turn.");
                     stepNum++;
                 } else if (turnAngle <= -60 && turnAngle > -120){
                     instructions.add(stepNum + ". Make a left turn.");
@@ -330,7 +330,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @param node The node in question
      * @return true if the given node is unimportant to the path's text directions
      */
-    protected boolean nodeIsUnimportant(List<Node> path, Node node){
+    public boolean nodeIsUnimportant(List<Node> path, Node node){
 
         int nodeIndex = path.indexOf(node);
 

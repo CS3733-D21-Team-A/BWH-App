@@ -183,6 +183,17 @@ public class DatabaseController implements AutoCloseable {
 		nodeTable.emptyTable();
 	}
 
+	/**
+	 * Returns all nodes that contain the input value in the provided column
+	 * @param column a column name for a given
+	 * @param value a value to query for in a given column
+	 * @return all rows that contain value in the provided column .
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getNodesByValue(String column, String value) throws SQLException {
+		return nodeTable.getEntriesByValue(column, value);
+	} // TODO : add test cases for this
+
 	// ===== EDGES =====
 
 	/**
@@ -391,6 +402,22 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 
+	public Map<String, String> getServiceRequest(SERVICEREQUEST serviceRequestType, String requestID) throws SQLException{
+		return requestsTables.get(serviceRequestType).getEntry(requestID);
+	}
+
+
+	/**
+	 * Gets the columns from the service request table named requestType
+	 * @param requestType the name of a service request table
+	 * @return a list of columns
+	 */
+	// TODO : does this look right?
+	public Map<String, Boolean> getServiceRequestColumns(SERVICEREQUEST requestType){
+		return requestsTables.get(requestType).getColumns();
+	}
+
+
 	// ===== NODE / EDGE ATTRIBUTES =====
 
 	/**
@@ -514,7 +541,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public void addUser(Map<String, String> newUser) throws SQLException
 	{
-			userTable.addEntry(newUser);
+		userTable.addEntry(newUser);
 	}
 
 	/**

@@ -53,6 +53,10 @@ public class SearchAlgorithmContext {
         return context.getETA(path);
     }
 
+    public boolean nodeIsUnimportant(List<Node> path,Node n){
+        return context.nodeIsUnimportant(path, n);
+    }
+
     /**
      * Creates a list of text directions instructing the user how to navigate a path
      * @param path The path for which text directions are to be generated

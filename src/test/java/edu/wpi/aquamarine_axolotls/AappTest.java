@@ -2,7 +2,6 @@ package edu.wpi.aquamarine_axolotls;
 
 import static org.testfx.api.FxAssert.verifyThat;
 
-import edu.wpi.aquamarine_axolotls.views.Navigation;
 import javafx.scene.Node;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,8 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
-
-import javax.xml.soap.Text;
 
 /**
  * This is an integration test for the entire application. Rather than running a single scene

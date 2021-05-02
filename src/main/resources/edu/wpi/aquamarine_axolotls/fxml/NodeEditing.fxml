@@ -28,7 +28,9 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="845.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.NodeEditing">
+<?import javafx.scene.Group?>
+<?import javafx.scene.layout.Pane?>
+<BorderPane prefHeight="845.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.NodeEditing">
    <top>
       <VBox prefHeight="73.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
          <children>
@@ -63,7 +65,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" onAction="#chartAnchor" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
+                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
                            <HBox.margin>
                               <Insets right="100.0" />
                            </HBox.margin>
@@ -109,7 +111,7 @@
                         <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="55.0" style="-fx-background-color: f0f0f0;" text="File" textFill="#8b8b8b">
                            <items>
                               <RadioMenuItem fx:id="newCSVButton" mnemonicParsing="false" onAction="#newCSV" style="-fx-font-size: 26;" text="Import and Overwrite" />
-                              <RadioMenuItem fx:id="mergeCSVButton" mnemonicParsing="false" onAction="#mergeCSV" text="Import and Merge" />
+                              <RadioMenuItem fx:id="mergeCSVButton" mnemonicParsing="false" text="Import and Merge" />
                               <RadioMenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
                            </items>
                            <font>
@@ -264,7 +266,12 @@
    <center>
       <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" BorderPane.alignment="CENTER">
          <content>
-            <Canvas fx:id="mapCanvas" height="507.0" onMouseClicked="#getCoordsFromMap" width="899.0" />
+            <Group>
+               <children>
+                  <ImageView fx:id="mapImage" fitHeight="527.0" fitWidth="823.0" pickOnBounds="true" preserveRatio="true" />
+                  <Pane fx:id="mapView" prefHeight="527.0" prefWidth="836.0" onMouseClicked="#getCoordsFromMap" />
+               </children>
+            </Group>
          </content>
       </ScrollPane>
    </center>
@@ -273,7 +280,7 @@
          <children>
             <MenuBar prefHeight="26.0" prefWidth="130.0">
                <menus>
-                  <Menu mnemonicParsing="false" text="       Change Floor">
+                  <Menu fx:id="curFloor" mnemonicParsing="false" text="       Change Floor">
                      <items>
                         <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
                         <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
