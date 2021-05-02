@@ -74,6 +74,7 @@ public class Navigation extends GenericMap {
         stopList.clear();
         currPath.clear();
         currPathDir.clear();
+        intermediatePoints.clear();
         activePath = 0;
         etaLabel.setText("");
         drawNodesAndFloor(FLOOR, Color.BLUE);
@@ -91,6 +92,7 @@ public class Navigation extends GenericMap {
     public void findPath() throws SQLException{
         currPath.clear();
         stopList.clear();
+        intermediatePoints.clear();
 
         activePath = 0;
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
@@ -363,7 +365,7 @@ public class Navigation extends GenericMap {
                 for (int i = 0; i < stopList.size() - 1; i++) {
                     findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
                 }
-                intermediatePoints.add(newDestination);
+                intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 drawPath(FLOOR);
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
                     drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
