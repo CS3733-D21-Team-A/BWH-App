@@ -27,8 +27,8 @@ public class ForgotPassword extends GenericPage {
         public void initialize() {
             try {
                 db = DatabaseController.getInstance();
-            } catch (SQLException | IOException | URISyntaxException throwables) {
-                throwables.printStackTrace ( );
+            } catch (SQLException | IOException e) {
+                e.printStackTrace ( );
             }
         }
 

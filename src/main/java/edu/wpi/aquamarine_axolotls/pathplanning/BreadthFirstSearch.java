@@ -43,7 +43,7 @@ public class BreadthFirstSearch extends AbsAlgorithmMethod {
                         edgeMap.get(j).get("ENDNODE")
                 ));
             }
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

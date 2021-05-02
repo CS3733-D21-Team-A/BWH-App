@@ -28,7 +28,7 @@ class DatabaseControllerTest2 {
 		}
 		try (DatabaseController db = DatabaseController.getInstance()) {
 			assertTrue(dir.exists());
-		} catch (SQLException | IOException | URISyntaxException e) {
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -53,7 +53,7 @@ class DatabaseControllerTest2 {
 			assertNotSame(db3, db2);
 			assertNotSame(db3, db1);
 			assertSame(db1, db2);
-		} catch (SQLException | IOException | URISyntaxException e) {
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 			fail();
 		}

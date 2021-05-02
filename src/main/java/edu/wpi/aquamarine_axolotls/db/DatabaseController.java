@@ -33,9 +33,8 @@ public class DatabaseController implements AutoCloseable {
 	 * DatabaseController constructor. Creates and populates new database if one is not found.
 	 * @throws SQLException Something went wrong.
 	 * @throws IOException Something went wrong.
-	 * @throws URISyntaxException Something went wrong.
 	 */
-	private DatabaseController() throws SQLException, IOException, URISyntaxException {
+	private DatabaseController() throws SQLException, IOException {
 		DriverManager.registerDriver(new EmbeddedDriver());
 
 		boolean dbExists;
@@ -85,9 +84,8 @@ public class DatabaseController implements AutoCloseable {
 	 * @return instance of dbcontroller
 	 * @throws SQLException
 	 * @throws IOException
-	 * @throws URISyntaxException
 	 */
-	public static DatabaseController getInstance() throws SQLException, IOException, URISyntaxException {
+	public static DatabaseController getInstance() throws SQLException, IOException {
 		if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
 			DBControllerSingleton.instance = new DatabaseController();
 		}
