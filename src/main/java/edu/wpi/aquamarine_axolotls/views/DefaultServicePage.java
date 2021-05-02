@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 
-public class DefaultServicePage extends SPage {
+public class DefaultServicePage extends GenericPage {
     @FXML
     private JFXButton foodDeliveryB;
 

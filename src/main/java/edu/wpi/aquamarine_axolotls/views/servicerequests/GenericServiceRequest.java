@@ -6,7 +6,7 @@ import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
-import edu.wpi.aquamarine_axolotls.views.SPage;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.*;
 
-public class GenericServiceRequest extends SPage {
+public class GenericServiceRequest extends GenericPage {
     @FXML
     JFXTextField firstName;
     @FXML

@@ -8,13 +8,17 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class GuestMainPage extends SPage {
+public class GuestMainPage extends GenericPage {
+    @FXML
+    public StackPane stackPane;
+
     @FXML
     public void signInP(ActionEvent actionEvent) {
         sceneSwitch("LogIn");
@@ -52,13 +56,4 @@ public class GuestMainPage extends SPage {
     public void covidSurveyPage(ActionEvent actionEvent) {
         sceneSwitch("CovidSurvey");
     }
-
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }
-
-
 }

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 
-public class CreateNewAccount extends SPage {
+public class CreateNewAccount extends GenericPage {
 
     @FXML
     private JFXTextField firstName;

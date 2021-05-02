@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenericMap extends SPage{
+public class GenericMap extends GenericPage{
 
 
     // valid nodes list

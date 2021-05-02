@@ -25,8 +25,7 @@ import java.util.Map;
 
 public abstract class SPage {
 
-    @FXML
-    public StackPane stackPane;
+
     @FXML
     JFXHamburger burger;
 
@@ -59,11 +58,6 @@ public abstract class SPage {
     }
 
     @FXML
-    public void defaultServicePageP(ActionEvent actionEvent) {
-        sceneSwitch("DefaultServicePage");
-
-    }
-    @FXML
     public void mapEditP(ActionEvent actionEvent) {
         sceneSwitch("NodeEditing");
     }
@@ -72,13 +66,6 @@ public abstract class SPage {
     public void mapP(ActionEvent actionEvent) {
         sceneSwitch("Navigation");
 
-    }
-
-    public void signOutPage(){
-        popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        Aapp.username = null;
-        Aapp.userType = "Guest";
-        sceneSwitch("GuestMainPage");
     }
 
     @FXML

@@ -52,35 +52,29 @@ public class GenericPage {
         myDialog.show();
     }
 
-    // TODO : closedown application on every page
-    public void signOutPage(){
-        popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        Aapp.username = null;
-        Aapp.userType = "Guest";
-        sceneSwitch("GuestMainPage");
-    }
-
-    /*    @FXML
+    @FXML
     public void goHome() {
-        if(Aapp.userType.equals("Employee")) sceneSwitch("EmployeeMainPage");
-        else if(Aapp.userType.equals("Patient")) sceneSwitch("PatientMainPage");
-        else if(Aapp.userType.equals("Admin")) sceneSwitch("AdminMainPage");
-        else{ sceneSwitch ( "GuestMainPage" ); }
-    }*/
-
-/*    @FXML
-    public void defaultServicePageP(ActionEvent actionEvent) {
-        sceneSwitch("DefaultServicePage");
-
+        switch (Aapp.userType) {
+            case "Employee":
+                sceneSwitch("EmployeeMainPage");
+                break;
+            case "Patient":
+                sceneSwitch("PatientMainPage");
+                break;
+            case "Admin":
+                sceneSwitch("AdminMainPage");
+                break;
+            default:
+                sceneSwitch("GuestMainPage");
+                break;
+        }
     }
-    @FXML
-    public void mapEditP(ActionEvent actionEvent) {
-        sceneSwitch("NodeEditing");
-    }
 
-    @FXML
-    public void mapP(ActionEvent actionEvent) {
-        sceneSwitch("Navigation");
-
+    /*
+    public void menu(){
+        if(transition.getRate() == -1) menuDrawer.open();
+        else menuDrawer.close();
+        transition.setRate(transition.getRate() * -1);
+        transition.play();
     }*/
 }

@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 
-public class LogIn extends SPage{
+public class LogIn extends GenericPage{
 
     @FXML private JFXTextField username;
     @FXML private JFXPasswordField password;

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
-public class CovidSurvey extends SPage {
+public class CovidSurvey extends GenericPage {
 
 
     @FXML

@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EmployeeRequests extends SPage{
+public class EmployeeRequests extends GenericPage{
 
     @FXML private TableView<EmployeeRequest> srTable;
     @FXML private TableColumn<EmployeeRequest, String> assignedColumn;

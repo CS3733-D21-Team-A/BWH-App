@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class AdminNewUser extends SPage {
+public class AdminNewUser extends GenericPage {
 
 
         @FXML private JFXTextField firstName;

@@ -8,7 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 
-public class EmployeeServiceRequestPage extends SPage {
+public class EmployeeServiceRequestPage extends GenericPage {
 
         // Button Presses for Default Service Page, each button leads to its service request form
         // NOTE: code feels redundant, maybe make method?
@@ -24,13 +24,6 @@ public class EmployeeServiceRequestPage extends SPage {
         @FXML
         public void viewReqP(ActionEvent actionEvent) {
             sceneSwitch("EmployeeRequests");
-        }
-
-        public void menu(){
-            if(transition.getRate() == -1) menuDrawer.open();
-            else menuDrawer.close();
-            transition.setRate(transition.getRate() * -1);
-            transition.play();
         }
     }
 
