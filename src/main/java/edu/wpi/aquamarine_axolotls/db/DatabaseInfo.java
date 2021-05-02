@@ -113,6 +113,7 @@ final class DatabaseInfo {
 			"NUMBEROFSERVINGS VARCHAR(3)," +
 			"CONTACTNUMBER VARCHAR(15)," +
 			"DRINKOPTIONS VARCHAR(25)," + // TODO: do the same thing as what happened with food options thing
+			"NOTE VARCHAR(300)," +
 			"FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
 

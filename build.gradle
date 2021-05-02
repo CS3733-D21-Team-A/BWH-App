@@ -40,8 +40,11 @@ dependencies {
             'org.slf4j:slf4j-simple:1.7.30',
 
             'com.google.guava:guava:30.1.1-jre',
+
+            'com.google.maps:google-maps-services:0.18.0',
+
+            'org.junit.jupiter:junit-jupiter:5.4.2'
     )
-    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
 
 //These are test dependencies. These are only used for running verification tasks via Gradle.
     testCompile(
