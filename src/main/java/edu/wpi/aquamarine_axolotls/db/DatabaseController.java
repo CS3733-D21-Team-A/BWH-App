@@ -621,6 +621,38 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	// Emily
+	/**
+	 * Method to change the pronouns of a user to the inputted value
+	 * @param username a string for the user key in db
+	 * @param newPronouns a string for new pronoun choice for user
+	 */
+	public void changePronouns(String username, String newPronouns){
+		try {
+			Map<String, String> tempBoi = getUserByUsername(username);
+			tempBoi.put("PROUNOUNS",newPronouns);
+			editUser(username, tempBoi);
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+	}
+
+	// Emily
+	/**
+	 * Method to change the gender identity of a user to the inputted value
+	 * @param username a string for the user key in db
+	 * @param genderIdentity a string for new gender identity for user
+	 */
+	public void changeGender(String username, String genderIdentity){
+		try {
+			Map<String, String> tempBoi = getUserByUsername(username);
+			tempBoi.put("GENDER",genderIdentity);
+			editUser(username, tempBoi);
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+	}
+
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
