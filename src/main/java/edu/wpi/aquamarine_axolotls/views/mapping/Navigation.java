@@ -37,6 +37,7 @@ public class Navigation extends GenericMap {
     private int activePath = 0;
     private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
+    private List<Map<String,String>> intermediatePoints = new ArrayList<>();
 
     @FXML
     public void initialize() throws SQLException {
@@ -119,6 +120,8 @@ public class Navigation extends GenericMap {
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
+            drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
+            drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.DARKMAGENTA);
         }
     }
     // draw floor that makes everything transparent
@@ -323,7 +326,7 @@ public class Navigation extends GenericMap {
         }
     }
 
-    /**
+    /**d
      * Gets the current closest node to the mouse and uses it to navigate
      * If there's no active path, this function will define a new one -- otherwise, it will add more stops
      * @param event The mouseevent from the map when clicked on
@@ -342,6 +345,7 @@ public class Navigation extends GenericMap {
                 if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
+                    drawSingleNodeHighLight(newDestination,Color.LIGHTGREEN);
                 }
                 else if ( firstNodeSelect == 1 ) {
                     stopList.clear ( );
@@ -349,6 +353,7 @@ public class Navigation extends GenericMap {
                     stopList.add ( currCloseName );
                     currPath.clear ( );
                     findPathSingleSegment ( stopList.get ( 0 ) ,stopList.get ( 1 ) );
+                    drawSingleNodeHighLight(newDestination,Color.DARKMAGENTA);
                     drawPath ( FLOOR );
                 }
             }
@@ -358,7 +363,11 @@ public class Navigation extends GenericMap {
                 for (int i = 0; i < stopList.size() - 1; i++) {
                     findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
                 }
+                intermediatePoints.add(newDestination);
                 drawPath(FLOOR);
+                for (Map<String,String> intermediatePointToDraw : intermediatePoints){
+                    drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
+                }
             }
         }
     }
