@@ -17,16 +17,12 @@ public class LanguageInterpreter extends GenericServiceRequest {
 
     @FXML
     public JFXComboBox languageSelect;
-
     @FXML
     public JFXTextArea preferences;
-
     @FXML
     private JFXComboBox roomNumber;
-
     @FXML
     private ArrayList<String> nodeIDS;
-
     @FXML
     private JFXTextField contactNumber;
 

@@ -45,6 +45,20 @@ public class InternalTransportation extends GenericServiceRequest {
                 (a) -> !a.getText().isEmpty()
         ));
 
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "PATIENTFIRSTNAME",
+                patientFirstName,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "PATIENTLASTNAME",
+                patientLastName,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
         serviceRequestType = SERVICEREQUEST.INTERNAL_TRANSPORT;
         startUp(); // TODO : whos name should eb on the request?
         nodeIDS = new ArrayList<String>();

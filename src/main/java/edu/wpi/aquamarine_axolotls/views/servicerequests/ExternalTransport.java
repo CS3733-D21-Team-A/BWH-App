@@ -16,22 +16,16 @@ public class ExternalTransport extends GenericServiceRequest {
 
     @FXML
     private JFXTextField patientFirstName;
-
     @FXML
     private JFXTextField patientLastName;
-
     @FXML
     private JFXTextField destination;
-
     @FXML
     private JFXComboBox<String> modeOfTrans;
-
     @FXML
     private JFXTimePicker transpTime;
-
     @FXML
     private JFXComboBox<String> levelOfEmergency;
-
     @FXML
     private JFXComboBox<String> roomNumber;
 
@@ -53,13 +47,13 @@ public class ExternalTransport extends GenericServiceRequest {
                 (a) -> !a.getText().isEmpty()
         ));
         requestFieldList.add(new FieldTemplate<JFXTextField>(
-                "DOCFIRSTNAME",
+                "PATIENTFIRSTNAME",
                 patientFirstName,
                 (a) -> a.getText(),
                 (a) -> !a.getText().isEmpty()
         ));
         requestFieldList.add(new FieldTemplate<JFXTextField>(
-                "DOCLASTNAME",
+                "PATIENTLASTNAME",
                 patientLastName,
                 (a) -> a.getText(),
                 (a) -> !a.getText().isEmpty()

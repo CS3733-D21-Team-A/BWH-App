@@ -17,13 +17,16 @@ import java.util.ArrayList;
 public class GiftDelivery extends GenericServiceRequest {
 
     @FXML
-    private JFXTimePicker deliveryTime;
+    private JFXDatePicker deliveryDate;
 
     @FXML
-    private JFXComboBox locationDropdown;
+    private JFXComboBox deliveryLocation;
 
     @FXML
     private JFXComboBox giftOptions;
+
+    @FXML
+    private JFXTextArea note;
 
     @FXML
     private ArrayList<String> nodeIDS;
@@ -36,16 +39,16 @@ public class GiftDelivery extends GenericServiceRequest {
                 (a) -> a.getSelectionModel().getSelectedItem(),
                 (a) -> a.getSelectionModel().getSelectedItem() != null
         ));
-        requestFieldList.add(new FieldTemplate<String>(
+        requestFieldList.add(new FieldTemplate<JFXTextArea>(
                 "NOTE",
-                "NOTE",
-                (a) -> a,
-                (a) -> true
+                note,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
         ));
-        requestFieldList.add(new FieldTemplate<JFXTimePicker>(
-                "DELIVERYTIME",
-                deliveryTime,
-                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm")),
+        requestFieldList.add(new FieldTemplate<JFXDatePicker>(
+                "DELIVERYDATE",
+                deliveryDate,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
                 (a) -> a.getValue() != null));
         serviceRequestType = SERVICEREQUEST.GIFT_DELIVERY;
 
@@ -55,7 +58,7 @@ public class GiftDelivery extends GenericServiceRequest {
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
-        locationDropdown.setItems(FXCollections
+        deliveryLocation.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
     }

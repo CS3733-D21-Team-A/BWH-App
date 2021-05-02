@@ -18,23 +18,16 @@ public class LaundryService extends GenericServiceRequest {
 
     @FXML
     private JFXTimePicker deliveryTime;
-
     @FXML
     private JFXComboBox roomNumber;
-
     @FXML
     private JFXComboBox loadOptions;
-
     @FXML
     private JFXComboBox detergentType;
-
     @FXML
     private JFXComboBox articlesOfClothing;
-
-
     @FXML
     private JFXTextArea specialRequest;
-
     @FXML
     private ArrayList<String> nodeIDS;
 
@@ -50,6 +43,18 @@ public class LaundryService extends GenericServiceRequest {
         requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
                 "ARTICLESOFCLOTHING",
                 articlesOfClothing,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "DETERGENTTYPE",
+                detergentType,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "LOADOPTION",
+                loadOptions,
                 (a) -> a.getSelectionModel().getSelectedItem(),
                 (a) -> a.getSelectionModel().getSelectedItem() != null
         ));

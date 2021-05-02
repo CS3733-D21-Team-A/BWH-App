@@ -17,22 +17,16 @@ import java.util.ArrayList;
 public class MedicineDelivery extends GenericServiceRequest {
     @FXML
     private JFXTextField docFirstName;
-
     @FXML
     private JFXTextField docLastName;
-
     @FXML
     private JFXTextField medication;
-
     @FXML
     private JFXTextField doseSize;
-
     @FXML
     private JFXTimePicker deliveryTime;
-
     @FXML
     private JFXComboBox roomNumber;
-
     @FXML
     private ArrayList<String> nodeIDS;
 
