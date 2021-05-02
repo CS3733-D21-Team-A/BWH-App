@@ -1,4 +1,4 @@
-package edu.wpi.aquamarine_axolotls.db;
+package edu.wpi.aquamarine_axolotls.db.enums;
 
 /**
  * Enum for the primary database tables.

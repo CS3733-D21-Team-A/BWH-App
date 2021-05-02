@@ -1,6 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.views.CovidSurvey;
+import edu.wpi.aquamarine_axolotls.db.enums.*;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;

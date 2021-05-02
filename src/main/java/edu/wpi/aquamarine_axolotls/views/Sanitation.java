@@ -3,7 +3,7 @@ package edu.wpi.aquamarine_axolotls.views;
 import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
-import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
