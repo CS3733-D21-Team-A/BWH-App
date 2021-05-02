@@ -73,7 +73,7 @@
                                 <Insets right="25.0" top="40.0" />
                             </GridPane.margin>
                         </JFXComboBox>
-                        <JFXTextField fx:id="lastName1" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Last Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Contact Number" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                        <JFXTextField fx:id="lastName1" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Contact Number" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets right="25.0" top="40.0" />
                             </GridPane.margin>
@@ -134,7 +134,7 @@
                         </ImageView>
                     </graphic></JFXButton>
                 <Rectangle fill="#003da6" height="35.0" layoutX="2.0" layoutY="1.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
-                <JFXButton fx:id="submitB" layoutX="996.0" layoutY="702.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                <JFXButton fx:id="submitB" layoutX="996.0" layoutY="702.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                     <font>
                         <Font name="Baskerville" size="30.0" />
                     </font>

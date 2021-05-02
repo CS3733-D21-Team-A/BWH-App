@@ -32,7 +32,7 @@ public class Aapp extends Application {
     try {
       userType = "Admin"; // TODO : remove these when done testing
       username = "admin"; // TODO : ^
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/FoodDelivery.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/DefaultServicePage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);

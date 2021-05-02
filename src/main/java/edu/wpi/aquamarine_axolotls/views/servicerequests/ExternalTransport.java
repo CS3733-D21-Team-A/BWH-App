@@ -41,12 +41,41 @@ public class ExternalTransport extends GenericServiceRequest {
 
     @FXML
     public void initialize() {
-        requestFieldList.add(new FieldTemplate<JFXTimePicker>("TRANSPORTTIME", transpTime,(a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm")), (a) -> a.getValue() != null));
-        requestFieldList.add(new FieldTemplate<JFXTextField>("DESTINATION", destination, (a) -> a.getText()));
-        requestFieldList.add(new FieldTemplate<JFXTextField>("DOCFIRSTNAME", patientFirstName, (a) -> a.getText()));
-        requestFieldList.add(new FieldTemplate<JFXTextField>("DOCLASTNAME", patientLastName, (a) -> a.getText()));
-        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>("MODEOFTRANSPORT", modeOfTrans, (a) -> a.getSelectionModel().getSelectedItem()));
-        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>("EMERGENCYLEVEL", levelOfEmergency, (a) -> a.getSelectionModel().getSelectedItem()));
+        requestFieldList.add(new FieldTemplate<JFXTimePicker>(
+                "TRANSPORTTIME",
+                transpTime,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm")),
+                (a) -> a.getValue() != null));
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "DESTINATION",
+                destination,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "DOCFIRSTNAME",
+                patientFirstName,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "DOCLASTNAME",
+                patientLastName,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "MODEOFTRANSPORT",
+                modeOfTrans,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "EMERGENCYLEVEL",
+                levelOfEmergency,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
 
         serviceRequestType = SERVICEREQUEST.EXTERNAL_TRANSPORT;
         startUp();

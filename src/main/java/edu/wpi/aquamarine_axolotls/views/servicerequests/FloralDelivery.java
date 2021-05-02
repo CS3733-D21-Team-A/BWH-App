@@ -30,6 +30,43 @@ public class FloralDelivery extends GenericServiceRequest {
 
     @FXML
     public void initialize() {
+        requestFieldList.add(new FieldTemplate<JFXTimePicker>(
+                "DELIVERYTIME",
+                deliveryTime,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm")),
+                (a) -> a.getValue() != null));
+        requestFieldList.add(new FieldTemplate<JFXDatePicker>(
+                "DELIVERYDATE",
+                deliveryDate,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                (a) -> a.getValue() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "FLOWEROPTION",
+                flowerOptions,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "VASEOPTION",
+                vaseOptions,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "CONTACTNUMBER",
+                contactNumber,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+        requestFieldList.add(new FieldTemplate<JFXTextArea>(
+                "NOTE",
+                persMessage,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
+        serviceRequestType = SERVICEREQUEST.FLORAL_DELIVERY;
         startUp();
       roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
@@ -43,36 +80,6 @@ public class FloralDelivery extends GenericServiceRequest {
         );
     }
 
-
-    @FXML
-    public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-        if ( roomNumber.getSelectionModel ( ).getSelectedItem ( ) == null || flowerOptions.getSelectionModel().getSelectedItem() == null || vaseOptions.getSelectionModel().getSelectedItem() == null || firstName.getText().isEmpty() || contactNumber.getText().isEmpty() || lastName.getText().isEmpty() || deliveryTime.getValue() == null) {
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number\n- Contact Number\n- Delivery Date\n- Flower Options\n- Vase Options");
-            return;
-        }
-        String fn = firstName.getText();
-        String ln = lastName.getText();
-
-        if (!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")) {
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Patient Room Number");
-            return;
-        }
-
-        ArrayList<String> fields = new ArrayList<String>();
-        fields.add(contactNumber.getText());
-        fields.add(deliveryDate.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        fields.add(deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm")));
-        fields.add(flowerOptions.getSelectionModel().getSelectedItem().toString());
-        fields.add(persMessage.getText());
-        fields.add(vaseOptions.getSelectionModel().getSelectedItem().toString());
-
-        try {
-            createServiceRequest(SERVICEREQUEST.FLORAL_DELIVERY, fields);
-            submit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }
 
 

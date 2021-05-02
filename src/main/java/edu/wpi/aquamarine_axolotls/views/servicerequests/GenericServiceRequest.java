@@ -39,13 +39,6 @@ public class GenericServiceRequest extends SPage {
         private Predicate<T> syntaxChecker; //TODO: Syntax Checking , Predicate<String> syntaxChecker
         private T field;
 
-       public FieldTemplate(String column, T field, Function<T,String> valueGetter) {
-            this.column = column;
-            this.valueGetter = valueGetter;
-            this.field = field;
-            this.syntaxChecker = (a) -> getValue() != null;
-        }
-
         public FieldTemplate(String column, T field, Function<T,String> valueGetter, Predicate<T> syntaxChecker) {
             this.column = column;
             this.valueGetter = valueGetter;
