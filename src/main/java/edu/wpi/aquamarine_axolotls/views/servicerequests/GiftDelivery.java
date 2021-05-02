@@ -17,71 +17,50 @@ import java.util.ArrayList;
 public class GiftDelivery extends GenericServiceRequest {
 
     @FXML
-    private TextField firstName;
+    private JFXDatePicker deliveryDate;
 
     @FXML
-    private TextField lastName;
-
-    @FXML
-    private JFXTimePicker deliveryTime;
-
-    @FXML
-    private JFXComboBox locationDropdown;
+    private JFXComboBox deliveryLocation;
 
     @FXML
     private JFXComboBox giftOptions;
+
+    @FXML
+    private JFXTextArea note;
 
     @FXML
     private ArrayList<String> nodeIDS;
 
     @FXML
     public void initialize()  {
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "GIFTTYPE",
+                giftOptions,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXTextArea>(
+                "NOTE",
+                note,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+        requestFieldList.add(new FieldTemplate<JFXDatePicker>(
+                "DELIVERYDATE",
+                deliveryDate,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                (a) -> a.getValue() != null));
+        serviceRequestType = SERVICEREQUEST.GIFT_DELIVERY;
+
         startUp();
         giftOptions.setItems(FXCollections
                 .observableArrayList("Hospital T-Shirt", "Teddy Bear", "Hospital Mug"));
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
-        locationDropdown.setItems(FXCollections
+        deliveryLocation.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
-    }
-
-
-
-
-    @FXML
-    public void handleButtonAction(ActionEvent actionEvent) throws IOException {
-
-        if(giftOptions.getSelectionModel().getSelectedItem() == null
-                || locationDropdown.getSelectionModel().getSelectedItem() == null){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number\n- Gift Option");
-            return;
-        }
-        String fn = firstName.getText();
-        String ln = lastName.getText();
-        String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-        int room = locationDropdown.getSelectionModel().getSelectedIndex();
-        String gift = giftOptions.getSelectionModel().getSelectedItem().toString();
-
-        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
-                || dt.isEmpty()){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number\n- Gift Option");
-            return;
-        }
-
-        ArrayList<String> fields = new ArrayList<String>();
-        fields.add(dt);
-        fields.add(gift);
-        fields.add("NOTE"); // TODO: add field for Note
-
-
-        try {
-            createServiceRequest(SERVICEREQUEST.GIFT_DELIVERY, fields);
-            submit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

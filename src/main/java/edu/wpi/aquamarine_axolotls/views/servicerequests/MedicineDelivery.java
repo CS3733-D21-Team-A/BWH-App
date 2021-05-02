@@ -15,39 +15,60 @@ import java.util.ArrayList;
 
 
 public class MedicineDelivery extends GenericServiceRequest {
-
     @FXML
-    private TextField firstName;
-
+    private JFXTextField docFirstName;
     @FXML
-    private TextField lastName;
-
+    private JFXTextField docLastName;
     @FXML
-    private TextField docFirstName;
-
+    private JFXTextField medication;
     @FXML
-    private TextField docLastName;
-
-    @FXML
-    private TextField medication;
-
-    @FXML
-    private TextField doseSize;
-
+    private JFXTextField doseSize;
     @FXML
     private JFXTimePicker deliveryTime;
-
     @FXML
     private JFXComboBox roomNumber;
-
     @FXML
     private ArrayList<String> nodeIDS;
 
 
-
-
     @FXML
     public void initialize() {
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "MEDICATION",
+                medication,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "DOSAGE",
+                doseSize,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
+        requestFieldList.add(new FieldTemplate<JFXTimePicker>(
+                "DELIVERYTIME",
+                deliveryTime,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm")),
+                (a) -> a.getValue() != null
+        ));
+
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "DOCFIRSTNAME",
+                docFirstName,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
+        requestFieldList.add(new FieldTemplate<JFXTextField>(
+                "DOCLASTNAME",
+                docLastName,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+
+        serviceRequestType = SERVICEREQUEST.MEDICINE_DELIVERY;
         startUp();
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
@@ -55,48 +76,6 @@ public class MedicineDelivery extends GenericServiceRequest {
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
-    }
-
-
-
-
-    @FXML
-    public void handleButtonAction(ActionEvent actionEvent) throws IOException {
-
-        if(roomNumber.getSelectionModel().getSelectedItem() == null){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
-            return;
-        }
-        String fn = firstName.getText();
-        String ln = lastName.getText();
-        String dfn = docFirstName.getText();
-        String dln = docLastName.getText();
-        String med = medication.getText();
-        String dose = doseSize.getText();
-        String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-        int room = roomNumber.getSelectionModel().getSelectedIndex();
-
-        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+") // TODO : better checks
-                || dt.isEmpty()){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
-            return;
-        }
-
-        ArrayList<String> fields = new ArrayList<String>();
-        fields.add(dt);
-        fields.add(dfn);
-        fields.add(dln);
-        fields.add(dose);
-        fields.add(med);
-
-        try {
-            createServiceRequest(SERVICEREQUEST.MEDICINE_DELIVERY, fields);
-            submit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
     }
 
 }

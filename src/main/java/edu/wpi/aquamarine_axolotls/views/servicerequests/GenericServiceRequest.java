@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Aapp;
@@ -14,8 +13,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
-
-import static java.util.Objects.hash;
+import java.util.function.*;
 
 public class GenericServiceRequest extends SPage {
     @FXML
@@ -29,15 +27,82 @@ public class GenericServiceRequest extends SPage {
 
     DatabaseController db;
 
+    Map<String,String> sharedValues = new HashMap<>();
+    Map<String,String> requestValues = new HashMap<>();
+    SERVICEREQUEST serviceRequestType = null;
+
+
+
+    class FieldTemplate<T> {
+        private String column;
+        private Function<T,String> valueGetter;
+        private Predicate<T> syntaxChecker; //TODO: Syntax Checking , Predicate<String> syntaxChecker
+        private T field;
+
+        public FieldTemplate(String column, T field, Function<T,String> valueGetter, Predicate<T> syntaxChecker) {
+            this.column = column;
+            this.valueGetter = valueGetter;
+            this.field = field;
+            this.syntaxChecker = syntaxChecker;
+        }
+
+       String getColumn() {
+            return column;
+       }
+       String getValue() {
+            return valueGetter.apply(field);
+       }
+       boolean checkSyntax() {
+           return syntaxChecker.test(field);
+       }
+    }
+
+    List<FieldTemplate> requestFieldList = new ArrayList<>();
+
+    /*
+    *   shared.put("REQUESTID", reqID);
+        shared.put("AUTHORID", Aapp.username);
+        shared.put("STATUS", "Unassigned");
+        shared.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
+        shared.put("FIRSTNAME", firstName.getText());
+        shared.put("LASTNAME", lastName.getText());
+        shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));*/
+
     @FXML
-    public void submit() {
+    public void submit() throws SQLException {
+        StringBuilder errorMessage = new StringBuilder();
+        for(FieldTemplate field : requestFieldList){
+            if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
+        }
+        if(errorMessage.length() != 0){
+            errorFields(errorMessage.toString());
+            return;
+        }
+
+        for (FieldTemplate field : requestFieldList) {
+            requestValues.put(field.getColumn(), field.getValue());
+        }
+
+        sharedValues.put("AUTHORID", Aapp.username);
+        sharedValues.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
+        sharedValues.put("FIRSTNAME", firstName.getText());
+        sharedValues.put("LASTNAME", lastName.getText());
+        sharedValues.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));
+
+        String requestID = generateRequestID();
+        sharedValues.put("REQUESTID", requestID);
+        requestValues.put("REQUESTID",requestID);
+
+        db.addServiceRequest(sharedValues,requestValues);
+        System.out.println(db.getServiceRequest(serviceRequestType, requestID).toString());
+
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
         sceneSwitch("DefaultServicePage");
     }
 
     @FXML
     public void errorFields(String reqFields) {
-        popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields.\n" + reqFields);
+        popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields." + reqFields);
     }
 
 
@@ -57,19 +122,28 @@ public class GenericServiceRequest extends SPage {
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
-
     }
 
     /**
      * Returns a hash value of the service requests fields with the current date and time
-     * @param fields all values the service request contains
      * @return a unique id
      */
-    private String getID(List<String> fields){ // giving neg values?
-        String hash = fields.toString() + java.time.LocalDateTime.now().toString(); // ask Nyoma
-        return Integer.toString(hash.hashCode());
-    }
+    private String generateRequestID(){ // giving neg values?
+        StringBuilder sb = new StringBuilder();
 
+        BiConsumer<String,String> appender = (k, v) -> {
+            sb.append(k);
+            sb.append(v);
+        };
+
+        sharedValues.forEach(appender);
+
+        requestValues.forEach(appender);
+
+        sb.append(System.currentTimeMillis());
+
+        return Integer.toString(sb.toString().hashCode());
+    }
 
     /**
      * Creates a Map<String,String> representation of the generic service request
@@ -103,7 +177,6 @@ public class GenericServiceRequest extends SPage {
         //if(fields.size() != sortedKeys.size()) throw new Error("ERROR in GENERIC SERVICE REQUEST SIZE OF VALUES AND COLUMNS" + fields.size() + " " + sortedKeys.size());
         Collections.sort(sortedKeys);
 
-
         Map<String, String> serviceRequest = new HashMap<String, String>();
         for(int i = 0; i < sortedKeys.size(); i++){
             serviceRequest.put(sortedKeys.get(i), fields.get(i));
@@ -120,9 +193,9 @@ public class GenericServiceRequest extends SPage {
      * @throws SQLException problem with SQL query or DB methods
      */
     public void createServiceRequest(SERVICEREQUEST serviceRequestType, ArrayList<String> fields) throws SQLException{
-        String reqID = getID(fields);
+        String reqID = generateRequestID();
         db.addServiceRequest(createGeneric(serviceRequestType, reqID), createRequest(serviceRequestType, fields, reqID));
-        Map<String, String> serviceRequest = db.getServiceRequest(serviceRequestType, reqID);
+       // Map<String, String> serviceRequest = db.getServiceRequest(serviceRequestType, reqID);
 /*        for(String s : serviceRequest.keySet()){
             System.out.println(s + " " + serviceRequest.get(s));
         }*/

@@ -88,7 +88,7 @@
                               <Font name="Baskerville" size="50.0" />
                           </font>
                       </Label>
-                        <JFXButton layoutX="954.0" layoutY="696.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                        <JFXButton layoutX="954.0" layoutY="696.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                             <font>
                                 <Font name="Baskerville" size="30.0" />
                             </font>

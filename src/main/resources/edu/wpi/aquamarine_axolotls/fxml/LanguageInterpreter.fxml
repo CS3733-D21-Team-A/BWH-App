@@ -113,7 +113,7 @@
                         </ImageView>
                     </graphic></JFXButton>
                 <Rectangle fill="#003da6" height="35.0" layoutX="2.0" layoutY="1.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
-                <JFXButton layoutX="996.0" layoutY="702.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+                <JFXButton layoutX="996.0" layoutY="702.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                     <font>
                         <Font name="Baskerville" size="30.0" />
                     </font>

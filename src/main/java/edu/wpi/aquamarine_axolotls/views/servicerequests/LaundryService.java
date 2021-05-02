@@ -17,30 +17,17 @@ import java.util.ArrayList;
 public class LaundryService extends GenericServiceRequest {
 
     @FXML
-    private TextField firstName;
-
-    @FXML
-    private TextField lastName;
-
-    @FXML
     private JFXTimePicker deliveryTime;
-
     @FXML
     private JFXComboBox roomNumber;
-
     @FXML
     private JFXComboBox loadOptions;
-
     @FXML
     private JFXComboBox detergentType;
-
     @FXML
     private JFXComboBox articlesOfClothing;
-
-
     @FXML
     private JFXTextArea specialRequest;
-
     @FXML
     private ArrayList<String> nodeIDS;
 
@@ -48,6 +35,36 @@ public class LaundryService extends GenericServiceRequest {
 
     @FXML
     public void initialize() { //TODO: fill these out
+        requestFieldList.add(new FieldTemplate<JFXTimePicker>(
+                "DELIVERYTIME",
+                deliveryTime,
+                (a) -> a.getValue().format(DateTimeFormatter.ofPattern("HH.mm")),
+                (a) -> a.getValue() != null));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "ARTICLESOFCLOTHING",
+                articlesOfClothing,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "DETERGENTTYPE",
+                detergentType,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXComboBox<String>>(
+                "LOADOPTION",
+                loadOptions,
+                (a) -> a.getSelectionModel().getSelectedItem(),
+                (a) -> a.getSelectionModel().getSelectedItem() != null
+        ));
+        requestFieldList.add(new FieldTemplate<JFXTextArea>(
+                "NOTE",
+                specialRequest,
+                (a) -> a.getText(),
+                (a) -> !a.getText().isEmpty()
+        ));
+        serviceRequestType = SERVICEREQUEST.LAUNDRY;
         startUp();
         loadOptions.setItems(FXCollections
                 .observableArrayList("Delicates", "Light", "Heavy"));
@@ -65,45 +82,5 @@ public class LaundryService extends GenericServiceRequest {
         );
     }
 
-
-
-
-    @FXML
-    public void handleButtonAction(ActionEvent actionEvent) throws IOException {
-
-        if(loadOptions.getSelectionModel().getSelectedItem() == null
-                || roomNumber.getSelectionModel().getSelectedItem() == null
-                || detergentType.getSelectionModel().getSelectedItem() == null
-                || articlesOfClothing.getSelectionModel().getSelectedItem() == null){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
-            return;
-        }
-        String fn = firstName.getText();
-        String ln = lastName.getText();
-        String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-        int room = roomNumber.getSelectionModel().getSelectedIndex();
-        String ac = articlesOfClothing.getSelectionModel().getSelectedItem().toString();
-        String ldo = loadOptions.getSelectionModel().getSelectedItem().toString();
-        String sprq = specialRequest.getText();
-
-        if(!fn.matches("[a-zA-Z]+") || !ln.matches("[a-zA-Z]+")
-                || dt.isEmpty()){
-            errorFields("- First Name\n- Last Name\n-Delivery Time\n- Room Number");
-            return;
-        }
-
-        ArrayList<String> fields = new ArrayList<String>();
-        fields.add(ac);
-        fields.add(dt);
-        fields.add(sprq); // TODO add other fields to DB
-
-        try {
-            createServiceRequest(SERVICEREQUEST.LAUNDRY, fields);
-            submit();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
 
