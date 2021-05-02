@@ -231,6 +231,7 @@ public class GenericMap extends GenericPage {
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
+        //c.setId();
         mapView.getChildren().add(c);
     }
 
