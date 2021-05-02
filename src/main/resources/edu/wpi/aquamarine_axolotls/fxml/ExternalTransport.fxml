@@ -68,11 +68,11 @@
                                     <GridPane.margin>
                                         <Insets top="40.0" />
                                     </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <JFXTextField  alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's First Name" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets top="40.0" />
                                     </GridPane.margin></JFXTextField>
-                                <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" minWidth="280.0" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's Last Name" style="-fx-font-family: Baskerville; -fx-font-size: 20;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                <JFXTextField alignment="BOTTOM_LEFT" maxWidth="-Infinity" minWidth="280.0" prefHeight="100.0" prefWidth="267.0" promptText="Doctor's Last Name" style="-fx-font-family: Baskerville; -fx-font-size: 20;" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                     <GridPane.margin>
                                         <Insets top="40.0" />
                                     </GridPane.margin></JFXTextField>

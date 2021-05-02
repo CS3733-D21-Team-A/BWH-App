@@ -19,6 +19,8 @@ public class Aapp extends Application {
 
   public static String userType = "Guest";
   public static String username;
+  public static String prevPage;
+  public static String currPage;
 
 
   @Override
@@ -30,9 +32,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      userType = "Admin"; // TODO : remove these when done testing
-      username = "admin"; // TODO : ^
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/DefaultServicePage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);

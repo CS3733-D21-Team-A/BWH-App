@@ -76,7 +76,7 @@
                               </font>
                           </JFXButton>
                           <Line endX="200.0" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                  <JFXButton onAction="#employeeP" prefHeight="100.0" prefWidth="343.0" text="Employee Requests" textFill="WHITE">
+                  <JFXButton onAction="#requestP" prefHeight="100.0" prefWidth="343.0" text="Employee Requests" textFill="WHITE">
                      <font>
                         <Font name="Baskerville" size="30.0" />
                      </font>

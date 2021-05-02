@@ -92,9 +92,16 @@ public class NodeEditing extends GenericMap {
         searchAlgorithms.add("Dijkstra");
         searchAlgorithms.add("Breadth First");
         searchAlgorithms.add("Depth First");
+        searchAlgorithms.add("Best First");
         algoSelectBox.setItems(searchAlgorithms);
 
+        List<Map<String, String>> nodes = db.getNodesByValue("FLOOR", FLOOR);
 
+        for (Map<String, String> node : nodes) {
+            options.add ( node.get ( "LONGNAME" ) );
+            Node cur = new Node(node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("LONGNAME"), node.get("SHORTNAME"),  node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"));
+            table.getItems().add(cur);
+        }
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null){
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
@@ -105,6 +112,7 @@ public class NodeEditing extends GenericMap {
         else if(algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
         else if(algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
         else if(algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
+        else if(algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
 
 
         nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
@@ -128,11 +136,8 @@ public class NodeEditing extends GenericMap {
         submissionButton.setVisible(false);
         clearButton.setVisible(false);
 
-
-        for (Map<String, String> node : db.getNodes()) {
-            drawSingleNode(node, Color.RED);
-        }
         nodeDropdown.setItems(options);
+
 
     }
 
@@ -409,6 +414,8 @@ public class NodeEditing extends GenericMap {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
             } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")){
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+            } else if(algoSelectBox.getSelectionModel().getSelectedItem().equals("Best First")){
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BestFirstSearch());
             }
         }
     }
@@ -419,12 +426,11 @@ public class NodeEditing extends GenericMap {
     @FXML
     public void highLightNodeFromSelector() throws SQLException{
         if (nodeDropdown.getSelectionModel().getSelectedItem() != null) {
-            for (Map<String, String> node: db.getNodes()) { // TODO : maybe preformance issue?
-                if (node.get("NODEID").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
+            for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) { // TODO : maybe preformance issue?
+                if (node.get("LONGNAME").equals(nodeDropdown.getSelectionModel().getSelectedItem())) {
                     prevSelected = currSelected;
                     currSelected = node;
-                    GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-                    drawSingleNode(prevSelected, Color.BLUE);
+                    if (prevSelected != null) drawSingleNode(prevSelected, Color.BLUE);
                     drawSingleNode(currSelected, Color.RED);
                 }
             }
@@ -473,8 +479,8 @@ public class NodeEditing extends GenericMap {
 
                 //double x = xScale(event.getX());
                 //double y = yScale(event.getY());
-                int x = (int) Math.floor(event.getX() / (mapCanvas.getWidth()/5000));
-                int y = (int) Math.floor(event.getY() / (mapCanvas.getHeight()/3400));
+                int x = (int) Math.floor(event.getX() / (mapImage.getFitWidth()/5000));
+                int y = (int) Math.floor(event.getY() / (mapImage.getFitHeight()/3400));
 
                 if (xCoor.isVisible()) xCoor.setText(Integer.toString(x));
                 if (yCoor.isVisible()) yCoor.setText(Integer.toString(y));
@@ -515,12 +521,11 @@ public class NodeEditing extends GenericMap {
 
                 if (currClosest == null) return;
                 else {
-                    nodeDropdown.setValue(currClosest.get("NODEID"));
+                    nodeDropdown.setValue(currClosest.get("LONGNAME"));
                 }
 
                 prevSelected = currSelected;
                 currSelected = currClosest;
-                GraphicsContext gc = mapCanvas.getGraphicsContext2D();
                 drawSingleNode(prevSelected, Color.BLUE);
                 drawSingleNode(currSelected, Color.RED);
             }

@@ -93,6 +93,30 @@
                   <Font name="Baskerville" size="18.0" />
                </font>
             </Hyperlink>
+            <Pane fx:id="smsPane" layoutX="374.0" layoutY="189.0" prefHeight="488.0" prefWidth="557.0" style="-fx-background-color: white;">
+               <children>
+                  <JFXTextField fx:id="smsText" layoutX="136.0" layoutY="171.0" prefHeight="54.0" prefWidth="283.0">
+                     <font>
+                        <Font name="Baskerville" size="20.0" />
+                     </font>
+                  </JFXTextField>
+                  <Text fx:id="smsAuth" layoutX="-1.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the SMS Authentication sent to your cellular device: " textAlignment="CENTER" wrappingWidth="556.0228271484375">
+                     <font>
+                        <Font name="Baskerville" size="25.0" />
+                     </font>
+                  </Text>
+                  <JFXButton fx:id="smsSubmit" layoutX="333.0" layoutY="387.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+                     <font>
+                        <Font name="Baskerville" size="24.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="25.0" layoutY="387.0" onAction="#smsCancel" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #F0F0F0;" text="Cancel">
+                     <font>
+                        <Font name="Baskerville" size="24.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
          </children>
       </Pane>
    </right>

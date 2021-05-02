@@ -305,7 +305,6 @@ public class Navigation extends GenericMap {
      * Highlights the current portion of the map that the current direction is on
      */
     public void highlightDirection() throws SQLException{
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
         String curNode = currPathDir.get(1).get(dirIndex);
         // draws an edge on map
         if (curNode.contains(",")) {
@@ -341,24 +340,26 @@ public class Navigation extends GenericMap {
      */
     public void addDestination(javafx.scene.input.MouseEvent event) throws SQLException{
 
-        Map<String, String> newDestination = getNearestNode(event.getX(), event.getY());
+        if(event.getButton().equals(MouseButton.PRIMARY)) {
+            Map<String, String> newDestination = getNearestNode(event.getX(), event.getY());
 
-        if (newDestination == null) return;
+            if (newDestination == null) return;
 
-        else {
-            String currCloseName = newDestination.get("LONGNAME");
+            else {
+                String currCloseName = newDestination.get("LONGNAME");
 
             if (activePath == 0) { //if there's no active path, we'll handle that
-                if (firstNodeSelect == 0) {
+                if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
-                } else if (firstNodeSelect == 1) {
-                    stopList.clear();
-                    stopList.add(firstNode);
-                    stopList.add(currCloseName);
-                    currPath.clear();
-                    findPathSingleSegment(stopList.get(0), stopList.get(1));
-                    drawPath(FLOOR);
+                }
+                else if ( firstNodeSelect == 1 ) {
+                    stopList.clear ( );
+                    stopList.add ( firstNode );
+                    stopList.add ( currCloseName );
+                    currPath.clear ( );
+                    findPathSingleSegment ( stopList.get ( 0 ) ,stopList.get ( 1 ) );
+                    drawPath ( FLOOR );
                 }
             }
             else if (activePath == 1) {
@@ -373,6 +374,7 @@ public class Navigation extends GenericMap {
     }
 
 
+    }
 }
 
 

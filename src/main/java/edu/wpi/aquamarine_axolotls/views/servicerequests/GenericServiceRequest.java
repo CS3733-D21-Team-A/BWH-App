@@ -117,8 +117,8 @@ public class GenericServiceRequest extends SPage {
         //previousPage = "DefaultServicePage";
         try {
             db = new DatabaseController();
-            firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));
-            lastName.setText(db.getUserByUsername(Aapp.username).get("LASTNAME"));
+        //    firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));
+          //  lastName.setText(db.getUserByUsername(Aapp.username).get("LASTNAME"));
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
         }
