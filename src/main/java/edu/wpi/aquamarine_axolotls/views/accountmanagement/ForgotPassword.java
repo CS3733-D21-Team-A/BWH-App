@@ -1,10 +1,11 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 
-public class ForgotPassword extends GenericPage{
+public class ForgotPassword extends GenericPage {
         @FXML private JFXButton backB;
         @FXML private JFXTextField username;
         @FXML private JFXTextField email;

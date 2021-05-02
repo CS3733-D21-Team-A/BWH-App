@@ -30,7 +30,7 @@
 
 <?import javafx.scene.Group?>
 <?import javafx.scene.layout.Pane?>
-<BorderPane prefHeight="845.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.NodeEditing">
+<BorderPane prefHeight="845.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.NodeEditing">
    <top>
       <VBox prefHeight="73.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
          <children>

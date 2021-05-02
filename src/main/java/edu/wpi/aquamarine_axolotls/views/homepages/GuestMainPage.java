@@ -1,8 +1,9 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.homepages;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

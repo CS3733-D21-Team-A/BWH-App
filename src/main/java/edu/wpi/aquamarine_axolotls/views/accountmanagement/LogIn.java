@@ -1,8 +1,9 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
 import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +29,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 
-public class LogIn extends GenericPage{
+public class LogIn extends GenericPage {
 
     @FXML private JFXTextField username;
     @FXML private JFXPasswordField password;

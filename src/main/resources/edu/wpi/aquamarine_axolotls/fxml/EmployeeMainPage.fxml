@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="893.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.EmployeeMainPage">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="893.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.homepages.EmployeeMainPage">
          <left>
                   <VBox maxWidth="277.0" prefHeight="739.0" prefWidth="277.0" style="-fx-background-color: #003DA6;" BorderPane.alignment="CENTER">
                       <children>

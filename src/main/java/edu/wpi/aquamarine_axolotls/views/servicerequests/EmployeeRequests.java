@@ -1,13 +1,13 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -16,18 +16,17 @@ import javafx.scene.shape.Line;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EmployeeRequests extends GenericPage{
+public class EmployeeRequests extends GenericPage {
 
-    @FXML private TableView<EmployeeRequest> srTable;
-    @FXML private TableColumn<EmployeeRequest, String> assignedColumn;
-    @FXML private TableColumn<EmployeeRequest, String> assigneeColumn;
-    @FXML private TableColumn<EmployeeRequest, String> statusColumn;
-    @FXML private TableColumn<EmployeeRequest, String> serviceRequestColumn;
-    @FXML private TableColumn<EmployeeRequest, String> locationColumn;
+    @FXML private TableView<Request> srTable;
+    @FXML private TableColumn<Request, String> assignedColumn;
+    @FXML private TableColumn<Request, String> assigneeColumn;
+    @FXML private TableColumn<Request, String> statusColumn;
+    @FXML private TableColumn<Request, String> serviceRequestColumn;
+    @FXML private TableColumn<Request, String> locationColumn;
     @FXML private JFXButton assignB;
     @FXML private JFXButton changeStatusB;
     @FXML private JFXComboBox assignD;
@@ -73,11 +72,11 @@ public class EmployeeRequests extends GenericPage{
                     .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.DONE),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.CANCELED)));
-            assignedColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assigned"));
-            assigneeColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("assignee"));
-            statusColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("status"));
-            serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("serviceRequest"));
-            locationColumn.setCellValueFactory(new PropertyValueFactory<EmployeeRequest, String>("location"));
+            assignedColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assigned"));
+            assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
+            statusColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("status"));
+            serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("serviceRequest"));
+            locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
 
             refresh();
         } catch (SQLException | IOException | URISyntaxException e) {
@@ -93,14 +92,14 @@ public class EmployeeRequests extends GenericPage{
                 serviceRequests = db.getServiceRequests();
                 srTable.getItems().clear();
                 for(Map<String, String> req : serviceRequests){
-                    srTable.getItems().add(new EmployeeRequest(req));
+                    srTable.getItems().add(new Request(req));
                 }
             }
             else if(Aapp.userType.equals("Patient")){
                 serviceRequests = db.getServiceRequestsByAuthor(Aapp.username);
                 srTable.getItems().clear();
                 for(Map<String, String> req : serviceRequests){
-                    srTable.getItems().add(new EmployeeRequest(req));
+                    srTable.getItems().add(new Request(req));
                 }
             }
         } catch (SQLException e) {
@@ -144,6 +143,57 @@ public class EmployeeRequests extends GenericPage{
             db.close();
         } catch (SQLException | IOException | URISyntaxException e) {
             e.printStackTrace();
+        }
+    }
+
+    public class Request { //This needs to be public for things to work :(
+
+        private String assigned;
+        private String assignee;
+        private String status;
+        private String serviceRequest;
+        private String location;
+        private String requestID;
+
+        public void setAssigned(String assigned) {
+            this.assigned = assigned;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+
+        public String getAssigned() {
+            return assigned;
+        }
+
+        public String getAssignee() {
+            return assignee;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public String getServiceRequest() {
+            return serviceRequest;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public String getRequestID() {
+            return requestID;
+        }
+
+        public Request(Map<String, String> sr) {
+            this.assigned = sr.get("EMPLOYEEID"); // TODO : update when DB database is here
+            this.assignee = sr.get("FIRSTNAME") + " " + sr.get("LASTNAME");
+            this.status = sr.get("STATUS");
+            this.serviceRequest = sr.get("REQUESTTYPE");
+            this.location = sr.get("LOCATIONID");
+            this.requestID = sr.get("REQUESTID");
         }
     }
 

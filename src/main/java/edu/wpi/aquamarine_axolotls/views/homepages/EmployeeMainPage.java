@@ -1,4 +1,4 @@
-package edu.wpi.aquamarine_axolotls.views;
+package edu.wpi.aquamarine_axolotls.views.homepages;
 
 import javafx.event.ActionEvent;
 
