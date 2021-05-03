@@ -680,52 +680,103 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 
-	// ===== FAVORITE_NODES ========
+	// ===== FAVORITE_NODES ======== Emily
 
-	//TODO: IMPLEMENT CHECK PREEXISTING NODENAME
-
+	// TODO: add in a check for if the username has entries in the favorite nodes table
 	/**
-	 * checks if the user already has a favorite node with that node name (favid)
+	 * checks if the favid is unique value to the user
 	 * @param username
-	 * @param favid
-	 * @return
+	 * @param nodeName
+	 * @return true if unique to the user, false if not
 	 */
-	public boolean checkPreexistingFaveid(String username, String favid){
-		return false
+	public boolean checkValidNodeName(String username, String nodeName) throws SQLException {
+		List<Map<String,String>> userFavorites = getFavoriteNodesForUser(username);
+		for(Map<String,String> oneNode:userFavorites){
+			if(nodeName.equals(oneNode.get("NODENAME"))){
+				return false;
+			}
+		}
+		return true;
 	}
 
-	// TODO: IMPLEMENT THE SETTING FAV NODE FOR USER METHOD
+	/**
+	 * checks if the nodeID is unique value to the user
+	 * @param username
+	 * @param nodeID
+	 * @return true if is a unique to the user, false if not
+	 */
+	public boolean checkValidNodeID(String username, String nodeID) throws SQLException {
+		List<Map<String,String>> userFavorites = getFavoriteNodesForUser(username);
+		for(Map<String,String> oneNode:userFavorites){
+			if(nodeID.equals(oneNode.get("LOCATIONID"))){
+				return false;
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Creates a new favorite id and adds it to fav node table
 	 * @param username userID that correlates to a user in the user table
 	 * @param locationID nodeID that correlates to a node in the node table
 	 * @param nodeName the user given name for the node
+	 * @return true if successfully added new favorite node, false if some element of it already existed
 	 */
-	public void addFavoriteNodeToUser(String username, String locationID, String nodeName){
-		Map<String,String> takenValues = new HashMap<>();
-		takenValues.put("USERID", username);
-		takenValues.put("LOCATIONID",locationID);
-		takenValues.put("NODE_NAME",nodeName);
-		try {
-			favoriteNodesTable.addEntry(takenValues);
-		}catch (SQLException throwables) {
-			throwables.printStackTrace();
+	public boolean addFavoriteNodeToUser(String username, String locationID, String nodeName) throws SQLException {
+		if(checkValidNodeName(username,nodeName) && checkValidNodeID(username,locationID)) {
+			Map<String, String> takenValues = new HashMap<>();
+			takenValues.put("USERID", username);
+			takenValues.put("LOCATIONID", locationID);
+			takenValues.put("NODE_NAME", nodeName);
+			try {
+				favoriteNodesTable.addEntry(takenValues);
+				return true;
+			} catch (SQLException throwables) {
+				throwables.printStackTrace();
+				return false;
+			}
 		}
-	}
+		return false;
 
-	// TODO: IMPLEMENT THE GETTING FAV NODE FROM USER METHOD
+	}
 
 	/**
 	 * Gets the favorite nodes for the user id inputted
 	 * @param username
-	 * @return something for how the users favorite nodes exist
+	 * @return list of map entries containing the favorite nodes
 	 */
-	public List<Map<String,String>> getFavoriteNodesForUser(String username){
+	public List<Map<String,String>> getFavoriteNodesForUser(String username) throws SQLException {
+		return favoriteNodesTable.getEntriesByValue("USERID",username);
+	}
+
+	/**
+	 * Gets a specific favorite node for the user id inputted
+	 * @param username
+	 * @param nodeName
+	 * @return map of the fav node values or null if it doesn't exist
+	 */
+	public Map<String,String> getFavoriteNodeForUser(String username,String nodeName) throws SQLException {
+		List<Map<String,String>> userFaves = favoriteNodesTable.getEntriesByValue("USERID",username);
+		if(!checkValidNodeName(username,nodeName)){
+			for(Map<String,String> entry:userFaves){
+				if(entry.get("NODENAME").equals(nodeName)){
+					return entry;
+				}
+			}
+		}
 		return null;
 	}
 
-	// TODO: IMPLEMENT THE DELETE A FAVE NODE FROM USER METHOD
+	/**
+	 * gets a favorite node from table using primary key
+	 * @param favid
+	 * @return the map of the favorite node associated with the favid
+	 * @throws SQLException
+	 */
+	public Map<String,String> getFavoriteNodeForFavid(String favid) throws SQLException {
+		return favoriteNodesTable.getEntry(favid);
+	}
+
 
 	/**
 	 * deletes a specific fav node from a user's account
@@ -734,8 +785,12 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException
 	 */
 	public void deleteFavoriteNodeFromUser(String username, String nodeName) throws SQLException {
-		favoriteNodesTable.deleteEntry(nodeName);
-
+		List<Map<String,String>> userFaves = favoriteNodesTable.getEntriesByValue("USERID",username);
+		for(Map<String,String> entry: userFaves){
+			if(entry.get("NODENAME").equals(nodeName)){
+				favoriteNodesTable.deleteEntry(entry.get("FAVID"));
+			}
+		}
 	}
 
 	// ===== DATABASE CREATION =====
