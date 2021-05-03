@@ -96,7 +96,9 @@ public class GenericMap extends GenericPage {
 
             directionArrow = new Polygon();
             directionArrow.setFill(Color.BLUE);
+            directionArrow.setStroke(Color.BLUE);
             directionArrow.setVisible(false);
+            mapView.getChildren().add(directionArrow);
 
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
@@ -321,7 +323,6 @@ public class GenericMap extends GenericPage {
 
     void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
         drawArrow(centerX, centerY, floor, floor, rotationAngle);
-
     }
 
     /**
@@ -410,11 +411,14 @@ public class GenericMap extends GenericPage {
             }
             mapView.getChildren().add(floorChangeArrow);
         } else /*if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor))*/{
+            mapView.getChildren().remove(directionArrow);
+            directionArrow.getPoints().removeAll();
             directionArrow.getPoints().addAll(points);
-            directionArrow.setScaleX(5/7);
-            directionArrow.setScaleY(5/7);
+//            directionArrow.setScaleX(5.0/7.0);
+//            directionArrow.setScaleY(5.0/7.0);
             directionArrow.setRotate(rotationAngle);
             directionArrow.setVisible(true);
+            mapView.getChildren().add(directionArrow);
         }
     }
 

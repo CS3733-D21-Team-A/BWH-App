@@ -346,10 +346,10 @@ public class Navigation extends GenericMap {
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
 
-            double X1 = Double.parseDouble(start.get("XCOORD"));
-            double Y1 = Double.parseDouble(start.get("YCOORD"));
-            double X2 = Double.parseDouble(end.get("XCOORD"));
-            double Y2 = Double.parseDouble(end.get("YCOORD"));
+            double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
+            double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
+            double X2 = xScale(Integer.parseInt(end.get("XCOORD")));
+            double Y2 = yScale(Integer.parseInt(end.get("YCOORD")));
 
             double centerX = (X1 + X2) / 2.0;
             double centerY = (Y1 + Y2) / 2.0;
@@ -358,7 +358,7 @@ public class Navigation extends GenericMap {
             Y1 *= -1;
             Y2 *= -1;
 
-            double rotationAngle = Math.atan2(Y2-Y1, X2-X1);
+            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI;
 
             if(start.get("FLOOR").equals(end.get("FLOOR"))){
                 drawArrow(centerX, centerY, start.get("FLOOR"), rotationAngle);
@@ -369,7 +369,7 @@ public class Navigation extends GenericMap {
             drawSingleNode(node, Color.RED);
             if (dirIndex != currPathDir.get(1).size() - 1){
                 String nextNodes = currPathDir.get(1).get(dirIndex + 1);
-                String nextNodeID = nextNodes.substring(nextNodes.indexOf(","));
+                String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
                 Map<String, String> nextNode = db.getNode(nextNodeID);
 
                 double X1 = Double.parseDouble(node.get("XCOORD"));
