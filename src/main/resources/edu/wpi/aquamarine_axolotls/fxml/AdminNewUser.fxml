@@ -23,7 +23,7 @@
     <center>
               <VBox alignment="CENTER" maxWidth="1300.0" minWidth="1300.0" prefHeight="697.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
                   <children>
-                    <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" ">
+                    <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="51.0" prefWidth="65.0" text=" ">
                         <graphic>
                             <ImageView fitHeight="53.0" fitWidth="47.0">
                                 <image>

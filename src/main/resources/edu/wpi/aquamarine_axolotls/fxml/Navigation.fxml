@@ -46,7 +46,7 @@
                               <Image url="@../img/logo.png" />
                            </image>
                         </ImageView>
-                        <Label fx:id="text" prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                        <Label prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                            <font>
                               <Font name="Times New Roman" size="18.0" />
                            </font>

@@ -96,7 +96,7 @@
                         </JFXButton>
                     </children>
                 </GridPane>
-                <JFXButton fx:id="backB" layoutX="25.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="106.0" prefWidth="109.0" text=" ">
+                <JFXButton layoutX="25.0" layoutY="58.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="106.0" prefWidth="109.0" text=" ">
                     <graphic>
                         <ImageView fitHeight="66.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                             <image>

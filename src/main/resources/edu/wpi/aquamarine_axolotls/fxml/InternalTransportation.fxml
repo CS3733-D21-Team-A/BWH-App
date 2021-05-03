@@ -94,7 +94,7 @@
                             </font>
                         </JFXButton>
                   <Rectangle fill="#003da6" height="35.0" layoutX="-47.0" layoutY="8.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1341.0" />
-                        <JFXButton layoutX="8.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="75.0" prefWidth="75.0" text=" ">
+                        <JFXButton layoutX="8.0" layoutY="56.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="75.0" prefWidth="75.0" text=" ">
                <graphic>
                                 <ImageView fitHeight="53.0" fitWidth="79.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
