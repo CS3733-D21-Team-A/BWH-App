@@ -19,6 +19,7 @@ public class DatabaseController implements AutoCloseable {
 	final private Table attrTable;
 	final private Table userTable;
 	final private Table serviceRequestsTable;
+	final private Table favoriteNodesTable;
 	/*
 	 * Map for getting service request tables.
 	 * Key: Service Request enumeration.
@@ -55,6 +56,7 @@ public class DatabaseController implements AutoCloseable {
 		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		userTable = tableFactory.getTable(TABLES.USERS);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+		favoriteNodesTable = tableFactory.getTable(TABLES.FAVORITE_NODES);
 
 
 		requestsTables = new HashMap<>();
@@ -678,6 +680,63 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 
+	// ===== FAVORITE_NODES ========
+
+	//TODO: IMPLEMENT CHECK PREEXISTING NODENAME
+
+	/**
+	 * checks if the user already has a favorite node with that node name (favid)
+	 * @param username
+	 * @param favid
+	 * @return
+	 */
+	public boolean checkPreexistingFaveid(String username, String favid){
+		return false
+	}
+
+	// TODO: IMPLEMENT THE SETTING FAV NODE FOR USER METHOD
+
+	/**
+	 * Creates a new favorite id and adds it to fav node table
+	 * @param username userID that correlates to a user in the user table
+	 * @param locationID nodeID that correlates to a node in the node table
+	 * @param nodeName the user given name for the node
+	 */
+	public void addFavoriteNodeToUser(String username, String locationID, String nodeName){
+		Map<String,String> takenValues = new HashMap<>();
+		takenValues.put("USERID", username);
+		takenValues.put("LOCATIONID",locationID);
+		takenValues.put("NODE_NAME",nodeName);
+		try {
+			favoriteNodesTable.addEntry(takenValues);
+		}catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+	}
+
+	// TODO: IMPLEMENT THE GETTING FAV NODE FROM USER METHOD
+
+	/**
+	 * Gets the favorite nodes for the user id inputted
+	 * @param username
+	 * @return something for how the users favorite nodes exist
+	 */
+	public List<Map<String,String>> getFavoriteNodesForUser(String username){
+		return null;
+	}
+
+	// TODO: IMPLEMENT THE DELETE A FAVE NODE FROM USER METHOD
+
+	/**
+	 * deletes a specific fav node from a user's account
+	 * @param username
+	 * @param nodeName
+	 * @throws SQLException
+	 */
+	public void deleteFavoriteNodeFromUser(String username, String nodeName) throws SQLException {
+		favoriteNodesTable.deleteEntry(nodeName);
+
+	}
 
 	// ===== DATABASE CREATION =====
 

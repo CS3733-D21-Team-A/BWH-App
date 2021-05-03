@@ -70,6 +70,18 @@ final class DatabaseInfo {
 			"ATTRIBUTE VARCHAR(30)" +
 		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
 
+	// ========== FAVORITE_NODES TABLE ================= //
+	/**
+	 * SQL table for the USER
+	 */
+//TODO:  MAKE A NEW RANDOMLY GENERATED FAVID?
+	static final String FAVORITE_NODES_TABLE_SQL =
+		"CREATE TABLE " + TABLES.FAVORITE_NODES.name() + " (" +
+			"FOREIGN KEY (USERID) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON UPDATE RESTRICT," +
+			"FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT," +
+			"FAVID PRIMARY KEY,"+
+			"NODENAME VARCHAR(25)" +
+				")";
 
 	// ========== USER TABLE ================= //
 	/**
