@@ -137,7 +137,7 @@
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="778.0" prefWidth="248.0" style="-fx-background-color: c4c4c450;" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="36.0" prefWidth="227.0">
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="227.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start:" wrappingWidth="50.0">
                      <font>
@@ -154,14 +154,14 @@
                   <Insets bottom="10.0" top="20.0" />
                </padding>
             </HBox>
-            <HBox prefHeight="36.0" prefWidth="227.0">
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="234.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End:" wrappingWidth="50.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Text>
-                  <Label fx:id="endLabel" maxHeight="-Infinity" prefHeight="80.0" prefWidth="0.0" wrapText="true">
+                  <Label fx:id="endLabel" maxHeight="-Infinity" prefHeight="80.0" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
