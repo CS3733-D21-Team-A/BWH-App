@@ -109,7 +109,7 @@ public class Navigation extends GenericMap {
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
                 drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
             }
-            drawSingleNodeHighLight(endPoint,Color.MAGENTA);
+            drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
         }
         else drawNodes(Color.BLUE);
     }
@@ -152,7 +152,7 @@ public class Navigation extends GenericMap {
         drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
         findPathSingleSegment(start, end);
         drawPath(FLOOR);
-        endPoint = db.getNodesByValue("LONGNAME",end).get(0);
+        intermediatePoints.add(db.getNodesByValue("LONGNAME",end).get(0));
         //drawFloor(FLOOR); // do we need this?
     }
 
@@ -403,7 +403,7 @@ public class Navigation extends GenericMap {
                     currPath.clear ( );
                     findPathSingleSegment ( stopList.get ( 0 ) ,stopList.get ( 1 ) );
                     drawPath ( FLOOR );
-                    endPoint = newDestination;
+                    intermediatePoints.add(newDestination);
                     drawSingleNodeHighLight(newDestination,Color.MAGENTA);
                 }
             }
@@ -413,12 +413,13 @@ public class Navigation extends GenericMap {
                 for (int i = 0; i < stopList.size() - 1; i++) {
                     findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
                 }
-                intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 drawPath(FLOOR);
+                intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
                     drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
                 }
-                drawSingleNodeHighLight(endPoint,Color.MAGENTA);
+                drawSingleNodeHighLight(newDestination,Color.MAGENTA);
+                //drawSingleNodeHighLight(endPoint,Color.MAGENTA);
             }
         }
     }
