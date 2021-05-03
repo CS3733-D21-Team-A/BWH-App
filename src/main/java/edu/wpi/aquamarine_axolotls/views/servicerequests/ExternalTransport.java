@@ -1,14 +1,10 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 

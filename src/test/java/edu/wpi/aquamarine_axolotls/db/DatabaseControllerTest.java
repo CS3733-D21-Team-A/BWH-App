@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private final DatabaseController db = new DatabaseController();
+	private final DatabaseController db = DatabaseController.getInstance();
 
 	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 

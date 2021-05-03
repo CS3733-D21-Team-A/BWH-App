@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
-import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 
@@ -116,10 +116,10 @@ public class GenericServiceRequest extends GenericPage {
     public void startUp(){
         //previousPage = "DefaultServicePage";
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
         //    firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));
           //  lastName.setText(db.getUserByUsername(Aapp.username).get("LASTNAME"));
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

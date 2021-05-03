@@ -1,28 +1,20 @@
 package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 
 public class NewAccount extends GenericPage {
@@ -44,7 +36,7 @@ public class NewAccount extends GenericPage {
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController();
+        db = DatabaseController.getInstance();
     }
 
 

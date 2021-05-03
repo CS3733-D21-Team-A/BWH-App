@@ -11,7 +11,7 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
 
     public AbsHeuristicBased(){
         try {
-            DatabaseController dbControl = new DatabaseController();
+            DatabaseController dbControl = DatabaseController.getInstance();
 
             List<Map<String, String>> nodeMap = new ArrayList<>();
             List<Map<String, String>> edgeMap = new ArrayList<>();
@@ -42,7 +42,7 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
                         edgeMap.get(j).get("ENDNODE")
                 ));
             }
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

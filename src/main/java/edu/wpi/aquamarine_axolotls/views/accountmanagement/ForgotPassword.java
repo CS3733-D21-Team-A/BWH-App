@@ -26,9 +26,9 @@ public class ForgotPassword extends GenericPage {
         @FXML
         public void initialize() {
             try {
-                db = new DatabaseController ();
-            } catch (SQLException | IOException | URISyntaxException throwables) {
-                throwables.printStackTrace ( );
+                db = DatabaseController.getInstance();
+            } catch (SQLException | IOException e) {
+                e.printStackTrace ( );
             }
         }
 

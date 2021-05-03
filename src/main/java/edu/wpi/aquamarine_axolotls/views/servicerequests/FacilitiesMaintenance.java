@@ -3,15 +3,10 @@ package edu.wpi.aquamarine_axolotls.views.servicerequests;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import com.jfoenix.controls.JFXTextArea;
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleGroup;
-
-import java.sql.SQLException;
-import java.util.*;
 
 public class FacilitiesMaintenance extends GenericServiceRequest {
 

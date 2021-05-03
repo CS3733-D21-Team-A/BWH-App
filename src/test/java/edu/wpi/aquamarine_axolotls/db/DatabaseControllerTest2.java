@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,9 +26,9 @@ class DatabaseControllerTest2 {
 		if (dir.exists()) {
 			assertTrue(FileUtil.removeDirectory(dir));
 		}
-		try (DatabaseController db = new DatabaseController()) {
+		try (DatabaseController db = DatabaseController.getInstance()) {
 			assertTrue(dir.exists());
-		} catch (SQLException | IOException | URISyntaxException e) {
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 			fail();
 		}
@@ -37,16 +38,24 @@ class DatabaseControllerTest2 {
 	}
 
 	@Test
-	void closingWithMultipleControllers() {
-		try (DatabaseController db1 = new DatabaseController()) {
-			try (DatabaseController db2 = new DatabaseController()) {
-				assertNotNull(db2.getNodes());
-			}
+	void closingCreatesNewController() {
+		try {
+			DatabaseController db1 = DatabaseController.getInstance();
 			assertNotNull(db1.getNodes());
-		} catch (SQLException | IOException | URISyntaxException e) {
+			DatabaseController db2 = DatabaseController.getInstance();
+			assertNotNull(db2.getNodes());
+			assertSame(db1, db2);
+			db1.close();
+			assertThrows(SQLNonTransientConnectionException.class, db2::getNodes);
+
+			DatabaseController db3 = DatabaseController.getInstance();
+			assertNotNull(db3.getNodes());
+			assertNotSame(db3, db2);
+			assertNotSame(db3, db1);
+			assertSame(db1, db2);
+		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 			fail();
 		}
-		assertTrue(DatabaseController.shutdownDB());
 	}
 }
