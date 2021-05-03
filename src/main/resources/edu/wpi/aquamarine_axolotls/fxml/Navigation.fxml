@@ -144,7 +144,7 @@
                         <Font size="14.0" />
                      </font>
                   </Text>
-                  <Label fx:id="startLabel" wrapText="true">
+                  <Label fx:id="startLabel" maxHeight="-Infinity" prefHeight="80.0" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -161,10 +161,13 @@
                         <Font size="14.0" />
                      </font>
                   </Text>
-                  <Label fx:id="endLabel" wrapText="true">
+                  <Label fx:id="endLabel" maxHeight="-Infinity" prefHeight="80.0" prefWidth="0.0" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Label>
                </children>
                <padding>
