@@ -56,6 +56,8 @@ public class GenericMap extends GenericPage {
     Map<String, String> floors;
     String FLOOR = "1";
     @FXML private Menu curFloor;
+
+    @FXML private Polygon directionArrow;
     
     // Node stuff
     //List<Node> validNodes = new ArrayList<>();
@@ -91,6 +93,10 @@ public class GenericMap extends GenericPage {
             mapImage.setImage(new Image(floors.get(FLOOR)));
 
             curFloor = new Menu();
+
+            directionArrow = new Polygon();
+            directionArrow.setFill(Color.BLUE);
+            directionArrow.setVisible(false);
 
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
@@ -313,6 +319,11 @@ public class GenericMap extends GenericPage {
         drawSingleNode(endX, endY, enodeCol);
     }
 
+    void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
+        drawArrow(centerX, centerY, floor, floor, rotationAngle);
+
+    }
+
     /**
      * Draws up and down arrows to signify floor change for a given edge (two nodes)
      * @param start start node
@@ -323,13 +334,15 @@ public class GenericMap extends GenericPage {
         double startX = xScale(Integer.parseInt(start.get("XCOORD")));
         double startY = yScale(Integer.parseInt(start.get("YCOORD")));
 
-        double endX = xScale(Integer.parseInt(start.get("XCOORD")));
-        double endY = yScale(Integer.parseInt(start.get("YCOORD")));
+//        double endX = xScale(Integer.parseInt(start.get("XCOORD")));
+//        double endY = yScale(Integer.parseInt(start.get("YCOORD")));
 
         String startFloor = start.get("FLOOR");
         String endFloor = end.get("FLOOR");
 
-        drawArrow(startX, startY, endX, endY, startFloor, endFloor);
+        if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
+            drawArrow(startX, startY, startFloor, endFloor, 0.0);
+        }
     }
 
     /**
@@ -342,34 +355,38 @@ public class GenericMap extends GenericPage {
         double startX = xScale(start.getXcoord());
         double startY = yScale(start.getYcoord());
 
-        double endX = xScale(end.getXcoord());
-        double endY = yScale(end.getYcoord());
+//        double endX = xScale(end.getXcoord());
+//        double endY = yScale(end.getYcoord());
 
         String startFloor = start.getFloor();
         String endFloor = end.getFloor();
 
-        drawArrow(startX, startY, endX, endY, startFloor, endFloor);
+        if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
+            drawArrow(startX, startY, startFloor, endFloor, 0.0);
+        }
     }
 
     /**
      * Draws up and down arrows to signify floor change for a given edge (two nodes)
      * This is a private method that takes coordinates and floors derived from the Node or Map passed to the public
      * methods.
-     * @param startX x-coordinate of the start node
-     * @param startY y-coordinate of the start node
-     * @param endX x-coordinate of the end node
-     * @param endY y-coordinate of the end node
+     * @param centerX x-coordinate of the start node
+     * @param centerY y-coordinate of the start node
      * @param startFloor floor of the start node
      * @param endFloor floor of the end node
      */
-    private void drawArrow(double startX, double startY, double endX, double endY, String startFloor, String endFloor){
+    private void drawArrow(double centerX, double centerY, String startFloor, String endFloor, double rotationAngle){
 
-        Polygon arrow = new Polygon();
+        Polygon floorChangeArrow = new Polygon();
 
-        double points[] = new double[6];
-        points[0] = startX;
-        points[2] = startX + 7 * Math.sqrt(2.0) / 2.0;
-        points[4] = startX - 7 * Math.sqrt(2.0) / 2.0;
+        Double points[] = new Double[6];
+        points[0] = centerX;
+        points[2] = centerX + 7 * Math.sqrt(2.0) / 2.0;
+        points[4] = centerX - 7 * Math.sqrt(2.0) / 2.0;
+
+        points[1] = centerY - 7;
+        points[3] = centerY + 7 * Math.sqrt(2.0) / 2.0;
+        points[5] = centerY + 7 * Math.sqrt(2.0) / 2.0;
 
         if (startFloor.equals("G")) startFloor = "0";
         if (startFloor.equals("L1")) startFloor = "-1";
@@ -378,29 +395,27 @@ public class GenericMap extends GenericPage {
         if (endFloor.equals("L1")) endFloor = "-1";
         if (endFloor.equals("L2")) endFloor = "-2";
 
-        if (startFloor.equals(FLOOR)) {
-            if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
-
-                arrow.setFill(Color.GREEN);
-
-                points[1] = startY - 7;
-                points[3] = startY + 7 * Math.sqrt(2.0) / 2.0;
-                points[5] = startY + 7 * Math.sqrt(2.0) / 2.0;
-            } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
-
-                arrow.setFill(Color.RED);
-
-                points[1] = startY + 7;
-                points[3] = startY - 7 * Math.sqrt(2.0) / 2.0;
-                points[5] = startY - 7 * Math.sqrt(2.0) / 2.0;
+        if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
+            floorChangeArrow.setFill(Color.GREEN);
+            floorChangeArrow.setRotate(0);
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
             }
+            mapView.getChildren().add(floorChangeArrow);
+        } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
+            floorChangeArrow.setFill(Color.RED);
+            floorChangeArrow.setRotate(180);
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
+            }
+            mapView.getChildren().add(floorChangeArrow);
+        } else /*if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor))*/{
+            directionArrow.getPoints().addAll(points);
+            directionArrow.setScaleX(5/7);
+            directionArrow.setScaleY(5/7);
+            directionArrow.setRotate(rotationAngle);
+            directionArrow.setVisible(true);
         }
-//        gc.fillPolygon(xPoints, yPoints, 3);
-        for (int i = 0; i < points.length; i++) {
-            arrow.getPoints().add(points[i]);
-        }
-
-        mapView.getChildren().add(arrow);
     }
 
     /**

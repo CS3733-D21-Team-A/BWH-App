@@ -17,6 +17,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
 import javax.naming.Context;
 import java.sql.SQLException;
@@ -97,7 +98,6 @@ public class Navigation extends GenericMap {
                 contextMenuY = event.getY();
             }
         });
-
     }
 
     public void changeFloor(String floor) throws SQLException{
@@ -345,8 +345,47 @@ public class Navigation extends GenericMap {
             //System.out.println(end);
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
+
+            double X1 = Double.parseDouble(start.get("XCOORD"));
+            double Y1 = Double.parseDouble(start.get("YCOORD"));
+            double X2 = Double.parseDouble(end.get("XCOORD"));
+            double Y2 = Double.parseDouble(end.get("YCOORD"));
+
+            double centerX = (X1 + X2) / 2.0;
+            double centerY = (Y1 + Y2) / 2.0;
+
+            // Convert to math domain.
+            Y1 *= -1;
+            Y2 *= -1;
+
+            double rotationAngle = Math.atan2(Y2-Y1, X2-X1);
+
+            if(start.get("FLOOR").equals(end.get("FLOOR"))){
+                drawArrow(centerX, centerY, start.get("FLOOR"), rotationAngle);
+            }
+
         } else {
-            drawSingleNode(db.getNode(curNode), Color.RED);
+            Map<String, String> node = db.getNode(curNode);
+            drawSingleNode(node, Color.RED);
+            if (dirIndex != currPathDir.get(1).size() - 1){
+                String nextNodes = currPathDir.get(1).get(dirIndex + 1);
+                String nextNodeID = nextNodes.substring(nextNodes.indexOf(","));
+                Map<String, String> nextNode = db.getNode(nextNodeID);
+
+                double X1 = Double.parseDouble(node.get("XCOORD"));
+                double Y1 = Double.parseDouble(node.get("YCOORD"));
+                double X2 = Double.parseDouble(nextNode.get("XCOORD"));
+                double Y2 = Double.parseDouble(nextNode.get("YCOORD"));
+
+                // Convert to math domain.
+                Y1 *= -1;
+                Y2 *= -1;
+
+                double rotationAngle = Math.atan2(Y2-Y1, X2-X1);
+                double nodeX = Double.parseDouble(node.get("XCOORD"));
+                double nodeY = Double.parseDouble(node.get("YCOORD"));
+                drawArrow(nodeX, nodeY, node.get("FLOOR"), rotationAngle);
+            }
         }
     }
 
