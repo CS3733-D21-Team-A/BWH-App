@@ -682,14 +682,27 @@ public class DatabaseController implements AutoCloseable {
 
 	// ===== FAVORITE_NODES ======== Emily
 
-	// TODO: add in a check for if the username has entries in the favorite nodes table
+	/**
+	 * checks if the userid has any associated favorite nodes
+	 * @param username
+	 * @return true if has favorite nodes, false if does not
+	 */
+	public boolean checkUserHasFavorites(String username){
+		try{
+			favoriteNodesTable.getEntriesByValue("USERID", username);
+		} catch (SQLException throwables) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 * checks if the favid is unique value to the user
 	 * @param username
 	 * @param nodeName
 	 * @return true if unique to the user, false if not
 	 */
-	public boolean checkValidNodeName(String username, String nodeName) throws SQLException {
+	public boolean checkValidNodeName(String username, String nodeName) {
 		List<Map<String,String>> userFavorites = getFavoriteNodesForUser(username);
 		for(Map<String,String> oneNode:userFavorites){
 			if(nodeName.equals(oneNode.get("NODENAME"))){
@@ -705,7 +718,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @param nodeID
 	 * @return true if is a unique to the user, false if not
 	 */
-	public boolean checkValidNodeID(String username, String nodeID) throws SQLException {
+	public boolean checkValidNodeID(String username, String nodeID) {
 		List<Map<String,String>> userFavorites = getFavoriteNodesForUser(username);
 		for(Map<String,String> oneNode:userFavorites){
 			if(nodeID.equals(oneNode.get("LOCATIONID"))){
@@ -716,13 +729,27 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	/**
+	 * gets the automatically generated favid using username and node name
+	 * @param username
+	 * @param nodeName
+	 * @return
+	 */
+	public String getFAVID(String username, String nodeName) {
+		try {
+			return getFavoriteNodeForUser(username, nodeName).get("FAVID");
+		}catch (SQLException throwables) {
+			return null;
+		}
+	}
+
+	/**
 	 * Creates a new favorite id and adds it to fav node table
 	 * @param username userID that correlates to a user in the user table
 	 * @param locationID nodeID that correlates to a node in the node table
 	 * @param nodeName the user given name for the node
-	 * @return true if successfully added new favorite node, false if some element of it already existed
+	 * @return the auto-generated FAVID if entry is created, null if it doesn't
 	 */
-	public boolean addFavoriteNodeToUser(String username, String locationID, String nodeName) throws SQLException {
+	public String addFavoriteNodeToUser(String username, String locationID, String nodeName){
 		if(checkValidNodeName(username,nodeName) && checkValidNodeID(username,locationID)) {
 			Map<String, String> takenValues = new HashMap<>();
 			takenValues.put("USERID", username);
@@ -730,23 +757,27 @@ public class DatabaseController implements AutoCloseable {
 			takenValues.put("NODE_NAME", nodeName);
 			try {
 				favoriteNodesTable.addEntry(takenValues);
-				return true;
+				return getFAVID(username,nodeName);
 			} catch (SQLException throwables) {
 				throwables.printStackTrace();
-				return false;
+				return null;
 			}
 		}
-		return false;
+		return null;
 
 	}
 
 	/**
 	 * Gets the favorite nodes for the user id inputted
 	 * @param username
-	 * @return list of map entries containing the favorite nodes
+	 * @return list of map entries containing the favorite nodes, null if it doesn't exist
 	 */
-	public List<Map<String,String>> getFavoriteNodesForUser(String username) throws SQLException {
-		return favoriteNodesTable.getEntriesByValue("USERID",username);
+	public List<Map<String,String>> getFavoriteNodesForUser(String username){
+		try {
+			return favoriteNodesTable.getEntriesByValue("USERID", username);
+		}catch (SQLException throwables){
+			return null;
+		}
 	}
 
 	/**
