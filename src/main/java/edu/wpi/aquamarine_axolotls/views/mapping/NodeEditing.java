@@ -325,6 +325,7 @@ public class NodeEditing extends GenericMap {
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouse ->{
 
             if(mouse.isMiddleButtonDown()){
+                if(selectedNodesList.isEmpty()) return;
                 Map<String, String> node = selectedNodesList.get(0);
                 String nodeID = node.get("NODEID");
                 int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
