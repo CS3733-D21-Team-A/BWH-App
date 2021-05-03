@@ -13,9 +13,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -78,6 +76,8 @@ public class NodeEditing extends GenericMap {
     @FXML
     private TableColumn typeCol;
 
+    @FXML
+    private Button button;
     @FXML
     private JFXButton clearButton;
     private Map<String, String> prevSelected;
@@ -318,7 +318,43 @@ public class NodeEditing extends GenericMap {
                 }
             }
         });
-    }
+
+        mapView.setOnDragDetected(new EventHandler <MouseEvent>() {
+            public void handle(MouseEvent event) {
+                double firstX= event.getX ();
+                double firstY = event.getY();
+
+                mapView.addEventHandler(MouseEvent.MOUSE_RELEASED, event2 ->{
+                double secondX = event2.getX ( );
+                double secondY = event2.getY ( );
+                System.out.println ( secondX );
+                System.out.println ( secondY );
+
+                try {
+                    if( ( db.nodeExists(getNearestNode( firstX,firstY ).get("NODEID")))){
+                     String Node = getNearestNode( firstX,firstY ).get("NODEID");
+                     System.out.println ( Node );
+                     Map<String,String> newNode = new HashMap<String, String> (  );
+                    int xint = (int) Math.floor(secondX / (mapImage.getFitWidth() / 5000));
+                    int yint = (int) Math.floor(secondY / (mapImage.getFitHeight() / 3400));
+                    newNode.put ( "XCOORD",String.valueOf ( xint ));
+                    newNode.put("YCOORD", String.valueOf ( yint));
+                    db.editNode ( Node, newNode );
+                    System.out.println("onDragDone1");
+                    System.out.println ("You have edited " + Node + "to" + String.valueOf(xint) + String.valueOf(yint));
+                    submissionlabel.setText("You have edited " + Node );
+                    initialize ();
+                }
+                    else{
+                        System.out.println ( "Rip no node sry" );
+                    }
+                } catch (SQLException throwables) {
+                                throwables.printStackTrace ( );
+                        }
+
+
+                });}});}
+
 
 
 
