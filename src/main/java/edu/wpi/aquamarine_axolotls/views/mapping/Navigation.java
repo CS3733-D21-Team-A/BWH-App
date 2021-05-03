@@ -132,7 +132,35 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(true);
         treeTable.toFront();
 
+        treeTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() == 2) {
+                    TreeItem<String> selectedFromTreeView = treeTable.getSelectionModel().getSelectedItem();
+                    if (selectedFromTreeView.getChildren().isEmpty()) {
+                        System.out.println(selectedFromTreeView.getValue());
 
+                        if (selectedFromTreeView != null) {
+                            if (firstNodeSelect == 0) {
+                                stopList.add(selectedFromTreeView.getValue());
+                                firstNodeSelect = 1;
+                            }
+                            else if (firstNodeSelect == 1) {
+                                stopList.add(selectedFromTreeView.getValue());
+                                firstNodeSelect = 0;
+                                try {
+                                    findPathSingleSegment(stopList.get(0), stopList.get(1));
+                                    drawPath(FLOOR);
+                                }
+                                catch(SQLException se) { //oh FINE we'll handle the damn exception
+                                    se.printStackTrace(); //guess we can't keep throwing it forever
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
         item1.setOnAction((ActionEvent e)->{
             try {
