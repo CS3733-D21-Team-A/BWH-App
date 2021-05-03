@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views.homepages;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -27,7 +28,11 @@ public class GuestMainPage extends GenericPage {
 
     @FXML
     public void mapP(ActionEvent actionEvent) {
+        //if(Aapp.username!=null){
+     //  if( hasTakenCovidSurvey(Aapp.username ){
         sceneSwitch("Navigation");
+        //} else{ popUp("Covid Survey", "Taking the Covid-19 Survey is necessary before completing this action");
+        //how sshould we enforce this for guests??
     }
 
     @FXML
