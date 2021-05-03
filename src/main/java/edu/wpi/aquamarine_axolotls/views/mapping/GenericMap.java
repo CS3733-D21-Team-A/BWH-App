@@ -51,6 +51,7 @@ public class GenericMap extends GenericPage {
     double contextMenuX = 0;
     double contextMenuY = 0;
     Map<String, String> currentNode;
+    Map<String, Circle> nodesOnImage = new HashMap<>();
 
     // Floor stuff
     static Map<String, String> floors = new HashMap<String,String>() {{
@@ -77,6 +78,10 @@ public class GenericMap extends GenericPage {
             db = DatabaseController.getInstance();
 
             mapScrollPane.pannableProperty().set(true);
+            mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+                if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
+                else mapScrollPane.pannableProperty().set(false);
+            });
             Group contentGroup = new Group();
             zoomGroup = new Group();
             contentGroup.getChildren().add(zoomGroup);
@@ -177,6 +182,7 @@ public class GenericMap extends GenericPage {
         FLOOR = floor;
         mapImage.setImage(new Image(floors.get(FLOOR)));
         mapView.getChildren().clear();
+        nodesOnImage.clear();
         curFloor.setText( "Cur Floor : " + FLOOR);
     }
 
@@ -214,21 +220,13 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), color); }
-
-
-    /**
-     * Draws a single node as a colored dot
-     * This version takes a node
-     * @param node the node to be drawn
-     * @param color the color to fill the node
-     */
-    public void drawSingleNode(Node node, Color color) { drawSingleNode(node.getXcoord(), node.getYcoord(), color); }
+    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color); }
 
 
 
-    public void drawSingleNode(int x, int y, Color color){
-        drawSingleNode(xScale(x), yScale(y), color);
+
+    public void drawSingleNode(int x, int y, String nodeID, Color color){
+        drawSingleNode(xScale(x), yScale(y), nodeID, color);
     }
 
     /**
@@ -237,7 +235,7 @@ public class GenericMap extends GenericPage {
      * @param y y coord
      * @param color color to fill the cicle
      */
-    public void drawSingleNode(double x, double y, Color color){
+    public void drawSingleNode(double x, double y, String nodeID, Color color){
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
@@ -247,8 +245,15 @@ public class GenericMap extends GenericPage {
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
-        //c.setId();
-        mapView.getChildren().add(c);
+
+        if(nodesOnImage.containsKey(nodeID)){
+            Circle prev = nodesOnImage.get(nodeID);
+            mapView.getChildren().set(mapView.getChildren().indexOf(prev), c);
+        }
+        else mapView.getChildren().add(c);
+
+        nodesOnImage.put(nodeID, c);
+
     }
 
     /**
@@ -344,8 +349,8 @@ public class GenericMap extends GenericPage {
         l.setStroke(edgeCol);
         mapView.getChildren().add(l);
 
-        drawSingleNode(startX, startY, snodeCol);
-        drawSingleNode(endX, endY, enodeCol);
+        //drawSingleNode(startX, startY, snodeCol); //TODO: update to have node IDs
+        //drawSingleNode(endX, endY, enodeCol);
     }
 
     /**

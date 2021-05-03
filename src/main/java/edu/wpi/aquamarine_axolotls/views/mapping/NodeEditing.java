@@ -16,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -216,15 +217,14 @@ public class NodeEditing extends GenericMap {
                 anchor2 = selectedNode;
                 addAnchorPoint.setText("Change 2nd Anchor Point");
             }
-            drawSingleNode( Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), Color.PURPLE);
+            drawSingleNode( Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), selectedNode.get("NODEID"), Color.PURPLE);
 
         });
         selectNode.setOnAction((ActionEvent e) -> {
             try {
                 Map<String, String> selectedNode = getNearestNode(contextMenuX, contextMenuY);
                 if(selectedNode == null) return;
-
-                drawSingleNode(Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), Color.GREEN);
+                drawSingleNode(Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), selectedNode.get("NODEID"), Color.GREEN);
                 selectedNodesList.add(getNearestNode(contextMenuX, contextMenuY));
 
             }
@@ -319,41 +319,29 @@ public class NodeEditing extends GenericMap {
             }
         });
 
-        mapView.setOnDragDetected(new EventHandler <MouseEvent>() {
-            public void handle(MouseEvent event) {
-                double firstX= event.getX ();
-                double firstY = event.getY();
+        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouse ->{
 
-                mapView.addEventHandler(MouseEvent.MOUSE_RELEASED, event2 ->{
-                double secondX = event2.getX ( );
-                double secondY = event2.getY ( );
-                System.out.println ( secondX );
-                System.out.println ( secondY );
-
-                try {
-                    if((getNearestNode( firstX,firstY )!=null)){
-                     String Node = getNearestNode( firstX,firstY ).get("NODEID");
-                     Map<String,String> newNode = new HashMap<String, String> (  );
-                    int xint = (int) Math.floor(secondX / (mapImage.getFitWidth() / 5000));
-                    int yint = (int) Math.floor(secondY / (mapImage.getFitHeight() / 3400));
-                    newNode.put ( "XCOORD",String.valueOf ( xint ));
-                    newNode.put("YCOORD", String.valueOf ( yint));
-                    db.editNode ( Node, newNode );
-                    System.out.println ("You have edited " + Node + "to" + String.valueOf(xint) + String.valueOf(yint));
-                    submissionlabel.setText("You have edited " + Node );
-                    initialize ();
-                }
-                    else{
-                        System.out.println ( "There is no present node" );
+            if(mouse.isMiddleButtonDown()){
+                Map<String, String> node = selectedNodesList.get(0);
+                String nodeID = node.get("NODEID");
+                int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
+                System.out.println(index);
+                if(index != -1){
+                    Circle c = new Circle(mouse.getX(), mouse.getY(), 3, Color.LIGHTCORAL);
+                    mapView.getChildren().set(index, c);
+                    nodesOnImage.put(nodeID, c);
+                    try {
+                        node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * mouse.getX())));
+                        node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * mouse.getY())));
+                        db.editNode(nodeID,node);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                } catch (SQLException throwables) {
-                                throwables.printStackTrace ( );
-                        }
-                });
+                }
             }
-        });
-    }
 
+
+        });
 
 
 
@@ -712,7 +700,7 @@ public class NodeEditing extends GenericMap {
     public void alignNodesVertical(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
         drawFloor(FLOOR);
         String anchorX = anchorPoint.get("XCOORD");
-        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), Color.RED);
+        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), anchorPoint.get("NODEID"), Color.RED);
         for (Map<String, String> node : nodes) {
             Map<String, String> newNode = new HashMap<String, String>();
             newNode.put("XCOORD", anchorX);
