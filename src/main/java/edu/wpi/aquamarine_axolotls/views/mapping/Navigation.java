@@ -44,6 +44,7 @@ public class Navigation extends GenericMap {
     private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
+    private Map<String,String> endPoint;
 
     @FXML
     public void initialize() throws SQLException {
@@ -103,7 +104,13 @@ public class Navigation extends GenericMap {
 
     public void changeFloor(String floor) throws SQLException{
         drawFloor(floor);
-        if(activePath == 1) drawPath(floor);
+        if(activePath == 1) {
+            drawPath(floor);
+            for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
+                drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+            }
+            drawSingleNodeHighLight(endPoint,Color.MAGENTA);
+        }
         else drawNodes(Color.BLUE);
     }
 
@@ -145,6 +152,7 @@ public class Navigation extends GenericMap {
         drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
         findPathSingleSegment(start, end);
         drawPath(FLOOR);
+        endPoint = db.getNodesByValue("LONGNAME",end).get(0);
         //drawFloor(FLOOR); // do we need this?
     }
 
@@ -163,7 +171,7 @@ public class Navigation extends GenericMap {
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
             drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
-            drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.DARKMAGENTA);
+            drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
         }
     }
     // draw floor that makes everything transparent
@@ -273,7 +281,7 @@ public class Navigation extends GenericMap {
             String curNode = currPathDir.get(1).get(dirIndex);
             String curFloor = getInstructionsFloor(curNode);
             if(!curFloor.equals(FLOOR)){
-                drawPath(curFloor); 
+                drawPath(curFloor);
             }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
@@ -375,18 +383,18 @@ public class Navigation extends GenericMap {
     public void addDestination(double x, double y) throws SQLException{
 
         //if(event.getButton().equals(MouseButton.PRIMARY)) {
-            Map<String, String> newDestination = getNearestNode(x, y);
+        Map<String, String> newDestination = getNearestNode(x, y);
 
-            if (newDestination == null) return;
+        if (newDestination == null) return;
 
-            else {
-                String currCloseName = newDestination.get("LONGNAME");
+        else {
+            String currCloseName = newDestination.get("LONGNAME");
 
             if (activePath == 0) { //if there's no active path, we'll handle that
                 if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
-                    drawSingleNodeHighLight(newDestination,Color.LIGHTGREEN);
+                    drawSingleNodeHighLight(newDestination,Color.GREEN);
                 }
                 else if ( firstNodeSelect == 1 ) {
                     stopList.clear ( );
@@ -394,8 +402,9 @@ public class Navigation extends GenericMap {
                     stopList.add ( currCloseName );
                     currPath.clear ( );
                     findPathSingleSegment ( stopList.get ( 0 ) ,stopList.get ( 1 ) );
-                    drawSingleNodeHighLight(newDestination,Color.DARKMAGENTA);
                     drawPath ( FLOOR );
+                    endPoint = newDestination;
+                    drawSingleNodeHighLight(newDestination,Color.MAGENTA);
                 }
             }
             else if (activePath == 1) {
@@ -409,6 +418,7 @@ public class Navigation extends GenericMap {
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
                     drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
                 }
+                drawSingleNodeHighLight(endPoint,Color.MAGENTA);
             }
         }
     }
