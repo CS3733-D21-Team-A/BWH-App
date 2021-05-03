@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EmployeeRequests extends GenericPage {
+public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
     @FXML private TableView<Request> srTable;
     @FXML private TableColumn<Request, String> assignedColumn;

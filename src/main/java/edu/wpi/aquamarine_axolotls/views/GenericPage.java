@@ -17,11 +17,13 @@ import java.io.IOException;
 
 public class GenericPage {
 
-    String previousPage; // TODO: set previous page
+    static String previousPage; // TODO: set previous page
+    //TODO: change this to linked list for traversing backwards multiple pages
 
     @FXML
     public void sceneSwitch(String target){
         try {
+            Aapp.prevPage = Aapp.currPage; //TODO: Store these in this class, not Aapp
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + target + ".fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
         } catch (IOException ex) {
@@ -32,7 +34,7 @@ public class GenericPage {
     @FXML
     public void goBack(String currentPage){
         //this should b done in initialize, is there a way to get the current pg we are on w/o passing it in
-        //TODO: Why does this need the current page? Back goes to the previous page in the heirarchy, not alternate with the last page
+        //TODO: This shouldn't need the current page. Back goes to the previous page in the heirarchy, not alternate with the last page
         Aapp.prevPage = Aapp.currPage;
         Aapp.currPage = currentPage;
         sceneSwitch ( Aapp.prevPage);

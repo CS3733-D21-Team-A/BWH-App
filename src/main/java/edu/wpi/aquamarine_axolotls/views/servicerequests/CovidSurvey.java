@@ -34,7 +34,7 @@ public class CovidSurvey extends GenericPage {
     VBox box;
 
     @FXML
-    private JFXRadioButton yes1;
+    private JFXRadioButton yes1; //TODO: Improve this
 
     @FXML
     private JFXRadioButton yes2;
@@ -81,7 +81,6 @@ public class CovidSurvey extends GenericPage {
 
 
     HamburgerBasicCloseTransition transition;
-    private ArrayList<String> nodeIDS;
 
 
     @FXML
@@ -130,62 +129,17 @@ public class CovidSurvey extends GenericPage {
 
         yes11.setToggleGroup(group11);
         no11.setToggleGroup(group11);
-
-
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
-
     }
 
     @FXML
-    public void handleButtonAction(javafx.event.ActionEvent actionEvent) throws IOException {
-           /* if(roomNumber.getSelectionModel().getSelectedItem() == null || deliveryTime.getValue() == null){
-                return;
-            }
-
-            String fn = firstName.getText();
-            String ln = lastName.getText();
-            String dt = deliveryTime.getValue().format(DateTimeFormatter.ofPattern("HH.mm"));
-            int room = roomNumber.getSelectionModel().getSelectedIndex();
-            String pmsg = persMessage.getText();
-
-
-            try {
-                DatabaseController db = new DatabaseController();
-                Map<String, String> shared = new HashMap<String, String>();
-                Random r = new Random();
-                int id = Math.abs(r.nextInt());
-                shared.put("REQUESTID", String.valueOf(id));
-                shared.put("STATUS", "Unassigned");
-                shared.put("LOCATIONID", String.valueOf(nodeIDS.get(room)));
-                shared.put("FIRSTNAME", fn);
-                shared.put("LASTNAME", ln);
-                shared.put("REQUESTTYPE", "Floral Delivery");
-
-                Map<String, String> floral = new HashMap<String, String>();
-
-                floral.put("REQUESTID", String.valueOf(id));
-                floral.put("DELIVERYTIME", dt);
-                floral.put("NOTE", pmsg);
-                db.addServiceRequest(shared, floral);
-                db.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }
-*/
-    }
-    public void helpButton(ActionEvent actionEvent) {
+    public void helpButton() {
         popUp("CovidSurvey", "\n\n\nPlease fill out this survey to the best of your ability. ");
     }
 
-    public void submitButton(ActionEvent actionEvent) {
+    @FXML //TODO: Submit to database
+    public void submitButton() {
         popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-        goHome ();
-
+        goHome();
     }
 
     public void menu() {
