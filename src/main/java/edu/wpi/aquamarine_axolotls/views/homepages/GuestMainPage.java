@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class GuestMainPage extends GenericPage {
     @FXML
-    public StackPane stackPane;
+    StackPane stackPane;
 
     @FXML
     public void signInP(ActionEvent actionEvent) {
@@ -30,6 +30,7 @@ public class GuestMainPage extends GenericPage {
         sceneSwitch("Navigation");
     }
 
+    @FXML
     public void stop(javafx.event.ActionEvent event){
         JFXDialogLayout content = new JFXDialogLayout();
         JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
@@ -54,6 +55,7 @@ public class GuestMainPage extends GenericPage {
         help.show();
     }
 
+    @FXML
     public void covidSurveyPage(ActionEvent actionEvent) {
         sceneSwitch("CovidSurvey");
     }
