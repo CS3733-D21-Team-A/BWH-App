@@ -18,7 +18,7 @@ public class SearchAlgorithm{
     public SearchAlgorithm() {
 
         try {
-            DatabaseController dbControl = new DatabaseController();
+            DatabaseController dbControl = DatabaseController.getInstance();
 
             List<Map<String, String>> nodeMap = new ArrayList<>();
             List<Map<String, String>> edgeMap = new ArrayList<>();
@@ -49,7 +49,7 @@ public class SearchAlgorithm{
                         edgeMap.get(j).get("ENDNODE")
                 ));
             }
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -68,7 +68,7 @@ public class SearchAlgorithm{
      * Use this if you have a persistent instance of SearchAlgorithm and want to update it based on database changes
      */
     public void updateSearchData() throws SQLException, IOException, URISyntaxException {
-        DatabaseController dbControl = new DatabaseController();
+        DatabaseController dbControl = DatabaseController.getInstance();
 
         List<Map<String, String>> nodeMap = new ArrayList<>();
         List<Map<String, String>> edgeMap = new ArrayList<>();

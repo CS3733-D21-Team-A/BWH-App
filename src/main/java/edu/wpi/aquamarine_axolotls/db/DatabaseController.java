@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.db.enums.*;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class DatabaseController implements AutoCloseable {
 	final private Table attrTable;
 	final private Table userTable;
 	final private Table serviceRequestsTable;
+	final private Table covidSurveyTable;
 	/*
 	 * Map for getting service request tables.
 	 * Key: Service Request enumeration.
@@ -31,9 +33,8 @@ public class DatabaseController implements AutoCloseable {
 	 * DatabaseController constructor. Creates and populates new database if one is not found.
 	 * @throws SQLException Something went wrong.
 	 * @throws IOException Something went wrong.
-	 * @throws URISyntaxException Something went wrong.
 	 */
-	public DatabaseController() throws SQLException, IOException, URISyntaxException {
+	private DatabaseController() throws SQLException, IOException {
 		DriverManager.registerDriver(new EmbeddedDriver());
 
 		boolean dbExists;
@@ -55,6 +56,7 @@ public class DatabaseController implements AutoCloseable {
 		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		userTable = tableFactory.getTable(TABLES.USERS);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+		covidSurveyTable = tableFactory.getTable(TABLES.COVID_SURVEY);
 
 
 		requestsTables = new HashMap<>();
@@ -68,6 +70,38 @@ public class DatabaseController implements AutoCloseable {
 			populateDB();
 		}
 	}
+
+	/**
+	 * Static nested class for databasecontrollerSingleton
+	 * @throws SQLException
+	 */
+	private static class DBControllerSingleton{
+		private static DatabaseController instance;
+	}
+
+	/**
+	 * getinstance of dbcontroller to then use
+	 * @return instance of dbcontroller
+	 * @throws SQLException
+	 * @throws IOException
+	 */
+	public static DatabaseController getInstance() throws SQLException, IOException {
+		if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
+			DBControllerSingleton.instance = new DatabaseController();
+		}
+		return DBControllerSingleton.instance;
+	}
+
+	/** Checks to see if the Database Controller is closed
+	 *
+	 * @return True if the database is closed, otherwise false
+	 * @throws SQLException
+	 */
+	private boolean isClosed() throws SQLException {
+		return connection.isClosed();
+	}
+
+
 
 	@Override
 	public void close() throws SQLException {
@@ -614,6 +648,37 @@ public class DatabaseController implements AutoCloseable {
 
 	// Emily
 	/**
+	 * Method to change the pronouns of a user to the inputted value
+	 * @param username a string for the user key in db
+	 * @param newPronouns a string for new pronoun choice for user
+	 */
+	public void changePronouns(String username, String newPronouns){
+		try {
+			Map<String, String> tempBoi = getUserByUsername(username);
+			tempBoi.put("PROUNOUNS",newPronouns);
+			editUser(username, tempBoi);
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+	}
+
+	// Emily
+	/**
+	 * Method to change the gender identity of a user to the inputted value
+	 * @param username a string for the user key in db
+	 * @param genderIdentity a string for new gender identity for user
+	 */
+	public void changeGender(String username, String genderIdentity){
+		try {
+			Map<String, String> tempBoi = getUserByUsername(username);
+			tempBoi.put("GENDER",genderIdentity);
+			editUser(username, tempBoi);
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+	}
+
+	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
 	 * @return true if the username does not exist, false if it does
@@ -636,7 +701,6 @@ public class DatabaseController implements AutoCloseable {
 		return userTable.getEntry(username);
 	}
 
-	// Sean
 	/**
 	 * gets a user by email
 	 * @param email
@@ -677,6 +741,35 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	// ======= COVID SURVEY ==========
+
+	/** Adds a survey that the user took to the database
+	 *
+	 * @param survey The survey that the user has submitted
+	 * @throws SQLException
+	 */
+	public void addSurvey(Map<String, String> survey) throws SQLException {
+		if(covidSurveyTable.getEntry(survey.get("USERNAME")) != null) {
+			covidSurveyTable.deleteEntry(survey.get("USERNAME")); //TODO: Talk to UI about having users resubmit a survey
+		}
+		//TODO: Make it so guests create a random ID for username
+		covidSurveyTable.addEntry(survey);
+	}
+
+	/** Gets the survey from a specific user
+	 *
+	 * @param username The username of the user
+	 * @return The survey of the user
+	 * @throws SQLException
+	 */
+	public Map<String, String> getSurvey(String username) throws SQLException
+	{
+		if(covidSurveyTable.getEntry(username) != null) {
+			return covidSurveyTable.getEntry(username);
+		} else {
+			throw new SQLException();
+		}
+	}
 
 
 	// ===== DATABASE CREATION =====

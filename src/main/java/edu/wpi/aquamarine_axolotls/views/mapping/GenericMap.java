@@ -68,7 +68,7 @@ public class GenericMap extends GenericPage {
      */
     public void startUp(){
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
 
   /*
             }*/
@@ -95,7 +95,7 @@ public class GenericMap extends GenericPage {
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
             zoom = 1;
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

@@ -5,6 +5,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -122,7 +123,7 @@ public class EdgeEditing extends GenericMap {
         submissionButton.setVisible(false);
 
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             csvHandler = new CSVHandler(db);
             List<Map<String, String>> edges = db.getEdges();
             List<Map<String, String>> nodes = db.getNodes();
@@ -143,7 +144,7 @@ public class EdgeEditing extends GenericMap {
             endNodeDropdown.setItems(nodeOptions);
             edgeDropdown.setItems(edgeOptions);
             floors = new HashMap<>();
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 

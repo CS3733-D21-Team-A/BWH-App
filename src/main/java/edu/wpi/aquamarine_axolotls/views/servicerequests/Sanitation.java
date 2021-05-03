@@ -1,13 +1,10 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
-import edu.wpi.aquamarine_axolotls.views.servicerequests.GenericServiceRequest;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 

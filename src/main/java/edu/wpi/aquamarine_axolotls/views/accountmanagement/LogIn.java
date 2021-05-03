@@ -31,16 +31,22 @@ import java.util.Map;
 
 public class LogIn extends GenericPage {
 
-    @FXML private JFXTextField username;
-    @FXML private JFXPasswordField password;
-    DatabaseController db;
-    @FXML private Pane smsPane;
-    @FXML private JFXTextField smsText;
-    @FXML private JFXButton smsSubmit;
+    @FXML
+    private JFXTextField username;
+    @FXML
+    private JFXPasswordField password;
+    @FXML
+    private Pane smsPane;
+    @FXML
+    private JFXTextField smsText;
+    @FXML
+    private JFXButton smsSubmit;
+
+    private DatabaseController db;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
-        db = new DatabaseController ();
+        db = DatabaseController.getInstance();
         smsPane.setVisible(false);
     }
 
@@ -52,7 +58,7 @@ public class LogIn extends GenericPage {
         smsPane.setVisible ( true );
         String r = "123";
 
-        if ( smsText.getText ( ) == r ) {
+        if (smsText.getText().equals(r)) {
             popUp ( "Submission Success!" ,"\n\n\n\n\n\nYou have entered the correct credentials" );
             try {
                 Map<String, String> usr = db.getUserByUsername ( CUusername );
@@ -111,16 +117,6 @@ public class LogIn extends GenericPage {
         sceneSwitch ( "ForgotPassword" );
    }
 
-
-
-    public void goHome(javafx.event.ActionEvent event){
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/GuestMainPage.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
     public void createNewAccount(){
         sceneSwitch("CreateNewAccount");
     }

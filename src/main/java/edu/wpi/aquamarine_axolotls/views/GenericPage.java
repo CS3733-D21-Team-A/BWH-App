@@ -32,6 +32,7 @@ public class GenericPage {
     @FXML
     public void goBack(String currentPage){
         //this should b done in initialize, is there a way to get the current pg we are on w/o passing it in
+        //TODO: Why does this need the current page? Back goes to the previous page in the heirarchy, not alternate with the last page
         Aapp.prevPage = Aapp.currPage;
         Aapp.currPage = currentPage;
         sceneSwitch ( Aapp.prevPage);

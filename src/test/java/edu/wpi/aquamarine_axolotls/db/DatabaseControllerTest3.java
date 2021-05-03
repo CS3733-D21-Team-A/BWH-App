@@ -1,6 +1,10 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.ATTRIBUTE;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.*;
 
@@ -15,7 +19,7 @@ import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 public class DatabaseControllerTest3 {
 
-    private final DatabaseController db = new DatabaseController();
+    private final DatabaseController db = DatabaseController.getInstance();
 
     public DatabaseControllerTest3() throws SQLException, IOException, URISyntaxException {
     }

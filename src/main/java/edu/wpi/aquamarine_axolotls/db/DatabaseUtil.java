@@ -2,6 +2,10 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumHashBiMap;
+import edu.wpi.aquamarine_axolotls.db.enums.ATTRIBUTE;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 
 import static edu.wpi.aquamarine_axolotls.db.DatabaseInfo.*;
 

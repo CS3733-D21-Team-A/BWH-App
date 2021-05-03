@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

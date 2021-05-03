@@ -1,4 +1,4 @@
-package edu.wpi.aquamarine_axolotls.db;
+package edu.wpi.aquamarine_axolotls.db.enums;
 
 /**
  * Enum for the primary database tables.
@@ -8,6 +8,7 @@ public enum TABLES {
 	EDGES,
 	ATTRIBUTES,
 	USERS,
-	SERVICE_REQUESTS
+	SERVICE_REQUESTS,
+	COVID_SURVEY
 
 }
