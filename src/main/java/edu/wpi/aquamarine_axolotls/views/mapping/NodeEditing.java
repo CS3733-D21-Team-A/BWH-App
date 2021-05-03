@@ -322,65 +322,56 @@ public class NodeEditing extends GenericMap {
             }
         });
 
-        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouse ->{
-
-            if(mouse.isMiddleButtonDown()){
-                if(selectedNodesList.isEmpty()) return;
-                Map<String, String> node = selectedNodesList.get(0);
-                String nodeID = node.get("NODEID");
-                int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
-                System.out.println(index);
-                if(index != -1){
-                    Circle c = new Circle(mouse.getX(), mouse.getY(), 3, Color.LIGHTCORAL);
-                    mapView.getChildren().set(index, c);
-                    nodesOnImage.put(nodeID, c);
-                    try {
-                        node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * mouse.getX())));
-                        node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * mouse.getY())));
-                        db.editNode(nodeID,node);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+        mapView.addEventHandler(MouseEvent.MOUSE_MOVED, event ->{
+            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
+            Map<String, String> node = selectedNodesList.get(0);
+            String nodeID = node.get("NODEID");
+            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
+            System.out.println(index);
+            if(index != -1){
+                Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
+                mapView.getChildren().set(index, c);
+                nodesOnImage.put(nodeID, c);
+                try {
+                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * event.getX())));
+                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * event.getY())));
+                    db.editNode(nodeID,node);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
+        });
+    }
 
+/*          mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouse ->{
+        mapView.addEventHandler(KeyEvent.KEY_PRESSED, key ->{
+            if(key.isControlDown()){
 
+            }
         });
 
-/*        mapView.setOnDragDetected(new EventHandler <MouseEvent>() {
-
-            public void handle(MouseEvent event) {
-
-
-                mapView.addEventHandler(MouseEvent.MOUSE_RELEASED, event2 ->{
-                double secondX = event2.getX ( );
-                double secondY = event2.getY ( );
-                System.out.println ( secondX );
-                System.out.println ( secondY );
-
+        if(mouse.isMiddleButtonDown()){
+            if(selectedNodesList.isEmpty()) return;
+            Map<String, String> node = selectedNodesList.get(0);
+            String nodeID = node.get("NODEID");
+            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
+            System.out.println(index);
+            if(index != -1){
+                Circle c = new Circle(mouse.getX(), mouse.getY(), 3, Color.LIGHTCORAL);
+                mapView.getChildren().set(index, c);
+                nodesOnImage.put(nodeID, c);
                 try {
-                    if((getNearestNode( firstX,firstY )!=null)){
-                     String Node = getNearestNode( firstX,firstY ).get("NODEID");
-                     Map<String,String> newNode = new HashMap<String, String> (  );
-                    int xint = (int) Math.floor(secondX / (mapImage.getFitWidth() / 5000));
-                    int yint = (int) Math.floor(secondY / (mapImage.getFitHeight() / 3400));
-                    newNode.put ( "XCOORD",String.valueOf ( xint ));
-                    newNode.put("YCOORD", String.valueOf ( yint));
-                    db.editNode ( Node, newNode );
-                    System.out.println ("You have edited " + Node + "to" + String.valueOf(xint) + String.valueOf(yint));
-                    submissionlabel.setText("You have edited " + Node );
-                    initialize ();
+                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * mouse.getX())));
+                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * mouse.getY())));
+                    db.editNode(nodeID,node);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-                    else{
-                        System.out.println ( "There is no present node" );
-                    }
-                } catch (SQLException throwables) {
-                                throwables.printStackTrace ( );
-                        }
-                });
             }
-        });*/
-    }
+        }
+
+
+    });*/
 
 
 
