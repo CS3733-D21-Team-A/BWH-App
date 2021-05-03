@@ -10,11 +10,13 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -45,6 +47,10 @@ public class GenericMap extends GenericPage {
     Group zoomGroup;
     int zoom;
     DatabaseController db;
+    ContextMenu contextMenu = new ContextMenu();
+    double contextMenuX = 0;
+    double contextMenuY = 0;
+    Map<String, String> currentNode;
 
     // Floor stuff
     Map<String, String> floors;
@@ -92,6 +98,15 @@ public class GenericMap extends GenericPage {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Hides context menu when left clicked is clicked
+     * @param event the mouse click event
+     */
+    @FXML
+    public void hideContextMenu(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) contextMenu.hide();
     }
 
     /**
@@ -203,7 +218,7 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(xScale(Integer.parseInt(node.get("XCOORD"))), yScale(Integer.parseInt(node.get("YCOORD"))), color); }
+    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), color); }
 
 
     /**
@@ -212,8 +227,13 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Node node, Color color) { drawSingleNode(xScale(node.getXcoord()), yScale(node.getYcoord()), color); }
+    public void drawSingleNode(Node node, Color color) { drawSingleNode(node.getXcoord(), node.getYcoord(), color); }
 
+
+
+    public void drawSingleNode(int x, int y, Color color){
+        drawSingleNode(xScale(x), yScale(y), color);
+    }
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -221,7 +241,7 @@ public class GenericMap extends GenericPage {
      * @param y y coord
      * @param color color to fill the cicle
      */
-    private void drawSingleNode(double x, double y, Color color){
+    public void drawSingleNode(double x, double y, Color color){
         double radius = 3;
         x = x - (radius / 2);
         y = y - (radius / 2);
@@ -231,6 +251,7 @@ public class GenericMap extends GenericPage {
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
+        //c.setId();
         mapView.getChildren().add(c);
     }
 

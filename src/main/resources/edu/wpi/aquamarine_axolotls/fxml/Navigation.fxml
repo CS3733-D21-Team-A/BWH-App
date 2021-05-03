@@ -94,7 +94,7 @@
                         <Group>
                            <children>
                               <ImageView fx:id="mapImage" fitHeight="709.0" fitWidth="1045.0" pickOnBounds="true" preserveRatio="true" />
-                              <Pane fx:id="mapView" prefHeight="709.0" prefWidth="1045.0" onMouseClicked="#addDestination"  />
+                              <Pane fx:id="mapView" onMouseClicked="#hideContextMenu" prefHeight="709.0" prefWidth="1045.0"  />
                            </children>
                         </Group>
                      </content>
