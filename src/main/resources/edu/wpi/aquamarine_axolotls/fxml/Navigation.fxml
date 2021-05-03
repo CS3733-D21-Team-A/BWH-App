@@ -144,7 +144,7 @@
                         <Font size="14.0" />
                      </font>
                   </Text>
-                  <Label fx:id="startLabel">
+                  <Label fx:id="startLabel" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -161,7 +161,7 @@
                         <Font size="14.0" />
                      </font>
                   </Text>
-                  <Label fx:id="endLabel">
+                  <Label fx:id="endLabel" wrapText="true">
                      <font>
                         <Font size="14.0" />
                      </font>
