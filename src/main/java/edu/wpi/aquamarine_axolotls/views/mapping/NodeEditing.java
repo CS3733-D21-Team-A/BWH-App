@@ -319,30 +319,26 @@ public class NodeEditing extends GenericMap {
             }
         });
 
-        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, mouse ->{
-
-            if(mouse.isMiddleButtonDown()){
-                if(selectedNodesList.isEmpty()) return;
-                Map<String, String> node = selectedNodesList.get(0);
-                String nodeID = node.get("NODEID");
-                int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
-                System.out.println(index);
-                if(index != -1){
-                    Circle c = new Circle(mouse.getX(), mouse.getY(), 3, Color.LIGHTCORAL);
-                    mapView.getChildren().set(index, c);
-                    nodesOnImage.put(nodeID, c);
-                    try {
-                        node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * mouse.getX())));
-                        node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * mouse.getY())));
-                        db.editNode(nodeID,node);
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
+        mapView.addEventHandler(MouseEvent.MOUSE_MOVED, event ->{
+            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
+            Map<String, String> node = selectedNodesList.get(0);
+            String nodeID = node.get("NODEID");
+            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
+            System.out.println(index);
+            if(index != -1){
+                Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
+                mapView.getChildren().set(index, c);
+                nodesOnImage.put(nodeID, c);
+                try {
+                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * event.getX())));
+                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * event.getY())));
+                    db.editNode(nodeID,node);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
             }
-
-
         });
+    }
 
 
 
