@@ -19,6 +19,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import sun.font.TextLabel;
 
 import javax.naming.Context;
 import java.sql.SQLException;
@@ -26,8 +27,8 @@ import java.util.*;
 
 public class Navigation extends GenericMap {
 
-    @FXML private JFXComboBox startLocation;
-    @FXML private JFXComboBox destination;
+    @FXML private Label startLabel;
+    @FXML private Label endLabel;
     @FXML private JFXButton findPathButton;
     @FXML private JFXButton cancelPath;
     @FXML private Label etaLabel;
@@ -122,8 +123,8 @@ public class Navigation extends GenericMap {
         treeTable.setShowRoot(false);
         treeTable.getColumns().add(treeTableColumn1);
 
-        startLocation.setItems(options);
-        destination.setItems(options);
+        //startLocation.setItems(options);
+        //destination.setItems(options);
 
         drawNodesAndFloor("1", Color.BLUE);
 
@@ -143,10 +144,12 @@ public class Navigation extends GenericMap {
                         if (selectedFromTreeView != null) {
                             if (firstNodeSelect == 0) {
                                 stopList.add(selectedFromTreeView.getValue());
+                                startLabel.setText(stopList.get(0));
                                 firstNodeSelect = 1;
                             }
                             else if (firstNodeSelect == 1) {
                                 stopList.add(selectedFromTreeView.getValue());
+                                endLabel.setText(stopList.get(1));
                                 firstNodeSelect = 0;
                                 try {
                                     findPathSingleSegment(stopList.get(0), stopList.get(1));
@@ -209,11 +212,13 @@ public class Navigation extends GenericMap {
         currPathDir.clear();
         activePath = 0;
         etaLabel.setText("");
+        startLabel.setText("");
+        endLabel.setText("");
         drawNodesAndFloor(FLOOR, Color.BLUE);
-        if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
+        /*if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
             startLocation.getSelectionModel().clearSelection();
             destination.getSelectionModel().clearSelection();
-        }
+        }*/
 
 
         listDirVBox.setVisible(false);
@@ -228,7 +233,7 @@ public class Navigation extends GenericMap {
     public void findPath() throws SQLException{
         currPath.clear();
         stopList.clear();
-
+        /*
         activePath = 0;
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
             return;
@@ -240,7 +245,7 @@ public class Navigation extends GenericMap {
         drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
         findPathSingleSegment(start, end);
         drawPath(FLOOR);
-        //drawFloor(FLOOR); // do we need this?
+        //drawFloor(FLOOR); // do we need this?*/
     }
 
 
@@ -307,8 +312,8 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         listDirVBox.toFront();
 
-        startLocation.setDisable(false);
-        destination.setDisable(false);
+        //startLocation.setDisable(false);
+        //destination.setDisable(false);
         findPathButton.setDisable(false);
         cancelPath.setDisable(false);
 
@@ -324,8 +329,8 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         stepByStep.toFront();
 
-        startLocation.setDisable(true);
-        destination.setDisable(true);
+        //startLocation.setDisable(true);
+        //destination.setDisable(true);
         findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 
