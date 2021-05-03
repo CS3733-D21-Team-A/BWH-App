@@ -187,10 +187,9 @@
             </HBox>
             <Group>
                <children>
-                  <JFXTabPane fx:id="tabPaneTreeView" />
-                  <JFXTreeTableView fx:id="treeTable" prefHeight="400.0" prefWidth="230.0" />
-                  <Group fx:id="textDirectionsGroup">
+                  <Group>
                      <children>
+                        <JFXTreeTableView fx:id="treeTable" prefHeight="400.0" prefWidth="230.0" />
                         <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="371.0" prefWidth="231.0">
                            <children>
                               <ScrollPane prefHeight="429.0" prefWidth="227.0">

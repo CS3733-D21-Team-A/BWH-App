@@ -36,7 +36,6 @@ public class Navigation extends GenericMap {
     @FXML private VBox stepByStep;
     @FXML private VBox listDirVBox;
     @FXML private VBox listOfDirections;
-    @FXML private TabPane tabPaneTreeView;
     @FXML private Group textDirectionsGroup;
     @FXML private TreeTableView<String> treeTable;
 
@@ -60,10 +59,6 @@ public class Navigation extends GenericMap {
         MenuItem item1 = new MenuItem(("Add Stop"));
         MenuItem item2 = new MenuItem(("Add to Favorites"));
 
-        Tab textDir = new Tab("Text Directions", textDirectionsGroup);
-        Tab viewLocations = new Tab("Treeview", treeTable);
-
-        tabPaneTreeView.getTabs().addAll(textDir, viewLocations);
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
         TreeItem<String> stai = new TreeItem<>("Stairs");
@@ -134,7 +129,8 @@ public class Navigation extends GenericMap {
 
         stepByStep.setVisible(false);
         listDirVBox.setVisible(false);
-        listDirVBox.toFront();
+        treeTable.setVisible(true);
+        treeTable.toFront();
 
 
 
@@ -190,7 +186,11 @@ public class Navigation extends GenericMap {
             startLocation.getSelectionModel().clearSelection();
             destination.getSelectionModel().clearSelection();
         }
+
+
         listDirVBox.setVisible(false);
+        treeTable.setVisible(true);
+        treeTable.toFront();
     }
 
 
@@ -271,11 +271,12 @@ public class Navigation extends GenericMap {
     }
 
     /**
-     * Cancels the current set of text directions
+     * Cancels the current set of step-by-step text directions
      */
     public void cancelDir() throws SQLException {
         stepByStep.setVisible(false);
         listDirVBox.setVisible(true);
+        treeTable.setVisible(false);
         listDirVBox.toFront();
 
         startLocation.setDisable(false);
@@ -292,6 +293,7 @@ public class Navigation extends GenericMap {
     public void startDir() throws SQLException{
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
+        treeTable.setVisible(false);
         stepByStep.toFront();
 
         startLocation.setDisable(true);
