@@ -3,12 +3,14 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,6 +36,9 @@ public class Navigation extends GenericMap {
     @FXML private VBox stepByStep;
     @FXML private VBox listDirVBox;
     @FXML private VBox listOfDirections;
+    @FXML private TabPane tabPaneTreeView;
+    @FXML private Group textDirectionsGroup;
+    @FXML private TreeTableView<String> treeTable;
 
     ObservableList<String> options = FXCollections.observableArrayList();
     private int firstNodeSelect = 0;
@@ -51,11 +56,77 @@ public class Navigation extends GenericMap {
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
+
+        MenuItem item1 = new MenuItem(("Add Stop"));
+        MenuItem item2 = new MenuItem(("Add to Favorites"));
+
+        Tab textDir = new Tab("Text Directions", textDirectionsGroup);
+        Tab viewLocations = new Tab("Treeview", treeTable);
+
+        tabPaneTreeView.getTabs().addAll(textDir, viewLocations);
+        TreeItem<String> park = new TreeItem<>("Parking Spots");
+        TreeItem<String> rest = new TreeItem<>("Restrooms");
+        TreeItem<String> stai = new TreeItem<>("Stairs");
+        TreeItem<String> dept = new TreeItem<>("Departments");
+        TreeItem<String> labs = new TreeItem<>("Laboratory");
+        TreeItem<String> info = new TreeItem<>("Help Desks");
+        TreeItem<String> conf = new TreeItem<>("Confrence Halls");
+        TreeItem<String> exit = new TreeItem<>("Exits");
+        TreeItem<String> retl = new TreeItem<>("RETL?");
+        TreeItem<String> serv = new TreeItem<>("Serv");
+
         for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
             if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
                 options.add(node.get("LONGNAME"));
+                String nodeType = node.get("NODETYPE");
+                String longName = node.get("LONGNAME");
+                switch (nodeType){
+                    case "PARK":
+                        park.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "REST":
+                        rest.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "STAI":
+                        stai.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "DEPT":
+                        dept.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "LABS":
+                        labs.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "INFO":
+                        info.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "CONF":
+                        conf.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "EXIT":
+                        exit.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "RETL":
+                        retl.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "SERV":
+                        serv.getChildren().add(new TreeItem<>(longName));
+                        break;
+                }
             }
         }
+        TreeItem<String> root = new TreeItem<>("Hello");
+        root.setExpanded(true);
+        root.getChildren().addAll(park, rest, stai, dept, labs, info, conf, exit, retl, serv);
+
+        TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
+        treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue()));
+
+        treeTableColumn1.setPrefWidth(230);
+        treeTable.setRoot(root);
+        treeTable.setShowRoot(false);
+        treeTable.getColumns().add(treeTableColumn1);
+
         startLocation.setItems(options);
         destination.setItems(options);
 
@@ -65,8 +136,6 @@ public class Navigation extends GenericMap {
         listDirVBox.setVisible(false);
         listDirVBox.toFront();
 
-        MenuItem item1 = new MenuItem(("Add Stop"));
-        MenuItem item2 = new MenuItem(("Add to Favorites"));
 
 
         item1.setOnAction((ActionEvent e)->{
@@ -82,6 +151,7 @@ public class Navigation extends GenericMap {
         });
         contextMenu.getItems().clear();
         contextMenu.getItems().addAll(item1,item2);
+
 
 //        mapImage.setOnContextMenuRequested(new EventHandler() {
 //            @Override

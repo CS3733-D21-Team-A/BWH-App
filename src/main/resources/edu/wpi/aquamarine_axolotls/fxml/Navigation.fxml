@@ -2,9 +2,10 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -17,12 +18,12 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.Pane?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
    <top>
       <VBox prefHeight="148.0" prefWidth="1290.0" BorderPane.alignment="CENTER">
@@ -94,7 +95,7 @@
                         <Group>
                            <children>
                               <ImageView fx:id="mapImage" fitHeight="709.0" fitWidth="1045.0" pickOnBounds="true" preserveRatio="true" />
-                              <Pane fx:id="mapView" onMouseClicked="#hideContextMenu" prefHeight="709.0" prefWidth="1045.0"  />
+                              <Pane fx:id="mapView" onMouseClicked="#hideContextMenu" prefHeight="709.0" prefWidth="1045.0" />
                            </children>
                         </Group>
                      </content>
@@ -186,81 +187,84 @@
             </HBox>
             <Group>
                <children>
-                  <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="371.0" prefWidth="231.0">
+                  <JFXTabPane fx:id="tabPaneTreeView" />
+                  <JFXTreeTableView fx:id="treeTable" prefHeight="400.0" prefWidth="230.0" />
+                  <Group fx:id="textDirectionsGroup">
                      <children>
-                        <ScrollPane prefHeight="429.0" prefWidth="227.0">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                           <VBox fx:id="listOfDirections" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="215.0" />
-                        </ScrollPane>
-                        <JFXButton fx:id="startDirButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#startDir" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #003da6;" text="Start Path" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                     </children>
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                  </VBox>
-                  <VBox fx:id="stepByStep" alignment="TOP_CENTER" prefHeight="391.0" prefWidth="233.0" style="-fx-background-color: c4c4c450;">
-                     <children>
-                        <HBox prefHeight="100.0" prefWidth="232.0" style="-fx-background-color: ffffff; -fx-border-radius: 10;">
+                        <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="371.0" prefWidth="231.0">
                            <children>
-                              <ImageView fx:id="arrow" fitHeight="69.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" />
-                              <Label fx:id="curDirection" text="turn left in 10529 miles" wrapText="true">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <HBox.margin>
+                              <ScrollPane prefHeight="429.0" prefWidth="227.0">
+                                 <VBox.margin>
                                     <Insets />
-                                 </HBox.margin>
-                              </Label>
+                                 </VBox.margin>
+                                 <VBox fx:id="listOfDirections" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="215.0" />
+                              </ScrollPane>
+                              <JFXButton fx:id="startDirButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#startDir" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #003da6;" text="Start Path" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
+                              </JFXButton>
                            </children>
-                           <VBox.margin>
-                              <Insets left="10.0" right="10.0" top="20.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets top="10.0" />
-                           </padding>
-                        </HBox>
-                        <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
+                        </VBox>
+                        <VBox fx:id="stepByStep" alignment="TOP_CENTER" prefHeight="391.0" prefWidth="233.0" style="-fx-background-color: c4c4c450;">
                            <children>
-                              <JFXButton fx:id="regressButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#regress" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: #003da6 #003da6;" text="Back" textAlignment="CENTER" textFill="WHITE">
+                              <HBox prefHeight="100.0" prefWidth="232.0" style="-fx-background-color: ffffff; -fx-border-radius: 10;">
+                                 <children>
+                                    <ImageView fx:id="arrow" fitHeight="69.0" fitWidth="73.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Label fx:id="curDirection" text="turn left in 10529 miles" wrapText="true">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets left="10.0" right="10.0" top="20.0" />
+                                 </VBox.margin>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
+                                 <children>
+                                    <JFXButton fx:id="regressButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#regress" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: #003da6 #003da6;" text="Back" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </JFXButton>
+                                    <JFXButton fx:id="progressButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#progress" prefHeight="22.0" prefWidth="95.0" style="-fx-font-size: 14; -fx-background-color: #003da6;" text="Progress" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </JFXButton>
+                                 </children>
+                                 <padding>
+                                    <Insets top="20.0" />
+                                 </padding>
+                              </HBox>
+                              <JFXButton fx:id="backToListDir" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelDir" prefHeight="30.0" prefWidth="127.0" style="-fx-font-size: 14; -fx-background-color: #003da6;" text="List Directions" textAlignment="CENTER" textFill="WHITE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
-                              </JFXButton>
-                              <JFXButton fx:id="progressButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#progress" prefHeight="22.0" prefWidth="95.0" style="-fx-font-size: 14; -fx-background-color: #003da6;" text="Progress" textAlignment="CENTER" textFill="WHITE">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                                 <HBox.margin>
-                                    <Insets left="10.0" />
-                                 </HBox.margin>
+                                 <VBox.margin>
+                                    <Insets top="20.0" />
+                                 </VBox.margin>
                               </JFXButton>
                            </children>
                            <padding>
                               <Insets top="20.0" />
                            </padding>
-                        </HBox>
-                        <JFXButton fx:id="backToListDir" contentDisplay="CENTER" mnemonicParsing="false" onAction="#cancelDir" prefHeight="30.0" prefWidth="127.0" style="-fx-font-size: 14; -fx-background-color: #003da6;" text="List Directions" textAlignment="CENTER" textFill="WHITE">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </JFXButton>
+                        </VBox>
                      </children>
-                     <padding>
-                        <Insets top="20.0" />
-                     </padding>
-                  </VBox>
+                  </Group>
                </children>
             </Group>
          </children>
