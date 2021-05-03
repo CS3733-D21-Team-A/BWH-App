@@ -15,24 +15,29 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminNewUser extends GenericPage {
+public class AdminNewAccount extends GenericPage { //TODO: Make this extend CreateNewAccount instead of GenericPage
+        @FXML
+        private JFXTextField firstName;
 
+        @FXML
+        private JFXTextField lastName;
 
-        @FXML private JFXTextField firstName;
+        @FXML
+        private JFXTextField emailAddress;
 
-        @FXML private JFXTextField lastName;
+        @FXML
+        private JFXTextField userName;
 
-        @FXML private JFXTextField emailAddress;
+        @FXML
+        private JFXPasswordField password;
 
-        @FXML private JFXTextField userName;
+        @FXML
+        private JFXPasswordField confirmPassword;
 
-        @FXML private JFXPasswordField password;
+        @FXML
+        private JFXComboBox userType;
 
-        @FXML private JFXPasswordField confirmPassword;
-
-        @FXML private JFXComboBox userType;
-
-        DatabaseController db;
+        private DatabaseController db;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {

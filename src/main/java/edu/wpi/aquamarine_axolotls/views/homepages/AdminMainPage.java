@@ -7,12 +7,12 @@ import javafx.fxml.FXML;
 
 
 public class AdminMainPage extends EmployeeMainPage {
-
     @FXML
     public void nodeP(ActionEvent actionEvent) {
         sceneSwitch("NodeEditing");
     }
 
+    @FXML
     public void addUser(ActionEvent actionEvent) {
         sceneSwitch("AdminNewUser");
     }

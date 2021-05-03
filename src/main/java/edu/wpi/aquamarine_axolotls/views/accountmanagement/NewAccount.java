@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class CreateNewAccount extends GenericPage {
+public class NewAccount extends GenericPage {
 
     @FXML
     private JFXTextField firstName;
@@ -32,7 +32,7 @@ public class CreateNewAccount extends GenericPage {
     @FXML
     private JFXPasswordField confirmPassword;
 
-    DatabaseController db;
+    private DatabaseController db;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
@@ -92,16 +92,4 @@ public class CreateNewAccount extends GenericPage {
     public void goBack() {
         sceneSwitch("LogIn");
     }
-
-
-    public void goHome(javafx.event.ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/GuestMainPage.fxml"));
-            Aapp.getPrimaryStage().getScene().setRoot(root);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-
 }
