@@ -112,11 +112,11 @@
                      </GridPane.margin></JFXComboBox>
                      </children>
                   </GridPane>
-                      <JFXButton layoutX="13.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="61.0" prefWidth="54.0" text=" ">
+                      <JFXButton layoutX="13.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="61.0" prefWidth="54.0" text=" ">
                <graphic>
                   <ImageView fitHeight="44.0" fitWidth="35.0">
                      <image>
-                        <Image url="@../img/back%20icon.jpg" />
+                        <Image url="@../img/back icon.jpg" />
                      </image>
                   </ImageView>
                </graphic>
