@@ -350,7 +350,7 @@ public class Navigation extends GenericMap {
             l.setWrapText(true);
 
             HBox hbox = new HBox(10, arrowImage, l);
-            hbox.setAlignment(Pos.CENTER);
+            hbox.setAlignment(Pos.CENTER_LEFT);
 
             listOfDirections.getChildren().add(hbox);
         }
