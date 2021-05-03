@@ -53,7 +53,13 @@ public class GenericMap extends GenericPage {
     Map<String, String> currentNode;
 
     // Floor stuff
-    Map<String, String> floors;
+    static Map<String, String> floors = new HashMap<String,String>() {{
+        put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+        put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
+        put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+        put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+        put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
+    }};
     String FLOOR = "1";
     @FXML private Menu curFloor;
     
@@ -69,16 +75,6 @@ public class GenericMap extends GenericPage {
     public void startUp(){
         try {
             db = DatabaseController.getInstance();
-
-  /*
-            }*/
-
-            floors = new HashMap<>();                   // stores map images
-            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
-            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
-            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
-            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
-            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
 
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
@@ -295,7 +291,7 @@ public class GenericMap extends GenericPage {
 
 
     /**
-     * Draws two nodes as dots, and connects them with a l
+     * Draws two nodes as dots, and connects them with a line (ONLY DRAWS ON THE CURRENT FLOOR)
      * This version takes two maps of string to string
      * @param snode Node to start with
      * @param enode Node to end at

@@ -211,7 +211,7 @@
       </VBox>
    </left>
    <bottom>
-      <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="752.0" style="visibility: false;" BorderPane.alignment="CENTER">
+      <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="752.0" BorderPane.alignment="CENTER">
          <columns>
             <TableColumn fx:id="edgeIdCol" prefWidth="252.79995727539062" text="Edge ID" />
             <TableColumn fx:id="startNodeCol" minWidth="0.0" prefWidth="261.20001220703125" text="Start Node" />
