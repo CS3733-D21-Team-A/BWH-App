@@ -32,6 +32,7 @@ public class DatabaseControllerTest5 {
         user1.put("EMAIL", "Sean@gmail.com");
         user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
         user1.put("PASSWORD", "PasswordIsMyPassword");
+        user1.put("TAKENSURVEY", "NO");
 
         db.addUser(user1);
 
@@ -121,5 +122,29 @@ public class DatabaseControllerTest5 {
         assertThrows(SQLException.class, () -> {
             db.getSurvey("Banana1234");
         });
+    }
+
+    @Test
+    public void testHasTakenSurvey() throws SQLException
+    {
+        assertFalse(db.hasUserTakenCovidSurvey("Seansta18"));
+
+        Map<String, String> survey = new HashMap<>();
+        survey.put("USERNAME", "Seansta18");
+        survey.put("AREQUAR", "No");
+        survey.put("NAUSADIRRHEA", "No");
+        survey.put("SHORTBREATH", "Yes");
+        survey.put("HASCOUGH", "No");
+        survey.put("HASFEVER", "No");
+        survey.put("NEWCHILLS", "No");
+        survey.put("LOSSTASTESMELL", "No");
+        survey.put("SORETHROAT", "No");
+        survey.put("NASALCONGEST", "No");
+        survey.put("MORETIRED", "No");
+        survey.put("MUSCLEACHES", "Yes");
+
+        db.addSurvey(survey);
+
+        assertTrue(db.hasUserTakenCovidSurvey("Seansta18"));
     }
 }

@@ -92,7 +92,8 @@ final class DatabaseInfo {
 					//"USERTYPE ENUM('PATIENT', 'EMPLOYEE', "GUEST', 'ADMIN')
 					"PASSWORD VARCHAR(25) NOT NULL," +
 					"PRONOUNS VARCHAR(25)," +
-					"GENDER VARCHAR(50)"+
+					"GENDER VARCHAR(50),"+
+					"TAKENSURVEY VARCHAR(25) " +
 					")";
 
 	// ========== ATTRIBUTES STRINGS ==========
