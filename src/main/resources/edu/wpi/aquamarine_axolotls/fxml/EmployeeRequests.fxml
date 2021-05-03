@@ -2,12 +2,16 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -16,17 +20,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.EmployeeRequests">
-   <center>
-      <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0" BorderPane.alignment="CENTER">
-         <columns>
-            <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assigned" />
-            <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assignee" />
-            <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Status" />
-            <TableColumn fx:id="serviceRequestColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Service Name" />
-            <TableColumn fx:id="locationColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Location" />
-         </columns>
-      </TableView>
-   </center>
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="310.0" style="-fx-background-color: #F0F0F0;" BorderPane.alignment="TOP_LEFT">
          <children>
@@ -130,4 +123,59 @@
          </children>
       </VBox>
    </top>
+   <center>
+      <JFXTabPane BorderPane.alignment="CENTER">
+         <tabs>
+            <Tab fx:id="covidSurveys" text="COVID Surveys">
+               <graphic>
+                  <TableView fx:id="covidSurveyTable" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0">
+                     <columns>
+                        <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Name" />
+                        <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Fever" />
+                        <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Severe Cough" />
+                        <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Shortness of Breath" />
+                        <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Muscle Aches" />
+                        <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Tired" />
+                        <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Runny Nose/Nasal Congestion" />
+                        <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Sore Throat" />
+                        <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Nausea/Diarrhea" />
+                        <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Loss of Taste/Smell" />
+                        <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Chills" />
+                        <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
+                     </columns>
+                  </TableView>
+               </graphic>
+            </Tab>
+            <Tab fx:id="serviceRequests" text="Service Request">
+               <graphic>
+                  <TableView fx:id="srTable1" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0">
+                     <columns>
+                        <TableColumn fx:id="assignedColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assigned" />
+                        <TableColumn fx:id="assigneeColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assignee" />
+                        <TableColumn fx:id="statusColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Status" />
+                        <TableColumn fx:id="serviceRequestColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Service Name" />
+                        <TableColumn fx:id="locationColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Location" />
+                     </columns>
+                  </TableView>
+               </graphic>
+               <content>
+                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="Untitled Tab 1">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                      <Tab text="Untitled Tab 2">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                        </content>
+                      </Tab>
+                    </tabs>
+                  </TabPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </center>
 </BorderPane>
