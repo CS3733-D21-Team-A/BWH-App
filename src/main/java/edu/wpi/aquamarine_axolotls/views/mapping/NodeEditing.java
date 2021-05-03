@@ -331,29 +331,28 @@ public class NodeEditing extends GenericMap {
                 System.out.println ( secondY );
 
                 try {
-                    if( ( db.nodeExists(getNearestNode( firstX,firstY ).get("NODEID")))){
+                    if((getNearestNode( firstX,firstY )!=null)){
                      String Node = getNearestNode( firstX,firstY ).get("NODEID");
-                     System.out.println ( Node );
                      Map<String,String> newNode = new HashMap<String, String> (  );
                     int xint = (int) Math.floor(secondX / (mapImage.getFitWidth() / 5000));
                     int yint = (int) Math.floor(secondY / (mapImage.getFitHeight() / 3400));
                     newNode.put ( "XCOORD",String.valueOf ( xint ));
                     newNode.put("YCOORD", String.valueOf ( yint));
                     db.editNode ( Node, newNode );
-                    System.out.println("onDragDone1");
                     System.out.println ("You have edited " + Node + "to" + String.valueOf(xint) + String.valueOf(yint));
                     submissionlabel.setText("You have edited " + Node );
                     initialize ();
                 }
                     else{
-                        System.out.println ( "Rip no node sry" );
+                        System.out.println ( "There is no present node" );
                     }
                 } catch (SQLException throwables) {
                                 throwables.printStackTrace ( );
                         }
-
-
-                });}});}
+                });
+            }
+        });
+    }
 
 
 
