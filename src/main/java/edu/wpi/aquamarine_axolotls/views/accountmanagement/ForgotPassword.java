@@ -17,11 +17,11 @@ import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 public class ForgotPassword extends GenericPage {
-        @FXML private JFXButton backB;
         @FXML private JFXTextField username;
         @FXML private JFXTextField email;
         @FXML private JFXPasswordField password;
-        DatabaseController db;
+
+        private DatabaseController db;
 
         @FXML
         public void initialize() {
