@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
@@ -24,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
    <top>
       <VBox prefHeight="148.0" prefWidth="1290.0" BorderPane.alignment="CENTER">
          <children>
@@ -139,16 +137,40 @@
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="778.0" prefWidth="248.0" style="-fx-background-color: c4c4c450;" BorderPane.alignment="CENTER">
          <children>
-            <JFXComboBox fx:id="startLocation" prefHeight="50.0" prefWidth="236.0" promptText="Start location" style="-fx-font-size: 14; -fx-font-family: Times;">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="destination" prefHeight="50.0" prefWidth="236.0" promptText="Destination" style="-fx-font-size: 14; -fx-font-family: times;">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXComboBox>
+            <HBox prefHeight="36.0" prefWidth="227.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start:" wrappingWidth="50.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="startLabel">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" top="20.0" />
+               </padding>
+            </HBox>
+            <HBox prefHeight="36.0" prefWidth="227.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End:" wrappingWidth="50.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Label fx:id="endLabel">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets bottom="10.0" top="20.0" />
+               </padding>
+            </HBox>
             <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
                <children>
                   <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNav" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
