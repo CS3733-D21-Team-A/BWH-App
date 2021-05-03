@@ -9,12 +9,14 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
@@ -313,6 +315,7 @@ public class Navigation extends GenericMap {
         else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
         else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
         else if (direction.contains("Turn around")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+        else if (direction.contains("You have arrived at your destination.")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
         else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
 
         arrow.setImage(arrowImg);
@@ -325,9 +328,31 @@ public class Navigation extends GenericMap {
         cancelDir();
         listOfDirections.getChildren().clear();
         for (int i = 0; i < currPathDir.get(0).size(); i++) {
-            Label l = new Label(currPathDir.get(0).get(i));
+
+            ImageView arrowImage = new ImageView();     //fitHeight="69.0" fitWidth="73.0"
+            Image img;
+            String direction = currPathDir.get(0).get(i);
+
+            arrowImage.setFitWidth(50.0);
+            arrowImage.setFitHeight(50.0);
+
+            if (direction.contains("left")) img = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+            else if (direction.contains("right")) img = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
+            else if (direction.contains("elevator")) img = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
+            else if (direction.contains("stairs")) img = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
+            else if (direction.contains("Turn around")) img = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+            else if (direction.contains("You have arrived at your destination.")) img = new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
+            else img = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
+
+            arrowImage.setImage(img);
+
+            Label l = new Label(direction);
             l.setWrapText(true);
-            listOfDirections.getChildren().add(l);
+
+            HBox hbox = new HBox(10, arrowImage, l);
+            hbox.setAlignment(Pos.CENTER);
+
+            listOfDirections.getChildren().add(hbox);
         }
     }
 
