@@ -54,57 +54,57 @@ public class CovidSurvey extends GenericServiceRequest {
     @FXML
     public void initialize() {
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "AREQUAR",
                 yes1,
                 (a) -> Boolean.toString(yes1.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "NAUSADIRRHEA",
                 yes2,
                 (a) -> Boolean.toString(yes2.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "SHORTBREATH",
                 yes3,
                 (a) -> Boolean.toString(yes3.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "HASCOUGH",
                 yes4,
                 (a) -> Boolean.toString(yes4.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "HASFEVER",
                 yes5,
                 (a) -> Boolean.toString(yes5.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "NEWCHILLS",
                 yes6,
                 (a) -> Boolean.toString(yes6.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "LOSSTASTESMELL",
                 yes7,
                 (a) -> Boolean.toString(yes7.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "SORETHROAT",
                 yes8,
                 (a) -> Boolean.toString(yes8.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "NASALCONGEST",
                 yes9,
                 (a) -> Boolean.toString(yes9.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "MORETIRED",
                 yes10,
                 (a) -> Boolean.toString(yes10.isSelected()),
                 (a) -> true));
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "DELIVERYTIME",
+                "MUSCLEACHES",
                 yes11,
                 (a) -> Boolean.toString(yes11.isSelected()),
                 (a) -> true));
