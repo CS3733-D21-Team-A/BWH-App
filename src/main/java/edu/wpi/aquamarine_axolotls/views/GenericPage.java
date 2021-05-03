@@ -28,8 +28,6 @@ public class GenericPage {
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + target + ".fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
             currentPage = target;
-
-            System.out.println(previousPages.toString());
         } catch (IOException ex) {
             ex.printStackTrace();
         }
