@@ -340,7 +340,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         double angleOut = absAngleEdge(path.get(nodeIndex), path.get(nodeIndex+1));
         double turnAngle = angleOut - angleIn;
 
-        return (node.getNodeType().equals("HALL") || node.getNodeType().equals("WALK")) &&
+        return (path.get(nodeIndex).getFloor().equals(path.get(nodeIndex+1).getFloor())) &&
                 (Math.abs(turnAngle) < 10);
     }
 

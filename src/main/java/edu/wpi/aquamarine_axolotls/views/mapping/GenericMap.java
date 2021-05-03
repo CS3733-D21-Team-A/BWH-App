@@ -94,11 +94,11 @@ public class GenericMap extends GenericPage {
 
             curFloor = new Menu();
 
-            directionArrow = new Polygon();
-            directionArrow.setFill(Color.BLUE);
-            directionArrow.setStroke(Color.BLUE);
-            directionArrow.setVisible(false);
-            mapView.getChildren().add(directionArrow);
+//            directionArrow = new Polygon();
+//            directionArrow.setFill(Color.BLUE);
+//            directionArrow.setStroke(Color.BLUE);
+//            directionArrow.setVisible(false);
+//            mapView.getChildren().add(directionArrow);
 
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
@@ -322,6 +322,8 @@ public class GenericMap extends GenericPage {
     }
 
     void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
+//        double scaledX = xScale((int)centerX);
+//        double scaledY = xScale((int)centerY);
         drawArrow(centerX, centerY, floor, floor, rotationAngle);
     }
 
@@ -380,6 +382,12 @@ public class GenericMap extends GenericPage {
 
         Polygon floorChangeArrow = new Polygon();
 
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
+        directionArrow = new Polygon();
+        directionArrow.setFill(Color.BLUE);
+        directionArrow.setStroke(Color.BLUE);
+        directionArrow.setVisible(false);
+
         Double points[] = new Double[6];
         points[0] = centerX;
         points[2] = centerX + 7 * Math.sqrt(2.0) / 2.0;
@@ -411,11 +419,11 @@ public class GenericMap extends GenericPage {
             }
             mapView.getChildren().add(floorChangeArrow);
         } else /*if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor))*/{
-            mapView.getChildren().remove(directionArrow);
+
             directionArrow.getPoints().removeAll();
             directionArrow.getPoints().addAll(points);
-//            directionArrow.setScaleX(5.0/7.0);
-//            directionArrow.setScaleY(5.0/7.0);
+            directionArrow.setScaleX(5.0/7.0);
+            directionArrow.setScaleY(5.0/7.0);
             directionArrow.setRotate(rotationAngle);
             directionArrow.setVisible(true);
             mapView.getChildren().add(directionArrow);
@@ -488,6 +496,10 @@ public class GenericMap extends GenericPage {
         dist = Math.sqrt(dist);
 
         return dist;
+    }
+
+    void removeDirectionArrow(){
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
     }
 
     //private double get

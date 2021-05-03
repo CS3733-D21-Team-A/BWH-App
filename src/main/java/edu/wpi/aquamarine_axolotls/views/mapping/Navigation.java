@@ -354,37 +354,41 @@ public class Navigation extends GenericMap {
             double centerX = (X1 + X2) / 2.0;
             double centerY = (Y1 + Y2) / 2.0;
 
-            // Convert to math domain.
-            Y1 *= -1;
-            Y2 *= -1;
-
-            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI;
+            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
 
             if(start.get("FLOOR").equals(end.get("FLOOR"))){
-                drawArrow(centerX, centerY, start.get("FLOOR"), rotationAngle);
+                drawArrow(centerX, centerY + 1, start.get("FLOOR"), rotationAngle);
+            } else {
+                removeDirectionArrow();
             }
 
         } else {
             Map<String, String> node = db.getNode(curNode);
             drawSingleNode(node, Color.RED);
+            if (dirIndex == currPathDir.get(1).size() - 1){
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+
+                drawArrow(X1, Y1, node.get("FLOOR"), 0);
+            }
             if (dirIndex != currPathDir.get(1).size() - 1){
                 String nextNodes = currPathDir.get(1).get(dirIndex + 1);
                 String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
                 Map<String, String> nextNode = db.getNode(nextNodeID);
 
-                double X1 = Double.parseDouble(node.get("XCOORD"));
-                double Y1 = Double.parseDouble(node.get("YCOORD"));
-                double X2 = Double.parseDouble(nextNode.get("XCOORD"));
-                double Y2 = Double.parseDouble(nextNode.get("YCOORD"));
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+                double X2 = xScale(Integer.parseInt(nextNode.get("XCOORD")));
+                double Y2 = yScale(Integer.parseInt(nextNode.get("YCOORD")));
 
-                // Convert to math domain.
-                Y1 *= -1;
-                Y2 *= -1;
 
-                double rotationAngle = Math.atan2(Y2-Y1, X2-X1);
-                double nodeX = Double.parseDouble(node.get("XCOORD"));
-                double nodeY = Double.parseDouble(node.get("YCOORD"));
-                drawArrow(nodeX, nodeY, node.get("FLOOR"), rotationAngle);
+                double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+                if(node.get("FLOOR").equals(nextNode.get("FLOOR"))){
+                    drawArrow(X1, Y1, node.get("FLOOR"), rotationAngle);
+                }else {
+                    removeDirectionArrow();
+                }
             }
         }
     }
