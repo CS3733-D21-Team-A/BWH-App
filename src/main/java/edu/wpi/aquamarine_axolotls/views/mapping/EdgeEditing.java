@@ -207,6 +207,8 @@ public class EdgeEditing extends GenericMap {
 
     public void changeFloor(String floor) throws SQLException{
         super.changeFloor(floor);
+        selectedNodesList.clear();
+        contextMenu.getItems().get(0).setVisible(true);
         for (Map<String, String> edge : db.getEdges()) {
             drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")),Color.BLUE , Color.BLUE , Color.BLACK);
         }
