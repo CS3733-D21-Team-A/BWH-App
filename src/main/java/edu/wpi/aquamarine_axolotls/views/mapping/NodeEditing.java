@@ -403,11 +403,11 @@ public class NodeEditing extends GenericMap {
         state = "edit";
     }
 
+    @Override
     public void changeFloor(String floor) throws SQLException{
         ObservableList<MenuItem> items = contextMenu.getItems();
         items.get(items.size()-1).fire(); // targets deselect
-        drawFloor(floor);
-        drawNodes(Color.BLUE);
+        super.changeFloor(floor);
     }
 
     /**

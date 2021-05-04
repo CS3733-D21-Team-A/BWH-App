@@ -88,8 +88,4 @@ public class NewAccount extends GenericPage {
         sceneSwitch("LogIn");
 
     }
-
-    public void goBack() {
-        sceneSwitch("LogIn");
-    }
 }

@@ -53,7 +53,13 @@ public class GenericMap extends GenericPage {
     Map<String, String> currentNode;
 
     // Floor stuff
-    Map<String, String> floors;
+    static Map<String, String> floors = new HashMap<String,String>() {{
+        put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+        put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
+        put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+        put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+        put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
+    }};
     String FLOOR = "1";
     @FXML private Menu curFloor;
 
@@ -71,16 +77,6 @@ public class GenericMap extends GenericPage {
     public void startUp(){
         try {
             db = DatabaseController.getInstance();
-
-  /*
-            }*/
-
-            floors = new HashMap<>();                   // stores map images
-            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
-            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
-            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
-            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
-            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
 
             mapScrollPane.pannableProperty().set(true);
             Group contentGroup = new Group();
@@ -264,7 +260,46 @@ public class GenericMap extends GenericPage {
     }
 
     /**
-     * Draws two nodes as dots, and connects them with a l
+     * Draws a single node as a colored dot
+     * This version takes a map of string to string
+     * @param node the node to be drawn
+     * @param color the color to fill the node
+     */
+    public void drawSingleNodeHighLight(Map<String, String> node, Color color) { drawSingleNodeHighLight(xScale(Integer.parseInt(node.get("XCOORD"))), yScale(Integer.parseInt(node.get("YCOORD"))), color); }
+
+
+    /**
+     * Draws a single node as a colored dot
+     * This version takes a node
+     * @param node the node to be drawn
+     * @param color the color to fill the node
+     */
+    public void drawSingleNodeHighLight(Node node, Color color) { drawSingleNodeHighLight(xScale(node.getXcoord()), yScale(node.getYcoord()), color); }
+
+
+    /**
+     * Draws a single circle of radius 3 at the given x and y coordinates
+     * @param x x coord
+     * @param y y coord
+     * @param color color to fill the cicle
+     */
+    private void drawSingleNodeHighLight(double x, double y, Color color){
+        double radius = 6;
+        x = x - (radius / 2);
+        y = y - (radius / 2);
+
+        Circle c = new Circle();
+        c.setCenterX(x);
+        c.setCenterY(y);
+        c.setRadius(radius);
+        c.setFill(color);
+        mapView.getChildren().add(c);
+    }
+
+
+
+    /**
+     * Draws two nodes as dots, and connects them with a line (ONLY DRAWS ON THE CURRENT FLOOR)
      * This version takes two maps of string to string
      * @param snode Node to start with
      * @param enode Node to end at

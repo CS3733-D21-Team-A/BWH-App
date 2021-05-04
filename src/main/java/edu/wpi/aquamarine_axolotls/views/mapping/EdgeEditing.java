@@ -61,15 +61,13 @@ public class EdgeEditing extends GenericMap {
     private JFXButton submissionButton;
 
     @FXML
-    private TableView table;
+    private TableView table; //TODO: figure out why table isn't working
     @FXML
     private TableColumn edgeIdCol;
     @FXML
     private TableColumn startNodeCol;
     @FXML
     private TableColumn endNodeCol;
-
-    List<Edge> validEdges = new ArrayList<>();
 
     String state = "";
 
@@ -98,7 +96,7 @@ public class EdgeEditing extends GenericMap {
 
         String algo = SearchAlgorithmContext.getSearchAlgorithmContext().context.toString();
 
-        if (algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0);
+        if (algo.contains("AStar")) algoSelectBox.getSelectionModel().select(0); //TODO: SWITCH CASE
         else if (algo.contains("Dijkstra")) algoSelectBox.getSelectionModel().select(1);
         else if (algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
         else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
@@ -135,7 +133,6 @@ public class EdgeEditing extends GenericMap {
                         edge.get("ENDNODE"));
 
                 table.getItems().add(cur);
-                validEdges.add(cur);
                 drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")),Color.BLUE , Color.BLUE , Color.BLACK);
             }
             for (Map<String, String> node : nodes) nodeOptions.add(node.get("NODEID"));
@@ -143,102 +140,17 @@ public class EdgeEditing extends GenericMap {
             startNodeDropdown.setItems(nodeOptions);
             endNodeDropdown.setItems(nodeOptions);
             edgeDropdown.setItems(edgeOptions);
-            floors = new HashMap<>();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
-
-//        table.setEditable(false);
-//        table.getItems().clear();
-//
-//        ObservableList<String> edgeOptions = FXCollections.observableArrayList();               // making dropdown options
-//        ObservableList<String> nodeOptions = FXCollections.observableArrayList();
-//        submissionlabel.setVisible(true);
-//        anchor.setVisible(false);
-//        //groundFloor.setVisible(true);
-//        //floor1.setVisible(false);
-//
-//        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("edgeID"));         // setting data to table
-//        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("startNode"));
-//        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge,String>("endNode"));
-//
-//        edgeDropdown.setVisible(false);         //making fields invisible
-//        edgeIDtextbox.setVisible(false);
-//        startNodeDropdown.setVisible(false);
-//        endNodeDropdown.setVisible(false);
-//
-//        try {
-//            db = new DatabaseController();
-//            csvHandler = new CSVHandler(db);
-//            List<Map<String, String>> edges = db.getEdges();
-//            List<Map<String, String>> nodes = db.getNodes();
-//            for (Map<String, String> edge : edges) {
-//                edgeOptions.add(edge.get("EDGEID"));    //getting edge options
-//                table.getItems().add(new Edge(edge.get("EDGEID"), edge.get("STARTNODE"), edge.get("ENDNODE")));
-//            }
-//            for (Map<String, String> node : nodes) {
-//                nodeOptions.add(node.get("NODEID"));
-//            }
-//            edgeDropdown.setItems(edgeOptions);
-//            startNodeDropdown.setItems(nodeOptions);
-//            endNodeDropdown.setItems(nodeOptions);
-//            changeFloorNodes();
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
     }
 
-
-/*    private void drawSingleEdge(Edge edge) {
-        Line line = new Line();
-        try {
-            Map<String, String> startNode = db.getNode(edge.getStartNode());
-            Map<String, String> endNode = db.getNode(edge.getEndNode());
-            if(startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){// TODO: set up triangle floor thing
-                line.setStartX(Integer.parseInt(startNode.get("XCOORD")));
-                line.setStartY(Integer.parseInt(startNode.get("YCOORD")));
-                line.setEndX(Integer.parseInt(endNode.get("XCOORD")));
-                line.setEndY(Integer.parseInt(endNode.get("YCOORD")));
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
+    public void changeFloor(String floor) throws SQLException{
+        super.changeFloor(floor);
+        for (Map<String, String> edge : db.getEdges()) {
+            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")),Color.BLUE , Color.BLUE , Color.BLACK);
         }
-        line.setStroke(Color.RED);
-    }*/
-
-/*    private void drawSingleEdge(Map<String, String> edge) {
-        Line line = new Line();
-        try {
-            Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
-            Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
-            if(startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){// TODO: set up triangle floor thing
-                GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-                gc.strokeLine(xScale(Integer.parseInt(startNode.get("XCOORD"))), yScale(Integer.parseInt(startNode.get("YCOORD"))),
-                        xScale(Integer.parseInt(endNode.get("XCOORD"))), yScale(Integer.parseInt(endNode.get("YCOORD"))));
-                drawSingleNode(startNode);
-                drawSingleNode(endNode);
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        line.setStroke(Color.RED);
-    }*/
-/*
-    public void drawSingleNode(Map<String, String> node) {
-        double x = xScale(Integer.parseInt(node.get("XCOORD")));
-        double y = yScale(Integer.parseInt(node.get("YCOORD")));
-        double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillOval(x, y, radius, radius);
-    }*/
+    }
 
     /**
      * Button press that sets unused fields to be hidden, and needed fields to be visible. Also sets
@@ -307,7 +219,7 @@ public class EdgeEditing extends GenericMap {
      * Changes the algorithm that will be used for navigation.
      */
     public void selectAlgorithm() {
-        if (algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null) {
+        if (algoSelectBox.getSelectionModel() != null && algoSelectBox.getSelectionModel() != null) { //TODO: switch case
             if (algoSelectBox.getSelectionModel().getSelectedItem().equals("A Star")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
             } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Dijkstra")) {
