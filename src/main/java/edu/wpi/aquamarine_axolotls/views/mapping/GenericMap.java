@@ -228,7 +228,9 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color); }
+    public void drawSingleNode(Map<String, String> node, Color color) {
+        drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color);
+    }
 
 
 
@@ -251,6 +253,8 @@ public class GenericMap extends GenericPage {
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
+        c.setStroke(color);
+        c.setVisible(true);
 
         if(nodesOnImage.containsKey(nodeID)){
             Circle prev = nodesOnImage.get(nodeID);
@@ -288,8 +292,8 @@ public class GenericMap extends GenericPage {
      */
     private void drawSingleNodeHighLight(double x, double y, Color color){
         double radius = 6;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
+        //x = x - (radius / 2);
+        //y = y - (radius / 2);
 
         Circle c = new Circle();
         c.setCenterX(x);
@@ -314,9 +318,11 @@ public class GenericMap extends GenericPage {
         if (snode.get("FLOOR").equals(FLOOR) && enode.get("FLOOR").equals(FLOOR)){
             double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
             double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            String startID = snode.get("NODEID");
             double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
             double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
-            drawTwoNodesWithEdge(startX, startY, endX, endY, snodeCol, enodeCol, edgeCol);
+            String endID = enode.get("NODEID");
+            drawTwoNodesWithEdge(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
         }
     }
 
@@ -335,7 +341,9 @@ public class GenericMap extends GenericPage {
             double startY = yScale(snode.getYcoord());
             double endX = xScale(enode.getXcoord());
             double endY = yScale(enode.getYcoord());
-            drawTwoNodesWithEdge(startX, startY, endX, endY, snodeCol, enodeCol, edgeCol);
+            String startID = snode.getNodeID();
+            String endID = enode.getNodeID();
+            drawTwoNodesWithEdge(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
         }
     }
 
@@ -345,7 +353,7 @@ public class GenericMap extends GenericPage {
      * @param enodeCol Color of the end node
      * @param edgeCol Color of the edge
      */
-    private void drawTwoNodesWithEdge(double startX, double startY, double endX, double endY, Color snodeCol, Color enodeCol, Color edgeCol) {
+    private void drawTwoNodesWithEdge(double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
 
         Line l = new Line();
         l.setStartX(startX);
@@ -355,8 +363,8 @@ public class GenericMap extends GenericPage {
         l.setStroke(edgeCol);
         mapView.getChildren().add(l);
 
-        //drawSingleNode(startX, startY, snodeCol); //TODO: update to have node IDs
-        //drawSingleNode(endX, endY, enodeCol);
+        drawSingleNode(startX, startY, startID, snodeCol);
+        drawSingleNode(endX, endY, endID, enodeCol);
     }
 
     void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
