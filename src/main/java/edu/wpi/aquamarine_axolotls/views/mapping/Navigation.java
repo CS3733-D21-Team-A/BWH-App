@@ -62,9 +62,6 @@ public class Navigation extends GenericMap {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
-        MenuItem item1 = new MenuItem(("Add Stop"));
-        MenuItem item2 = new MenuItem(("Add to Favorites"));
-
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
         TreeItem<String> stai = new TreeItem<>("Stairs");
@@ -225,10 +222,8 @@ public class Navigation extends GenericMap {
         startLabel.setText("");
         endLabel.setText("");
         drawNodesAndFloor(FLOOR, Color.BLUE);
-        if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
-            startLocation.getSelectionModel().clearSelection();
-            destination.getSelectionModel().clearSelection();
-        }
+        startLabel.setText("");
+        endLabel.setText("");
 
         listDirVBox.setVisible(false);
         treeTable.setVisible(true);
@@ -245,7 +240,7 @@ public class Navigation extends GenericMap {
         intermediatePoints.clear();
 
         activePath = 0;
-        if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
+        if (startLabel.getText().equals("") || endLabel.getText().equals("")) {
             return;
         }
         String start = startLocation.getSelectionModel().getSelectedItem().toString();
