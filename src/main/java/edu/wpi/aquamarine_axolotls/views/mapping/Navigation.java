@@ -403,6 +403,10 @@ public class Navigation extends GenericMap {
         }
     }
 
+/*    public void extractValue(){
+
+    }*/
+
     /**
      * Highlights the current portion of the map that the current direction is on
      */
@@ -453,7 +457,7 @@ public class Navigation extends GenericMap {
 
                 drawArrow(X1, Y1, node.get("FLOOR"), 0);
             }
-            if (dirIndex != currPathDir.get(1).size() - 1){
+            else {
                 String nextNodes = currPathDir.get(1).get(dirIndex + 1);
                 String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
                 Map<String, String> nextNode = db.getNode(nextNodeID);
@@ -462,8 +466,6 @@ public class Navigation extends GenericMap {
                 double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
                 double X2 = xScale(Integer.parseInt(nextNode.get("XCOORD")));
                 double Y2 = yScale(Integer.parseInt(nextNode.get("YCOORD")));
-
-
                 double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
 
                 if(node.get("FLOOR").equals(nextNode.get("FLOOR"))){
@@ -486,6 +488,10 @@ public class Navigation extends GenericMap {
             Map<String, String> end = db.getNode(curNode.substring(index+1));
             drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
         }
+        else{
+            if(dirIndex != 0) drawSingleNode(db.getNode(curNode), Color.BLUE);
+        }
+
     }
 
     /**
