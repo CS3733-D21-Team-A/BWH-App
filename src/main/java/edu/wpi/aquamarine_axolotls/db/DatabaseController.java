@@ -760,7 +760,7 @@ public class DatabaseController implements AutoCloseable {
 		Map<String, String> takenValues = new HashMap<>();
 		takenValues.put("USERID", username);
 		takenValues.put("LOCATIONID", locationID);
-		takenValues.put("NODE_NAME", nodeName);
+		takenValues.put("NODENAME", nodeName);
 		try {
 			favoriteNodesTable.addEntry(takenValues);
 			return getFAVID(username,nodeName);
