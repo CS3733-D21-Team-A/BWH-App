@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EmployeeRequests extends GenericPage {
+public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
     @FXML private TableView<Request> srTable;
     @FXML private TableColumn<Request, String> assignedColumn;
@@ -39,7 +40,7 @@ public class EmployeeRequests extends GenericPage {
     @FXML
     public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
         try {
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
 
             if(Aapp.userType.equals("Patient")){ // only display their service requests
                 assignB.setVisible(false);
@@ -79,7 +80,7 @@ public class EmployeeRequests extends GenericPage {
             locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
 
             refresh();
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
 
@@ -120,11 +121,11 @@ public class EmployeeRequests extends GenericPage {
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
 
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
             refresh();
             db.close();
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -136,12 +137,12 @@ public class EmployeeRequests extends GenericPage {
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
 
-            db = new DatabaseController();
+            db = DatabaseController.getInstance();
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
             db.close();
-        } catch (SQLException | IOException | URISyntaxException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

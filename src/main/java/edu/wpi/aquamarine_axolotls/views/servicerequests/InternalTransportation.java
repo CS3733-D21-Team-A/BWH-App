@@ -1,14 +1,9 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.db.SERVICEREQUEST;
-import edu.wpi.aquamarine_axolotls.views.servicerequests.GenericServiceRequest;
-import javafx.event.ActionEvent;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
 
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 

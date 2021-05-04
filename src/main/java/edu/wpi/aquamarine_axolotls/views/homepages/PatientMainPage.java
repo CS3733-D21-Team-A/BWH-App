@@ -11,6 +11,7 @@ public class PatientMainPage extends GuestMainPage{
         sceneSwitch("DefaultServicePage");
     }
 
+    @FXML
     public void signOutPage(){
         popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
         Aapp.username = null;

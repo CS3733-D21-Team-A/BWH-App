@@ -1,5 +1,8 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 

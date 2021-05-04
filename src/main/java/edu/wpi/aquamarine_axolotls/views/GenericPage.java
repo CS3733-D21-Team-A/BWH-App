@@ -14,29 +14,30 @@ import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.Stack;
 
 public class GenericPage {
 
-    String previousPage; // TODO: set previous page
+    static String currentPage = "GuestMainPage"; //TODO: This will need to change once we get persistent logins set up
+    static Stack<String> previousPages = new Stack<>();
 
     @FXML
     public void sceneSwitch(String target){
         try {
+            previousPages.push(currentPage);
             Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + target + ".fxml"));
             Aapp.getPrimaryStage().getScene().setRoot(root);
+            currentPage = target;
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
 
     @FXML
-    public void goBack(String currentPage){
-        //this should b done in initialize, is there a way to get the current pg we are on w/o passing it in
-        Aapp.prevPage = Aapp.currPage;
-        Aapp.currPage = currentPage;
-        sceneSwitch ( Aapp.prevPage);
-        // TODO: implement this
-
+    public void goBack(){
+        currentPage = previousPages.pop();
+        sceneSwitch(currentPage);
+        previousPages.pop(); //switching back adds the page we were just returning from, so we need to remove it
     }
     @FXML  //TODO: make this look better
     public void popUp(String title, String disp){
@@ -68,6 +69,7 @@ public class GenericPage {
                 sceneSwitch("GuestMainPage");
                 break;
         }
+        previousPages.clear(); //Need to clear the history when we go home
     }
 
     /*
