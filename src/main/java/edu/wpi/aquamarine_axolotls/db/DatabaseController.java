@@ -793,15 +793,13 @@ public class DatabaseController implements AutoCloseable {
 	 * @return map of the fav node values or null if it doesn't exist
 	 */
 	public Map<String,String> getFavoriteNodeForUser(String username,String nodeName) throws SQLException {
-		List<Map<String,String>> userFaves = favoriteNodesTable.getEntriesByValue("USERID",username);
-		if(!checkValidNodeName(username,nodeName)){
-			for(Map<String,String> entry:userFaves){
-				if(entry.get("NODENAME").equals(nodeName)){
-					return entry;
-				}
-			}
-		}
-		return null;
+		Map<String,List<String>> filters = new HashMap();
+		filters.put("USERID", Collections.singletonList(username));
+		filters.put("NODENAME", Collections.singletonList(nodeName));
+
+		List<Map<String,String>> userFaves = favoriteNodesTable.getEntriesByValues(filters);
+		if (userFaves.size() == 0) return null;
+		else return userFaves.get(0);
 	}
 
 	/**

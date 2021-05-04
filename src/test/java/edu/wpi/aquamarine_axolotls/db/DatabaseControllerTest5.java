@@ -268,7 +268,7 @@ public class DatabaseControllerTest5 {
             newFavList2.add(newFav4);
 
 
-            db.deleteFavoriteNodeFromUser("Alexa123","ParkingSpot");
+            db.deleteFavoriteNodeFromUser("Alexa123","Parking Spot");
             assertEquals(newFav,db.getFavoriteNodeForUser("Alexa123","Favorite Bathroom"));
             assertEquals(db.getFavoriteNodesForUser("Alexa123"),newFavList);
             assertEquals(db.getFavoriteNodeForUser("Seansta18", "Favorite Bathroom"),newFav3);
