@@ -127,8 +127,22 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             lossOfTasteSmellColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("lossOfTasteSmell"));
             chillsColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("chills"));
             quarantineColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("quarantine"));
-            quarantineColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("isCovidLikely"));
+            soreThroatColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("soreThroat"));
+            nauseaDiarrheaColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("nauseaDiarrhea"));
 
+//            this.username = survey.get("USERNAME");
+//            this.quarantine = survey.get("AREQUAR");
+//            this.fever = survey.get("HASFEVER");
+//            this.cough = survey.get("HASCOUGH");
+//            this.shortnessOfBreath = survey.get("SHORTBREATH");
+//            this.muscleAches = survey.get("MUSCLEACHES");
+//            this.tired = survey.get("MORETIRED");
+//            this.nasalCongestion = survey.get("NASALCONGEST");
+//            this.soreThroat = survey.get("SORETHROAT");
+//            this.nauseaDiarrhea = survey.get("NAUSEADIARRHEA");
+//            this.lossOfTasteSmell = survey.get("LOSSTASTESMELL");
+//            this.chills = survey.get("NEWCHILLS");
+// covid likely
             srVbox.setVisible(true);
             covidVbox.setVisible(false);
             srVbox.toFront();
@@ -164,11 +178,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 for(Map<String, String> req : serviceRequests){
                     srTable.getItems().add(new Request(req));
                 }
-
-                covSurveys = db.getSurveysByAuthor(Aapp.username);
-                for(Map<String, String> req : covSurveys){
-                    srTable.getItems().add(new Request(req));
-                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -187,12 +196,9 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             if(assignD.getSelectionModel() == null) return;
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
-
-            db = DatabaseController.getInstance();
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
             refresh();
-            db.close();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -204,7 +210,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
 
-            db = DatabaseController.getInstance();
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
@@ -220,7 +225,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
 
-            db = DatabaseController.getInstance();
             String status = covidStatus.getSelectionModel().getSelectedItem().toString();
 
             Map<String, String> isCovidLikely = new HashMap<>();
@@ -325,13 +329,21 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.lossOfTasteSmell = survey.get("LOSSTASTESMELL");
             this.chills = survey.get("NEWCHILLS");
             try {
-                this.isCovidLikely = db.getUserByUsername(survey.get("USER")).get("COVIDLIKELY");
+                this.isCovidLikely = db.getUserByUsername(survey.get("USERNAME")).get("COVIDLIKELY");
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
 
-        public String isFever() {
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getFever() {
             return fever;
         }
 
@@ -339,7 +351,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.fever = fever;
         }
 
-        public String isCough() {
+        public String getCough() {
             return cough;
         }
 
@@ -347,7 +359,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.cough = cough;
         }
 
-        public String isShortnessOfBreath() {
+        public String getShortnessOfBreath() {
             return shortnessOfBreath;
         }
 
@@ -355,7 +367,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.shortnessOfBreath = shortnessOfBreath;
         }
 
-        public String isMuscleAches() {
+        public String getMuscleAches() {
             return muscleAches;
         }
 
@@ -363,7 +375,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.muscleAches = muscleAches;
         }
 
-        public String isTired() {
+        public String getTired() {
             return tired;
         }
 
@@ -371,7 +383,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.tired = tired;
         }
 
-        public String isNasalCongestion() {
+        public String getNasalCongestion() {
             return nasalCongestion;
         }
 
@@ -379,7 +391,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.nasalCongestion = nasalCongestion;
         }
 
-        public String isSoreThroat() {
+        public String getSoreThroat() {
             return soreThroat;
         }
 
@@ -387,7 +399,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.soreThroat = soreThroat;
         }
 
-        public String isNauseaDiarrhea() {
+        public String getNauseaDiarrhea() {
             return nauseaDiarrhea;
         }
 
@@ -395,7 +407,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.nauseaDiarrhea = nauseaDiarrhea;
         }
 
-        public String isLossOfTasteSmell() {
+        public String getLossOfTasteSmell() {
             return lossOfTasteSmell;
         }
 
@@ -403,7 +415,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.lossOfTasteSmell = lossOfTasteSmell;
         }
 
-        public String isChills() {
+        public String getChills() {
             return chills;
         }
 
@@ -411,7 +423,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.chills = chills;
         }
 
-        public String isQuarantine() {
+        public String getQuarantine() {
             return quarantine;
         }
 
@@ -419,13 +431,14 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.quarantine = quarantine;
         }
 
-        public String isCovidLikely() {
+        public String getIsCovidLikely() {
             return isCovidLikely;
         }
 
         public void setIsCovidLikely(String isCovidLikely) {
             this.isCovidLikely = isCovidLikely;
         }
+
     }
 
 }

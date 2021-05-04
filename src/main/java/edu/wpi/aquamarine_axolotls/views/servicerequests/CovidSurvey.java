@@ -125,9 +125,9 @@ public class CovidSurvey extends GenericServiceRequest {
 
     @FXML //TODO: Submit to database
     public void submitButton() {
-        Map<String, String> survey = new HashMap<> ();
+        Map<String, String> survey = new HashMap<> (); // TODO: username is null for guests
         survey.put("AREQUAR", Boolean.toString(yes1.isSelected()));
-        survey.put("NAUSADIRRHEA", Boolean.toString(yes2.isSelected()));
+        survey.put("NAUSEADIARRHEA", Boolean.toString(yes2.isSelected()));
         survey.put("SHORTBREATH", Boolean.toString(yes3.isSelected()));
         survey.put("HASCOUGH", Boolean.toString(yes4.isSelected()));
         survey.put("HASFEVER", Boolean.toString(yes5.isSelected()));
