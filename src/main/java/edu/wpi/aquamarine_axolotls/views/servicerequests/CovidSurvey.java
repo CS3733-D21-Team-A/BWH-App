@@ -50,7 +50,6 @@ public class CovidSurvey extends GenericServiceRequest {
     private JFXCheckBox yes10;
     @FXML
     private JFXCheckBox yes11;
-    DatabaseController db;
 
     @FXML
     public void initialize() {
@@ -144,19 +143,25 @@ public class CovidSurvey extends GenericServiceRequest {
             if(Aapp.username!=null){
                 popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
                 survey.put("USERNAME", Aapp.username);
+
                 goHome();
                 try {
-                    db.addSurvey(survey);
-                    db.hasUserTakenCovidSurvey(Aapp.username);
+                        db.addSurvey ( survey );
+                        db.hasUserTakenCovidSurvey ( Aapp.username );
                 } catch (SQLException throwables) {
                     throwables.printStackTrace ( );
                 }
-            }
+                try {
+                    System.out.println ( db.getSurvey(Aapp.username) );
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+            }}
             else{
                 popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. You will now be brought to the Navigation Page");
                 sceneSwitch ( "Navigation" ); //if a guest submits a covid survey itll take them straight to navigation???, save an instance that says the guest has taken the survey
 
-            }
+
+        }
 
     }
 }
