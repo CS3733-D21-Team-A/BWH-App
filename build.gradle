@@ -23,6 +23,9 @@ repositories {
     maven {
         url 'https://apisite.crmyers.dev/maven'
     }
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 //This is where you declare your dependencies and their version.s
@@ -43,8 +46,19 @@ dependencies {
 
             'com.google.maps:google-maps-services:0.18.0',
 
-            'org.junit.jupiter:junit-jupiter:5.4.2'
+            'org.junit.jupiter:junit-jupiter:5.4.2',
+            group: 'com.google.cloud', name: 'google-cloud-texttospeech', version: '1.2.1',
+
+            files('app/libs/en_us.jar'),
+            files('app/libs/cmulex.jar'),
+            files('app/libs/freetts.jar'),
+            files('app/libs/cmu_us_kal.jar')
+
     )
+
+    compile fileTree(dir: 'app/libs', include: ['*.jar'])
+
+
 
 //These are test dependencies. These are only used for running verification tasks via Gradle.
     testCompile(

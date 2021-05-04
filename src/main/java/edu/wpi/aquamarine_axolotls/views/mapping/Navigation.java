@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
+import edu.wpi.aquamarine_axolotls.views.tts.VoiceController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ import javafx.scene.paint.Color;
 import javax.naming.Context;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Navigation extends GenericMap {
 
@@ -47,6 +49,7 @@ public class Navigation extends GenericMap {
     static int dirIndex = 0;
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
     private Map<String,String> endPoint;
+    private VoiceController voice = new VoiceController("kevin");
 
     @FXML
     public void initialize() throws SQLException {
@@ -234,7 +237,7 @@ public class Navigation extends GenericMap {
     /**
      * Starts the text directions once they're initialized
      */
-    public void startDir() throws SQLException{
+    public void startDir() throws SQLException {
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         stepByStep.toFront();
@@ -251,6 +254,7 @@ public class Navigation extends GenericMap {
         changeFloor(db.getNode(nodeID).get("FLOOR"));
         curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
         highlightDirection();
+        voice.say(voice.getTextOptimization(curDirection.getText()));
     }
 
     /**
@@ -268,13 +272,14 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
+            voice.say(voice.getTextOptimization(curDirection.getText()));
         }
     }
 
     /**
      * Moves back to the previous step in the text directions
      */
-    public void regress() throws SQLException{
+    public void regress() throws SQLException {
         if (dirIndex == 0){
             return;
         }else{
@@ -288,6 +293,7 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
+            voice.say(voice.getTextOptimization(curDirection.getText()));
         }
     }
 
