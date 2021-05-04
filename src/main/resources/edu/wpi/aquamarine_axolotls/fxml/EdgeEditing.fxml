@@ -101,7 +101,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                      <children>
-                        <JFXComboBox fx:id="startNodeDropdown" maxHeight="23.0" minHeight="15.0" prefHeight="23.0" prefWidth="166.0" promptText="Start Node" style="-fx-font-size: 12;" />
+                        <JFXComboBox fx:id="startNodeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#startNodeHighLight" prefHeight="23.0" prefWidth="166.0" promptText="Start Node" style="-fx-font-size: 12;" />
                      </children></HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="161.0" prefWidth="272.0" style="-fx-background-color: #003da6;">
                      <children>
@@ -179,7 +179,7 @@
                      <children>
                         <HBox fx:id="edgeD" alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" prefWidth="272.0">
                            <children>
-                              <JFXComboBox fx:id="edgeDropdown" maxHeight="23.0" minHeight="15.0" prefHeight="23.0" prefWidth="166.0" promptText="Edge Dropdown" style="-fx-font-size: 12;" />
+                              <JFXComboBox fx:id="edgeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#edgeEditHighLight" prefHeight="23.0" prefWidth="166.0" promptText="Edge Dropdown" style="-fx-font-size: 12;" />
                            </children>
                         </HBox>
                         <HBox fx:id="edgeT" alignment="TOP_CENTER" maxHeight="-Infinity" prefHeight="25.0" prefWidth="272.0">
@@ -191,7 +191,7 @@
                   </StackPane>
                   <HBox alignment="CENTER" prefHeight="102.0" prefWidth="272.0" GridPane.rowIndex="3">
                      <children>
-                        <JFXComboBox fx:id="endNodeDropdown" maxHeight="23.0" minHeight="15.0" prefHeight="23.0" prefWidth="164.0" promptText="End Node" style="-fx-font-size: 12;" />
+                        <JFXComboBox fx:id="endNodeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#endNodeHighLight" prefHeight="23.0" prefWidth="164.0" promptText="End Node" style="-fx-font-size: 12;" />
                      </children></HBox>
                </children>
             </GridPane>
