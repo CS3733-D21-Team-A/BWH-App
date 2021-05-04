@@ -243,14 +243,14 @@ public class Navigation extends GenericMap {
         if (startLabel.getText().equals("") || endLabel.getText().equals("")) {
             return;
         }
-        String start = startLocation.getSelectionModel().getSelectedItem().toString();
-        String end = destination.getSelectionModel().getSelectedItem().toString();
-        stopList.add(start);
-        stopList.add(end);
-        drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
-        findPathSingleSegment(start, end);
-        drawPath(FLOOR);
-        intermediatePoints.add(db.getNodesByValue("LONGNAME",end).get(0));
+//        String start = startLocation.getSelectionModel().getSelectedItem().toString();
+//        String end = destination.getSelectionModel().getSelectedItem().toString();
+//        stopList.add(start);
+//        stopList.add(end);
+//        drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
+//        findPathSingleSegment(start, end);
+//        drawPath(FLOOR);
+//        intermediatePoints.add(db.getNodesByValue("LONGNAME",end).get(0));
         //drawFloor(FLOOR); // do we need this?
     }
 
@@ -268,8 +268,8 @@ public class Navigation extends GenericMap {
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
-            drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
-            drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
+            if (currPath.get(0).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
+            if (currPath.get(currPath.size()- 1).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
         }
     }
     // draw floor that makes everything transparent
@@ -320,8 +320,8 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         listDirVBox.toFront();
 
-        startLocation.setDisable(false);
-        destination.setDisable(false);
+        //startLocation.setDisable(false);
+        //destination.setDisable(false);
         findPathButton.setDisable(false);
         cancelPath.setDisable(false);
 
@@ -337,8 +337,8 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         stepByStep.toFront();
 
-        startLocation.setDisable(true);
-        destination.setDisable(true);
+        //startLocation.setDisable(true);
+        //destination.setDisable(true);
         findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 
