@@ -124,7 +124,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             db = DatabaseController.getInstance();
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
             refresh();
-            db.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -141,7 +140,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
-            db.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
