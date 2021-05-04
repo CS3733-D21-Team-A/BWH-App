@@ -73,6 +73,7 @@ public class EdgeEditing extends GenericMap {
 
     DatabaseController db;
     CSVHandler csvHandler;
+    List<Map<String, String>> selectedNodesList = new ArrayList<>();
     private Map<String, String> prevSelectedEdge = null;
     private Map<String, String> prevSelectedNodeStart = null;
     private Map<String, String> prevSelectedNodeEnd = null;
@@ -123,6 +124,47 @@ public class EdgeEditing extends GenericMap {
         endNodeDropdown.setVisible(false);
         submissionButton.setVisible(false);
 
+        MenuItem selectNode = new MenuItem("Select Node");
+        MenuItem makeEdge = new MenuItem("Make edge between selection");
+        MenuItem deselect = new MenuItem("Deselect nodes");
+
+        selectNode.setOnAction((ActionEvent e) -> {
+            try {
+                Map<String, String> select = getNearestNode(contextMenuX, contextMenuY);
+                drawSingleNode(select, Color.GREEN);
+                selectedNodesList.add(select);
+                if (selectedNodesList.size() >= 2) {
+                    selectNode.setVisible(false);
+                }
+            }
+            catch(SQLException se) {
+                se.printStackTrace();
+            }
+        });
+
+        makeEdge.setOnAction((ActionEvent e) -> {
+            try {
+                pressAddButton();
+            }
+            catch (SQLException se) {
+                se.printStackTrace();
+            }
+            startNodeDropdown.setValue(selectedNodesList.get(0).get("NODEID"));
+            endNodeDropdown.setValue(selectedNodesList.get(1).get("NODEID"));
+        });
+
+        deselect.setOnAction((ActionEvent e) -> {
+            selectedNodesList.clear();
+            selectNode.setVisible(true);
+            try {
+                changeFloor(FLOOR);
+            }
+            catch (SQLException se) {
+                se.printStackTrace();
+            }
+        });
+
+
         try {
             db = DatabaseController.getInstance();
             csvHandler = new CSVHandler(db);
@@ -146,6 +188,31 @@ public class EdgeEditing extends GenericMap {
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+
+        contextMenu.getItems().clear();
+        contextMenu.getItems().addAll(selectNode, makeEdge, deselect);
+
+        mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+
+            public void handle(ContextMenuEvent event) {
+                contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
+                contextMenuX = event.getX();
+                contextMenuY = event.getY();
+                try {
+                    if (getNearestNode(contextMenuX, contextMenuY) == null) {
+                        selectNode.setVisible(false);
+                    }
+                    else {
+                        selectNode.setVisible(true);
+                    }
+                    if (selectedNodesList.size() >= 2) {
+                        selectNode.setVisible(false);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void changeFloor(String floor) throws SQLException {
@@ -393,6 +460,7 @@ public class EdgeEditing extends GenericMap {
             sq.printStackTrace();
         }
         return;
+
     }
 
     /**
@@ -415,6 +483,7 @@ public class EdgeEditing extends GenericMap {
                 submissionlabel.setText("Invalid submission");
         }
         clearfields();
+        contextMenu.getItems().get(contextMenu.getItems().size() - 1).fire();
         initialize();
         changeFloor("1");
         prevSelectedEdge = null;
