@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
    <top>
       <VBox prefHeight="148.0" prefWidth="1290.0" BorderPane.alignment="CENTER">
          <children>
@@ -138,7 +138,7 @@
    <left>
       <VBox alignment="TOP_CENTER" prefHeight="778.0" prefWidth="248.0" style="-fx-background-color: c4c4c450;" BorderPane.alignment="CENTER">
          <children>
-            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="227.0">
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="227.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Start:" wrappingWidth="50.0">
                      <font>
@@ -155,7 +155,7 @@
                   <Insets bottom="10.0" top="20.0" />
                </padding>
             </HBox>
-            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="234.0">
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="234.0">
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="End:" wrappingWidth="50.0">
                      <font>
@@ -173,26 +173,6 @@
                </children>
                <padding>
                   <Insets bottom="10.0" top="20.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
-               <children>
-                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNav" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="findPathButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#findPath" prefHeight="22.0" prefWidth="95.0" style="-fx-font-size: 14; -fx-background-color: #003da6;" text="Go" textAlignment="CENTER" textFill="WHITE">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </JFXButton>
-               </children>
-               <padding>
-                  <Insets top="20.0" />
                </padding>
             </HBox>
             <HBox prefHeight="36.0" prefWidth="227.0">
@@ -295,6 +275,18 @@
                   </Group>
                </children>
             </Group>
+            <HBox alignment="TOP_CENTER" prefHeight="36.0" prefWidth="227.0">
+               <children>
+                  <JFXButton fx:id="cancelPath" contentDisplay="CENTER" mnemonicParsing="false" onAction="#clearNav" prefHeight="23.0" prefWidth="86.0" style="-fx-font-size: 14; -fx-background-color: D3D3D3;" text="Cancel" textAlignment="CENTER">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </HBox>
          </children>
          <padding>
             <Insets left="10.0" right="10.0" top="20.0" />

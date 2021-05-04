@@ -26,7 +26,6 @@ public class Navigation extends GenericMap {
 
     @FXML private Label startLabel;
     @FXML private Label endLabel;
-    @FXML private JFXButton findPathButton;
     @FXML private JFXButton cancelPath;
     @FXML private Label etaLabel;
     @FXML private Label curDirection;
@@ -223,19 +222,6 @@ public class Navigation extends GenericMap {
         treeTable.toFront();
     }
 
-
-    /**
-     * Takes the selections from the start and end dropdowns and uses them to find the full path from start to finish
-     */
-    public void findPath() {
-        currPath.clear();
-        stopList.clear();
-        intermediatePoints.clear();
-
-        activePath = 0;
-    }
-
-
     // draw path method
     public void drawPath(String floor) throws SQLException{
         if(currPath.isEmpty()) return;
@@ -295,12 +281,7 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         listDirVBox.toFront();
 
-        //startLocation.setDisable(false);
-        //destination.setDisable(false);
-        findPathButton.setDisable(false);
         cancelPath.setDisable(false);
-
-        //unHighlightDirection();
     }
 
     /**
@@ -312,16 +293,17 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         stepByStep.toFront();
 
-        findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 
         dirIndex = 0;
         changeArrow(currPathDir.get(0).get(dirIndex));
         String nodeID = currPathDir.get(1).get(0);
-        if(currPathDir.get(1).get(0).contains(",")) nodeID = nodeID.substring(0, currPathDir.get(1).get(0).indexOf(","));
+        if(nodeID.contains(",")) nodeID = nodeID.substring(0, currPathDir.get(1).get(0).indexOf(","));
         changeFloor(db.getNode(nodeID).get("FLOOR"));
-        curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
+        //curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
+        drawPath(FLOOR);
         highlightDirection();
+        curDirection.setText(currPathDir.get(0).get(dirIndex));
     }
 
     /**
