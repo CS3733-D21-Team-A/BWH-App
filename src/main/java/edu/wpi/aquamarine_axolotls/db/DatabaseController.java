@@ -689,7 +689,9 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public boolean checkUserHasFavorites(String username){
 		try{
-			favoriteNodesTable.getEntriesByValue("USERID", username);
+			if(favoriteNodesTable.getEntriesByValue("USERID", username)==null){
+				return false;
+			}
 		} catch (SQLException throwables) {
 			return false;
 		}
@@ -750,20 +752,22 @@ public class DatabaseController implements AutoCloseable {
 	 * @return the auto-generated FAVID if entry is created, null if it doesn't
 	 */
 	public String addFavoriteNodeToUser(String username, String locationID, String nodeName){
-		if(checkValidNodeName(username,nodeName) && checkValidNodeID(username,locationID)) {
-			Map<String, String> takenValues = new HashMap<>();
-			takenValues.put("USERID", username);
-			takenValues.put("LOCATIONID", locationID);
-			takenValues.put("NODE_NAME", nodeName);
-			try {
-				favoriteNodesTable.addEntry(takenValues);
-				return getFAVID(username,nodeName);
-			} catch (SQLException throwables) {
-				throwables.printStackTrace();
+		if(checkUserHasFavorites(username)) {
+			if (!checkValidNodeName(username, nodeName) || !checkValidNodeID(username, locationID)) {
 				return null;
 			}
 		}
-		return null;
+		Map<String, String> takenValues = new HashMap<>();
+		takenValues.put("USERID", username);
+		takenValues.put("LOCATIONID", locationID);
+		takenValues.put("NODE_NAME", nodeName);
+		try {
+			favoriteNodesTable.addEntry(takenValues);
+			return getFAVID(username,nodeName);
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+			return null;
+		}
 
 	}
 

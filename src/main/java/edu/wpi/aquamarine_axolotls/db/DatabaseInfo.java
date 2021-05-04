@@ -74,9 +74,10 @@ final class DatabaseInfo {
 	/**
 	 * SQL table for the USER
 	 */
-//TODO:  MAKE A NEW RANDOMLY GENERATED FAVID?
 	static final String FAVORITE_NODES_TABLE_SQL =
 		"CREATE TABLE " + TABLES.FAVORITE_NODES.name() + " (" +
+			"USERID VARCHAR(25)," +
+			"LOCATIONID VARCHAR(25)," +
 			"FAVID INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
 			"FOREIGN KEY (USERID) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON UPDATE RESTRICT," +
 			"FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE SET NULL ON UPDATE RESTRICT," +
@@ -112,7 +113,6 @@ final class DatabaseInfo {
 
 	// delivery time, dietary restrictions, note, food requested mess
 	// 4/26 added Food Option, Number of Servings, Contact Number and Drink Options
-	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FOOD_DELIVERY table.
 	 */
@@ -124,14 +124,13 @@ final class DatabaseInfo {
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NUMBEROFSERVINGS VARCHAR(3)," +
 			"CONTACTNUMBER VARCHAR(15)," +
-			"DRINKOPTIONS VARCHAR(25)," + // TODO: do the same thing as what happened with food options thing
+			"DRINKOPTIONS VARCHAR(25)," +
 			"NOTE VARCHAR(300)," +
 			"FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
 
 	// delivery time, note, flower requested mess
 	// 4/26 added Delivery Date, Flower Options, Vase Options and Contact Number
-	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FLORAL_DELIVERY table.
 	 */
@@ -347,6 +346,7 @@ final class DatabaseInfo {
 		TABLE_SQL.put(TABLES.ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
 		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		TABLE_SQL.put(TABLES.USERS, USER_TABLE_SQL);
+		TABLE_SQL.put(TABLES.FAVORITE_NODES,FAVORITE_NODES_TABLE_SQL);
 
 		SERVICEREQUEST_SQL = new EnumMap<>(SERVICEREQUEST.class);
 		SERVICEREQUEST_SQL.put(SERVICEREQUEST.FLORAL_DELIVERY, FLORAL_DELIVERY_TABLE_SQL);
