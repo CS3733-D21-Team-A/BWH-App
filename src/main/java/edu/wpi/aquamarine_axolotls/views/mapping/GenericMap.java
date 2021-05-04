@@ -316,9 +316,11 @@ public class GenericMap extends GenericPage {
         if (snode.get("FLOOR").equals(FLOOR) && enode.get("FLOOR").equals(FLOOR)){
             double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
             double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            String startID = snode.get("STARTNODE");
             double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
             double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
-            drawTwoNodesWithEdge(startX, startY, endX, endY, snodeCol, enodeCol, edgeCol);
+            String endID = snode.get("ENDNODE");
+            drawTwoNodesWithEdge(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
         }
     }
 
@@ -349,7 +351,7 @@ public class GenericMap extends GenericPage {
      * @param enodeCol Color of the end node
      * @param edgeCol Color of the edge
      */
-    private void drawTwoNodesWithEdge(double startX, double startY, double endX, double endY, Color snodeCol, Color enodeCol, Color edgeCol) {
+    private void drawTwoNodesWithEdge(double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
 
         Line l = new Line();
         l.setStartX(startX);
