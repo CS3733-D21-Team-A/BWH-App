@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -102,9 +103,11 @@ public class Navigation extends GenericMap {
                 }
             }
         }
-        TreeItem<String> root = new TreeItem<>("Hello");
-        //root.setExpanded(true);
-        root.getChildren().addAll(park, rest, stai, dept, labs, info, conf, exit, retl, serv);
+
+        for(Map<String, String> node: db.getFavoriteNodesForUser(Aapp.username)) fav.getChildren().add(new TreeItem<>(node.get("NODENAME")));
+
+        TreeItem<String> root = new TreeItem<>("");
+        root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
         treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue()));
@@ -160,8 +163,43 @@ public class Navigation extends GenericMap {
                 se.printStackTrace();
             }
         });
-        item2.setOnAction((ActionEvent e)->{
+        addFav.setOnAction((ActionEvent e) -> {
+            try {
+                Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
+                if(node == null) return;
+                else {
+                    db.addFavoriteNodeToUser(Aapp.username, node.get("NODEID"), node.get("LONGNAME"));
+                    fav.getChildren().add(new TreeItem<String>(node.get("LONGNAME")));
+                    if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
+                    else drawSingleNode(node, Color.HOTPINK);
+                    treeTable.refresh();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
 
+        deleteFav.setOnAction((ActionEvent e)->{
+            try {
+                Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
+                if(node == null) return;
+                else {
+                    if(db.getFavoriteNodeForUser(Aapp.username, node.get("LONGNAME")) != null){
+                        for (int i = 0; i < fav.getChildren().size(); i++) {
+                            String nodeName = fav.getChildren().get(i).getValue();
+                            if (nodeName.equals(node.get("LONGNAME"))) {
+                                fav.getChildren().remove(i);
+                                db.deleteFavoriteNodeFromUser(Aapp.username, nodeName);
+                                drawSingleNode(node, Color.BLUE);
+                                return;
+                            }
+                        }
+                        treeTable.refresh();
+                    }
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         });
         contextMenu.getItems().clear();
         contextMenu.getItems().addAll(item1,item2);
@@ -173,6 +211,20 @@ public class Navigation extends GenericMap {
         });
 
     }
+
+    @Override
+    public void drawNodesAndFloor(String floor, Color colorOfnodes) throws SQLException{
+        super.drawFloor(floor);
+        super.drawNodes(colorOfnodes);
+        for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
+            Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
+            if(node.get("FLOOR").equals(FLOOR)){
+                if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
+                else drawSingleNode(node, Color.HOTPINK);
+            }
+        }
+    }
+
 
     public void changeFloor(String floor) throws SQLException{
         drawFloor(floor);
@@ -207,6 +259,7 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(true);
         treeTable.toFront();
     }
+
 
     // draw path method
     public void drawPath(String floor) throws SQLException{
