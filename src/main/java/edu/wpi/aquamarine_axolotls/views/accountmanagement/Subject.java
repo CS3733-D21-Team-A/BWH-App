@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Subject {
-    private String newPassword;
-    private String confirmPassword;
+    private String newPassword = "";
+    private String confirmPassword = "";
     private List<Observer> observers = new ArrayList<>();
 
     public String getNewPassword() {
@@ -16,9 +16,20 @@ public class Subject {
         return confirmPassword;
     }
 
-    public void setState(String newPassword, String confirmPassword){
+    public void setNewPassword(String newPassword){
         this.newPassword = newPassword;
+        notifyAllObservers();
+    }
+
+    public void setConfirmPassword(String confirmPassword){
         this.confirmPassword = confirmPassword;
+        notifyAllObservers();
+    }
+
+    private void notifyAllObservers() {
+        for (Observer observer : observers) {
+            observer.update();
+        }
     }
 
     public void attach(Observer newObserver) {
