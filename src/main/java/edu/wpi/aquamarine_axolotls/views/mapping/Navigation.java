@@ -105,8 +105,6 @@ public class Navigation extends GenericMap {
             }
         }
 
-        for(Map<String, String> node: db.getFavoriteNodesForUser(Aapp.username)) fav.getChildren().add(new TreeItem<>(node.get("NODENAME")));
-
         TreeItem<String> root = new TreeItem<>("");
         root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
@@ -116,7 +114,12 @@ public class Navigation extends GenericMap {
         treeTable.setShowRoot(false);
         treeTable.getColumns().add(treeTableColumn1);
 
-        drawNodesAndFloor("1", Color.BLUE);
+        List<Map<String, String>> favorites = db.getFavoriteNodesForUser(Aapp.username);
+        for(Map<String, String> node: favorites) fav.getChildren().add(new TreeItem<>(node.get("NODENAME")));
+        if(favorites.isEmpty()) treeTable.getRoot().getChildren().remove(0);
+
+        drawFloor("1");
+        drawNodesAndFavorites();
 
         stepByStep.setVisible(false);
         listDirVBox.setVisible(false);
@@ -170,6 +173,7 @@ public class Navigation extends GenericMap {
                 Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
                 if(node == null) return;
                 else {
+                    if(fav.getChildren().size() == 0) treeTable.getRoot().getChildren().add(0, fav);
                     db.addFavoriteNodeToUser(Aapp.username, node.get("NODEID"), node.get("LONGNAME"));
                     fav.getChildren().add(new TreeItem<String>(node.get("LONGNAME")));
                     if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
@@ -193,9 +197,10 @@ public class Navigation extends GenericMap {
                                 fav.getChildren().remove(i);
                                 db.deleteFavoriteNodeFromUser(Aapp.username, nodeName);
                                 drawSingleNode(node, Color.BLUE);
-                                return;
+                                break;
                             }
                         }
+                        if(fav.getChildren().isEmpty()) treeTable.getRoot().getChildren().remove(0);
                         treeTable.refresh();
                     }
                 }
@@ -215,10 +220,8 @@ public class Navigation extends GenericMap {
 
     }
 
-    @Override
-    public void drawNodesAndFloor(String floor, Color colorOfnodes) throws SQLException{
-        super.drawFloor(floor);
-        super.drawNodes(colorOfnodes);
+    public void drawNodesAndFavorites() throws SQLException{
+        drawNodes(Color.BLUE);
         for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
             Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
             if(node.get("FLOOR").equals(FLOOR)){
@@ -228,7 +231,7 @@ public class Navigation extends GenericMap {
         }
     }
 
-
+    @Override
     public void changeFloor(String floor) throws SQLException{
         drawFloor(floor);
         if(activePath) {
@@ -239,7 +242,7 @@ public class Navigation extends GenericMap {
             if (intermediatePoints.size() > 0 && intermediatePoints.get(intermediatePoints.size() - 1).get("FLOOR").equals(FLOOR))
                 drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
         }
-        else drawNodes(Color.BLUE);
+        else drawNodesAndFavorites();
     }
 
     /**
@@ -254,7 +257,8 @@ public class Navigation extends GenericMap {
         etaLabel.setText("");
         startLabel.setText("");
         endLabel.setText("");
-        drawNodesAndFloor(FLOOR, Color.BLUE);
+        drawFloor(FLOOR);
+        drawNodesAndFavorites();
         startLabel.setText("");
         endLabel.setText("");
 
