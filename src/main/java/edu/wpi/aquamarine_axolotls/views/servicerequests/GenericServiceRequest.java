@@ -65,7 +65,7 @@ public class GenericServiceRequest extends GenericPage {
         shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));*/
 
     @FXML
-    public void submit() throws SQLException {
+    void submit() throws SQLException {
         StringBuilder errorMessage = new StringBuilder();
         for(FieldTemplate field : requestFieldList){
             if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
@@ -97,19 +97,19 @@ public class GenericServiceRequest extends GenericPage {
     }
 
     @FXML
-    public void errorFields(String reqFields) {
+    void errorFields(String reqFields) {
         popUp("ERROR" ,"\nThe submission has not been made...\nPlease fill in the following fields." + reqFields);
     }
 
 
     @FXML
-    public void loadHelp() {
+    void loadHelp() {
         popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, " +
                 "time you would like to receive the request patient's room number, and an optional message ");
     }
 
 
-    public void startUp(){ //TODO: why startUp and not initialize?
+    void startUp(){ //TODO: why startUp and not initialize?
         try {
             db = DatabaseController.getInstance();
         } catch (SQLException | IOException e) {

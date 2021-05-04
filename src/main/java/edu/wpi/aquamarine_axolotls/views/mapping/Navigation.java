@@ -64,12 +64,12 @@ public class Navigation extends GenericMap {
         TreeItem<String> rest = new TreeItem<>("Restrooms");
         TreeItem<String> stai = new TreeItem<>("Stairs");
         TreeItem<String> dept = new TreeItem<>("Departments");
-        TreeItem<String> labs = new TreeItem<>("Laboratory");
+        TreeItem<String> labs = new TreeItem<>("Laboratories");
         TreeItem<String> info = new TreeItem<>("Help Desks");
-        TreeItem<String> conf = new TreeItem<>("Confrence Halls");
-        TreeItem<String> exit = new TreeItem<>("Exits");
-        TreeItem<String> retl = new TreeItem<>("RETL?");
-        TreeItem<String> serv = new TreeItem<>("Serv");
+        TreeItem<String> conf = new TreeItem<>("Conference Rooms");
+        TreeItem<String> exit = new TreeItem<>("Entrances");
+        TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
+        TreeItem<String> serv = new TreeItem<>("Non Medical Services");
 
         for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
             if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
@@ -111,20 +111,14 @@ public class Navigation extends GenericMap {
             }
         }
         TreeItem<String> root = new TreeItem<>("Hello");
-        root.setExpanded(true);
+        //root.setExpanded(true);
         root.getChildren().addAll(park, rest, stai, dept, labs, info, conf, exit, retl, serv);
-
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
         treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue()));
-
-        treeTableColumn1.setPrefWidth(230);
         treeTable.setRoot(root);
         treeTable.setShowRoot(false);
         treeTable.getColumns().add(treeTableColumn1);
-
-        //startLocation.setItems(options);
-        //destination.setItems(options);
 
         drawNodesAndFloor("1", Color.BLUE);
 

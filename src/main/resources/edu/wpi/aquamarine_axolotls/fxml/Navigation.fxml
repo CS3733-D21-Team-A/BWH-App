@@ -10,6 +10,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.Navigation">
    <top>
       <VBox prefHeight="148.0" prefWidth="1290.0" BorderPane.alignment="CENTER">
          <children>
@@ -210,11 +211,14 @@
                   <Insets bottom="10.0" top="20.0" />
                </padding>
             </HBox>
-            <Group>
+            <Group autoSizeChildren="false">
                <children>
                   <Group>
                      <children>
-                        <JFXTreeTableView fx:id="treeTable" prefHeight="400.0" prefWidth="230.0" />
+                        <JFXTreeTableView fx:id="treeTable" prefHeight="400.0" prefWidth="230.0" stylesheets="/edu/wpi/aquamarine_axolotls/CSS/NavigationTreeTable.css">
+                           <columnResizePolicy>
+                              <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy></JFXTreeTableView>
                         <VBox fx:id="listDirVBox" alignment="TOP_CENTER" prefHeight="371.0" prefWidth="231.0">
                            <children>
                               <ScrollPane prefHeight="429.0" prefWidth="227.0">
