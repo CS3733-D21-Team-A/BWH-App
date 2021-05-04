@@ -820,12 +820,11 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException
 	 */
 	public void deleteFavoriteNodeFromUser(String username, String nodeName) throws SQLException {
-		List<Map<String,String>> userFaves = favoriteNodesTable.getEntriesByValue("USERID",username);
-		for(Map<String,String> entry: userFaves){
-			if(entry.get("NODENAME").equals(nodeName)){
-				favoriteNodesTable.deleteEntry(entry.get("FAVID"));
-			}
-		}
+		favoriteNodesTable.deleteEntry(getFAVID(username,nodeName));
+	}
+
+	public void emptyFavoriteNodesTable() throws SQLException {
+		favoriteNodesTable.emptyTable();
 	}
 
 	// ===== DATABASE CREATION =====
