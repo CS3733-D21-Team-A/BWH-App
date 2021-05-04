@@ -173,8 +173,8 @@ public class Navigation extends GenericMap {
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
             if(currPath.get(0).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
-            for(int j = 1; j < currPath.size() - 1; j++){
-                if(currPath.get(j).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(j), Color.ORANGE);
+            for(int j = 0; j < intermediatePoints.size() - 1; j++){
+                if(intermediatePoints.get(j).get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(currPath.get(j), Color.ORANGE);
             }
             if(currPath.get(currPath.size()-1).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
         }
