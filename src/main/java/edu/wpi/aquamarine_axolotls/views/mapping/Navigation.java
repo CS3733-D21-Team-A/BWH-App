@@ -237,7 +237,9 @@ public class Navigation extends GenericMap {
     /**
      * Starts the text directions once they're initialized
      */
-    public void startDir() throws SQLException {
+    public void startDir() throws SQLException, InterruptedException{
+        Thread newThread = new Thread();
+        newThread.start();
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         stepByStep.toFront();
