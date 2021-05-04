@@ -6,15 +6,12 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -41,9 +38,9 @@ public class Navigation extends GenericMap {
     private String firstNode;
     private List<String> stopList = new ArrayList<>();
     private List<Node> currPath = new ArrayList<>();
-    private int activePath = 0; //TODO: change this to a boolean
+    private boolean activePath = false;
     private List<List<String>> currPathDir = new ArrayList<>();
-    static int dirIndex = 0;
+    static int dirIndex = 0; //why is this static?
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
     private Map<String,String> endPoint;
 
@@ -179,7 +176,7 @@ public class Navigation extends GenericMap {
 
     public void changeFloor(String floor) throws SQLException{
         drawFloor(floor);
-        if(activePath == 1) {
+        if(activePath) {
             drawPath(floor);
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
                 if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
@@ -198,7 +195,7 @@ public class Navigation extends GenericMap {
         currPath.clear();
         currPathDir.clear();
         intermediatePoints.clear();
-        activePath = 0;
+        activePath = false;
         etaLabel.setText("");
         startLabel.setText("");
         endLabel.setText("");
@@ -250,7 +247,7 @@ public class Navigation extends GenericMap {
         if (currPath.isEmpty()) return;
 
         firstNodeSelect = 0;
-        activePath = 1;
+        activePath = true;
         List<Node> toRemove = new ArrayList<>();
         for(Node n : currPath){ // TODO : move this to
             if(SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(currPath, n)) toRemove.add(n);
@@ -264,7 +261,7 @@ public class Navigation extends GenericMap {
     /**
      * Cancels the current set of text directions
      */
-    public void cancelDir() throws SQLException {
+    public void cancelDir() {
         stepByStep.setVisible(false);
         listDirVBox.setVisible(true);
         treeTable.setVisible(false);
@@ -289,7 +286,6 @@ public class Navigation extends GenericMap {
         String nodeID = currPathDir.get(1).get(0);
         if(nodeID.contains(",")) nodeID = nodeID.substring(0, currPathDir.get(1).get(0).indexOf(","));
         changeFloor(db.getNode(nodeID).get("FLOOR"));
-        //curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
@@ -317,9 +313,7 @@ public class Navigation extends GenericMap {
      * Moves back to the previous step in the text directions
      */
     public void regress() throws SQLException{
-        if (dirIndex == 0){
-            return;
-        }else{
+        if (dirIndex != 0) {
             unHighlightDirection();
             dirIndex -= 1;
             String curNode = currPathDir.get(1).get(dirIndex);
@@ -377,7 +371,7 @@ public class Navigation extends GenericMap {
     /**
      * Adds all of the text directions to the visual list of directions on the screen
      */
-    public void initializeDirections() throws SQLException { // adds each step to the list of direction
+    public void initializeDirections() { // adds each step to the list of direction
         cancelDir();
         listOfDirections.getChildren().clear();
         for (int i = 0; i < currPathDir.get(0).size(); i++) {
@@ -490,12 +484,10 @@ public class Navigation extends GenericMap {
         //if(event.getButton().equals(MouseButton.PRIMARY)) {
         Map<String, String> newDestination = getNearestNode(x, y);
 
-        if (newDestination == null) return;
-
-        else {
+        if (newDestination != null) {
             String currCloseName = newDestination.get("LONGNAME");
 
-            if (activePath == 0) { //if there's no active path, we'll handle that
+            if (!activePath) { //if there's no active path, we'll handle that
                 if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
@@ -512,7 +504,7 @@ public class Navigation extends GenericMap {
                     drawSingleNodeHighLight(newDestination,Color.MAGENTA);
                 }
             }
-            else if (activePath == 1) {
+            else {
                 stopList.add(stopList.size(), currCloseName);
                 currPath.clear();
                 for (int i = 0; i < stopList.size() - 1; i++) {
