@@ -784,13 +784,23 @@ public class DatabaseController implements AutoCloseable {
 	 * @return The survey of the user
 	 * @throws SQLException
 	 */
-	public Map<String, String> getSurvey(String username) throws SQLException
+	public Map<String, String> getSurveyByUsername(String username) throws SQLException
 	{
 		if(covidSurveyTable.getEntry(username) != null) {
 			return covidSurveyTable.getEntry(username);
 		} else {
 			throw new SQLException();
 		}
+	}
+
+	/** Returns all of the surveys in the table
+	 *
+	 * @return The list of surveys
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getSurveys() throws SQLException
+	{
+		return covidSurveyTable.getEntries();
 	}
 
 
