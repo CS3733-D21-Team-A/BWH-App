@@ -228,7 +228,9 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color); }
+    public void drawSingleNode(Map<String, String> node, Color color) {
+        drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color);
+    }
 
 
 
@@ -355,8 +357,8 @@ public class GenericMap extends GenericPage {
         l.setStroke(edgeCol);
         mapView.getChildren().add(l);
 
-        //drawSingleNode(startX, startY, snodeCol); //TODO: update to have node IDs
-        //drawSingleNode(endX, endY, enodeCol);
+        drawSingleNode(startX, startY, null, snodeCol); //TODO: update to have node IDs
+        drawSingleNode(endX, endY, null, enodeCol);
     }
 
     void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {

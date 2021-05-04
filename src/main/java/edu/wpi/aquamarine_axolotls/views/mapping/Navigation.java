@@ -42,7 +42,7 @@ public class Navigation extends GenericMap {
     private String firstNode;
     private List<String> stopList = new ArrayList<>();
     private List<Node> currPath = new ArrayList<>();
-    private int activePath = 0;
+    private int activePath = 0; //TODO: change this to a boolean
     private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
@@ -181,12 +181,10 @@ public class Navigation extends GenericMap {
 //            }
 //        });
         //mapView.setOnContextMenuRequested(e -> contextMenu.show(mapView, e.getScreenX(), e.getScreenY()));
-        mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-            public void handle(ContextMenuEvent event) {
-                contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
-                contextMenuX = event.getX();
-                contextMenuY = event.getY();
-            }
+        mapView.setOnContextMenuRequested(event -> {
+            contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
+            contextMenuX = event.getX();
+            contextMenuY = event.getY();
         });
 
     }
@@ -229,24 +227,12 @@ public class Navigation extends GenericMap {
     /**
      * Takes the selections from the start and end dropdowns and uses them to find the full path from start to finish
      */
-    public void findPath() throws SQLException{
+    public void findPath() {
         currPath.clear();
         stopList.clear();
         intermediatePoints.clear();
 
         activePath = 0;
-        if (startLabel.getText().equals("") || endLabel.getText().equals("")) {
-            return;
-        }
-//        String start = startLocation.getSelectionModel().getSelectedItem().toString();
-//        String end = destination.getSelectionModel().getSelectedItem().toString();
-//        stopList.add(start);
-//        stopList.add(end);
-//        drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
-//        findPathSingleSegment(start, end);
-//        drawPath(FLOOR);
-//        intermediatePoints.add(db.getNodesByValue("LONGNAME",end).get(0));
-        //drawFloor(FLOOR); // do we need this?
     }
 
 
@@ -295,14 +281,8 @@ public class Navigation extends GenericMap {
             if(SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(currPath, n)) toRemove.add(n);
         }
         currPath.removeAll(toRemove);
-        //drawFloor(FLOOR);
-        //drawSingleNode(getNodeFromValid(stopList.get(stopList.size() - 1)));
         currPathDir.clear();
         currPathDir = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currPath);
-//        List<String> textDir = new ArrayList<String>();
-//        textDir.add("left 1");
-//        textDir.add("left 2");
-//         = textDir;
         initializeDirections();
     }
 
@@ -332,8 +312,6 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         stepByStep.toFront();
 
-        //startLocation.setDisable(true);
-        //destination.setDisable(true);
         findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 
@@ -356,7 +334,7 @@ public class Navigation extends GenericMap {
             String curNode = currPathDir.get(1).get(dirIndex);
             String curFloor = getInstructionsFloor(curNode);
 
-            if(!curFloor.equals(FLOOR)) drawPath(curFloor);
+            if(!curFloor.equals(FLOOR)) changeFloor(curFloor);
 
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
@@ -375,9 +353,7 @@ public class Navigation extends GenericMap {
             dirIndex -= 1;
             String curNode = currPathDir.get(1).get(dirIndex);
             String curFloor = getInstructionsFloor(curNode);
-            if(!curFloor.equals(FLOOR)){
-                drawPath(curFloor);
-            }
+            if(!curFloor.equals(FLOOR)) changeFloor(curFloor);
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
