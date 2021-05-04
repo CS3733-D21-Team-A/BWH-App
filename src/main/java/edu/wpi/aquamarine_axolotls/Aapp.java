@@ -17,10 +17,10 @@ public class Aapp extends Application {
 
   public static List<Map<String,String>> serviceRequests = new ArrayList<>();
 
-  public static String userType = "Guest";
+  //TODO: STORE THESE IN PREFERENCES
+  public static String userType = "Guest"; //TODO: REPLACE THIS WITH ENUM
   public static String username;
-  public static String prevPage;
-  public static String currPage;
+  public static Boolean guestHasTaken = false;
 
 
   @Override

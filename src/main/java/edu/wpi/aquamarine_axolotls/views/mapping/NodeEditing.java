@@ -13,11 +13,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -78,6 +77,8 @@ public class NodeEditing extends GenericMap {
     @FXML
     private TableColumn typeCol;
 
+    @FXML
+    private Button button;
     @FXML
     private JFXButton clearButton;
     private Map<String, String> prevSelected;
@@ -216,15 +217,14 @@ public class NodeEditing extends GenericMap {
                 anchor2 = selectedNode;
                 addAnchorPoint.setText("Change 2nd Anchor Point");
             }
-            drawSingleNode( Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), Color.PURPLE);
+            drawSingleNode( Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), selectedNode.get("NODEID"), Color.PURPLE);
 
         });
         selectNode.setOnAction((ActionEvent e) -> {
             try {
                 Map<String, String> selectedNode = getNearestNode(contextMenuX, contextMenuY);
                 if(selectedNode == null) return;
-
-                drawSingleNode(Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), Color.GREEN);
+                drawSingleNode(Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), selectedNode.get("NODEID"), Color.GREEN);
                 selectedNodesList.add(getNearestNode(contextMenuX, contextMenuY));
 
             }
@@ -287,13 +287,7 @@ public class NodeEditing extends GenericMap {
         contextMenu.getItems().clear();
         contextMenu.getItems().addAll(newNode, editNode, deleteNode, addAnchorPoint, selectNode, alignVertical, alignHorizontal, alignSlope, deselect);
 
-//        mapImage.setOnContextMenuRequested(new EventHandler() {
-//            @Override
-//            public void handle(ContextMenuEvent event) {
-//                contextMenu.show(mapImage, event.getScreenX(), event.getScreenY());
-//            }
-//        });
-        //mapView.setOnContextMenuRequested(e -> contextMenu.show(mapView, e.getScreenX(), e.getScreenY()));
+
         mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 
             public void handle(ContextMenuEvent event) {
@@ -313,6 +307,25 @@ public class NodeEditing extends GenericMap {
                         deleteNode.setVisible(true);
                         addAnchorPoint.setVisible(true);
                     }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        mapView.addEventHandler(MouseEvent.MOUSE_MOVED, event ->{
+            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
+            Map<String, String> node = selectedNodesList.get(0);
+            String nodeID = node.get("NODEID");
+            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
+            if(index != -1){
+                Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
+                mapView.getChildren().set(index, c);
+                nodesOnImage.put(nodeID, c);
+                try {
+                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * event.getX())));
+                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * event.getY())));
+                    db.editNode(nodeID,node);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -403,11 +416,11 @@ public class NodeEditing extends GenericMap {
         state = "edit";
     }
 
+    @Override
     public void changeFloor(String floor) throws SQLException{
         ObservableList<MenuItem> items = contextMenu.getItems();
         items.get(items.size()-1).fire(); // targets deselect
-        drawFloor(floor);
-        drawNodes(Color.BLUE);
+        super.changeFloor(floor);
     }
 
     /**
@@ -677,7 +690,7 @@ public class NodeEditing extends GenericMap {
     public void alignNodesVertical(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
         drawFloor(FLOOR);
         String anchorX = anchorPoint.get("XCOORD");
-        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), Color.RED);
+        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), anchorPoint.get("NODEID"), Color.RED);
         for (Map<String, String> node : nodes) {
             Map<String, String> newNode = new HashMap<String, String>();
             newNode.put("XCOORD", anchorX);
@@ -721,28 +734,6 @@ public class NodeEditing extends GenericMap {
     public void pressEdgeButton(ActionEvent actionEvent) {
         sceneSwitch("EdgeEditing");
     }
-
-/*    public void drawSingleNode(Map<String, String> node) {
-        double x = xScale(Integer.parseInt(node.get("XCOORD")));
-        double y = yScale(Integer.parseInt(node.get("YCOORD")));
-        double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillOval(x, y, radius, radius);
-    }
-
-    public void drawSingleNode(Node node) {
-        double x = xScale(node.getXcoord());
-        double y = yScale(node.getYcoord());
-        double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillOval(x, y, radius, radius);
-    }*/
 
     /**
      * Calculates the coordinates (rounded to the nearest int) of the location f the cursor when the mouse is clicked
