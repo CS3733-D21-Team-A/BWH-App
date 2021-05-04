@@ -238,8 +238,6 @@ public class Navigation extends GenericMap {
      * Starts the text directions once they're initialized
      */
     public void startDir() throws SQLException, InterruptedException{
-        Thread newThread = new Thread();
-        newThread.start();
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         stepByStep.toFront();
@@ -256,7 +254,15 @@ public class Navigation extends GenericMap {
         changeFloor(db.getNode(nodeID).get("FLOOR"));
         curDirection.setText(currPathDir.get(0).get(dirIndex)); //get first direction
         highlightDirection();
-        voice.say(voice.getTextOptimization(curDirection.getText()));
+        Thread newThread = new Thread(() -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            voice.say(voice.getTextOptimization(curDirection.getText()));
+        });
+        newThread.start();
     }
 
     /**
@@ -274,7 +280,15 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()));
+            Thread newThread = new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                voice.say(voice.getTextOptimization(curDirection.getText()));
+            });
+            newThread.start();
         }
     }
 
@@ -295,7 +309,15 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()));
+            Thread newThread = new Thread(() -> {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                voice.say(voice.getTextOptimization(curDirection.getText()));
+            });
+            newThread.start();
         }
     }
 
