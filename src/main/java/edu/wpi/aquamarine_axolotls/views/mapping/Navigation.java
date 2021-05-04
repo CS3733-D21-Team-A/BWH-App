@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 
 import javax.naming.Context;
 import java.sql.SQLException;
@@ -101,7 +102,6 @@ public class Navigation extends GenericMap {
                 contextMenuY = event.getY();
             }
         });
-
     }
 
     public void changeFloor(String floor) throws SQLException{
@@ -383,8 +383,51 @@ public class Navigation extends GenericMap {
             //System.out.println(end);
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
+
+            double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
+            double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
+            double X2 = xScale(Integer.parseInt(end.get("XCOORD")));
+            double Y2 = yScale(Integer.parseInt(end.get("YCOORD")));
+
+            double centerX = (X1 + X2) / 2.0;
+            double centerY = (Y1 + Y2) / 2.0;
+
+            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+            if(start.get("FLOOR").equals(end.get("FLOOR"))){
+                drawArrow(centerX, centerY + 1, start.get("FLOOR"), rotationAngle);
+            } else {
+                removeDirectionArrow();
+            }
+
         } else {
-            drawSingleNode(db.getNode(curNode), Color.RED);
+            Map<String, String> node = db.getNode(curNode);
+            drawSingleNode(node, Color.RED);
+            if (dirIndex == currPathDir.get(1).size() - 1){
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+
+                drawArrow(X1, Y1, node.get("FLOOR"), 0);
+            }
+            if (dirIndex != currPathDir.get(1).size() - 1){
+                String nextNodes = currPathDir.get(1).get(dirIndex + 1);
+                String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
+                Map<String, String> nextNode = db.getNode(nextNodeID);
+
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+                double X2 = xScale(Integer.parseInt(nextNode.get("XCOORD")));
+                double Y2 = yScale(Integer.parseInt(nextNode.get("YCOORD")));
+
+
+                double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+                if(node.get("FLOOR").equals(nextNode.get("FLOOR"))){
+                    drawArrow(X1, Y1, node.get("FLOOR"), rotationAngle);
+                }else {
+                    removeDirectionArrow();
+                }
+            }
         }
     }
 
