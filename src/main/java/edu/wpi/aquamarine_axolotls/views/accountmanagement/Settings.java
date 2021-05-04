@@ -35,7 +35,7 @@ public class Settings extends GenericPage {
             db = DatabaseController.getInstance();
 
             userName.setText(Aapp.username);
-            firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));      // TODO: connect with DB user account
+            firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));
             lastName.setText(db.getUserByUsername(Aapp.username).get("LASTNAME"));
             email.setText(db.getUserByUsername(Aapp.username).get("EMAIL"));
             pronouns.setText(db.getUserByUsername(Aapp.username).get("PRONOUNS"));
