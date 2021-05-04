@@ -125,9 +125,6 @@ public class CovidSurvey extends GenericServiceRequest {
 
     @FXML //TODO: Submit to database
     public void submitButton() {
-        System.out.println ( yes1.isSelected ( ) );
-        System.out.println ( yes2.isSelected ( ) );
-
         Map<String, String> survey = new HashMap<> ();
         survey.put("AREQUAR", Boolean.toString(yes1.isSelected()));
         survey.put("NAUSADIRRHEA", Boolean.toString(yes2.isSelected()));
@@ -141,10 +138,7 @@ public class CovidSurvey extends GenericServiceRequest {
         survey.put("MORETIRED", Boolean.toString(yes10.isSelected()));
         survey.put("MUSCLEACHES", Boolean.toString(yes11.isSelected()));
             if(Aapp.username!=null){
-                popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
                 survey.put("USERNAME", Aapp.username);
-
-                goHome();
                 try {
                         db.addSurvey ( survey );
                         db.hasUserTakenCovidSurvey ( Aapp.username );
@@ -155,16 +149,25 @@ public class CovidSurvey extends GenericServiceRequest {
                     System.out.println ( db.getSurvey(Aapp.username) );
                 } catch (SQLException throwables) {
                     throwables.printStackTrace ( );
-            }}
+                }
+                popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
+                goHome();
+            }
             else{
-                popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. You will now be brought to the Navigation Page");
-                sceneSwitch ( "Navigation" ); //if a guest submits a covid survey itll take them straight to navigation???, save an instance that says the guest has taken the survey
+                    try {
+                        db.addSurvey ( survey );
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace ( );
+                    }
+                    Aapp.guestHasTaken = true;
+                    popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
+                    goHome();
 
+            }
 
         }
 
     }
-}
 
 
 

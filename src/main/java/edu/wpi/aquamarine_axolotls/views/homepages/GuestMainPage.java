@@ -35,7 +35,7 @@ public class GuestMainPage extends GenericPage {
     public void mapP(ActionEvent actionEvent) {
         if(Aapp.username!=null){
         try {
-            if( db.hasUserTakenCovidSurvey(Aapp.username )){
+            if( db.hasUserTakenCovidSurvey(Aapp.username)){
                 sceneSwitch("Navigation"); }
             else{
                 popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action" );
@@ -43,11 +43,11 @@ public class GuestMainPage extends GenericPage {
             } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
-        //how should we enforce this for guests??
      }
-        else if(Aapp.userType == "Guest"){
-            popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action" );
-
+        else if( Aapp.guestHasTaken){
+            sceneSwitch("Navigation"); }
+        else{
+        popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action" );
         }
     }
 

@@ -20,6 +20,7 @@ public class Aapp extends Application {
   //TODO: STORE THESE IN PREFERENCES
   public static String userType = "Guest"; //TODO: REPLACE THIS WITH ENUM
   public static String username;
+  public static Boolean guestHasTaken = false;
 
 
   @Override
