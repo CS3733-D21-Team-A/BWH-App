@@ -7,6 +7,7 @@ public class VoiceController {
     private String name;
     private com.sun.speech.freetts.Voice voice;
     private com.sun.speech.freetts.Gender gender;
+    static Thread newThread = new Thread();
 
     public VoiceController(String name){
         this.name = name;
@@ -32,7 +33,18 @@ public class VoiceController {
         }
     }
 
-    public void say(String thingsToSay) {
-        this.voice.speak(thingsToSay);
+    public void say(String thingsToSay) throws InterruptedException {
+//            if (newThread.isAlive()) {
+//                newThread.stop();
+//            }
+        newThread = new Thread(() -> {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            this.voice.speak(thingsToSay);
+        });
+        newThread.start();
     }
 }

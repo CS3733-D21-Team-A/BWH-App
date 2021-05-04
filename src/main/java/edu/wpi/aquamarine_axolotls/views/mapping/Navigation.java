@@ -46,6 +46,7 @@ public class Navigation extends GenericMap {
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
     private Map<String,String> endPoint;
     private VoiceController voice = new VoiceController("kevin16");
+    private static Thread newThread;
 
     @FXML
     public void initialize() throws SQLException {
@@ -276,7 +277,8 @@ public class Navigation extends GenericMap {
     /**
      * Starts the text directions once they're initialized
      */
-    public void startDir() throws SQLException, InterruptedException{
+    public void startDir() throws SQLException,InterruptedException{
+
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         treeTable.setVisible(false);
@@ -292,22 +294,14 @@ public class Navigation extends GenericMap {
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
-
-        Thread newThread = new Thread(() -> {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            voice.say(voice.getTextOptimization(curDirection.getText()));
-        });
-        newThread.start();
+        voice.say(voice.getTextOptimization(curDirection.getText()));
     }
 
     /**
      * Progresses to the next step in the text directions
      */
-    public void progress() throws SQLException {
+    public void progress() throws SQLException,InterruptedException {
+
         if (dirIndex < currPathDir.get(0).size() - 1){
             unHighlightDirection();
             dirIndex += 1;
@@ -319,22 +313,14 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
-            Thread newThread = new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                voice.say(voice.getTextOptimization(curDirection.getText()));
-            });
-            newThread.start();
+            voice.say(voice.getTextOptimization(curDirection.getText()));
         }
     }
 
     /**
      * Moves back to the previous step in the text directions
      */
-    public void regress() throws SQLException{
+    public void regress() throws SQLException,InterruptedException{
         if (dirIndex != 0) {
             unHighlightDirection();
             dirIndex -= 1;
@@ -344,15 +330,7 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
-            Thread newThread = new Thread(() -> {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                voice.say(voice.getTextOptimization(curDirection.getText()));
-            });
-            newThread.start();
+            voice.say(voice.getTextOptimization(curDirection.getText()));
         }
     }
 
