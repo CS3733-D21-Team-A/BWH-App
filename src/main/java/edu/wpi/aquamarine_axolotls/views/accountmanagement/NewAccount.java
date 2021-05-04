@@ -39,7 +39,6 @@ public class NewAccount extends GenericPage {
         db = DatabaseController.getInstance();
     }
 
-
     @FXML
     public void submit_button(ActionEvent actionEvent) throws SQLException {
         String email = emailAddress.getText();
