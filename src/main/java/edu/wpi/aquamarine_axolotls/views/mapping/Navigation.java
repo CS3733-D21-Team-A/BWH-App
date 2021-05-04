@@ -109,9 +109,9 @@ public class Navigation extends GenericMap {
         if(activePath == 1) {
             drawPath(floor);
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
-                drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                if(intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
             }
-            drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
+            if(intermediatePoints.get(intermediatePoints.size()-1).get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
         }
         else drawNodes(Color.BLUE);
     }
@@ -172,8 +172,11 @@ public class Navigation extends GenericMap {
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
-            drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
-            drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
+            if(currPath.get(0).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
+            for(int j = 1; j < currPath.size() - 1; j++){
+                if(currPath.get(j).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(j), Color.ORANGE);
+            }
+            if(currPath.get(currPath.size()-1).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
         }
     }
     // draw floor that makes everything transparent
@@ -462,7 +465,7 @@ public class Navigation extends GenericMap {
                 if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
-                    drawSingleNodeHighLight(newDestination,Color.GREEN);
+                    if(newDestination.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(newDestination,Color.GREEN);
                 }
                 else if ( firstNodeSelect == 1 ) {
                     stopList.clear ( );
@@ -472,7 +475,7 @@ public class Navigation extends GenericMap {
                     findPathSingleSegment ( stopList.get ( 0 ) ,stopList.get ( 1 ) );
                     drawPath ( FLOOR );
                     intermediatePoints.add(newDestination);
-                    drawSingleNodeHighLight(newDestination,Color.MAGENTA);
+                    if(newDestination.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(newDestination,Color.MAGENTA);
                 }
             }
             else if (activePath == 1) {
@@ -484,9 +487,9 @@ public class Navigation extends GenericMap {
                 drawPath(FLOOR);
                 intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
-                    drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
+                    if(intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
                 }
-                drawSingleNodeHighLight(newDestination,Color.MAGENTA);
+                if(newDestination.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(newDestination,Color.MAGENTA);
                 //drawSingleNodeHighLight(endPoint,Color.MAGENTA);
             }
         }
