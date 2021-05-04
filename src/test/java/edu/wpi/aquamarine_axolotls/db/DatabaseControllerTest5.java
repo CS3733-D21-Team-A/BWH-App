@@ -279,4 +279,65 @@ public class DatabaseControllerTest5 {
             fail();
         }
     }
+
+    @Test
+    public void testGetNodeFromFAVID()
+    {
+        try{
+            Map<String, String> user3 = new HashMap<String, String>();
+            user3.put("USERNAME", "Alexa123");
+            user3.put("FIRSTNAME", "Alexa");
+            user3.put("LASTNAME", "Freglette");
+            user3.put("EMAIL", "alexa@gmail.com");
+            user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user3.put("PASSWORD", "PasswordIsMyPassword");
+            db.addUser(user3);
+
+            Map<String, String> user1 = new HashMap<String, String>();
+            user1.put("USERNAME", "Seansta18");
+            user1.put("FIRSTNAME", "Sean");
+            user1.put("LASTNAME", "McMillan");
+            user1.put("EMAIL", "Sean@gmail.com");
+            user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
+            user1.put("PASSWORD", "PasswordIsMyPassword");
+
+            db.addUser(user1);
+
+            String generatedFAVID = db.addFavoriteNodeToUser("Alexa123", "aPARK001GG", "Favorite Bathroom");
+            Map<String,String> newFav = new HashMap<>();
+            newFav.put("USERID", "Alexa123");
+            newFav.put("LOCATIONID", "aPARK001GG");
+            newFav.put("FAVID", generatedFAVID);
+            newFav.put("NODENAME", "Favorite Bathroom");
+
+            String generatedFAVID2 = db.addFavoriteNodeToUser("Alexa123", "aPARK002GG", "Parking Spot");
+            Map<String,String> newFav2 = new HashMap<>();
+            newFav2.put("USERID", "Alexa123");
+            newFav2.put("LOCATIONID", "aPARK002GG");
+            newFav2.put("FAVID", generatedFAVID2);
+            newFav2.put("NODENAME", "Parking Spot");
+
+            String generatedFAVID3 = db.addFavoriteNodeToUser("Seansta18", "aPARK001GG", "Favorite Bathroom");
+            Map<String,String> newFav3 = new HashMap<>();
+            newFav3.put("USERID", "Seansta18");
+            newFav3.put("LOCATIONID", "aPARK001GG");
+            newFav3.put("FAVID", generatedFAVID3);
+            newFav3.put("NODENAME", "Favorite Bathroom");
+
+            String generatedFAVID4 = db.addFavoriteNodeToUser("Seansta18", "aPARK002GG", "Parking Spot");
+            Map<String,String> newFav4 = new HashMap<>();
+            newFav4.put("USERID", "Seansta18");
+            newFav4.put("LOCATIONID", "aPARK002GG");
+            newFav4.put("FAVID", generatedFAVID4);
+            newFav4.put("NODENAME", "Parking Spot");
+
+            assertEquals(newFav,db.getFavoriteNodeForFavid(generatedFAVID));
+            assertEquals(newFav2,db.getFavoriteNodeForFavid(generatedFAVID2));
+            assertEquals(newFav3,db.getFavoriteNodeForFavid(generatedFAVID3));
+            assertEquals(newFav4,db.getFavoriteNodeForFavid(generatedFAVID4));
+        } catch (SQLException e) {
+            e.printStackTrace();
+            fail();
+        }
+    }
 }

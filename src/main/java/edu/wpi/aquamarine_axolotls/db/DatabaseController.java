@@ -812,7 +812,6 @@ public class DatabaseController implements AutoCloseable {
 		return favoriteNodesTable.getEntry(favid);
 	}
 
-
 	/**
 	 * deletes a specific fav node from a user's account
 	 * @param username
@@ -823,6 +822,10 @@ public class DatabaseController implements AutoCloseable {
 		favoriteNodesTable.deleteEntry(getFAVID(username,nodeName));
 	}
 
+	/**
+	 * empties favorite nodes table by calling empty table
+	 * @throws SQLException
+	 */
 	public void emptyFavoriteNodesTable() throws SQLException {
 		favoriteNodesTable.emptyTable();
 	}
