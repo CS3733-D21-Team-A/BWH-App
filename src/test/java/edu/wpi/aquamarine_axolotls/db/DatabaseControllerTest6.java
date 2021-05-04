@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
-public class DatabaseControllerTest5 {
+public class DatabaseControllerTest6 {
 
     private final DatabaseController db = new DatabaseController();
 
-    public DatabaseControllerTest5() throws SQLException, IOException, URISyntaxException {
+    public DatabaseControllerTest6() throws SQLException, IOException, URISyntaxException {
     }
 
     @BeforeEach
