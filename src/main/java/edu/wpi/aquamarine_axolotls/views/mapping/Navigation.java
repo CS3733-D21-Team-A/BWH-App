@@ -63,6 +63,7 @@ public class Navigation extends GenericMap {
         TreeItem<String> exit = new TreeItem<>("Entrances");
         TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
         TreeItem<String> serv = new TreeItem<>("Non Medical Services");
+        TreeItem<String> fav = new TreeItem<>("Favorites");
 
         for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
             if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
@@ -123,8 +124,9 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(true);
         treeTable.toFront();
 
-        MenuItem item1 = new MenuItem(("Add Stop"));
-        MenuItem item2 = new MenuItem(("Add to Favorites"));
+        MenuItem addStop = new MenuItem(("Add Stop"));
+        MenuItem addFav = new MenuItem(("Add to Favorites"));
+        MenuItem deleteFav = new MenuItem(("Remove from favorites"));
 
         treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
@@ -155,7 +157,7 @@ public class Navigation extends GenericMap {
             }
         });
 
-        item1.setOnAction((ActionEvent e)->{
+        addStop.setOnAction((ActionEvent e)->{
             try {
                 addDestination(contextMenuX, contextMenuY);
             }
@@ -202,7 +204,8 @@ public class Navigation extends GenericMap {
             }
         });
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(item1,item2);
+        if (Aapp.userType.equals("Guest")) contextMenu.getItems().addAll(addStop);
+        else contextMenu.getItems().addAll(addStop, addFav, deleteFav);
 
         mapView.setOnContextMenuRequested(event -> {
             contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
