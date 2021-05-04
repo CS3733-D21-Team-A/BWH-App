@@ -132,12 +132,20 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
     public void refresh(){
         List<Map<String, String>> serviceRequests = null;
+        List<Map<String, String>> covSurveys = null;
         try {
+
             if(Aapp.userType.equals("Admin") || Aapp.userType.equals("Employee")){
                 serviceRequests = db.getServiceRequests();
                 srTable.getItems().clear();
                 for(Map<String, String> req : serviceRequests){
                     srTable.getItems().add(new Request(req));
+                }
+
+//                covSurveys = db.getSurvey()       // TODO: need to get all the surveys from covid db
+                covidSurveyTable.getItems().clear();
+                for (Map<String, String> survey : covSurveys){
+                    covidSurveyTable.getItems().add(new CovidSurvey(survey));
                 }
             }
             else if(Aapp.userType.equals("Patient")){
