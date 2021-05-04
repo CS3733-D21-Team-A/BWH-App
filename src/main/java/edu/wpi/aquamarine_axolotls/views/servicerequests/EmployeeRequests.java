@@ -99,10 +99,10 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             }
 
             //COVID Status
-            ObservableList<String> covidStatus = FXCollections.observableArrayList();
-            covidStatus.add("True");
-            covidStatus.add("False");
-            statusD.setItems(covidStatus);
+            ObservableList<String> covidStat = FXCollections.observableArrayList();
+            covidStat.add("true");
+            covidStat.add("false");
+            covidStatus.setItems(covidStat);
 
             //Service Request Table
             statusD.setItems(FXCollections
@@ -117,7 +117,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
             // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
-            COVIDLikelyColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("covidLikely"));
+            COVIDLikelyColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("isCovidLikely"));
             feverColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("fever"));
             coughColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("cough"));
             shortnessOfBreathColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("shortnessOfBreath"));
@@ -213,7 +213,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -232,7 +232,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
             db.editUser(covidSurveyTable.getItems().get(index).username, isCovidLikely);
             refresh();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -103,7 +103,7 @@
                               <Insets top="20.0" />
                            </VBox.margin>
                         </Line>
-                        <JFXComboBox fx:id="covidStatus" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+                        <JFXComboBox fx:id="covidStatus" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="COVID Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
                            <padding>
                               <Insets left="10.0" />
                            </padding>
@@ -193,9 +193,9 @@
                      <children>
                         <ScrollPane prefHeight="766.0" prefWidth="992.0">
                            <content>
-                              <TableView fx:id="covidSurveyTable" maxWidth="1135.0" prefHeight="750.0" prefWidth="1135.0">
+                              <TableView fx:id="covidSurveyTable" prefHeight="750.0" prefWidth="2000.0">
                                  <columns>
-                                    <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Name" />
+                                    <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Username" />
                                     <TableColumn fx:id="COVIDLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Covid Likely" />
                                     <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
                                     <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Fever" />
