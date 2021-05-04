@@ -21,6 +21,7 @@ import javafx.scene.shape.Line;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +110,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
             // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
+            COVIDLikelyColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("covidLikely"));
             feverColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("fever"));
             coughColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("cough"));
             shortnessOfBreathColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("shortnessOfBreath"));
@@ -118,6 +120,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             lossOfTasteSmellColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("lossOfTasteSmell"));
             chillsColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("chills"));
             quarantineColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("quarantine"));
+            quarantineColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("isCovidLikely"));
 
             srVbox.setVisible(true);
             covidVbox.setVisible(false);
@@ -152,6 +155,11 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 serviceRequests = db.getServiceRequestsByAuthor(Aapp.username);
                 srTable.getItems().clear();
                 for(Map<String, String> req : serviceRequests){
+                    srTable.getItems().add(new Request(req));
+                }
+
+                covSurveys = db.getSurveysByAuthor(Aapp.username);
+                for(Map<String, String> req : covSurveys){
                     srTable.getItems().add(new Request(req));
                 }
             }
@@ -193,7 +201,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
-            db.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -292,6 +299,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         private String lossOfTasteSmell;
         private String chills;
         private String quarantine;
+        private String isCovidLikely;
 
         public CovidSurvey(Map<String, String> survey) {
             this.username = survey.get("USERNAME");
@@ -306,6 +314,11 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.nauseaDiarrhea = survey.get("NAUSEADIARRHEA");
             this.lossOfTasteSmell = survey.get("LOSSTASTESMELL");
             this.chills = survey.get("NEWCHILLS");
+            try {
+                this.isCovidLikely = db.getUserByUsername(survey.get("USER")).get("COVIDLIKELY");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
         public String isFever() {
@@ -394,6 +407,14 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
         public void setQuarantine(String quarantine) {
             this.quarantine = quarantine;
+        }
+
+        public String isCovidLikely() {
+            return isCovidLikely;
+        }
+
+        public void setIsCovidLikely(String isCovidLikely) {
+            this.isCovidLikely = isCovidLikely;
         }
     }
 

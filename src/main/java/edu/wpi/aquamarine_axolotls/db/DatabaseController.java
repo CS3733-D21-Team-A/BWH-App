@@ -793,6 +793,25 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	/**
+	 *
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getSurveys() throws SQLException{
+		return covidSurveyTable.getEntries();
+	}
+
+	public List<Map<String, String>> getSurveysByAuthor(String username) throws SQLException{
+		return covidSurveyTable.getEntriesByValue("USERNAME", username);
+	}
+
+	public void deleteSurvey(String username) throws SQLException{
+		List<Map<String,String>> entries = covidSurveyTable.getEntriesByValue("USERNAME", username);
+		covidSurveyTable.deleteEntry(entries.get(0).get("USERNAME"));
+	}
+
+
 
 	// ===== DATABASE CREATION =====
 
