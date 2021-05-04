@@ -48,7 +48,7 @@ public class NewAccount extends GenericPage {
         });
 
         confirmPassword.textProperty().addListener(observable -> {
-            subject.setState(password.getText(), confirmPassword.getText());
+            subject.setConfirmPassword(confirmPassword.getText());
         });
     }
 
