@@ -325,7 +325,7 @@
                 <Font name="Baskerville" size="20.0" />
             </font>
         </JFXButton>
-        <JFXButton fx:id="backB" layoutX="9.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="51.0" prefWidth="65.0" text=" ">
+        <JFXButton layoutX="9.0" layoutY="132.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="51.0" prefWidth="65.0" text=" ">
          <graphic>
               <ImageView fitHeight="43.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                   <image>
