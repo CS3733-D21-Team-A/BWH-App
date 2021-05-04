@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -56,6 +57,15 @@ public class Navigation extends GenericMap {
                 options.add(node.get("LONGNAME"));
             }
         }
+
+        // If patient has COVID, force them into emergency entrance
+        // If not, force them thru normal entrance
+        if(db.getUserByUsername(Aapp.username).get("COVIDLIKELY").equals("YES")){
+            options.remove("75 Francis Valet Drop-off");
+        } else {
+            options.remove("Emergency Department Entrance");
+        }
+
         startLocation.setItems(options);
         destination.setItems(options);
 
