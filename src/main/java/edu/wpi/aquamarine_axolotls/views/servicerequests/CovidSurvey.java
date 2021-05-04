@@ -4,13 +4,17 @@ import com.jfoenix.controls.*;
 import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CovidSurvey extends GenericServiceRequest {
 
@@ -48,11 +52,9 @@ public class CovidSurvey extends GenericServiceRequest {
     private JFXCheckBox yes11;
     DatabaseController db;
 
-    HamburgerBasicCloseTransition transition;
-
-
     @FXML
     public void initialize() {
+        /*
         requestFieldList.add(new FieldTemplate<JFXCheckBox>(
                 "AREQUAR",
                 yes1,
@@ -110,6 +112,11 @@ public class CovidSurvey extends GenericServiceRequest {
                 (a) -> true));
 
 
+
+         */
+
+
+    startUp ();
     }
 
     @FXML
@@ -119,18 +126,38 @@ public class CovidSurvey extends GenericServiceRequest {
 
     @FXML //TODO: Submit to database
     public void submitButton() {
-        popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-            if(Aapp.username!=null){
-                //db.hasFilledOutSurvey(Aapp.username)
-        }
-        goHome();
-    }
+        System.out.println ( yes1.isSelected ( ) );
+        System.out.println ( yes2.isSelected ( ) );
 
-    public void menu() {
-        if (transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
+        Map<String, String> survey = new HashMap<> ();
+        survey.put("AREQUAR", Boolean.toString(yes1.isSelected()));
+        survey.put("NAUSADIRRHEA", Boolean.toString(yes2.isSelected()));
+        survey.put("SHORTBREATH", Boolean.toString(yes3.isSelected()));
+        survey.put("HASCOUGH", Boolean.toString(yes4.isSelected()));
+        survey.put("HASFEVER", Boolean.toString(yes5.isSelected()));
+        survey.put("NEWCHILLS", Boolean.toString(yes6.isSelected()));
+        survey.put("LOSSTASTESMELL", Boolean.toString(yes7.isSelected()));
+        survey.put("SORETHROAT", Boolean.toString(yes8.isSelected()));
+        survey.put("NASALCONGEST", Boolean.toString(yes9.isSelected()));
+        survey.put("MORETIRED", Boolean.toString(yes10.isSelected()));
+        survey.put("MUSCLEACHES", Boolean.toString(yes11.isSelected()));
+            if(Aapp.username!=null){
+                popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
+                survey.put("USERNAME", Aapp.username);
+                goHome();
+                try {
+                    db.addSurvey(survey);
+                    db.hasUserTakenCovidSurvey(Aapp.username);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace ( );
+                }
+            }
+            else{
+                popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. You will now be brought to the Navigation Page");
+                sceneSwitch ( "Navigation" ); //if a guest submits a covid survey itll take them straight to navigation???, save an instance that says the guest has taken the survey
+
+            }
+
     }
 }
 
