@@ -253,6 +253,8 @@ public class GenericMap extends GenericPage {
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
+        c.setStroke(color);
+        c.setVisible(true);
 
         if(nodesOnImage.containsKey(nodeID)){
             Circle prev = nodesOnImage.get(nodeID);
@@ -316,10 +318,10 @@ public class GenericMap extends GenericPage {
         if (snode.get("FLOOR").equals(FLOOR) && enode.get("FLOOR").equals(FLOOR)){
             double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
             double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
-            String startID = snode.get("STARTNODE");
+            String startID = snode.get("NODEID");
             double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
             double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
-            String endID = snode.get("ENDNODE");
+            String endID = enode.get("NODEID");
             drawTwoNodesWithEdge(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
         }
     }

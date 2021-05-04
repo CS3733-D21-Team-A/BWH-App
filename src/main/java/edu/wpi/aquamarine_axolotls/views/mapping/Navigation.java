@@ -407,13 +407,14 @@ public class Navigation extends GenericMap {
      * Highlights the current portion of the map that the current direction is on
      */
     public void highlightDirection() throws SQLException{
-        String curNode = currPathDir.get(1).get(dirIndex);
+        String curID = currPathDir.get(1).get(dirIndex);
+
         // draws an edge on map
-        if (curNode.contains(",")) {
-            int index = curNode.indexOf(",");
-            Map<String, String> start = db.getNode(curNode.substring(0,index));
-            Map<String, String> end = db.getNode(curNode.substring(index+1));
-            drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
+        if (curID.contains(",")) {
+            int index = curID.indexOf(",");
+            Map<String, String> start = db.getNode(curID.substring(0,index));
+            Map<String, String> end = db.getNode(curID.substring(index+1));
+            drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.RED );
 
             double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
             double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
@@ -432,8 +433,20 @@ public class Navigation extends GenericMap {
             }
 
         } else {
-            Map<String, String> node = db.getNode(curNode);
+            Map<String, String> node = db.getNode(curID);
             drawSingleNode(node, Color.RED);
+//            if(dirIndex + 1 < currPathDir.get(1).size()) {
+//                String nextID = currPathDir.get(1).get(dirIndex+1);
+//                nextID = nextID.substring(0, nextID.indexOf(","));
+//                node = db.getNode(nextID);
+//                drawSingleNode(node, Color.RED);
+//            }else {
+//                node = db.getNode(curID);
+//                drawSingleNode(node, Color.RED);
+//            }
+
+
+
             if (dirIndex == currPathDir.get(1).size() - 1){
                 double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
                 double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
