@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTabPane;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
@@ -9,9 +10,12 @@ import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
 import java.io.IOException;
@@ -43,11 +47,19 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     @FXML private TableColumn<CovidSurvey, String> chillsColumn;
     @FXML private TableColumn<CovidSurvey, String> quarantineColumn;
 
+    @FXML VBox srVbox;
     @FXML private JFXButton assignB;
     @FXML private JFXButton changeStatusB;
     @FXML private JFXComboBox assignD;
     @FXML JFXComboBox statusD;
     @FXML Line line;
+
+    @FXML VBox covidVbox;
+    @FXML JFXComboBox covidStatus;
+
+    @FXML private JFXTabPane tabs;
+    @FXML private Tab covidSurveys;
+
 
     DatabaseController db;
 
@@ -63,6 +75,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 statusD.setVisible(false);
                 assignD.setVisible(false);
                 line.setVisible(false);
+                tabs.getTabs().remove(covidSurveys);
             }
             else if(Aapp.userType.equals("Admin")){
                 ObservableList<String> names = FXCollections.observableArrayList();
@@ -83,7 +96,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 assignD.setItems(names);
             }
 
-
+            //Service Request Table
             statusD.setItems(FXCollections
                     .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.DONE),
@@ -94,6 +107,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("serviceRequest"));
             locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
 
+            // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
             feverColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("fever"));
             coughColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("cough"));
@@ -104,6 +118,10 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             lossOfTasteSmellColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("lossOfTasteSmell"));
             chillsColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("chills"));
             quarantineColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("quarantine"));
+
+            srVbox.setVisible(true);
+            covidVbox.setVisible(false);
+            srVbox.toFront();
 
             refresh();
         } catch (SQLException | IOException e) {
@@ -171,6 +189,35 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void changeCovidStatus() {
+        // TODO: add db integration
+        try {
+            if(covidStatus.getSelectionModel() == null) return;
+//            int index = srTable.getSelectionModel().getFocusedIndex();
+//            if(index == -1) return;
+
+            db = DatabaseController.getInstance();
+            String status = covidStatus.getSelectionModel().getSelectedItem().toString();
+//            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
+//            refresh();
+//            db.close();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showCovidBox() {
+        srVbox.setVisible(false);
+        covidVbox.setVisible(true);
+        covidVbox.toFront();
+    }
+
+    public void showSRBox() {
+        srVbox.setVisible(true);
+        covidVbox.setVisible(false);
+        srVbox.toFront();
     }
 
     public class Request { //This needs to be public for things to work :(

@@ -4,9 +4,10 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -23,9 +24,9 @@
    <left>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="310.0" style="-fx-background-color: #F0F0F0;" BorderPane.alignment="TOP_LEFT">
          <children>
-            <JFXButton minWidth="54.0" onAction="#goHome" prefHeight="49.0" prefWidth="54.0" text=" ">
+            <JFXButton minWidth="51.0" onAction="#goHome" prefHeight="26.0" prefWidth="51.0" text=" ">
                <VBox.margin>
-                  <Insets right="250.0" />
+                  <Insets right="250.0" top="10.0" />
                </VBox.margin>
                <graphic>
                   <ImageView fitHeight="45.0" fitWidth="35.0">
@@ -35,54 +36,97 @@
                   </ImageView>
                </graphic>
             </JFXButton>
-            <Label text="Service Requests">
-               <font>
-                  <Font name="Baskerville" size="25.0" />
-               </font>
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="313.0">
+            <Group>
                <children>
-                  <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #003da6; -fx-background-radius: 5; -fx-bold: true;" text="Assign" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="Baskerville" size="15.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="40.0" prefWidth="133.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE">
-                     <font>
-                        <Font name="Baskerville" size="15.0" />
-                     </font></JFXButton>
+                  <VBox fx:id="srVbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="310.0" style="-fx-background-color: #F0F0F0;">
+                     <children>
+                        <Label text="Service Requests">
+                           <font>
+                              <Font name="Baskerville" size="25.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="313.0">
+                           <children>
+                              <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #003da6; -fx-background-radius: 5; -fx-bold: true;" text="Assign" textFill="WHITE">
+                                 <HBox.margin>
+                                    <Insets right="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Baskerville" size="15.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="40.0" prefWidth="133.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE">
+                                 <font>
+                                    <Font name="Baskerville" size="15.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <Line fx:id="line" endX="175.0" stroke="#c4c4c4">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Line>
+                        <JFXComboBox fx:id="assignD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="statusD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </JFXComboBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="covidVbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="310.0" style="-fx-background-color: #F0F0F0;">
+                     <children>
+                        <Label text="COVID Surveys">
+                           <font>
+                              <Font name="Baskerville" size="25.0" />
+                           </font>
+                        </Label>
+                        <Line fx:id="line1" endX="175.0" stroke="#c4c4c4">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Line>
+                        <JFXComboBox fx:id="covidStatus" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </JFXComboBox>
+                        <HBox alignment="CENTER" prefHeight="39.0" prefWidth="310.0">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <JFXButton fx:id="changeCovidB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeCovidStatus" prefHeight="40.0" prefWidth="176.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Update COVID Status" textFill="WHITE">
+                                 <font>
+                                    <Font name="Baskerville" size="15.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </HBox>
-            <Line fx:id="line" endX="175.0" stroke="#c4c4c4">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Line>
-            <JFXComboBox fx:id="assignD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </JFXComboBox>
-            <JFXComboBox fx:id="statusD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
-               <padding>
-                  <Insets left="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </JFXComboBox>
+            </Group>
          </children>
       </VBox>
    </left>
@@ -115,7 +159,7 @@
                   <Insets />
                </VBox.margin>
             </HBox>
-            <Rectangle fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1295.0">
+            <Rectangle fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>
@@ -124,58 +168,57 @@
       </VBox>
    </top>
    <center>
-      <JFXTabPane BorderPane.alignment="CENTER">
+      <JFXTabPane fx:id="tabs" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" BorderPane.alignment="TOP_LEFT">
          <tabs>
-            <Tab fx:id="covidSurveys" text="COVID Surveys">
-               <graphic>
-                  <TableView fx:id="covidSurveyTable" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0">
-                     <columns>
-                        <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Name" />
-                        <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Fever" />
-                        <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Severe Cough" />
-                        <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Shortness of Breath" />
-                        <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Muscle Aches" />
-                        <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Tired" />
-                        <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Runny Nose/Nasal Congestion" />
-                        <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Sore Throat" />
-                        <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Nausea/Diarrhea" />
-                        <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Loss of Taste/Smell" />
-                        <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Chills" />
-                        <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
-                     </columns>
-                  </TableView>
-               </graphic>
-            </Tab>
-            <Tab fx:id="serviceRequests" text="Service Request">
-               <graphic>
-                  <TableView fx:id="srTable1" maxWidth="1000.0" prefHeight="825.0" prefWidth="974.0">
-                     <columns>
-                        <TableColumn fx:id="assignedColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assigned" />
-                        <TableColumn fx:id="assigneeColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assignee" />
-                        <TableColumn fx:id="statusColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Status" />
-                        <TableColumn fx:id="serviceRequestColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Service Name" />
-                        <TableColumn fx:id="locationColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Location" />
-                     </columns>
-                  </TableView>
-               </graphic>
+            <Tab fx:id="serviceRequests" onSelectionChanged="#showSRBox" text="Service Request">
                <content>
-                  <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="Untitled Tab 1">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                      <Tab text="Untitled Tab 2">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                    </tabs>
-                  </TabPane>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="750.0" prefWidth="1400.0">
+                           <columns>
+                              <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assigned" />
+                              <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assignee" />
+                              <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Status" />
+                              <TableColumn fx:id="serviceRequestColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Service Name" />
+                              <TableColumn fx:id="locationColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Location" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="covidSurveys" onSelectionChanged="#showCovidBox" text="COVID Surveys">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane prefHeight="766.0" prefWidth="992.0">
+                           <content>
+                              <TableView fx:id="covidSurveyTable" maxWidth="1135.0" prefHeight="750.0" prefWidth="1135.0">
+                                 <columns>
+                                    <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Name" />
+                                    <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Fever" />
+                                    <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Severe Cough" />
+                                    <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Shortness of Breath" />
+                                    <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Muscle Aches" />
+                                    <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Tired" />
+                                    <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Runny Nose/Nasal Congestion" />
+                                    <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Sore Throat" />
+                                    <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Nausea/Diarrhea" />
+                                    <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Loss of Taste/Smell" />
+                                    <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Chills" />
+                                    <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
                </content>
             </Tab>
          </tabs>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </JFXTabPane>
    </center>
 </BorderPane>
