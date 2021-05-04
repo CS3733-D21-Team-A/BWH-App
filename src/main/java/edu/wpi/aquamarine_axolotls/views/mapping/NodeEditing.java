@@ -287,13 +287,7 @@ public class NodeEditing extends GenericMap {
         contextMenu.getItems().clear();
         contextMenu.getItems().addAll(newNode, editNode, deleteNode, addAnchorPoint, selectNode, alignVertical, alignHorizontal, alignSlope, deselect);
 
-//        mapImage.setOnContextMenuRequested(new EventHandler() {
-//            @Override
-//            public void handle(ContextMenuEvent event) {
-//                contextMenu.show(mapImage, event.getScreenX(), event.getScreenY());
-//            }
-//        });
-        //mapView.setOnContextMenuRequested(e -> contextMenu.show(mapView, e.getScreenX(), e.getScreenY()));
+
         mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
 
             public void handle(ContextMenuEvent event) {
@@ -320,7 +314,7 @@ public class NodeEditing extends GenericMap {
         });
 
         mapView.addEventHandler(MouseEvent.MOUSE_MOVED, event ->{
-            if(!event.isAltDown() || selectedNodesList.isEmpty()) return;
+            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
             Map<String, String> node = selectedNodesList.get(0);
             String nodeID = node.get("NODEID");
             int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
