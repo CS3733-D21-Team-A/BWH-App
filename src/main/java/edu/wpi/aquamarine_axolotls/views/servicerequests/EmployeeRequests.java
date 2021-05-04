@@ -47,6 +47,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     @FXML private TableColumn<CovidSurvey, String> lossOfTasteSmellColumn;
     @FXML private TableColumn<CovidSurvey, String> chillsColumn;
     @FXML private TableColumn<CovidSurvey, String> quarantineColumn;
+    @FXML private TableColumn<CovidSurvey, String> COVIDLikelyColumn;
 
     @FXML VBox srVbox;
     @FXML private JFXButton assignB;
@@ -97,6 +98,12 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 assignD.setItems(names);
             }
 
+            //COVID Status
+            ObservableList<String> covidStatus = FXCollections.observableArrayList();
+            covidStatus.add("True");
+            covidStatus.add("False");
+            statusD.setItems(covidStatus);
+
             //Service Request Table
             statusD.setItems(FXCollections
                     .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
@@ -145,7 +152,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     srTable.getItems().add(new Request(req));
                 }
 
-//                covSurveys = db.getSurvey()       // TODO: need to get all the surveys from covid db
+                covSurveys = db.getSurveys();
                 covidSurveyTable.getItems().clear();
                 for (Map<String, String> survey : covSurveys){
                     covidSurveyTable.getItems().add(new CovidSurvey(survey));
@@ -210,14 +217,17 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         // TODO: add db integration
         try {
             if(covidStatus.getSelectionModel() == null) return;
-//            int index = srTable.getSelectionModel().getFocusedIndex();
-//            if(index == -1) return;
+            int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+            if(index == -1) return;
 
             db = DatabaseController.getInstance();
             String status = covidStatus.getSelectionModel().getSelectedItem().toString();
-//            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
-//            refresh();
-//            db.close();
+
+            Map<String, String> isCovidLikely = new HashMap<>();
+            isCovidLikely.put("COVIDLIKELY", status);
+
+            db.editUser(covidSurveyTable.getItems().get(index).username, isCovidLikely);
+            refresh();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }

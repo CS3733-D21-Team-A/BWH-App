@@ -196,6 +196,8 @@
                               <TableView fx:id="covidSurveyTable" maxWidth="1135.0" prefHeight="750.0" prefWidth="1135.0">
                                  <columns>
                                     <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Name" />
+                                    <TableColumn fx:id="COVIDLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Covid Likely" />
+                                    <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
                                     <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Fever" />
                                     <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Severe Cough" />
                                     <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Shortness of Breath" />
@@ -206,7 +208,6 @@
                                     <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Nausea/Diarrhea" />
                                     <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Loss of Taste/Smell" />
                                     <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Chills" />
-                                    <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
                                  </columns>
                               </TableView>
                            </content>
