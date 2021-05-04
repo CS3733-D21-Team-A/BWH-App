@@ -678,6 +678,21 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	/** Checks to see if a user has taken the COVID survey
+	 *
+	 * @param username The username of the user
+	 * @return True if they have taken it, false otherwise
+	 * @throws SQLException
+	 */
+	public boolean hasUserTakenCovidSurvey(String username) throws SQLException{
+		if(userTable.getEntry(username).get("TAKENSURVEY").equals("YES")) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
@@ -743,7 +758,8 @@ public class DatabaseController implements AutoCloseable {
 
 	// ======= COVID SURVEY ==========
 
-	/** Adds a survey that the user took to the database
+	/** Adds a survey that the user took to the database, and changes the users TAKENSURVEY
+	 *  field to YES
 	 *
 	 * @param survey The survey that the user has submitted
 	 * @throws SQLException
@@ -754,6 +770,12 @@ public class DatabaseController implements AutoCloseable {
 		}
 		//TODO: Make it so guests create a random ID for username
 		covidSurveyTable.addEntry(survey);
+
+		String username = covidSurveyTable.getEntry(survey.get("USERNAME")).get("USERNAME");
+		Map<String, String> theUser = userTable.getEntry(username);
+		theUser.replace("TAKENSURVEY","YES");
+
+		userTable.editEntry(username, theUser);
 	}
 
 	/** Gets the survey from a specific user
