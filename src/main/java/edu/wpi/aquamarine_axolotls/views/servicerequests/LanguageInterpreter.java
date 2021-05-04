@@ -17,9 +17,9 @@ import java.util.ArrayList;
 public class LanguageInterpreter extends GenericServiceRequest {
 
     @FXML
-    public JFXComboBox languageSelect;
+    private JFXComboBox languageSelect;
     @FXML
-    public JFXTextArea preferences;
+    private JFXTextArea preferences;
     @FXML
     private JFXComboBox roomNumber;
     @FXML

@@ -4,6 +4,7 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +74,9 @@ public class EdgeEditing extends GenericMap {
     DatabaseController db;
     CSVHandler csvHandler;
     List<Map<String, String>> selectedNodesList = new ArrayList<>();
+    private Map<String, String> prevSelectedEdge = null;
+    private Map<String, String> prevSelectedNodeStart = null;
+    private Map<String, String> prevSelectedNodeEnd = null;
 
     @FXML
     public void initialize() {
@@ -168,7 +173,7 @@ public class EdgeEditing extends GenericMap {
                         edge.get("ENDNODE"));
 
                 table.getItems().add(cur);
-                drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")),Color.BLUE , Color.BLUE , Color.BLACK);
+                drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
             }
             for (Map<String, String> node : nodes) nodeOptions.add(node.get("NODEID"));
 
@@ -205,12 +210,12 @@ public class EdgeEditing extends GenericMap {
         });
     }
 
-    public void changeFloor(String floor) throws SQLException{
+    public void changeFloor(String floor) throws SQLException {
         super.changeFloor(floor);
         selectedNodesList.clear();
         contextMenu.getItems().get(0).setVisible(true);
         for (Map<String, String> edge : db.getEdges()) {
-            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")),Color.BLUE , Color.BLUE , Color.BLACK);
+            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
         }
     }
 
@@ -218,7 +223,12 @@ public class EdgeEditing extends GenericMap {
      * Button press that sets unused fields to be hidden, and needed fields to be visible. Also sets
      * state so that the desired add action will happen.
      */
-    public void pressAddButton() {
+    public void pressAddButton() throws SQLException{
+        changeFloor("1");
+        clearfields();
+        prevSelectedEdge = null;
+        prevSelectedNodeEnd = null;
+        prevSelectedNodeStart = null;
         edgeT.toFront();
         edgeDropdown.setVisible(false);
         edgeIDtextbox.setVisible(true);
@@ -233,7 +243,12 @@ public class EdgeEditing extends GenericMap {
      * Button press that sets unused fields to be hidden, and needed fields to be visible. Also sets
      * state so that upon submition the desired edit will happen.
      */
-    public void pressEditButton() {
+    public void pressEditButton() throws SQLException{
+        changeFloor("1");
+        clearfields();
+        prevSelectedEdge = null;
+        prevSelectedNodeEnd = null;
+        prevSelectedNodeStart = null;
         edgeD.toFront();
         edgeDropdown.setVisible(true);
         edgeIDtextbox.setVisible(false);
@@ -249,14 +264,18 @@ public class EdgeEditing extends GenericMap {
      * state so that upon submission the desired deletion will happen.
      */
     @FXML
-    public void pressDeleteButton() {
+    public void pressDeleteButton() throws SQLException{
+        changeFloor("1");
+        clearfields();
+        prevSelectedEdge = null;
+        prevSelectedNodeEnd = null;
+        prevSelectedNodeStart = null;
         edgeD.toFront();
         edgeDropdown.setVisible(true);
         edgeIDtextbox.setVisible(false);
         startNodeDropdown.setVisible(false);
         endNodeDropdown.setVisible(false);
         submissionButton.setVisible(true);
-
         state = "delete";
     }
 
@@ -290,7 +309,7 @@ public class EdgeEditing extends GenericMap {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
             } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Depth First")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
-            }else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Best First")) {
+            } else if (algoSelectBox.getSelectionModel().getSelectedItem().equals("Best First")) {
                 SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BestFirstSearch());
             }
         }
@@ -445,7 +464,7 @@ public class EdgeEditing extends GenericMap {
      * Facilitates changing the edge map based on the current state of the program
      */
     @FXML
-    public void submitfunction() {
+    public void submitfunction() throws SQLException {
         switch (state) {
             case "delete":
                 delete();
@@ -463,9 +482,92 @@ public class EdgeEditing extends GenericMap {
         clearfields();
         contextMenu.getItems().get(contextMenu.getItems().size() - 1).fire();
         initialize();
+        changeFloor("1");
+        prevSelectedEdge = null;
+        prevSelectedNodeEnd = null;
+        prevSelectedNodeStart = null;
+
+    }
+
+    /**
+     * Highlight the edge in edge drop down with color gold
+     */
+    @FXML
+    public void edgeEditHighLight() throws SQLException {
+        if (edgeDropdown.getSelectionModel().getSelectedItem() != null) {
+            Map<String, String> edge = db.getEdge(edgeDropdown.getSelectionModel().getSelectedItem().toString()); //get the edge from selection
+            String floor = db.getNode(edge.get("STARTNODE")).get("FLOOR"); //get the floor of the startint node
+            changeFloor(floor); //draw the floor of the edge should exit on
+            if (prevSelectedNodeStart != null) {
+                if (prevSelectedNodeStart.get("FLOOR").equals(floor)) {
+                    drawSingleNodeHighLight(prevSelectedNodeStart, Color.PURPLE);
+                }
+            }
+            if (prevSelectedNodeEnd != null) {
+                if (prevSelectedNodeEnd.get("FLOOR").equals(floor)) {
+                    drawSingleNodeHighLight(prevSelectedNodeEnd, Color.PURPLE);
+                }
+            }           //change floor will erase the previous selected nodes and edges, draw the previous selected back to the canvas
+            if (prevSelectedEdge != null) {
+                drawTwoNodesWithEdge(db.getNode(prevSelectedEdge.get("STARTNODE")), db.getNode(prevSelectedEdge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
+            }
+            prevSelectedEdge = edge;
+            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.GOLD, Color.GOLD, Color.GOLD); // highlight the currently selected edge/nodes
+        }
+    }
+    /**
+     * Highlight the nodes in startNode drop down with color purple
+     */
+    @FXML
+    public void startNodeHighLight() throws SQLException {
+        if (startNodeDropdown.getSelectionModel().getSelectedItem() != null) {
+            Map<String, String> node = db.getNode(startNodeDropdown.getSelectionModel().getSelectedItem().toString());//get the node from selection
+            String floor = node.get("FLOOR"); //get floor
+            changeFloor(floor); //draw the floor the node should be at
+            if (prevSelectedNodeEnd != null) {
+                if (prevSelectedNodeEnd.get("FLOOR").equals(floor)) {
+                    drawSingleNodeHighLight(prevSelectedNodeEnd, Color.PURPLE);
+                }
+            }
+            if (prevSelectedEdge != null) {
+                if (db.getNode(prevSelectedEdge.get("STARTNODE")).get("FLOOR").equals(floor)) {
+                    drawTwoNodesWithEdge(db.getNode(prevSelectedEdge.get("STARTNODE")), db.getNode(prevSelectedEdge.get("ENDNODE")), Color.GOLD, Color.GOLD, Color.GOLD);
+                }
+            }  //change floor will erase the previous selected nodes and edges, draw the previous selected back to the canvas
+            if (prevSelectedNodeStart != null) {
+                drawSingleNode(prevSelectedNodeStart, Color.BLUE);
+            } //if there is previously selected, change it back
+            prevSelectedNodeStart = node;
+            drawSingleNodeHighLight(node, Color.PURPLE); // highlight the currently selected edge/nodes
+        }
+    }
+    /**
+     * Highlight the nodes in endNode drop down with color purple
+     */
+    @FXML
+    public void endNodeHighLight() throws SQLException {
+        if (startNodeDropdown.getSelectionModel().getSelectedItem() != null) {
+            Map<String, String> node = db.getNode(endNodeDropdown.getSelectionModel().getSelectedItem().toString());
+            String floor = node.get("FLOOR");
+            changeFloor(floor);
+            if (prevSelectedNodeStart != null) {
+                if (prevSelectedNodeStart.get("FLOOR").equals(floor)) {
+                    drawSingleNodeHighLight(prevSelectedNodeStart, Color.PURPLE);
+                }
+            }
+            if (prevSelectedEdge != null) {
+                if (db.getNode(prevSelectedEdge.get("STARTNODE")).get("FLOOR").equals(floor)) {
+                    drawTwoNodesWithEdge(db.getNode(prevSelectedEdge.get("STARTNODE")), db.getNode(prevSelectedEdge.get("ENDNODE")), Color.GOLD, Color.GOLD, Color.GOLD);
+                }
+            }
+            if (prevSelectedNodeEnd != null) {
+                drawSingleNode(prevSelectedNodeEnd, Color.BLUE);
+            }
+            prevSelectedNodeEnd = node;
+            drawSingleNodeHighLight(node, Color.PURPLE);
+        }
     }
 }
-
 
 
 //    public void changeFloorNodes(){
