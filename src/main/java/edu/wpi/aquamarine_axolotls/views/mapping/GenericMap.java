@@ -288,8 +288,8 @@ public class GenericMap extends GenericPage {
      */
     private void drawSingleNodeHighLight(double x, double y, Color color){
         double radius = 6;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
+        //x = x - (radius / 2);
+        //y = y - (radius / 2);
 
         Circle c = new Circle();
         c.setCenterX(x);
