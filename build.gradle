@@ -52,19 +52,11 @@ dependencies {
 
             'org.junit.jupiter:junit-jupiter:5.4.2',
 
-//            files('app/libs/en_us.jar'),
-//            files('app/libs/cmulex.jar'),
-//            files('app/libs/freetts.jar'),
-//            files('app/libs/cmu_us_kal.jar')
-
+            'org.jvoicexml:cmu_us_kal:1.2.3-SNAPSHOT',
+            'org.jvoicexml:cmu_time_awb:1.2.3-SNAPSHOT',
+            'org.jvoicexml:en_us:1.2.3-SNAPSHOT',
+            'org.jvoicexml:freetts:1.2.3-SNAPSHOT'
     )
-    implementation group: 'org.jvoicexml', name: 'cmu_us_kal', version: '1.2.3-SNAPSHOT'
-    implementation group: 'org.jvoicexml', name: 'cmu_time_awb', version: '1.2.3-SNAPSHOT'
-    implementation group: 'org.jvoicexml', name: 'en_us', version: '1.2.3-SNAPSHOT'
-    implementation group: 'org.jvoicexml', name: 'freetts', version: '1.2.3-SNAPSHOT'
-
-//    compile fileTree(dir: 'app/libs', include: ['*.jar'])
-
 
 
 //These are test dependencies. These are only used for running verification tasks via Gradle.
