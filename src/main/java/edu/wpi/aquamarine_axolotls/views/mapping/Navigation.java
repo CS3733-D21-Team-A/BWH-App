@@ -50,7 +50,7 @@ public class Navigation extends GenericMap {
     static int dirIndex = 0;
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
     private Map<String,String> endPoint;
-    private VoiceController voice = new VoiceController("kevin");
+    private VoiceController voice = new VoiceController("kevin16");
 
     @FXML
     public void initialize() throws SQLException {
