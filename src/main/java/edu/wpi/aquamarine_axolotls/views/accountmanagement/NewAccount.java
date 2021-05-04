@@ -37,6 +37,16 @@ public class NewAccount extends GenericPage {
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
+        Subject subject = new Subject();
+        PasswordObserver passwordObserver = new PasswordObserver(subject, );
+
+        password.textProperty().addListener(observable -> {
+            subject.setState(password.getText(), confirmPassword.getText());
+        });
+
+        confirmPassword.textProperty().addListener(observable -> {
+            subject.setState(password.getText(), confirmPassword.getText());
+        });
     }
 
     @FXML
