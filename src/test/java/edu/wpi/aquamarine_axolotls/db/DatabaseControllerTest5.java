@@ -268,17 +268,8 @@ public class DatabaseControllerTest5 {
             newFavList2.add(newFav4);
 
 
-//            db.deleteFavoriteNodeFromUser("Alexa123","ParkingSpot");
-
-            assertEquals(db.getFavoriteNodeForUser("Alexa123", "Favorite Bathroom"),newFav);
-//            boolean pass = true;
-//            try{
-//                db.getFavoriteNodeForUser("Alexa123", "Parking Spot");
-//                pass = false;
-//            }catch (SQLException throwables){
-//
-//            }
-//            if(!pass){fail();}
+            db.deleteFavoriteNodeFromUser("Alexa123","ParkingSpot");
+            assertEquals(newFav,db.getFavoriteNodeForUser("Alexa123","Favorite Bathroom"));
             assertEquals(db.getFavoriteNodesForUser("Alexa123"),newFavList);
             assertEquals(db.getFavoriteNodeForUser("Seansta18", "Favorite Bathroom"),newFav3);
             assertEquals(db.getFavoriteNodeForUser("Seansta18", "Parking Spot"),newFav4);

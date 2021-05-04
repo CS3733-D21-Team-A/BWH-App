@@ -737,11 +737,13 @@ public class DatabaseController implements AutoCloseable {
 	 * @return
 	 */
 	public String getFAVID(String username, String nodeName) {
+		String returnValue = null;
 		try {
-			return getFavoriteNodeForUser(username, nodeName).get("FAVID");
+			returnValue = getFavoriteNodeForUser(username, nodeName).get("FAVID");
 		}catch (SQLException throwables) {
 			return null;
 		}
+		return returnValue;
 	}
 
 	/**
