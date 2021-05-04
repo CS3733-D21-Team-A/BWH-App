@@ -12,6 +12,7 @@ plugins {
     id 'application'
     id 'java'
 }
+
 mainClassName = 'edu.wpi.aquamarine_axolotls.Main'
 
 
@@ -22,6 +23,9 @@ repositories {
     jcenter()
     maven {
         url 'https://apisite.crmyers.dev/maven'
+    }
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots"
     }
     flatDir {
         dirs 'libs'
@@ -47,16 +51,19 @@ dependencies {
             'com.google.maps:google-maps-services:0.18.0',
 
             'org.junit.jupiter:junit-jupiter:5.4.2',
-            group: 'com.google.cloud', name: 'google-cloud-texttospeech', version: '1.2.1',
 
-            files('app/libs/en_us.jar'),
-            files('app/libs/cmulex.jar'),
-            files('app/libs/freetts.jar'),
-            files('app/libs/cmu_us_kal.jar')
+//            files('app/libs/en_us.jar'),
+//            files('app/libs/cmulex.jar'),
+//            files('app/libs/freetts.jar'),
+//            files('app/libs/cmu_us_kal.jar')
 
     )
+    implementation group: 'org.jvoicexml', name: 'cmu_us_kal', version: '1.2.3-SNAPSHOT'
+    implementation group: 'org.jvoicexml', name: 'cmu_time_awb', version: '1.2.3-SNAPSHOT'
+    implementation group: 'org.jvoicexml', name: 'en_us', version: '1.2.3-SNAPSHOT'
+    implementation group: 'org.jvoicexml', name: 'freetts', version: '1.2.3-SNAPSHOT'
 
-    compile fileTree(dir: 'app/libs', include: ['*.jar'])
+//    compile fileTree(dir: 'app/libs', include: ['*.jar'])
 
 
 

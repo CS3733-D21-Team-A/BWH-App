@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.tts;
 
 import com.sun.speech.freetts.VoiceManager;
+import com.sun.speech.freetts.Voice;
 
 public class VoiceController {
     private String name;
