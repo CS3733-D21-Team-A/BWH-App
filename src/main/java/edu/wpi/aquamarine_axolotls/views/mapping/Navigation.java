@@ -198,7 +198,7 @@ public class Navigation extends GenericMap {
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
                 if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
             }
-            if (intermediatePoints.get(intermediatePoints.size() - 1).get("FLOOR").equals(FLOOR))
+            if (intermediatePoints.size() > 0 && intermediatePoints.get(intermediatePoints.size() - 1).get("FLOOR").equals(FLOOR))
                 drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
         }
         else drawNodes(Color.BLUE);
