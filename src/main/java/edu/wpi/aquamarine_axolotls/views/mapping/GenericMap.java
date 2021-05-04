@@ -237,8 +237,6 @@ public class GenericMap extends GenericPage {
      */
     public void drawSingleNode(double x, double y, String nodeID, Color color){
         double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
 
         Circle c = new Circle();
         c.setCenterX(x);

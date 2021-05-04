@@ -320,11 +320,10 @@ public class NodeEditing extends GenericMap {
         });
 
         mapView.addEventHandler(MouseEvent.MOUSE_MOVED, event ->{
-            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
+            if(!event.isAltDown() || selectedNodesList.isEmpty()) return;
             Map<String, String> node = selectedNodesList.get(0);
             String nodeID = node.get("NODEID");
             int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
-            System.out.println(index);
             if(index != -1){
                 Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
                 mapView.getChildren().set(index, c);
@@ -741,28 +740,6 @@ public class NodeEditing extends GenericMap {
     public void pressEdgeButton(ActionEvent actionEvent) {
         sceneSwitch("EdgeEditing");
     }
-
-/*    public void drawSingleNode(Map<String, String> node) {
-        double x = xScale(Integer.parseInt(node.get("XCOORD")));
-        double y = yScale(Integer.parseInt(node.get("YCOORD")));
-        double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillOval(x, y, radius, radius);
-    }
-
-    public void drawSingleNode(Node node) {
-        double x = xScale(node.getXcoord());
-        double y = yScale(node.getYcoord());
-        double radius = 3;
-        x = x - (radius / 2);
-        y = y - (radius / 2);
-        GraphicsContext gc = mapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillOval(x, y, radius, radius);
-    }*/
 
     /**
      * Calculates the coordinates (rounded to the nearest int) of the location f the cursor when the mouse is clicked
