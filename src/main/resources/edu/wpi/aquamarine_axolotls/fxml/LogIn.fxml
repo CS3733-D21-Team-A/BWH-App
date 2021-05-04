@@ -51,7 +51,7 @@
                </font>
             </Text>
             <Rectangle fill="#003da6" height="35.0" layoutX="-575.0" layoutY="-615.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1873.0" y="600.0" />
-            <JFXButton fx:id="backB" layoutX="14.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="72.0" prefWidth="272.0" text=" " />
+            <JFXButton layoutX="14.0" layoutY="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="72.0" prefWidth="272.0" text=" " />
             <ImageView fitHeight="51.0" fitWidth="38.0" layoutX="16.0" layoutY="33.0">
                <image>
                   <Image url="@../img/back icon.jpg" />
@@ -78,7 +78,7 @@
                   <Font name="Baskerville" size="30.0" />
                </font>
             </JFXPasswordField>
-            <JFXButton fx:id="submit" layoutX="544.0" layoutY="572.0" minHeight="30.0" onAction="#confirmUser" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+            <JFXButton layoutX="544.0" layoutY="572.0" minHeight="30.0" onAction="#confirmUser" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
                <font>
                   <Font name="Baskerville" size="40.0" />
                </font>

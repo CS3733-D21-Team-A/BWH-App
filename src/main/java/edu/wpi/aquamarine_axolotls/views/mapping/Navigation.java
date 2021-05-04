@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -17,9 +18,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import sun.font.TextLabel;
+import javafx.scene.shape.Polygon;
 
 import javax.naming.Context;
 import java.sql.SQLException;
@@ -48,6 +51,8 @@ public class Navigation extends GenericMap {
     private int activePath = 0;
     private List<List<String>> currPathDir = new ArrayList<>();
     static int dirIndex = 0;
+    private List<Map<String,String>> intermediatePoints = new ArrayList<>();
+    private Map<String,String> endPoint;
 
     @FXML
     public void initialize() throws SQLException {
@@ -124,8 +129,12 @@ public class Navigation extends GenericMap {
 
         stepByStep.setVisible(false);
         listDirVBox.setVisible(false);
+        listDirVBox.toFront();
         treeTable.setVisible(true);
         treeTable.toFront();
+
+        MenuItem item1 = new MenuItem(("Add Stop"));
+        MenuItem item2 = new MenuItem(("Add to Favorites"));
 
         treeTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -193,7 +202,13 @@ public class Navigation extends GenericMap {
 
     public void changeFloor(String floor) throws SQLException{
         drawFloor(floor);
-        if(activePath == 1) drawPath(floor);
+        if(activePath == 1) {
+            drawPath(floor);
+            for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
+                drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+            }
+            drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
+        }
         else drawNodes(Color.BLUE);
     }
 
@@ -204,16 +219,16 @@ public class Navigation extends GenericMap {
         stopList.clear();
         currPath.clear();
         currPathDir.clear();
+        intermediatePoints.clear();
         activePath = 0;
         etaLabel.setText("");
         startLabel.setText("");
         endLabel.setText("");
         drawNodesAndFloor(FLOOR, Color.BLUE);
-        /*if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
+        if (startLocation.getSelectionModel() != null && destination.getSelectionModel() != null) {
             startLocation.getSelectionModel().clearSelection();
             destination.getSelectionModel().clearSelection();
-        }*/
-
+        }
 
         listDirVBox.setVisible(false);
         treeTable.setVisible(true);
@@ -227,7 +242,8 @@ public class Navigation extends GenericMap {
     public void findPath() throws SQLException{
         currPath.clear();
         stopList.clear();
-        /*
+        intermediatePoints.clear();
+
         activePath = 0;
         if (startLocation.getSelectionModel().getSelectedItem() == null || destination.getSelectionModel().getSelectedItem() == null) {
             return;
@@ -239,7 +255,8 @@ public class Navigation extends GenericMap {
         drawNodesAndFloor(db.getNodesByValue("LONGNAME", start).get(0).get("FLOOR"), Color.BLUE); // TODO : this is weird
         findPathSingleSegment(start, end);
         drawPath(FLOOR);
-        //drawFloor(FLOOR); // do we need this?*/
+        intermediatePoints.add(db.getNodesByValue("LONGNAME",end).get(0));
+        //drawFloor(FLOOR); // do we need this?
     }
 
 
@@ -256,6 +273,8 @@ public class Navigation extends GenericMap {
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
+            drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
+            drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
         }
     }
     // draw floor that makes everything transparent
@@ -298,7 +317,7 @@ public class Navigation extends GenericMap {
     }
 
     /**
-     * Cancels the current set of step-by-step text directions
+     * Cancels the current set of text directions
      */
     public void cancelDir() throws SQLException {
         stepByStep.setVisible(false);
@@ -306,8 +325,8 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         listDirVBox.toFront();
 
-        //startLocation.setDisable(false);
-        //destination.setDisable(false);
+        startLocation.setDisable(false);
+        destination.setDisable(false);
         findPathButton.setDisable(false);
         cancelPath.setDisable(false);
 
@@ -323,8 +342,8 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(false);
         stepByStep.toFront();
 
-        //startLocation.setDisable(true);
-        //destination.setDisable(true);
+        startLocation.setDisable(true);
+        destination.setDisable(true);
         findPathButton.setDisable(true);
         cancelPath.setDisable(true);
 
@@ -367,7 +386,7 @@ public class Navigation extends GenericMap {
             String curNode = currPathDir.get(1).get(dirIndex);
             String curFloor = getInstructionsFloor(curNode);
             if(!curFloor.equals(FLOOR)){
-                drawPath(curFloor); 
+                drawPath(curFloor);
             }
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
@@ -412,6 +431,7 @@ public class Navigation extends GenericMap {
         else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
         else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
         else if (direction.contains("Turn around")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+        else if (direction.contains("You have arrived at your destination.")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
         else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
 
         arrow.setImage(arrowImg);
@@ -424,9 +444,31 @@ public class Navigation extends GenericMap {
         cancelDir();
         listOfDirections.getChildren().clear();
         for (int i = 0; i < currPathDir.get(0).size(); i++) {
-            Label l = new Label(currPathDir.get(0).get(i));
+
+            ImageView arrowImage = new ImageView();     //fitHeight="69.0" fitWidth="73.0"
+            Image img;
+            String direction = currPathDir.get(0).get(i);
+
+            arrowImage.setFitWidth(50.0);
+            arrowImage.setFitHeight(50.0);
+
+            if (direction.contains("left")) img = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+            else if (direction.contains("right")) img = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
+            else if (direction.contains("elevator")) img = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
+            else if (direction.contains("stairs")) img = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
+            else if (direction.contains("Turn around")) img = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+            else if (direction.contains("You have arrived at your destination.")) img = new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
+            else img = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
+
+            arrowImage.setImage(img);
+
+            Label l = new Label(direction);
             l.setWrapText(true);
-            listOfDirections.getChildren().add(l);
+
+            HBox hbox = new HBox(10, arrowImage, l);
+            hbox.setAlignment(Pos.CENTER_LEFT);
+
+            listOfDirections.getChildren().add(hbox);
         }
     }
 
@@ -444,8 +486,51 @@ public class Navigation extends GenericMap {
             //System.out.println(end);
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
             //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
+
+            double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
+            double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
+            double X2 = xScale(Integer.parseInt(end.get("XCOORD")));
+            double Y2 = yScale(Integer.parseInt(end.get("YCOORD")));
+
+            double centerX = (X1 + X2) / 2.0;
+            double centerY = (Y1 + Y2) / 2.0;
+
+            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+            if(start.get("FLOOR").equals(end.get("FLOOR"))){
+                drawArrow(centerX, centerY + 1, start.get("FLOOR"), rotationAngle);
+            } else {
+                removeDirectionArrow();
+            }
+
         } else {
-            drawSingleNode(db.getNode(curNode), Color.RED);
+            Map<String, String> node = db.getNode(curNode);
+            drawSingleNode(node, Color.RED);
+            if (dirIndex == currPathDir.get(1).size() - 1){
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+
+                drawArrow(X1, Y1, node.get("FLOOR"), 0);
+            }
+            if (dirIndex != currPathDir.get(1).size() - 1){
+                String nextNodes = currPathDir.get(1).get(dirIndex + 1);
+                String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
+                Map<String, String> nextNode = db.getNode(nextNodeID);
+
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+                double X2 = xScale(Integer.parseInt(nextNode.get("XCOORD")));
+                double Y2 = yScale(Integer.parseInt(nextNode.get("YCOORD")));
+
+
+                double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+                if(node.get("FLOOR").equals(nextNode.get("FLOOR"))){
+                    drawArrow(X1, Y1, node.get("FLOOR"), rotationAngle);
+                }else {
+                    removeDirectionArrow();
+                }
+            }
         }
     }
 
@@ -469,17 +554,18 @@ public class Navigation extends GenericMap {
     public void addDestination(double x, double y) throws SQLException{
 
         //if(event.getButton().equals(MouseButton.PRIMARY)) {
-            Map<String, String> newDestination = getNearestNode(x, y);
+        Map<String, String> newDestination = getNearestNode(x, y);
 
-            if (newDestination == null) return;
+        if (newDestination == null) return;
 
-            else {
-                String currCloseName = newDestination.get("LONGNAME");
+        else {
+            String currCloseName = newDestination.get("LONGNAME");
 
             if (activePath == 0) { //if there's no active path, we'll handle that
                 if ( firstNodeSelect == 0 ) {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
+                    drawSingleNodeHighLight(newDestination,Color.GREEN);
                 }
                 else if ( firstNodeSelect == 1 ) {
                     stopList.clear ( );
@@ -488,6 +574,8 @@ public class Navigation extends GenericMap {
                     currPath.clear ( );
                     findPathSingleSegment ( stopList.get ( 0 ) ,stopList.get ( 1 ) );
                     drawPath ( FLOOR );
+                    intermediatePoints.add(newDestination);
+                    drawSingleNodeHighLight(newDestination,Color.MAGENTA);
                 }
             }
             else if (activePath == 1) {
@@ -497,6 +585,12 @@ public class Navigation extends GenericMap {
                     findPathSingleSegment(stopList.get(i), stopList.get(i + 1));
                 }
                 drawPath(FLOOR);
+                intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
+                for (Map<String,String> intermediatePointToDraw : intermediatePoints){
+                    drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
+                }
+                drawSingleNodeHighLight(newDestination,Color.MAGENTA);
+                //drawSingleNodeHighLight(endPoint,Color.MAGENTA);
             }
         }
     }

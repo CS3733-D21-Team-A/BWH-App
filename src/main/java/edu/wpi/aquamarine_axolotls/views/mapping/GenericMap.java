@@ -51,11 +51,20 @@ public class GenericMap extends GenericPage {
     double contextMenuX = 0;
     double contextMenuY = 0;
     Map<String, String> currentNode;
+    Map<String, Circle> nodesOnImage = new HashMap<>();
 
     // Floor stuff
-    Map<String, String> floors;
+    static Map<String, String> floors = new HashMap<String,String>() {{
+        put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
+        put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
+        put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
+        put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
+        put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
+    }};
     String FLOOR = "1";
     @FXML private Menu curFloor;
+
+    @FXML private Polygon directionArrow;
     
     // Node stuff
     //List<Node> validNodes = new ArrayList<>();
@@ -70,17 +79,11 @@ public class GenericMap extends GenericPage {
         try {
             db = DatabaseController.getInstance();
 
-  /*
-            }*/
-
-            floors = new HashMap<>();                   // stores map images
-            floors.put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
-            floors.put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
-            floors.put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
-            floors.put("2", "edu/wpi/aquamarine_axolotls/img/secondFloor.png");
-            floors.put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
-
             mapScrollPane.pannableProperty().set(true);
+            mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+                if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
+                else mapScrollPane.pannableProperty().set(false);
+            });
             Group contentGroup = new Group();
             zoomGroup = new Group();
             contentGroup.getChildren().add(zoomGroup);
@@ -91,6 +94,12 @@ public class GenericMap extends GenericPage {
             mapImage.setImage(new Image(floors.get(FLOOR)));
 
             curFloor = new Menu();
+
+//            directionArrow = new Polygon();
+//            directionArrow.setFill(Color.BLUE);
+//            directionArrow.setStroke(Color.BLUE);
+//            directionArrow.setVisible(false);
+//            mapView.getChildren().add(directionArrow);
 
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
@@ -181,6 +190,7 @@ public class GenericMap extends GenericPage {
         FLOOR = floor;
         mapImage.setImage(new Image(floors.get(FLOOR)));
         mapView.getChildren().clear();
+        nodesOnImage.clear();
         curFloor.setText( "Cur Floor : " + FLOOR);
     }
 
@@ -218,21 +228,13 @@ public class GenericMap extends GenericPage {
      * @param node the node to be drawn
      * @param color the color to fill the node
      */
-    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), color); }
-
-
-    /**
-     * Draws a single node as a colored dot
-     * This version takes a node
-     * @param node the node to be drawn
-     * @param color the color to fill the node
-     */
-    public void drawSingleNode(Node node, Color color) { drawSingleNode(node.getXcoord(), node.getYcoord(), color); }
+    public void drawSingleNode(Map<String, String> node, Color color) { drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color); }
 
 
 
-    public void drawSingleNode(int x, int y, Color color){
-        drawSingleNode(xScale(x), yScale(y), color);
+
+    public void drawSingleNode(int x, int y, String nodeID, Color color){
+        drawSingleNode(xScale(x), yScale(y), nodeID, color);
     }
 
     /**
@@ -241,8 +243,51 @@ public class GenericMap extends GenericPage {
      * @param y y coord
      * @param color color to fill the cicle
      */
-    public void drawSingleNode(double x, double y, Color color){
+    public void drawSingleNode(double x, double y, String nodeID, Color color){
         double radius = 3;
+
+        Circle c = new Circle();
+        c.setCenterX(x);
+        c.setCenterY(y);
+        c.setRadius(radius);
+        c.setFill(color);
+
+        if(nodesOnImage.containsKey(nodeID)){
+            Circle prev = nodesOnImage.get(nodeID);
+            mapView.getChildren().set(mapView.getChildren().indexOf(prev), c);
+        }
+        else mapView.getChildren().add(c);
+
+        nodesOnImage.put(nodeID, c);
+
+    }
+
+    /**
+     * Draws a single node as a colored dot
+     * This version takes a map of string to string
+     * @param node the node to be drawn
+     * @param color the color to fill the node
+     */
+    public void drawSingleNodeHighLight(Map<String, String> node, Color color) { drawSingleNodeHighLight(xScale(Integer.parseInt(node.get("XCOORD"))), yScale(Integer.parseInt(node.get("YCOORD"))), color); }
+
+
+    /**
+     * Draws a single node as a colored dot
+     * This version takes a node
+     * @param node the node to be drawn
+     * @param color the color to fill the node
+     */
+    public void drawSingleNodeHighLight(Node node, Color color) { drawSingleNodeHighLight(xScale(node.getXcoord()), yScale(node.getYcoord()), color); }
+
+
+    /**
+     * Draws a single circle of radius 3 at the given x and y coordinates
+     * @param x x coord
+     * @param y y coord
+     * @param color color to fill the cicle
+     */
+    private void drawSingleNodeHighLight(double x, double y, Color color){
+        double radius = 6;
         x = x - (radius / 2);
         y = y - (radius / 2);
 
@@ -251,12 +296,13 @@ public class GenericMap extends GenericPage {
         c.setCenterY(y);
         c.setRadius(radius);
         c.setFill(color);
-        //c.setId();
         mapView.getChildren().add(c);
     }
 
+
+
     /**
-     * Draws two nodes as dots, and connects them with a l
+     * Draws two nodes as dots, and connects them with a line (ONLY DRAWS ON THE CURRENT FLOOR)
      * This version takes two maps of string to string
      * @param snode Node to start with
      * @param enode Node to end at
@@ -309,8 +355,14 @@ public class GenericMap extends GenericPage {
         l.setStroke(edgeCol);
         mapView.getChildren().add(l);
 
-        drawSingleNode(startX, startY, snodeCol);
-        drawSingleNode(endX, endY, enodeCol);
+        //drawSingleNode(startX, startY, snodeCol); //TODO: update to have node IDs
+        //drawSingleNode(endX, endY, enodeCol);
+    }
+
+    void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
+//        double scaledX = xScale((int)centerX);
+//        double scaledY = xScale((int)centerY);
+        drawArrow(centerX, centerY, floor, floor, rotationAngle);
     }
 
     /**
@@ -323,13 +375,15 @@ public class GenericMap extends GenericPage {
         double startX = xScale(Integer.parseInt(start.get("XCOORD")));
         double startY = yScale(Integer.parseInt(start.get("YCOORD")));
 
-        double endX = xScale(Integer.parseInt(start.get("XCOORD")));
-        double endY = yScale(Integer.parseInt(start.get("YCOORD")));
+//        double endX = xScale(Integer.parseInt(start.get("XCOORD")));
+//        double endY = yScale(Integer.parseInt(start.get("YCOORD")));
 
         String startFloor = start.get("FLOOR");
         String endFloor = end.get("FLOOR");
 
-        drawArrow(startX, startY, endX, endY, startFloor, endFloor);
+        if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
+            drawArrow(startX, startY, startFloor, endFloor, 0.0);
+        }
     }
 
     /**
@@ -342,34 +396,44 @@ public class GenericMap extends GenericPage {
         double startX = xScale(start.getXcoord());
         double startY = yScale(start.getYcoord());
 
-        double endX = xScale(end.getXcoord());
-        double endY = yScale(end.getYcoord());
+//        double endX = xScale(end.getXcoord());
+//        double endY = yScale(end.getYcoord());
 
         String startFloor = start.getFloor();
         String endFloor = end.getFloor();
 
-        drawArrow(startX, startY, endX, endY, startFloor, endFloor);
+        if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
+            drawArrow(startX, startY, startFloor, endFloor, 0.0);
+        }
     }
 
     /**
      * Draws up and down arrows to signify floor change for a given edge (two nodes)
      * This is a private method that takes coordinates and floors derived from the Node or Map passed to the public
      * methods.
-     * @param startX x-coordinate of the start node
-     * @param startY y-coordinate of the start node
-     * @param endX x-coordinate of the end node
-     * @param endY y-coordinate of the end node
+     * @param centerX x-coordinate of the start node
+     * @param centerY y-coordinate of the start node
      * @param startFloor floor of the start node
      * @param endFloor floor of the end node
      */
-    private void drawArrow(double startX, double startY, double endX, double endY, String startFloor, String endFloor){
+    private void drawArrow(double centerX, double centerY, String startFloor, String endFloor, double rotationAngle){
 
-        Polygon arrow = new Polygon();
+        Polygon floorChangeArrow = new Polygon();
 
-        double points[] = new double[6];
-        points[0] = startX;
-        points[2] = startX + 7 * Math.sqrt(2.0) / 2.0;
-        points[4] = startX - 7 * Math.sqrt(2.0) / 2.0;
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
+        directionArrow = new Polygon();
+        directionArrow.setFill(Color.BLUE);
+        directionArrow.setStroke(Color.BLUE);
+        directionArrow.setVisible(false);
+
+        Double points[] = new Double[6];
+        points[0] = centerX;
+        points[2] = centerX + 7 * Math.sqrt(2.0) / 2.0;
+        points[4] = centerX - 7 * Math.sqrt(2.0) / 2.0;
+
+        points[1] = centerY - 7;
+        points[3] = centerY + 7 * Math.sqrt(2.0) / 2.0;
+        points[5] = centerY + 7 * Math.sqrt(2.0) / 2.0;
 
         if (startFloor.equals("G")) startFloor = "0";
         if (startFloor.equals("L1")) startFloor = "-1";
@@ -378,29 +442,30 @@ public class GenericMap extends GenericPage {
         if (endFloor.equals("L1")) endFloor = "-1";
         if (endFloor.equals("L2")) endFloor = "-2";
 
-        if (startFloor.equals(FLOOR)) {
-            if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
-
-                arrow.setFill(Color.GREEN);
-
-                points[1] = startY - 7;
-                points[3] = startY + 7 * Math.sqrt(2.0) / 2.0;
-                points[5] = startY + 7 * Math.sqrt(2.0) / 2.0;
-            } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
-
-                arrow.setFill(Color.RED);
-
-                points[1] = startY + 7;
-                points[3] = startY - 7 * Math.sqrt(2.0) / 2.0;
-                points[5] = startY - 7 * Math.sqrt(2.0) / 2.0;
+        if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
+            floorChangeArrow.setFill(Color.GREEN);
+            floorChangeArrow.setRotate(0);
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
             }
-        }
-//        gc.fillPolygon(xPoints, yPoints, 3);
-        for (int i = 0; i < points.length; i++) {
-            arrow.getPoints().add(points[i]);
-        }
+            mapView.getChildren().add(floorChangeArrow);
+        } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
+            floorChangeArrow.setFill(Color.RED);
+            floorChangeArrow.setRotate(180);
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
+            }
+            mapView.getChildren().add(floorChangeArrow);
+        } else /*if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor))*/{
 
-        mapView.getChildren().add(arrow);
+            directionArrow.getPoints().removeAll();
+            directionArrow.getPoints().addAll(points);
+            directionArrow.setScaleX(5.0/7.0);
+            directionArrow.setScaleY(5.0/7.0);
+            directionArrow.setRotate(rotationAngle);
+            directionArrow.setVisible(true);
+            mapView.getChildren().add(directionArrow);
+        }
     }
 
     /**
@@ -469,6 +534,10 @@ public class GenericMap extends GenericPage {
         dist = Math.sqrt(dist);
 
         return dist;
+    }
+
+    void removeDirectionArrow(){
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
     }
 
     //private double get
