@@ -337,7 +337,9 @@ public class GenericMap extends GenericPage {
             double startY = yScale(snode.getYcoord());
             double endX = xScale(enode.getXcoord());
             double endY = yScale(enode.getYcoord());
-            drawTwoNodesWithEdge(startX, startY, endX, endY, snodeCol, enodeCol, edgeCol);
+            String startID = snode.getNodeID();
+            String endID = enode.getNodeID();
+            drawTwoNodesWithEdge(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
         }
     }
 
@@ -357,8 +359,8 @@ public class GenericMap extends GenericPage {
         l.setStroke(edgeCol);
         mapView.getChildren().add(l);
 
-        drawSingleNode(startX, startY, null, snodeCol); //TODO: update to have node IDs
-        drawSingleNode(endX, endY, null, enodeCol);
+        drawSingleNode(startX, startY, startID, snodeCol);
+        drawSingleNode(endX, endY, endID, enodeCol);
     }
 
     void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
