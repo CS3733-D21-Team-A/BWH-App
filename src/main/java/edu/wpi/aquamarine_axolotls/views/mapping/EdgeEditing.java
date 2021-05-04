@@ -131,7 +131,7 @@ public class EdgeEditing extends GenericMap {
         selectNode.setOnAction((ActionEvent e) -> {
             try {
                 Map<String, String> select = getNearestNode(contextMenuX, contextMenuY);
-                drawSingleNode(Integer.parseInt(select.get("XCOORD")), Integer.parseInt(select.get("YCOORD")), Color.GREEN);
+                drawSingleNode(select, Color.GREEN);
                 selectedNodesList.add(select);
                 if (selectedNodesList.size() >= 2) {
                     selectNode.setVisible(false);
@@ -143,7 +143,12 @@ public class EdgeEditing extends GenericMap {
         });
 
         makeEdge.setOnAction((ActionEvent e) -> {
-            pressAddButton();
+            try {
+                pressAddButton();
+            }
+            catch (SQLException se) {
+                se.printStackTrace();
+            }
             startNodeDropdown.setValue(selectedNodesList.get(0).get("NODEID"));
             endNodeDropdown.setValue(selectedNodesList.get(1).get("NODEID"));
         });
@@ -212,8 +217,6 @@ public class EdgeEditing extends GenericMap {
 
     public void changeFloor(String floor) throws SQLException {
         super.changeFloor(floor);
-        selectedNodesList.clear();
-        contextMenu.getItems().get(0).setVisible(true);
         for (Map<String, String> edge : db.getEdges()) {
             drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
         }
