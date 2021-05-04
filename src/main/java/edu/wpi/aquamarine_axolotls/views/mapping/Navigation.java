@@ -126,31 +126,28 @@ public class Navigation extends GenericMap {
         MenuItem item1 = new MenuItem(("Add Stop"));
         MenuItem item2 = new MenuItem(("Add to Favorites"));
 
-        treeTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getClickCount() == 2) {
-                    TreeItem<String> selectedFromTreeView = treeTable.getSelectionModel().getSelectedItem();
-                    if (selectedFromTreeView.getChildren().isEmpty()) {
-                        System.out.println(selectedFromTreeView.getValue());
+        treeTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                TreeItem<String> selectedFromTreeView = treeTable.getSelectionModel().getSelectedItem();
+                if (selectedFromTreeView.getChildren().isEmpty()) {
+                    System.out.println(selectedFromTreeView.getValue());
 
-                        if (selectedFromTreeView != null) {
-                            if (firstNodeSelect == 0) {
-                                stopList.add(selectedFromTreeView.getValue());
-                                startLabel.setText(stopList.get(0));
-                                firstNodeSelect = 1;
+                    if (selectedFromTreeView != null) {
+                        if (firstNodeSelect == 0) {
+                            stopList.add(selectedFromTreeView.getValue());
+                            startLabel.setText(stopList.get(0));
+                            firstNodeSelect = 1;
+                        }
+                        else if (firstNodeSelect == 1) {
+                            stopList.add(selectedFromTreeView.getValue());
+                            endLabel.setText(stopList.get(1));
+                            firstNodeSelect = 0;
+                            try {
+                                findPathSingleSegment(stopList.get(0), stopList.get(1));
+                                drawPath(FLOOR);
                             }
-                            else if (firstNodeSelect == 1) {
-                                stopList.add(selectedFromTreeView.getValue());
-                                endLabel.setText(stopList.get(1));
-                                firstNodeSelect = 0;
-                                try {
-                                    findPathSingleSegment(stopList.get(0), stopList.get(1));
-                                    drawPath(FLOOR);
-                                }
-                                catch(SQLException se) { //oh FINE we'll handle the damn exception
-                                    se.printStackTrace(); //guess we can't keep throwing it forever
-                                }
+                            catch(SQLException se) { //oh FINE we'll handle the damn exception
+                                se.printStackTrace(); //guess we can't keep throwing it forever
                             }
                         }
                     }
@@ -172,14 +169,6 @@ public class Navigation extends GenericMap {
         contextMenu.getItems().clear();
         contextMenu.getItems().addAll(item1,item2);
 
-
-//        mapImage.setOnContextMenuRequested(new EventHandler() {
-//            @Override
-//            public void handle(ContextMenuEvent event) {
-//                contextMenu.show(mapImage, event.getScreenX(), event.getScreenY());
-//            }
-//        });
-        //mapView.setOnContextMenuRequested(e -> contextMenu.show(mapView, e.getScreenX(), e.getScreenY()));
         mapView.setOnContextMenuRequested(event -> {
             contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
             contextMenuX = event.getX();
@@ -373,7 +362,7 @@ public class Navigation extends GenericMap {
      * @param direction The current text direction, used to determine what icon is needed
      */
     public void changeArrow(String direction){ //update arrow
-        Image arrowImg;
+        Image arrowImg; //TODO: Switch case?
         if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
         else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
         else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
@@ -429,11 +418,8 @@ public class Navigation extends GenericMap {
         if (curNode.contains(",")) {
             int index = curNode.indexOf(",");
             Map<String, String> start = db.getNode(curNode.substring(0,index));
-            //System.out.println(start);
             Map<String, String> end = db.getNode(curNode.substring(index+1));
-            //System.out.println(end);
             drawTwoNodesWithEdge(start, end, Color.RED, Color.BLUE, Color.RED );
-            //drawSingleEdge(getNodeFromValidID(start), getNodeFromValidID(end), Color.RED);
 
             double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
             double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
@@ -538,7 +524,6 @@ public class Navigation extends GenericMap {
                     drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
                 }
                 drawSingleNodeHighLight(newDestination,Color.MAGENTA);
-                //drawSingleNodeHighLight(endPoint,Color.MAGENTA);
             }
         }
     }
