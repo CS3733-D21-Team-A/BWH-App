@@ -46,7 +46,7 @@ public class Navigation extends GenericMap {
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
     private Map<String,String> endPoint;
     private VoiceController voice = new VoiceController("kevin16");
-    private static Thread newThread;
+    private Thread newThread = new Thread();
 
     @FXML
     public void initialize() throws SQLException {
@@ -294,14 +294,14 @@ public class Navigation extends GenericMap {
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
-        voice.say(voice.getTextOptimization(curDirection.getText()));
+        voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
     }
 
     /**
      * Progresses to the next step in the text directions
      */
     public void progress() throws SQLException,InterruptedException {
-
+        voice.stop();
         if (dirIndex < currPathDir.get(0).size() - 1){
             unHighlightDirection();
             dirIndex += 1;
@@ -313,7 +313,7 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()));
+            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
         }
     }
 
@@ -321,6 +321,7 @@ public class Navigation extends GenericMap {
      * Moves back to the previous step in the text directions
      */
     public void regress() throws SQLException,InterruptedException{
+        voice.stop();
         if (dirIndex != 0) {
             unHighlightDirection();
             dirIndex -= 1;
@@ -330,7 +331,7 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()));
+            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
         }
     }
 

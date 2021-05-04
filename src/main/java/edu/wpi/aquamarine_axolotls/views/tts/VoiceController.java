@@ -33,18 +33,25 @@ public class VoiceController {
         }
     }
 
-    public void say(String thingsToSay) throws InterruptedException {
-//            if (newThread.isAlive()) {
-//                newThread.stop();
-//            }
-        newThread = new Thread(() -> {
+    public void say(String thingsToSay,Thread aThread) throws InterruptedException {
+        this.voice = VoiceManager.getInstance().getVoice(this.name);
+        this.voice.setRate(117.0f);
+        this.voice.setStyle("casual");
+        //this.voice.setPitch(16000);
+        this.voice.setDetailedMetrics(true);
+        this.voice.allocate();
+        aThread = new Thread(() -> {
             try {
-                Thread.sleep(500);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             this.voice.speak(thingsToSay);
         });
-        newThread.start();
+        aThread.start();
+    }
+
+    public void stop(){
+        this.voice.deallocate();
     }
 }
