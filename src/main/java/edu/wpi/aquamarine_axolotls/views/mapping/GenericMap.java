@@ -203,6 +203,7 @@ public class GenericMap extends GenericPage {
         }
     }
 
+
     /**
      * Changes the active floor and updates the visible image, nodes, and edges
      * @param floor The new floor
