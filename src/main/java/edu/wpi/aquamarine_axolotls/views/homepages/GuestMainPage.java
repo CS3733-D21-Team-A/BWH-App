@@ -10,45 +10,52 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
+
 public class GuestMainPage extends GenericPage {
+
     @FXML
     StackPane stackPane;
 
-    DatabaseController db;
+    public DatabaseController db;
 
+    @FXML Text userNameText;
+
+    @FXML
+    public void initialize() throws SQLException, IOException{
+        db = DatabaseController.getInstance();
+    }
     @FXML
     public void signInP(ActionEvent actionEvent) {
         sceneSwitch("LogIn");
     }
 
     @FXML
+    public void settingsP(ActionEvent actionEvent) {
+        sceneSwitch("Settings");
+    }
+
+    @FXML
     public void mapP(ActionEvent actionEvent) {
-        if(Aapp.username!=null){
+        sceneSwitch ( "Navigation" );
+/*
         try {
-            if( db.hasUserTakenCovidSurvey(Aapp.username)){
-                sceneSwitch("Navigation"); }
-            else{
+            if ( db.hasUserTakenCovidSurvey ( Aapp.username ) ) {
+                sceneSwitch ( "Navigation" );
+            }
+            else {
                 popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action" );
             }
-            } catch (SQLException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
-     }
-        else if( Aapp.guestHasTaken){
-            sceneSwitch("Navigation"); }
-        else{
-        popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action" );
-        }
+
+ */
     }
 
     @FXML
@@ -80,4 +87,7 @@ public class GuestMainPage extends GenericPage {
     public void covidSurveyPage(ActionEvent actionEvent) {
         sceneSwitch("CovidSurvey");
     }
+
+
+
 }

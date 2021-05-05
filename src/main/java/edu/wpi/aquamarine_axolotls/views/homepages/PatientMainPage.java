@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 
 public class PatientMainPage extends GuestMainPage{
 
+    public void initialize(){
+        userNameText.setText ( "PATIENT: " + Aapp.username );
+    }
     @FXML
     public void serviceReqP(ActionEvent actionEvent) {
         sceneSwitch("DefaultServicePage");
