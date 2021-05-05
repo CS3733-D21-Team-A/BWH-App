@@ -96,6 +96,18 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
+                <JFXButton layoutX="200.0" layoutY="8.0" onAction="#mapP" prefHeight="64.0" prefWidth="204.0" text="Navigation" textFill="#ffd000fc">
+                    <font>
+                        <Font name="Georgia Bold" size="20.0" />
+                    </font>
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/yellowIcons/navYellow.PNG" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
             </children>
         </Pane>
     </center>
