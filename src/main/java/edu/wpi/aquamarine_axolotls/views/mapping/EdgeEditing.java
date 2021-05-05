@@ -60,14 +60,6 @@ public class EdgeEditing extends GenericMap {
     @FXML
     private JFXButton submissionButton;
 
-    @FXML
-    private TableView table; //TODO: figure out why table isn't working
-    @FXML
-    private TableColumn edgeIdCol;
-    @FXML
-    private TableColumn startNodeCol;
-    @FXML
-    private TableColumn endNodeCol;
 
     String state = "";
 
@@ -106,17 +98,10 @@ public class EdgeEditing extends GenericMap {
         else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
         else if (algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
 
-        table.setEditable(false);
-        table.getItems().clear();
-
         ObservableList<String> edgeOptions = FXCollections.observableArrayList();
         ObservableList<String> nodeOptions = FXCollections.observableArrayList();
 
         submissionlabel.setVisible(true);
-
-        edgeIdCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("edgeID"));
-        startNodeCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("startNode"));
-        endNodeCol.setCellValueFactory(new PropertyValueFactory<Edge, String>("endNode"));
 
         edgeDropdown.setVisible(false);
         edgeIDtextbox.setVisible(false);
@@ -173,11 +158,6 @@ public class EdgeEditing extends GenericMap {
 
             for (Map<String, String> edge : edges) {
                 edgeOptions.add(edge.get("EDGEID"));
-                Edge cur = new Edge(edge.get("EDGEID"),
-                        edge.get("STARTNODE"),
-                        edge.get("ENDNODE"));
-
-                table.getItems().add(cur);
                 drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
             }
             for (Map<String, String> node : nodes) nodeOptions.add(node.get("NODEID"));
