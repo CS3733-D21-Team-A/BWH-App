@@ -6,8 +6,6 @@ import com.sun.speech.freetts.Voice;
 public class VoiceController {
     private String name;
     private com.sun.speech.freetts.Voice voice;
-    private com.sun.speech.freetts.Gender gender;
-    static Thread newThread = new Thread();
 
     public VoiceController(String name){
         this.name = name;
