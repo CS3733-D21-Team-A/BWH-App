@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Settings extends GenericPage {
+public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
     @FXML HBox saveHbox;
     @FXML HBox editHbox;
 
@@ -64,7 +64,7 @@ public class Settings extends GenericPage {
         gender.setEditable(true);
     }
 
-    public void saveEdits(ActionEvent actionEvent) {
+    public void saveEdits() {
         editHbox.setVisible(true);
         saveHbox.setVisible(false);
         editHbox.toFront();
@@ -85,6 +85,7 @@ public class Settings extends GenericPage {
             user.put("GENDER", gender.getText());
 
             db.editUser(Aapp.username, user);
+            Aapp.userFirstName = firstName.getText();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

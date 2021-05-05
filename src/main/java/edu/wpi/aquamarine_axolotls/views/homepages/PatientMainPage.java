@@ -10,9 +10,15 @@ import java.sql.SQLException;
 public class PatientMainPage extends GuestMainPage{
 
     public void initialize() throws IOException, SQLException {
-        super.startUp();
-        userNameText.setText ( "PATIENT: " + Aapp.username );
+        startUp();
     }
+
+    @Override
+    public void startUp() throws SQLException, IOException {
+        super.startUp();
+        userNameText.setText ( Aapp.userType + ": " + Aapp.userFirstName );
+    }
+
     @FXML
     public void serviceReqP(ActionEvent actionEvent) {
         sceneSwitch("DefaultServicePage");
@@ -23,7 +29,8 @@ public class PatientMainPage extends GuestMainPage{
         popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
         Aapp.username = null;
         Aapp.userType = "Guest";
-        sceneSwitch("GuestMainPage");
+        Aapp.userFirstName = null;
+        goHome();
     }
 
 }

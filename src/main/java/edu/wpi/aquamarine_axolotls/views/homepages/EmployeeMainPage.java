@@ -11,7 +11,6 @@ public class EmployeeMainPage extends PatientMainPage {
 
     public void initialize() throws IOException, SQLException {
         startUp();
-        userNameText.setText ( "EMPLOYEE: " + Aapp.username );
     }
     @FXML
     public void requestP(ActionEvent actionEvent) {

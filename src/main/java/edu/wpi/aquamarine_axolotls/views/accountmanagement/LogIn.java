@@ -93,6 +93,7 @@ public class LogIn extends GenericPage {
             Map<String, String> usr = db.getUserByUsername ( CUusername );
             Aapp.userType = usr.get ( "USERTYPE" );
             Aapp.username = usr.get ( "USERNAME" );
+            Aapp.userFirstName = usr.get("FIRSTNAME");
         } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
