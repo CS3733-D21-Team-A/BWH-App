@@ -242,7 +242,11 @@ public class Navigation extends GenericMap {
         if(activePath) {
             drawPath(floor);
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
-                if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) {
+                    if (intermediatePoints.indexOf(intermediatePointToDraw) == intermediatePoints.size() - 1) {
+                        drawSingleNodeHighLight(intermediatePointToDraw, Color.MAGENTA);
+                    } else drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                }
             }
             if (intermediatePoints.size() > 0 && intermediatePoints.get(intermediatePoints.size() - 1).get("FLOOR").equals(FLOOR))
                 drawSingleNode(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
@@ -585,6 +589,8 @@ public class Navigation extends GenericMap {
 
         //if(event.getButton().equals(MouseButton.PRIMARY)) {
         Map<String, String> newDestination = getNearestNode(x, y);
+
+        if (newDestination.get("NODETYPE").equals("HALL") || newDestination.get("NODETYPE").equals("WALK")) return;
 
         if (newDestination != null) {
             String currCloseName = newDestination.get("LONGNAME");
