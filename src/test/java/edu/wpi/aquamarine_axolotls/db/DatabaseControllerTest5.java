@@ -78,7 +78,7 @@ public class DatabaseControllerTest5 {
 
         db.addSurvey(survey);
 
-        assertEquals(survey, db.getSurvey("Seansta18"));
+        assertEquals(survey, db.getSurveyByUsername("Seansta18"));
     }
 
     @Test
@@ -120,7 +120,7 @@ public class DatabaseControllerTest5 {
 
         db.addSurvey(survey);
         assertThrows(SQLException.class, () -> {
-            db.getSurvey("Banana1234");
+            db.getSurveyByUsername("Banana1234");
         });
     }
 
