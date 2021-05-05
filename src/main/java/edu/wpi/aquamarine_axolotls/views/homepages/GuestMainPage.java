@@ -37,6 +37,8 @@ public class GuestMainPage extends GenericPage {
 
     @FXML
     public void mapP(ActionEvent actionEvent) {
+        sceneSwitch ( "Navigation" );
+/*
         try {
             if ( db.hasUserTakenCovidSurvey ( Aapp.username ) ) {
                 sceneSwitch ( "Navigation" );
@@ -47,6 +49,8 @@ public class GuestMainPage extends GenericPage {
         } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
+
+ */
     }
 
     @FXML
