@@ -39,11 +39,6 @@ public class VoiceController {
         this.voice.setDetailedMetrics(true);
         this.voice.allocate();
         aThread = new Thread(() -> {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             this.voice.speak(thingsToSay);
         });
         aThread.start();
