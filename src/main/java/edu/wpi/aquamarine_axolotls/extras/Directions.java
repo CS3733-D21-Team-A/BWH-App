@@ -1,17 +1,12 @@
-package edu.wpi.aquamarine_axolotls.gmaps;
+package edu.wpi.aquamarine_axolotls.extras;
 
 import com.google.maps.DirectionsApi;
 import com.google.maps.DirectionsApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.DirectionsResult;
-import com.google.maps.model.DirectionsRoute;
-import com.google.maps.model.DirectionsStep;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 

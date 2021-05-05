@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
-import com.google.maps.errors.ApiException;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.Duration;
@@ -11,12 +10,11 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Settings;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
-import edu.wpi.aquamarine_axolotls.views.tts.VoiceController;
+import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -28,14 +26,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import java.io.IOException;
-import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.prefs.BackingStoreException;
 
 import static edu.wpi.aquamarine_axolotls.Settings.prefs;
-import static edu.wpi.aquamarine_axolotls.gmaps.Directions.*;
+import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
 

@@ -1,4 +1,4 @@
-package edu.wpi.aquamarine_axolotls.views.tts;
+package edu.wpi.aquamarine_axolotls.extras;
 
 import com.sun.speech.freetts.VoiceManager;
 import com.sun.speech.freetts.Voice;
@@ -6,7 +6,7 @@ import com.sun.speech.freetts.Voice;
 public class VoiceController {
     private static final String VOICENAME_kevin = "kevin16";
     private String name;
-    private com.sun.speech.freetts.Voice voice;
+    private Voice voice;
 
     public VoiceController(String name){
         System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
