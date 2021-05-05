@@ -20,7 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class EmployeeRequests extends GenericPage {
+public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
     @FXML private TableView<Request> srTable;
     @FXML private TableColumn<Request, String> assignedColumn;
@@ -124,7 +124,6 @@ public class EmployeeRequests extends GenericPage {
             db = DatabaseController.getInstance();
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
             refresh();
-            db.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
@@ -141,7 +140,6 @@ public class EmployeeRequests extends GenericPage {
             String status = statusD.getSelectionModel().getSelectedItem().toString();
             db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
             refresh();
-            db.close();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
