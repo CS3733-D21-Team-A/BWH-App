@@ -12,13 +12,12 @@ import java.util.Map;
 
 public class DepthFirstSearch extends AbsAlgorithmMethod {
 
-    public DepthFirstSearch(List<Node> nodeList, List<Edge> edgeList) {
-        for (int i = 0; i < nodeList.size(); i++) {
-            this.nodes.add(nodeList.get(i));
-        }
-        for (int j = 0; j < edgeList.size(); j++) {
-            this.edges.add(edgeList.get(j));
-        }
+    public DepthFirstSearch(){
+        super();
+    }
+
+    DepthFirstSearch(List<Node> nodeList, List<Edge> edgeList) {
+        super(nodeList, edgeList);
     }
 
     public List<Node> getPathImpl(String startLongName, String endLongName){

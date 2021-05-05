@@ -61,7 +61,7 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
         return frontier.poll().getItem();
     }
 
-    public List<Node> getPath(String startID, String goalID) {
+    List<Node> getPathImpl(String startID, String goalID) {
         //Empty out the priority queue
         clearFrontier();
 
