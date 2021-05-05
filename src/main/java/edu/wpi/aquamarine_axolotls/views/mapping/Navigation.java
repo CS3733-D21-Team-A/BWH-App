@@ -82,6 +82,7 @@ public class Navigation extends GenericMap {
     private static DirectionsLeg dirLeg;
     private List<String> extDir = new ArrayList<String>();
     int dirIndexExt = 0;
+    String covidLikely;
 
     @FXML
     public void initialize() throws SQLException {
@@ -92,7 +93,7 @@ public class Navigation extends GenericMap {
         }
 
         // TODO: CHANGE THIS
-        String covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -280,7 +281,9 @@ public class Navigation extends GenericMap {
 
     public void drawNodesAndFavorites() throws SQLException{
         for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
-            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, Color.BLUE);
+            if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) {}
+            else if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")){}
+            else if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, Color.BLUE);
         }
         for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
             Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
@@ -311,7 +314,9 @@ public class Navigation extends GenericMap {
 
     public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
         for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
-            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, colorOfNodes);
+            if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) {}
+            else if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) {}
+            else if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, colorOfNodes);
         }
     }
 

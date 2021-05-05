@@ -34,12 +34,12 @@ public class SearchAlgorithmContext {
 
     /**
      * Finds a path from a start node to end node using the set strategy
-     * @param startID The ID of the node to start at
-     * @param endID The ID of the node to go to
+     * @param startLongName The ID of the node to start at
+     * @param endLongName The ID of the node to go to
      * @return The list of nodes that constitute the path
      */
-    public List<Node> getPath(String startID, String endID){
-        return context.getPath(startID, endID);
+    public List<Node> getPath(String startLongName, String endLongName){
+        return context.getPath(startLongName, endLongName);
     }
 
     /**
