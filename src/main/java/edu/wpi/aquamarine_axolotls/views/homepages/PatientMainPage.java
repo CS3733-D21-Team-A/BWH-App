@@ -4,9 +4,13 @@ import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class PatientMainPage extends GuestMainPage{
 
-    public void initialize(){
+    public void initialize() throws IOException, SQLException {
+        super.startUp();
         userNameText.setText ( "PATIENT: " + Aapp.username );
     }
     @FXML

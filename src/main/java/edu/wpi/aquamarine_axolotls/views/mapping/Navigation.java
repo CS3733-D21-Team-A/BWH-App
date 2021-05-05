@@ -108,6 +108,17 @@ public class Navigation extends GenericMap {
             }
         }
 
+        // TODO: CHANGE THIS
+        String covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+
+        if(covidLikely.equals("true")) {
+            options.remove("75 Francis Valet Drop-off");
+            exit.getChildren().remove("75 Francis Valet Drop-off");
+        } else{
+            options.remove("Emergency Department Entrance");
+            exit.getChildren().remove("Emergency Department Entrance");
+        }
+
         TreeItem<String> root = new TreeItem<>("");
         root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");

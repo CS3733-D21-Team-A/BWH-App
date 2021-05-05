@@ -28,8 +28,13 @@ public class GuestMainPage extends GenericPage {
 
     @FXML
     public void initialize() throws SQLException, IOException{
+        startUp();
+    }
+
+    void startUp() throws IOException, SQLException {
         db = DatabaseController.getInstance();
     }
+
     @FXML
     public void signInP(ActionEvent actionEvent) {
         sceneSwitch("LogIn");
@@ -42,20 +47,20 @@ public class GuestMainPage extends GenericPage {
 
     @FXML
     public void mapP(ActionEvent actionEvent) {
-        sceneSwitch ( "Navigation" );
-/*
+//        sceneSwitch ( "Navigation" );
         try {
-            if ( db.hasUserTakenCovidSurvey ( Aapp.username ) ) {
+
+            if ( !db.hasUserTakenCovidSurvey ( Aapp.username != null ? Aapp.username : "guest") ) {
+                popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action." );
+            } else if (db.getUserByUsername( Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY") == null){
+                popUp ( "Covid Survey" ,"\n\n\n\n\nWait for an employee to approve your survey." );
+            } else {
                 sceneSwitch ( "Navigation" );
-            }
-            else {
-                popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action" );
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
 
- */
     }
 
     @FXML
