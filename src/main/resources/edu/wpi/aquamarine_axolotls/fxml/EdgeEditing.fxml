@@ -237,8 +237,8 @@
                                           <Cursor fx:constant="S_RESIZE" />
                                        </cursor>
                                     </MenuBar>
-                                    <JFXButton onAction="#zoomIn" prefHeight="25.0" prefWidth="123.0" text="Zoom In" />
-                                    <JFXButton onAction="#zoomOut" prefHeight="25.0" prefWidth="122.0" text="Zoom Out" />
+                                    <JFXButton onAction="#zoomIn" prefHeight="25.0" prefWidth="181.0" text="Zoom In" />
+                                    <JFXButton onAction="#zoomOut" prefHeight="25.0" prefWidth="178.0" text="Zoom Out" />
                                     <Label alignment="CENTER" contentDisplay="CENTER" text="Current Navigation Algorithm:" textAlignment="CENTER" wrapText="true" />
                                     <JFXComboBox fx:id="algoSelectBox" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="26.0" prefWidth="164.0" promptText="Navigation Algorithm" />
                                 </items>
