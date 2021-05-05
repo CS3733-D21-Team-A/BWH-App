@@ -85,7 +85,7 @@
             </JFXButton>
             <Hyperlink layoutX="548.0" layoutY="450.0" onAction="#createNewAccount" style="-fx-underline: True;" text="Create a New Account">
                <font>
-                  <Font size="18.0" />
+                  <Font size="18.0" name="Baskerville" />
                </font>
             </Hyperlink>
             <Hyperlink layoutX="554.0" layoutY="400.0" onAction="#forgottenPassword" style="-fx-underline: True;" text="Forgotten Password?">

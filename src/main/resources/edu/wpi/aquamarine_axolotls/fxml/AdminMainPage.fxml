@@ -71,7 +71,7 @@
                         <Font name="Georgia" size="39.0" />
                     </font>
                 </Text>
-                <JFXButton layoutX="1125.0" layoutY="8.0" onAction="#signOutPage" prefHeight="64.0" prefWidth="175.0" text="Sign Out" textFill="#fccf03">
+                <JFXButton layoutX="1133.0" layoutY="8.0" onAction="#signOutPage" prefHeight="64.0" prefWidth="175.0" text="Sign Out" textFill="#fccf03">
                     <font>
                         <Font name="Georgia Bold" size="21.0" />
                     </font>
@@ -83,7 +83,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutY="8.0" onAction="#mapP" prefHeight="64.0" prefWidth="204.0" text="Navigation" textFill="#ffd000fc">
+                <JFXButton layoutX="-13.0" layoutY="8.0" onAction="#mapP" prefHeight="64.0" prefWidth="204.0" text="Navigation" textFill="#ffd000fc">
                     <font>
                         <Font name="Georgia Bold" size="20.0" />
                     </font>
@@ -95,7 +95,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="177.0" layoutY="8.0" onAction="#serviceReqP" prefHeight="64.0" prefWidth="243.0" text="Service Request" textFill="#fccf03">
+                <JFXButton layoutX="154.0" layoutY="8.0" onAction="#serviceReqP" prefHeight="64.0" prefWidth="243.0" text="Service Request" textFill="#fccf03">
                     <font>
                         <Font name="Georgia Bold" size="20.0" />
                     </font>
@@ -108,7 +108,7 @@
                     </graphic>
                 </JFXButton>
                 <StackPane fx:id="stackPane" layoutX="445.0" layoutY="303.0" prefHeight="225.0" prefWidth="407.0" />
-                <JFXButton layoutX="401.0" layoutY="8.0" onAction="#nodeP" prefHeight="64.0" prefWidth="204.0" text="Map Editing" textFill="#fccf03">
+                <JFXButton layoutX="365.0" layoutY="8.0" onAction="#nodeP" prefHeight="64.0" prefWidth="204.0" text="Map Editing" textFill="#fccf03">
                     <font>
                         <Font name="Georgia Bold" size="20.0" />
                     </font>
@@ -120,7 +120,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="597.0" layoutY="8.0" onAction="#requestP" prefHeight="64.0" prefWidth="269.0" text="Employee Requests" textFill="#fccf03">
+                <JFXButton layoutX="548.0" layoutY="8.0" onAction="#requestP" prefHeight="64.0" prefWidth="269.0" text="Employee Requests" textFill="#fccf03">
                     <font>
                         <Font name="Georgia Bold" size="20.0" />
                     </font>
@@ -132,7 +132,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="850.0" layoutY="8.0" onAction="#addUser" prefHeight="64.0" prefWidth="221.0" text="Add New User" textFill="#fccf03">
+                <JFXButton layoutX="797.0" layoutY="8.0" onAction="#addUser" prefHeight="64.0" prefWidth="221.0" text="Add New User" textFill="#fccf03">
                     <font>
                         <Font name="Georgia Bold" size="20.0" />
                     </font>
@@ -140,6 +140,18 @@
                         <ImageView>
                             <image>
                                 <Image url="@../img/yellowIcons/addUserYellow.PNG" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+                <JFXButton layoutX="994.0" layoutY="8.0" onAction="#settingsP" prefHeight="64.0" prefWidth="157.0" text="Settings" textFill="#fccf03">
+                    <font>
+                        <Font name="Georgia Bold" size="20.0" />
+                    </font>
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/yellowIcons/settingsYellow.PNG" />
                             </image>
                         </ImageView>
                     </graphic>

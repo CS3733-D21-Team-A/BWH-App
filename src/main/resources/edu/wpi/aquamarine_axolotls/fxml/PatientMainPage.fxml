@@ -120,6 +120,18 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
+                <JFXButton layoutX="600.0" layoutY="8.0" onAction="#settingsP" prefHeight="64.0" prefWidth="157.0" text="Settings" textFill="#fccf03">
+                    <font>
+                        <Font name="Georgia Bold" size="20.0" />
+                    </font>
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/yellowIcons/settingsYellow.PNG" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
             </children>
         </Pane>
     </center>
