@@ -287,7 +287,8 @@ public class Navigation extends GenericMap {
     public void drawPath(String floor) throws SQLException{
         if(currPath.isEmpty()) return;
         FLOOR = floor;
-        drawNodesAndFloor(FLOOR, new Color(0.0 , 0.0, 1.0, 0.4));
+        drawFloor(FLOOR);
+        drawNodesNoHallWalk(new Color(0.0 , 0.0, 1.0, 0.4));
         for (int i = 0; i < currPath.size() - 1; i++) {
             if (currPath.get(i).getFloor().equals(FLOOR) &&
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
@@ -623,7 +624,9 @@ public class Navigation extends GenericMap {
                 drawPath(FLOOR);
                 intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
-                    drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
+                    if ((intermediatePointToDraw.get("FLOOR").equals(FLOOR)) &&
+                            (intermediatePoints.indexOf(intermediatePointToDraw) != intermediatePoints.size() - 1))
+                                drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
                 }
                 drawSingleNodeHighLight(newDestination,Color.MAGENTA);
             }
