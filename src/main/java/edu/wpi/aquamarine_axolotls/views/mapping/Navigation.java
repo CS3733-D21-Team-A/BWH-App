@@ -16,6 +16,7 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -61,6 +62,8 @@ public class Navigation extends GenericMap {
     @FXML private Label curDirectionExt;
     @FXML private Label invalidKey;
     @FXML private Label etaLabelExt;
+    @FXML private Tab internalNav;
+    @FXML private Tab externalNav;
 
 
     ObservableList<String> options = FXCollections.observableArrayList();
@@ -762,19 +765,33 @@ public class Navigation extends GenericMap {
         dirIndexExt = 0;
 
         curDirectionExt.setText(extDir.get(dirIndexExt));
+        if (voiceDirection.isSelected()) {
+            String dirText = curDirectionExt.getText();
+            voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+        }
     }
 
     public void regressExt() {
+        voice.stop();
         if (dirIndexExt != 0){
             dirIndexExt -= 1;
             curDirectionExt.setText(extDir.get(dirIndexExt));
+            if(voiceDirection.isSelected()) {
+                String dirText = curDirectionExt.getText();
+                voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+            }
         }
     }
 
     public void progressExt() {
+        voice.stop();
         if (dirIndexExt < extDir.size()-1){
             dirIndexExt += 1;
             curDirectionExt.setText(extDir.get(dirIndexExt));
+            if(voiceDirection.isSelected()) {
+                String dirText = curDirectionExt.getText();
+                voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+            }
         }
     }
 
@@ -807,14 +824,21 @@ public class Navigation extends GenericMap {
         findPathExt();
     }
     @FXML
-    public void toggleVoiceDirectionButton() throws InterruptedException {
+    public void toggleVoiceDirectionButton() {
         if (!voiceDirection.isSelected()){
             voice.stop();
-        } else if (stepByStep.isVisible()) {
+        } else if (internalNav.isSelected() && stepByStep.isVisible()) {
             voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        } else if (externalNav.isSelected() && stepByStepExt.isVisible()) {
+            String dirText = curDirectionExt.getText();
+            voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
         }
     }
 
+    @FXML
+    public void stopVoice() {
+        voice.stop();
+    }
 }
 
 

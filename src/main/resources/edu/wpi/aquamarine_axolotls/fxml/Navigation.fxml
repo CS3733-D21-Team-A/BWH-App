@@ -94,7 +94,7 @@
    <left>
       <JFXTabPane prefHeight="752.0" prefWidth="244.0" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab fx:id="internalNav" text="Internal">
+            <Tab fx:id="internalNav" text="Internal" onSelectionChanged="#stopVoice">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
