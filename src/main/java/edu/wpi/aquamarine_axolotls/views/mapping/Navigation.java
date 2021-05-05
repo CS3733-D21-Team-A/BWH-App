@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleButton;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.views.tts.VoiceController;
@@ -35,6 +36,7 @@ public class Navigation extends GenericMap {
     @FXML private VBox listOfDirections;
     @FXML private Group textDirectionsGroup;
     @FXML private TreeTableView<String> treeTable;
+    @FXML private JFXToggleButton voiceDirection;
 
     ObservableList<String> options = FXCollections.observableArrayList();
     private int firstNodeSelect = 0;
@@ -352,7 +354,9 @@ public class Navigation extends GenericMap {
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
-        voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+        if(voiceDirection.isSelected()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        }
     }
 
     /**
@@ -371,7 +375,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
@@ -389,7 +395,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
