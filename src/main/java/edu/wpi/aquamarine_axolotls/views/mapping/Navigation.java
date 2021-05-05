@@ -20,7 +20,6 @@ import javafx.scene.paint.Color;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Navigation extends GenericMap {
 
@@ -220,6 +219,12 @@ public class Navigation extends GenericMap {
             contextMenuY = event.getY();
         });
 
+    }
+
+    @Override
+    public void goHome() {
+        voice.stop();
+        super.goHome();
     }
 
     public void drawNodesAndFavorites() throws SQLException{
