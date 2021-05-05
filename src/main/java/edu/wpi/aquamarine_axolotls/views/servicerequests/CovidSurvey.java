@@ -141,12 +141,7 @@ public class CovidSurvey extends GenericServiceRequest {
                 survey.put("USERNAME", Aapp.username);
                 try {
                         db.addSurvey ( survey );
-                        db.hasUserTakenCovidSurvey ( Aapp.username );
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace ( );
-                }
-                try {
-                    System.out.println ( db.getSurvey(Aapp.username) );
+                        System.out.println ( survey.toString () );
                 } catch (SQLException throwables) {
                     throwables.printStackTrace ( );
                 }
