@@ -830,7 +830,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @param nodeName
 	 * @return
 	 */
-	public String getFAVID(String username, String nodeName) {
+	String getFAVID(String username, String nodeName) {
 		String returnValue = null;
 		try {
 			returnValue = getFavoriteNodeForUser(username, nodeName).get("FAVID");
@@ -845,25 +845,16 @@ public class DatabaseController implements AutoCloseable {
 	 * @param username userID that correlates to a user in the user table
 	 * @param locationID nodeID that correlates to a node in the node table
 	 * @param nodeName the user given name for the node
-	 * @return the auto-generated FAVID if entry is created, null if it doesn't
+	 * @return the auto-generated FAVID
 	 */
-	public String addFavoriteNodeToUser(String username, String locationID, String nodeName){
-		if(checkUserHasFavorites(username)) {
-			if (!checkValidNodeName(username, nodeName) || !checkValidNodeID(username, locationID)) {
-				return null;
-			}
-		}
+	public String addFavoriteNodeToUser(String username, String locationID, String nodeName) throws SQLException {
 		Map<String, String> takenValues = new HashMap<>();
 		takenValues.put("USERID", username);
 		takenValues.put("LOCATIONID", locationID);
 		takenValues.put("NODENAME", nodeName);
-		try {
-			favoriteNodesTable.addEntry(takenValues);
-			return getFAVID(username,nodeName);
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-			return null;
-		}
+
+		favoriteNodesTable.addEntry(takenValues);
+		return getFAVID(username,nodeName);
 
 	}
 
