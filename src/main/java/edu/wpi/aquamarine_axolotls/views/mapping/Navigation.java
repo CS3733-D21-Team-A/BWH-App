@@ -5,6 +5,7 @@ import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.Duration;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Settings;
@@ -48,6 +49,7 @@ public class Navigation extends GenericMap {
     @FXML private VBox listOfDirections;
     @FXML private Group textDirectionsGroup;
     @FXML private TreeTableView<String> treeTable;
+    @FXML private JFXToggleButton voiceDirection;
 
     @FXML private JFXComboBox destinationDropdown;
     @FXML private JFXTextField startTextfield;
@@ -429,7 +431,9 @@ public class Navigation extends GenericMap {
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
-        voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+        if(voiceDirection.isSelected()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        }
     }
 
     /**
@@ -448,7 +452,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
@@ -466,7 +472,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
@@ -806,7 +814,12 @@ public class Navigation extends GenericMap {
         }
         findPathExt();
     }
-
+    @FXML
+    public void toggleVoiceDirectionButton(){
+        if (!voiceDirection.isSelected()){
+            voice.stop();
+        }
+    }
 
 }
 
