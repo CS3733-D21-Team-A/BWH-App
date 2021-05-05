@@ -86,6 +86,9 @@ public class Navigation extends GenericMap {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
+        // TODO: CHANGE THIS
+        String covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
         TreeItem<String> stai = new TreeItem<>("Stairs");
@@ -126,6 +129,8 @@ public class Navigation extends GenericMap {
                         conf.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "EXIT":
+                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+                        if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
                         exit.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "RETL":
@@ -137,17 +142,14 @@ public class Navigation extends GenericMap {
                 }
             }
         }
-
-        // TODO: CHANGE THIS
-        String covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
-
-        if(covidLikely.equals("true")) {
-            options.remove("75 Francis Valet Drop-off");
-            exit.getChildren().remove("75 Francis Valet Drop-off");
-        } else{
-            options.remove("Emergency Department Entrance");
-            exit.getChildren().remove("Emergency Department Entrance");
-        }
+//
+//        if(covidLikely.equals("true")) {
+////            options.remove("75 Francis Valet Drop-off");
+//            exit.getChildren().remove("75 Francis Valet Drop-off");
+//        } else{
+////            options.remove("Emergency Department Entrance");
+//            exit.getChildren().remove("Emergency Department Entrance");
+//        }
 
         TreeItem<String> root = new TreeItem<>("");
         root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
