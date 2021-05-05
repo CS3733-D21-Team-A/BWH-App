@@ -1,21 +1,21 @@
-package edu.wpi.aquamarine_axolotls;
+package edu.wpi.aquamarine_axolotls.pathplanning;
 
-import edu.wpi.aquamarine_axolotls.pathplanning.DepthFirstSearch;
-import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
-import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
-import org.junit.jupiter.api.*;
+import edu.wpi.aquamarine_axolotls.pathplanning.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-
 import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class DFSTest {
-
+public class BFSTest {
     Node A = new Node("A");
     Node B = new Node("B");
     Node C = new Node("C");
@@ -38,12 +38,12 @@ public class DFSTest {
 
         List<Edge> oneEdgeList = new ArrayList<>();
 
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(oneNodeList, oneEdgeList);
+        BreadthFirstSearch breathFirstSearch = new BreadthFirstSearch(oneNodeList, oneEdgeList);
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
 
-        Assertions.assertEquals(depthFirstSearch.getPath("A", "A"), expectedOut);
+        Assertions.assertEquals(breathFirstSearch.getPath("A", "A"), expectedOut);
     }
 
     /**
@@ -59,13 +59,13 @@ public class DFSTest {
         List<Edge> twoEdgeList = new ArrayList<>();
         twoEdgeList.add(new Edge("ab", "A", "B"));
 
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(twoNodeList, twoEdgeList);
+        BreadthFirstSearch breathFirstSearch = new BreadthFirstSearch(twoNodeList, twoEdgeList);
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
         expectedOut.add(B);
 
-        Assertions.assertEquals(depthFirstSearch.getPath("A", "B"), expectedOut);
+        Assertions.assertEquals(breathFirstSearch.getPath("A", "B"), expectedOut);
     }
 
     /**
@@ -87,14 +87,14 @@ public class DFSTest {
         firstBranchEdges.add(new Edge("ad", "A", "D"));
         firstBranchEdges.add(new Edge("de", "D", "E"));
 
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(firstBranchNodes, firstBranchEdges);
+        BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(firstBranchNodes, firstBranchEdges);
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
         expectedOut.add(B);
         expectedOut.add(C);
 
-        Assertions.assertEquals(depthFirstSearch.getPath("A", "C"), expectedOut);
+        Assertions.assertEquals(breadthFirstSearch.getPath("A", "C"), expectedOut);
     }
 
     /**
@@ -126,7 +126,7 @@ public class DFSTest {
         secondBranchEdgeList.add(new Edge("ef", "E", "F"));
         secondBranchEdgeList.add(new Edge("hi", "H", "I"));
 
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(secondBranchNodeList, secondBranchEdgeList);
+        BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(secondBranchNodeList, secondBranchEdgeList);
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
@@ -134,7 +134,7 @@ public class DFSTest {
         expectedOut.add(H);
         expectedOut.add(I);
 
-        Assertions.assertEquals(depthFirstSearch.getPath("A", "I"), expectedOut);
+        Assertions.assertEquals(breadthFirstSearch.getPath("A", "I"), expectedOut);
     }
 
     /**
@@ -153,11 +153,11 @@ public class DFSTest {
         twoEdgeList.add(new Edge("ab", "A", "B"));
         twoEdgeList.add(new Edge("bc", "B", "C"));
 
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(threeNodeList, twoEdgeList);
+        BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(threeNodeList, twoEdgeList);
 
         List<String> expectedOut = null;
 
-        Assertions.assertEquals(depthFirstSearch.getPath("A", "D"), null);
+        Assertions.assertEquals(breadthFirstSearch.getPath("A", "D"), null);
     }
 
     /**
@@ -185,13 +185,10 @@ public class DFSTest {
 
         List<Node> expectedOut = new ArrayList<>();
         expectedOut.add(A);
-        expectedOut.add(B);
-        expectedOut.add(D);
-        expectedOut.add(E);
         expectedOut.add(C);
 
-        DepthFirstSearch depthFirstSearch = new DepthFirstSearch(loopNodeList, loopEdgeList);
+        BreadthFirstSearch breadthFirstSearch = new BreadthFirstSearch(loopNodeList, loopEdgeList);
 
-        Assertions.assertEquals(depthFirstSearch.getPath("A", "C"), expectedOut);
+        Assertions.assertEquals(breadthFirstSearch.getPath("A", "C"), expectedOut);
     }
 }

@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 
 import java.io.IOException;
@@ -10,50 +11,11 @@ import java.util.*;
 public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
 
     public AbsHeuristicBased(){
-        try {
-            DatabaseController dbControl = DatabaseController.getInstance();
-
-            List<Map<String, String>> nodeMap = new ArrayList<>();
-            List<Map<String, String>> edgeMap = new ArrayList<>();
-
-            nodeMap = dbControl.getNodes();
-            edgeMap = dbControl.getEdges();
-
-            for (int i = 0; i < nodeMap.size(); i++) {
-                Map<String, String> currNodeMap = nodeMap.get(i);
-                this.nodes.add(new Node(
-                                currNodeMap.get("NODEID"),
-                                Integer.parseInt(currNodeMap.get("XCOORD")),
-                                Integer.parseInt(currNodeMap.get("YCOORD")),
-                                currNodeMap.get("FLOOR"),
-                                currNodeMap.get("BUILDING"),
-                                currNodeMap.get("NODETYPE"),
-                                currNodeMap.get("LONGNAME"),
-                                currNodeMap.get("SHORTNAME")
-                        )
-                );
-            }
-
-            for (int j = 0; j < edgeMap.size(); j++) {
-                Map<String, String> currEdgeMap = edgeMap.get(j);
-                this.edges.add(new Edge(
-                        edgeMap.get(j).get("EDGEID"),
-                        edgeMap.get(j).get("STARTNODE"),
-                        edgeMap.get(j).get("ENDNODE")
-                ));
-            }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        super();
     }
 
     public AbsHeuristicBased(List<Node> nodeList, List<Edge> edgeList) {
-        for (int i = 0; i < nodeList.size(); i++) {
-            this.nodes.add(nodeList.get(i));
-        }
-        for (int j = 0; j < edgeList.size(); j++) {
-            this.edges.add(edgeList.get(j));
-        }
+        super(nodeList, edgeList);
     }
 
     abstract double getPriorityHeuristic(Node start, Node end);
@@ -99,7 +61,7 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
         return frontier.poll().getItem();
     }
 
-    public List<Node> getPath(String startID, String goalID) {
+    List<Node> getPathImpl(String startID, String goalID) {
         //Empty out the priority queue
         clearFrontier();
 

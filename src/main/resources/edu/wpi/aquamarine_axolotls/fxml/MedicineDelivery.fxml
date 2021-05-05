@@ -31,7 +31,7 @@
             </ImageView>
             <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="645.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                <font>
-                  <Font name="Baskerville" size="25.0" />
+                  <Font name="Verdana" size="25.0" />
                </font>
                <padding>
                   <Insets bottom="5.0" />
@@ -62,51 +62,51 @@
                      <children>
                                 <JFXTextField fx:id="firstName" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient First Name" GridPane.columnIndex="1">
                      <font>
-                        <Font name="Baskerville" size="20.0" />
+                        <Font name="Verdana" size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
                                 <JFXTextField fx:id="lastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient Last Name" GridPane.columnIndex="2">
                      <font>
-                        <Font name="Baskerville" size="20.0" />
+                        <Font name="Verdana" size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
                         <JFXTextField fx:id="docFirstName" maxWidth="-Infinity" prefWidth="250.0" promptText="Doctor First Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
-                        <Font name="Baskerville" size="20.0" />
+                        <Font name="Verdana" size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
                         <JFXTextField fx:id="docLastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Doctor Last Name" GridPane.columnIndex="2" GridPane.rowIndex="1">
                      <font>
-                        <Font name="Baskerville" size="20.0" />
+                        <Font name="Verdana" size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
-                                <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="27.0" prefWidth="250.0" promptText="Delivery Time" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="27.0" prefWidth="250.0" promptText="Delivery Time" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTimePicker>
                         <JFXTextField fx:id="medication" maxWidth="-Infinity" prefWidth="250.0" promptText="Medication" GridPane.columnIndex="2" GridPane.rowIndex="2">
                      <font>
-                        <Font name="Baskerville" size="20.0" />
+                        <Font name="Verdana" size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
                         <JFXTextField fx:id="doseSize" maxWidth="-Infinity" prefWidth="250.0" promptText="Dose Size" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <font>
-                        <Font name="Baskerville" size="20.0" />
+                        <Font name="Verdana" size="20.0" />
                      </font>
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXTextField>
-                                <JFXComboBox fx:id="roomNumber" prefHeight="25.0" prefWidth="250.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Baskerville;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                <JFXComboBox fx:id="roomNumber" prefHeight="25.0" prefWidth="250.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="2" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets top="40.0" />
                      </GridPane.margin></JFXComboBox>
@@ -124,12 +124,12 @@
             <Rectangle fill="#003da6" height="35.0" layoutX="4.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
             <JFXButton layoutX="943.0" layoutY="694.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                <font>
-                  <Font name="Baskerville" size="30.0" />
+                  <Font name="Verdana" size="30.0" />
                </font>
             </JFXButton>
             <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-3.0" layoutY="164.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="61.0" prefWidth="1306.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="Baskerville" size="25.0" />
+                  <Font name="Verdana" size="25.0" />
                </font>
                <padding>
                   <Insets left="20.0" right="20.0" />
@@ -137,7 +137,7 @@
             </Label>
             <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutY="84.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="81.0" prefWidth="1305.0" text="Medicine Delivery Service" textAlignment="CENTER">
                <font>
-                  <Font name="Baskerville" size="50.0" />
+                  <Font name="Verdana" size="50.0" />
                </font>
             </Label>
                </children>

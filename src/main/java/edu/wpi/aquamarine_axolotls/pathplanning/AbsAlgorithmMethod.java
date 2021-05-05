@@ -1,9 +1,15 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
+import edu.wpi.aquamarine_axolotls.Aapp;
+import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
@@ -11,6 +17,55 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
     List<Node> nodes = new ArrayList<>();
     List<Edge> edges = new ArrayList<>();
+    DatabaseController dbControl;
+
+    protected AbsAlgorithmMethod() {
+        try {
+            dbControl = DatabaseController.getInstance();
+            List<Map<String, String>> nodeMap = new ArrayList<>();
+            List<Map<String, String>> edgeMap = new ArrayList<>();
+
+            nodeMap = dbControl.getNodes();
+            edgeMap = dbControl.getEdges();
+
+            for (int i = 0; i < nodeMap.size(); i++) {
+                Map<String, String> currNodeMap = nodeMap.get(i);
+                this.nodes.add(new Node(
+                                currNodeMap.get("NODEID"),
+                                Integer.parseInt(currNodeMap.get("XCOORD")),
+                                Integer.parseInt(currNodeMap.get("YCOORD")),
+                                currNodeMap.get("FLOOR"),
+                                currNodeMap.get("BUILDING"),
+                                currNodeMap.get("NODETYPE"),
+                                currNodeMap.get("LONGNAME"),
+                                currNodeMap.get("SHORTNAME")
+                        )
+                );
+            }
+
+            for (int j = 0; j < edgeMap.size(); j++) {
+                {
+                    Map<String, String> currEdgeMap = edgeMap.get(j);
+                    this.edges.add(new Edge(
+                            edgeMap.get(j).get("EDGEID"),
+                            edgeMap.get(j).get("STARTNODE"),
+                            edgeMap.get(j).get("ENDNODE")
+                    ));
+                }
+            }
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected AbsAlgorithmMethod(List<Node> nodeList, List<Edge> edgeList){
+        for (int i = 0; i < nodeList.size(); i++) {
+            this.nodes.add(nodeList.get(i));
+        }
+        for (int j = 0; j < edgeList.size(); j++) {
+            this.edges.add(edgeList.get(j));
+        }
+    }
 
     /**
      * Gets a node by its ID from the search algorithm controller's list of nodes
@@ -343,6 +398,10 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         if (nodeIndex == 0 || nodeIndex == path.size() - 1) return false;
 
+        if(path.get(nodeIndex).equals(path.get(nodeIndex+1)) &&
+                (path.get(nodeIndex).getNodeType().equals("ELEV")
+                        || (path.get(nodeIndex).getNodeType().equals("STAI")))) return true;
+
         if((node.getNodeType().equals("STAI") &&
                 (path.get(nodeIndex+1).getNodeType().equals("STAI") ||
                         path.get(nodeIndex-1).getNodeType().equals("STAI"))) ||
@@ -359,6 +418,39 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         return (path.get(nodeIndex).getFloor().equals(path.get(nodeIndex+1).getFloor())) &&
                 (Math.abs(turnAngle) < 10);
+    }
+
+    public void handleCovidStatus() throws SQLException {
+        String covidLikely = dbControl.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+
+        Node francis = new Node(dbControl.getNode("FEXIT00201"));
+        Node emergency = new Node(dbControl.getNode("FEXIT00301"));
+
+        nodes.remove(covidLikely.equals("true") ? francis : emergency);
+
+        Node toAdd = covidLikely.equals("true") ? emergency : francis;
+        if(!nodes.contains(toAdd)) nodes.add(toAdd);
+
+        List<Edge> francisEdges = dbControl.getEdgesConnectedToNode("FEXIT00201").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
+        List<Edge> emergencyEdges = dbControl.getEdgesConnectedToNode("FEXIT00301").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
+
+        edges.removeAll(covidLikely.equals("true") ? francisEdges : emergencyEdges);
+
+        for (Edge edge : covidLikely.equals("true") ? emergencyEdges : francisEdges) {
+            if (!edges.contains(edge)) edges.add(edge);
+        }
+    }
+
+    abstract List<Node> getPathImpl(String startLongName, String endLongName);
+
+    public List<Node> getPath(String startLongName, String endLongName) {
+        System.out.println("GETTING PATH");
+        try {
+            handleCovidStatus();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return getPathImpl(startLongName,endLongName);
     }
 
 }

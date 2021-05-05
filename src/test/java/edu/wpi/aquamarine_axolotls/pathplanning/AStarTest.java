@@ -1,5 +1,6 @@
-package edu.wpi.aquamarine_axolotls;
+package edu.wpi.aquamarine_axolotls.pathplanning;
 
+import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;

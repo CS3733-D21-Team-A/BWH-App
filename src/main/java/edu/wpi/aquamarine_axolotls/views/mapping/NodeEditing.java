@@ -85,6 +85,20 @@ public class NodeEditing extends GenericMap {
     @FXML
     public void initialize() throws SQLException {
 
+        nodeDropdown.setVisible(false);
+        nodeID.setVisible(false);
+        longName.setVisible(false);
+        shortName.setVisible(false);
+        xCoor.setVisible(false);
+        yCoor.setVisible(false);
+        nodeType.setVisible(false);
+        floor.setVisible(false);
+        building.setVisible(false);
+        submissionButton.setVisible(false);
+        clearButton.setVisible(false);
+
+
+
         startUp();
         submissionlabel.setVisible(true);
         if(searchAlgorithms.size() == 0){

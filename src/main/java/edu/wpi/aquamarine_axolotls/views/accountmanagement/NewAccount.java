@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -31,14 +32,25 @@ public class NewAccount extends GenericPage {
     private JFXPasswordField password;
     @FXML
     private JFXPasswordField confirmPassword;
+    @FXML
+    private Label passwordMatchLabel;
 
     private DatabaseController db;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
-    }
+        Subject subject = new Subject();
+        PasswordObserver passwordObserver = new PasswordObserver(subject, passwordMatchLabel);
 
+        password.textProperty().addListener(observable -> {
+            subject.setNewPassword(password.getText());
+        });
+
+        confirmPassword.textProperty().addListener(observable -> {
+            subject.setConfirmPassword(confirmPassword.getText());
+        });
+    }
 
     @FXML
     public void submit_button(ActionEvent actionEvent) throws SQLException {

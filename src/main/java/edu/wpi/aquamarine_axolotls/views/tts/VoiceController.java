@@ -33,7 +33,7 @@ public class VoiceController {
         }
     }
 
-    public void say(String thingsToSay,Thread aThread) throws InterruptedException {
+    public void say(String thingsToSay,Thread aThread) {
         this.voice = VoiceManager.getInstance().getVoice(this.name);
         this.voice.setRate(117.0f);
         this.voice.setStyle("casual");

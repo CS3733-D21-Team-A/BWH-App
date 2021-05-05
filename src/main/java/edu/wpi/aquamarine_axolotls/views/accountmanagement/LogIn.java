@@ -49,13 +49,14 @@ public class LogIn extends GenericPage {
         db = DatabaseController.getInstance();
         smsPane.setVisible(false);
     }
-
+/*
     public void smsCancel(){
         smsPane.setVisible ( false );
     }
 
     public void smsSubmit(String CUusername) {
         smsPane.setVisible ( true );
+
         String r = "123";
 
         if (smsText.getText().equals(r)) {
@@ -67,12 +68,13 @@ public class LogIn extends GenericPage {
             } catch (SQLException throwables) {
                 throwables.printStackTrace ( );
             }
-
         }
         else{
             popUp ( "Invalid! !" ,"\n\n\n\n\n\nYou have entered the incorrect" );
         }
     }
+
+ */
 
     public void confirmUser ( ) throws SQLException {
         String CUusername = username.getText ( );
@@ -91,6 +93,7 @@ public class LogIn extends GenericPage {
             Map<String, String> usr = db.getUserByUsername ( CUusername );
             Aapp.userType = usr.get ( "USERTYPE" );
             Aapp.username = usr.get ( "USERNAME" );
+            Aapp.userFirstName = usr.get("FIRSTNAME");
         } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
@@ -108,10 +111,6 @@ public class LogIn extends GenericPage {
        */
 
     }
-
-
-
-
 
    public void  forgottenPassword(){
         sceneSwitch ( "ForgotPassword" );

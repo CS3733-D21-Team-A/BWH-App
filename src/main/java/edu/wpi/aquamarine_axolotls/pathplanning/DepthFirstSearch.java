@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 
 import java.io.IOException;
@@ -11,54 +12,15 @@ import java.util.Map;
 
 public class DepthFirstSearch extends AbsAlgorithmMethod {
 
-    public DepthFirstSearch() {
-        try {
-            DatabaseController dbControl = DatabaseController.getInstance();
-
-            List<Map<String, String>> nodeMap = new ArrayList<>();
-            List<Map<String, String>> edgeMap = new ArrayList<>();
-
-            nodeMap = dbControl.getNodes();
-            edgeMap = dbControl.getEdges();
-
-            for (int i = 0; i < nodeMap.size(); i++) {
-                Map<String, String> currNodeMap = nodeMap.get(i);
-                this.nodes.add(new Node(
-                                currNodeMap.get("NODEID"),
-                                Integer.parseInt(currNodeMap.get("XCOORD")),
-                                Integer.parseInt(currNodeMap.get("YCOORD")),
-                                currNodeMap.get("FLOOR"),
-                                currNodeMap.get("BUILDING"),
-                                currNodeMap.get("NODETYPE"),
-                                currNodeMap.get("LONGNAME"),
-                                currNodeMap.get("SHORTNAME")
-                        )
-                );
-            }
-
-            for (int j = 0; j < edgeMap.size(); j++) {
-                Map<String, String> currEdgeMap = edgeMap.get(j);
-                this.edges.add(new Edge(
-                        edgeMap.get(j).get("EDGEID"),
-                        edgeMap.get(j).get("STARTNODE"),
-                        edgeMap.get(j).get("ENDNODE")
-                ));
-            }
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+    public DepthFirstSearch(){
+        super();
     }
 
-    public DepthFirstSearch(List<Node> nodeList, List<Edge> edgeList) {
-        for (int i = 0; i < nodeList.size(); i++) {
-            this.nodes.add(nodeList.get(i));
-        }
-        for (int j = 0; j < edgeList.size(); j++) {
-            this.edges.add(edgeList.get(j));
-        }
+    DepthFirstSearch(List<Node> nodeList, List<Edge> edgeList) {
+        super(nodeList, edgeList);
     }
 
-    public List<Node> getPath(String startLongName, String endLongName){
+    public List<Node> getPathImpl(String startLongName, String endLongName){
 
         List<Node> visited = new ArrayList<>();
 

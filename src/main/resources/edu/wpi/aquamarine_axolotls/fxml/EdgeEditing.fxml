@@ -13,6 +13,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -27,7 +28,7 @@
 
 <BorderPane fx:id="borderPane" prefHeight="900.0" prefWidth="1300.0" style="-fx-font-family: &quot;Verdana&quot;, sans-serif;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.EdgeEditing">
    <top>
-      <VBox prefHeight="127.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="127.0" prefWidth="1300.0" style="-fx-font-family: Verdana;" BorderPane.alignment="CENTER">
          <children>
             <GridPane alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="1270.0">
                <columnConstraints>
@@ -50,7 +51,7 @@
                         </ImageView>
                         <Label prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                            <font>
-                              <Font name="Times New Roman" size="18.0" />
+                              <Font name="Verdana" size="18.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="5.0" />
@@ -69,7 +70,7 @@
                               </ImageView>
                            </graphic>
                            <font>
-                              <Font size="18.0" />
+                              <Font name="Verdana" size="20.0" />
                            </font>
                         </JFXButton>
                      </children>
@@ -99,7 +100,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                      <children>
-                        <JFXComboBox fx:id="startNodeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#startNodeHighLight" prefHeight="23.0" prefWidth="166.0" promptText="Start Node" style="-fx-font-size: 12;" />
+                        <JFXComboBox fx:id="startNodeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#startNodeHighLight" prefHeight="23.0" prefWidth="166.0" promptText="Start Node" style="-fx-font-size: 12; -fx-font-family: Verdana;" />
                      </children></HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="161.0" prefWidth="272.0" style="-fx-background-color: #003da6;">
                      <children>
@@ -209,56 +210,45 @@
       </VBox>
    </left>
    <center>
-      <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="709.0" prefWidth="1027.0" BorderPane.alignment="CENTER">
-         <content>
+      <Group BorderPane.alignment="CENTER">
+         <children>
             <Group>
                <children>
                   <ImageView fx:id="mapImage" fitHeight="709.0" fitWidth="1025.0" pickOnBounds="true" preserveRatio="true" />
+                  <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="709.0" prefWidth="1027.0" />
                   <Pane fx:id="mapView" onMouseClicked="#hideContextMenu" prefHeight="709.0" prefWidth="1025.0" />
-                  <VBox alignment="CENTER" layoutX="850.0" layoutY="200.0" prefHeight="176.0" prefWidth="150.0">
+                  <VBox alignment="CENTER" layoutX="810.0" layoutY="200.0" prefHeight="176.0" prefWidth="150.0">
                      <children>
-                        <MenuBar prefHeight="26.0" prefWidth="130.0">
-                           <menus>
-                              <Menu fx:id="curFloor" mnemonicParsing="false" text="       Change Floor">
-                                 <items>
-                                    <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
-                                    <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
-                                    <MenuItem fx:id="floorL1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Floor L1" />
-                                    <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
-                                    <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
-                                    <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
-                                 </items>
-                              </Menu>
-                           </menus>
-                           <cursor>
-                              <Cursor fx:constant="S_RESIZE" />
-                           </cursor>
-                        </MenuBar>
-                        <JFXButton onAction="#zoomIn" prefHeight="25.0" prefWidth="123.0" text="Zoom In">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <JFXButton onAction="#zoomOut" prefHeight="25.0" prefWidth="122.0" text="Zoom Out">
-                           <VBox.margin>
-                              <Insets top="5.0" />
-                           </VBox.margin>
-                        </JFXButton>
-                        <Label alignment="CENTER" contentDisplay="CENTER" text="Current Navigation Algorithm:" textAlignment="CENTER" wrapText="true">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Label>
-                        <JFXComboBox fx:id="algoSelectBox" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="26.0" prefWidth="164.0" promptText="Navigation Algorithm">
-                           <VBox.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </VBox.margin>
-                        </JFXComboBox>
+                        <ToolBar orientation="VERTICAL" prefHeight="164.0" prefWidth="193.0">
+                          <items>
+                              <MenuBar prefHeight="26.0" prefWidth="130.0">
+                                 <menus>
+                                    <Menu fx:id="curFloor" mnemonicParsing="false" text="       Change Floor">
+                                       <items>
+                                          <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
+                                          <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
+                                          <MenuItem fx:id="floorL1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Floor L1" />
+                                          <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                                          <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
+                                          <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
+                                       </items>
+                                    </Menu>
+                                 </menus>
+                                 <cursor>
+                                    <Cursor fx:constant="S_RESIZE" />
+                                 </cursor>
+                              </MenuBar>
+                              <JFXButton onAction="#zoomIn" prefHeight="25.0" prefWidth="181.0" text="Zoom In" />
+                              <JFXButton onAction="#zoomOut" prefHeight="25.0" prefWidth="178.0" text="Zoom Out" />
+                              <Label alignment="CENTER" contentDisplay="CENTER" text="Current Navigation Algorithm:" textAlignment="CENTER" wrapText="true" />
+                              <JFXComboBox fx:id="algoSelectBox" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="26.0" prefWidth="164.0" promptText="Navigation Algorithm" />
+                          </items>
+                        </ToolBar>
                      </children>
                   </VBox>
                </children>
             </Group>
-         </content>
-      </ScrollPane>
+         </children>
+      </Group>
    </center>
 </BorderPane>
