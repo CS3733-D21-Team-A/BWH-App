@@ -75,6 +75,21 @@ final class DatabaseInfo {
 				//ATTRIBUTE ENUM('NOT_NAVIGABLE', 'HANDICAPPED_ACCESSIBLE', 'COVID_SAFE')
 		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
 
+	// ========== FAVORITE_NODES TABLE ================= //
+	/**
+	 * SQL table for the FAVORITE_NODES
+	 */
+	static final String FAVORITE_NODES_TABLE_SQL =
+		"CREATE TABLE " + TABLES.FAVORITE_NODES.name() + " (" +
+			"USERID VARCHAR(25)," +
+			"LOCATIONID VARCHAR(25)," +
+			"FAVID INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
+			"FOREIGN KEY (USERID) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON DELETE CASCADE ON UPDATE RESTRICT," +
+			"FOREIGN KEY (LOCATIONID) REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
+			"NODENAME VARCHAR(50)," +
+			"CONSTRAINT USER_NODE_PAIR UNIQUE(USERID,LOCATIONID)," +
+			"CONSTRAINT USER_NAME_PAIR UNIQUE(USERID,NODENAME)" +
+		")";
 
 	// ========== USER TABLE ================= //
 	/**
@@ -88,11 +103,13 @@ final class DatabaseInfo {
 					"LASTNAME VARCHAR(25)," +
 					"EMAIL VARCHAR(25) NOT NULL," +
 					"CONSTRAINT emailConst UNIQUE(EMAIL)," +
-					"USERTYPE VARCHAR(25) DEFAULT 'PATIENT'," +
+					"USERTYPE VARCHAR(25) DEFAULT 'patient'," +
 					//"USERTYPE ENUM('PATIENT', 'EMPLOYEE', "GUEST', 'ADMIN')
 					"PASSWORD VARCHAR(25) NOT NULL," +
 					"PRONOUNS VARCHAR(25)," +
-					"GENDER VARCHAR(50)"+
+					"GENDER VARCHAR(50),"+
+					"TAKENSURVEY VARCHAR(25) DEFAULT 'false'," +
+					"COVIDLIKELY VARCHAR(25)" +
 					")";
 
 	// ========== ATTRIBUTES STRINGS ==========
@@ -113,7 +130,7 @@ final class DatabaseInfo {
 					"USERNAME VARCHAR(25) PRIMARY KEY," +
 					"FOREIGN KEY (USERNAME) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON DELETE CASCADE ON UPDATE RESTRICT," +
 					"AREQUAR VARCHAR(25)," +
-					"NAUSADIRRHEA VARCHAR(25)," +
+					"NAUSEADIARRHEA VARCHAR(25)," +
 					"SHORTBREATH VARCHAR(25)," +
 					"HASCOUGH VARCHAR(25)," +
 					"HASFEVER VARCHAR(25)," +
@@ -130,7 +147,6 @@ final class DatabaseInfo {
 
 	// delivery time, dietary restrictions, note, food requested mess
 	// 4/26 added Food Option, Number of Servings, Contact Number and Drink Options
-	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FOOD_DELIVERY table.
 	 */
@@ -142,14 +158,13 @@ final class DatabaseInfo {
 			"DIETARYRESTRICTIONS VARCHAR(150)," +
 			"NUMBEROFSERVINGS VARCHAR(3)," +
 			"CONTACTNUMBER VARCHAR(15)," +
-			"DRINKOPTIONS VARCHAR(25)," + // TODO: do the same thing as what happened with food options thing
+			"DRINKOPTIONS VARCHAR(25)," +
 			"NOTE VARCHAR(300)," +
 			"FOREIGN KEY (REQUESTID) REFERENCES " + TABLES.SERVICE_REQUESTS.name() + "(REQUESTID) ON DELETE CASCADE ON UPDATE RESTRICT" +
 		")";
 
 	// delivery time, note, flower requested mess
 	// 4/26 added Delivery Date, Flower Options, Vase Options and Contact Number
-	// TODO: Check newly added attributes to make sure they fit the needed value holders
 	/**
 	 * SQL for building the FLORAL_DELIVERY table.
 	 */
@@ -365,6 +380,7 @@ final class DatabaseInfo {
 		TABLE_SQL.put(TABLES.ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
 		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		TABLE_SQL.put(TABLES.USERS, USER_TABLE_SQL);
+		TABLE_SQL.put(TABLES.FAVORITE_NODES,FAVORITE_NODES_TABLE_SQL);
 		TABLE_SQL.put(TABLES.COVID_SURVEY, COVID_SURVEY_TABLE_SQL);
 
 		SERVICEREQUEST_SQL = new EnumMap<>(SERVICEREQUEST.class);

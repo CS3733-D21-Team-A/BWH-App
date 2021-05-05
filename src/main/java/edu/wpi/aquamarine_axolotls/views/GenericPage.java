@@ -46,7 +46,7 @@ public class GenericPage {
         myDialog.centerOnScreen();
         myDialog.setTitle(title);
         Text text1 = new Text(disp);
-        text1.setStyle("-fx-font-size: 20; -fx-fill: blue; -fx-font-background: cream; -fx-font-family: Baskerville; -fx-alignment: center");
+        text1.setStyle("-fx-font-size: 20; -fx-fill: blue; -fx-font-background: cream; -fx-font-family: Georgia; -fx-alignment: center");
         TextFlow textFlow = new TextFlow(text1);
         textFlow.setTextAlignment(TextAlignment.CENTER);
         myDialog.setScene(new Scene(textFlow, 400, 300));

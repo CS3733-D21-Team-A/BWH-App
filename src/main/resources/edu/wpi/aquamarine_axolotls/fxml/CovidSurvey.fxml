@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXHamburger?>
-<?import com.jfoenix.controls.JFXRadioButton?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -50,12 +50,10 @@
                         <Insets bottom="10.0" left="10.0" />
                     </padding>
                     <children>
-                        <GridPane alignment="CENTER" maxHeight="1000.0" minHeight="500.0" prefHeight="500.0" prefWidth="1264.0">
+                        <GridPane fx:id="grid" alignment="CENTER" maxHeight="1000.0" minHeight="500.0" prefHeight="500.0" prefWidth="1264.0">
                             <columnConstraints>
-                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="478.593994140625" minWidth="10.0" prefWidth="452.39599609375" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" prefWidth="47.60400390625" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="515.4378662109375" minWidth="10.0" prefWidth="515.4378662109375" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="0.0" prefWidth="63.5621337890625" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints maxHeight="100.0" minHeight="0.0" prefHeight="26.897216796875" vgrow="SOMETIMES" />
@@ -130,116 +128,94 @@
                               <Font name="Baskerville" size="15.0" />
                            </font>
                         </Text>
-                        <JFXRadioButton fx:id="yes1" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXCheckBox fx:id="yes1" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no1" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="No" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes2" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes2" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes3" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="3">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no2" text="No" GridPane.columnIndex="2" GridPane.rowIndex="2" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes4" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes4" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes5" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="5">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no3" text="No" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes6" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="6">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no4" text="No" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;"  GridPane.columnIndex="2" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes7" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="7">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no5" text="No" GridPane.columnIndex="2" GridPane.rowIndex="5"  style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes8" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="8">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no6" text="No" GridPane.columnIndex="2" GridPane.rowIndex="6" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes9" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="9">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes3" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes10" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="10">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes5" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
+                        <JFXCheckBox fx:id="yes11" checkedColor="#003da6" prefHeight="18.0" prefWidth="100.0" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="11">
                            <font>
-                              <Font name="Baskerville" size="23.0" />
+                              <Font name="Baskerville" size="20.0" />
                            </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes6" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="6">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes7" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="7">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes8" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="8">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes9" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="9">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes10" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="10">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="yes11" selected="true" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" text="Yes" GridPane.columnIndex="1" GridPane.rowIndex="11">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no7" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;"  text="No" GridPane.columnIndex="2" GridPane.rowIndex="7">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no8" text="No" GridPane.columnIndex="2" GridPane.rowIndex="8" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no9" text="No" GridPane.columnIndex="2" GridPane.rowIndex="9" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no10" text="No" GridPane.columnIndex="2" GridPane.rowIndex="10" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
-                        <JFXRadioButton fx:id="no11" text="No" GridPane.columnIndex="2" style="-jfx-unselected-color: #003da6; -jfx-selected-color: #003da6;" GridPane.rowIndex="11">
-                           <font>
-                              <Font name="Baskerville" size="23.0" />
-                           </font>
-                        </JFXRadioButton>
+                           <GridPane.margin>
+                              <Insets left="10.0" />
+                           </GridPane.margin>
+                        </JFXCheckBox>
                      </children>
                         </GridPane>
                     </children>

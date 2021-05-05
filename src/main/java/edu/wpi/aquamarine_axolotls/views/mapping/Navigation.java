@@ -1,11 +1,22 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.Duration;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
+import edu.wpi.aquamarine_axolotls.Settings;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
+import edu.wpi.aquamarine_axolotls.views.tts.VoiceController;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -13,11 +24,18 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.prefs.BackingStoreException;
+
+import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.gmaps.Directions.*;
 
 public class Navigation extends GenericMap {
 
@@ -32,6 +50,21 @@ public class Navigation extends GenericMap {
     @FXML private VBox listOfDirections;
     @FXML private Group textDirectionsGroup;
     @FXML private TreeTableView<String> treeTable;
+    @FXML private JFXToggleButton voiceDirection;
+
+    @FXML private JFXComboBox destinationDropdown;
+    @FXML private JFXTextField startTextfield;
+    @FXML private VBox listDirVBoxExt;
+    @FXML private VBox listOfDirectionsExt;
+    @FXML private VBox stepByStepExt;
+    @FXML private JFXTextField apiKey;
+    @FXML private Pane apiKeyPane;
+    @FXML private Label curDirectionExt;
+    @FXML private Label invalidKey;
+    @FXML private Label etaLabelExt;
+    @FXML private Tab internalNav;
+    @FXML private Tab externalNav;
+
 
     ObservableList<String> options = FXCollections.observableArrayList();
     private int firstNodeSelect = 0;
@@ -43,6 +76,12 @@ public class Navigation extends GenericMap {
     static int dirIndex = 0; //why is this static?
     private List<Map<String,String>> intermediatePoints = new ArrayList<>();
     private Map<String,String> endPoint;
+    private VoiceController voice = new VoiceController("kevin16");
+    private Thread newThread = new Thread();
+
+    private static DirectionsLeg dirLeg;
+    private List<String> extDir = new ArrayList<String>();
+    int dirIndexExt = 0;
 
     @FXML
     public void initialize() throws SQLException {
@@ -51,6 +90,9 @@ public class Navigation extends GenericMap {
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
+
+        // TODO: CHANGE THIS
+        String covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -62,6 +104,7 @@ public class Navigation extends GenericMap {
         TreeItem<String> exit = new TreeItem<>("Entrances");
         TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
         TreeItem<String> serv = new TreeItem<>("Non Medical Services");
+        TreeItem<String> fav = new TreeItem<>("Favorites");
 
         for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
             if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
@@ -91,6 +134,8 @@ public class Navigation extends GenericMap {
                         conf.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "EXIT":
+                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+                        if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
                         exit.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "RETL":
@@ -102,9 +147,9 @@ public class Navigation extends GenericMap {
                 }
             }
         }
-        TreeItem<String> root = new TreeItem<>("Hello");
-        //root.setExpanded(true);
-        root.getChildren().addAll(park, rest, stai, dept, labs, info, conf, exit, retl, serv);
+
+        TreeItem<String> root = new TreeItem<>("");
+        root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
         treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue()));
@@ -112,7 +157,17 @@ public class Navigation extends GenericMap {
         treeTable.setShowRoot(false);
         treeTable.getColumns().add(treeTableColumn1);
 
+        destinationDropdown.setItems(FXCollections
+                .observableArrayList("Emergency Room", "Valet", "Parking Spot")
+        );
+
         drawNodesAndFloor("1", Color.BLUE);
+        List<Map<String, String>> favorites = db.getFavoriteNodesForUser(Aapp.username);
+        for(Map<String, String> node: favorites) fav.getChildren().add(new TreeItem<>(node.get("NODENAME")));
+        if(favorites.isEmpty()) treeTable.getRoot().getChildren().remove(0);
+
+        drawFloor("1");
+        drawNodesAndFavorites();
 
         stepByStep.setVisible(false);
         listDirVBox.setVisible(false);
@@ -120,8 +175,14 @@ public class Navigation extends GenericMap {
         treeTable.setVisible(true);
         treeTable.toFront();
 
+        stepByStepExt.setVisible(false);
+        listDirVBoxExt.setVisible(false);
+
         MenuItem item1 = new MenuItem(("Add Stop"));
         MenuItem item2 = new MenuItem(("Add to Favorites"));
+        MenuItem addStop = new MenuItem(("Add Stop"));
+        MenuItem addFav = new MenuItem(("Add to Favorites"));
+        MenuItem deleteFav = new MenuItem(("Remove from favorites")); //TODO: this should only show up when clicking on a favorite node
 
         treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
@@ -152,19 +213,56 @@ public class Navigation extends GenericMap {
             }
         });
 
-        item1.setOnAction((ActionEvent e)->{
+        addStop.setOnAction((ActionEvent e)->{
             try {
                 addDestination(contextMenuX, contextMenuY);
+
             }
             catch(SQLException se) {
                 se.printStackTrace();
             }
         });
-        item2.setOnAction((ActionEvent e)->{
+        addFav.setOnAction((ActionEvent e) -> {
+            try {
+                Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
+                if(node != null) {
+                    if(fav.getChildren().size() == 0) treeTable.getRoot().getChildren().add(0, fav);
+                    db.addFavoriteNodeToUser(Aapp.username, node.get("NODEID"), node.get("LONGNAME"));
+                    fav.getChildren().add(new TreeItem<String>(node.get("LONGNAME")));
+                    if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
+                    else drawSingleNode(node, Color.HOTPINK);
+                    treeTable.refresh();
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
 
+        deleteFav.setOnAction((ActionEvent e)->{
+            try {
+                Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
+                if(node != null) {
+                    if(db.getFavoriteNodeByUserAndName(Aapp.username, node.get("LONGNAME")) != null){
+                        for (int i = 0; i < fav.getChildren().size(); i++) {
+                            String nodeName = fav.getChildren().get(i).getValue();
+                            if (nodeName.equals(node.get("LONGNAME"))) {
+                                fav.getChildren().remove(i);
+                                db.deleteFavoriteNodeFromUser(Aapp.username, nodeName);
+                                drawSingleNode(node, Color.BLUE);
+                                break;
+                            }
+                        }
+                        if(fav.getChildren().isEmpty()) treeTable.getRoot().getChildren().remove(0);
+                        treeTable.refresh();
+                    }
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         });
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(item1,item2);
+        if (Aapp.userType.equals("Guest")) contextMenu.getItems().addAll(addStop);
+        else contextMenu.getItems().addAll(addStop, addFav, deleteFav);
 
         mapView.setOnContextMenuRequested(event -> {
             contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
@@ -174,17 +272,47 @@ public class Navigation extends GenericMap {
 
     }
 
+    @Override
+    public void goHome() {
+        voice.stop();
+        super.goHome();
+    }
+
+    public void drawNodesAndFavorites() throws SQLException{
+        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, Color.BLUE);
+        }
+        for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
+            Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
+            if(node.get("FLOOR").equals(FLOOR)){
+                if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
+                else drawSingleNode(node, Color.HOTPINK);
+            }
+        }
+    }
+
+    @Override
     public void changeFloor(String floor) throws SQLException{
         drawFloor(floor);
         if(activePath) {
             drawPath(floor);
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
-                if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) {
+                    if (intermediatePoints.indexOf(intermediatePointToDraw) == intermediatePoints.size() - 1) {
+                        drawSingleNodeHighLight(intermediatePointToDraw, Color.MAGENTA);
+                    } else drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                }
             }
             if (intermediatePoints.size() > 0 && intermediatePoints.get(intermediatePoints.size() - 1).get("FLOOR").equals(FLOOR))
-                drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
+                drawSingleNode(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
         }
-        else drawNodes(Color.BLUE);
+        else drawNodesAndFavorites();
+    }
+
+    public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
+        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, colorOfNodes);
+        }
     }
 
     /**
@@ -199,7 +327,8 @@ public class Navigation extends GenericMap {
         etaLabel.setText("");
         startLabel.setText("");
         endLabel.setText("");
-        drawNodesAndFloor(FLOOR, Color.BLUE);
+        drawFloor(FLOOR);
+        drawNodesAndFavorites();
         startLabel.setText("");
         endLabel.setText("");
 
@@ -212,7 +341,8 @@ public class Navigation extends GenericMap {
     public void drawPath(String floor) throws SQLException{
         if(currPath.isEmpty()) return;
         FLOOR = floor;
-        drawNodesAndFloor(FLOOR, new Color(0.0 , 0.0, 1.0, 0.4));
+        drawFloor(FLOOR);
+        drawNodesNoHallWalk(new Color(0.0 , 0.0, 1.0, 0.4));
         for (int i = 0; i < currPath.size() - 1; i++) {
             if (currPath.get(i).getFloor().equals(FLOOR) &&
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
@@ -221,8 +351,14 @@ public class Navigation extends GenericMap {
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
+            for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
+                if ((intermediatePointToDraw.get("FLOOR").equals(FLOOR)) &&
+                        (intermediatePoints.indexOf(intermediatePointToDraw) != intermediatePoints.size() - 1))
+                            drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE); // changed from highlight
+            }
             if (currPath.get(0).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
             if (currPath.get(currPath.size()- 1).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
+
         }
     }
     // draw floor that makes everything transparent
@@ -273,7 +409,8 @@ public class Navigation extends GenericMap {
     /**
      * Starts the text directions once they're initialized
      */
-    public void startDir() throws SQLException{
+    public void startDir() throws SQLException,InterruptedException{
+
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         treeTable.setVisible(false);
@@ -289,12 +426,16 @@ public class Navigation extends GenericMap {
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
+        if(voiceDirection.isSelected()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        }
     }
 
     /**
      * Progresses to the next step in the text directions
      */
-    public void progress() throws SQLException {
+    public void progress() throws SQLException,InterruptedException {
+        voice.stop();
         if (dirIndex < currPathDir.get(0).size() - 1){
             unHighlightDirection();
             dirIndex += 1;
@@ -306,13 +447,17 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
     /**
      * Moves back to the previous step in the text directions
      */
-    public void regress() throws SQLException{
+    public void regress() throws SQLException,InterruptedException{
+        voice.stop();
         if (dirIndex != 0) {
             unHighlightDirection();
             dirIndex -= 1;
@@ -322,6 +467,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
@@ -503,6 +651,8 @@ public class Navigation extends GenericMap {
         //if(event.getButton().equals(MouseButton.PRIMARY)) {
         Map<String, String> newDestination = getNearestNode(x, y);
 
+        if (newDestination.get("NODETYPE").equals("HALL") || newDestination.get("NODETYPE").equals("WALK")) return;
+
         if (newDestination != null) {
             String currCloseName = newDestination.get("LONGNAME");
 
@@ -511,6 +661,7 @@ public class Navigation extends GenericMap {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
                     drawSingleNodeHighLight(newDestination,Color.GREEN);
+                    startLabel.setText(currCloseName);
                 }
                 else if ( firstNodeSelect == 1 ) {
                     stopList.clear ( );
@@ -521,6 +672,7 @@ public class Navigation extends GenericMap {
                     drawPath ( FLOOR );
                     intermediatePoints.add(newDestination);
                     drawSingleNodeHighLight(newDestination,Color.MAGENTA);
+                    endLabel.setText(currCloseName);
                 }
             }
             else {
@@ -532,11 +684,160 @@ public class Navigation extends GenericMap {
                 drawPath(FLOOR);
                 intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
-                    drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
+                    if ((intermediatePointToDraw.get("FLOOR").equals(FLOOR)) &&
+                            (intermediatePoints.indexOf(intermediatePointToDraw) != intermediatePoints.size() - 1))
+                                drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
                 }
                 drawSingleNodeHighLight(newDestination,Color.MAGENTA);
             }
         }
+
+    }
+
+    /**
+     *  starting the path for external
+     */
+    public void findPathExt() {
+        listOfDirectionsExt.getChildren().clear();
+
+        String destination = destinationDropdown.getSelectionModel().getSelectedItem().toString();
+        String startLocation = startTextfield.getText();
+
+        try{
+            switch(destination){
+                case "Emergency Room":
+                    dirLeg = navigateToER(startLocation);
+                    break;
+                case "Parking Spot":
+                    dirLeg = navigateToClosestParking(startLocation);
+                    break;
+                case "Valet":
+                    dirLeg = navigateToClosestValet(startLocation);
+                    break;
+            }
+            Duration eta = dirLeg.duration;
+            etaLabelExt.setText(String.valueOf(eta));
+
+            stepByStepExt.setVisible(false);
+            listDirVBoxExt.setVisible(true);
+            listDirVBoxExt.toFront();
+
+            DirectionsStep[] steps = dirLeg.steps;
+            System.out.println(steps);
+
+            for (int i = 0; i < steps.length; i++){
+                String s = steps[i].htmlInstructions;
+                String newString = String.valueOf(i+1) + ") " + parseHtmlDir(s);
+
+                if (newString.contains("Destination")){
+                    String[] str = newString.split("Destination", 2);
+                    str[1] = String.valueOf(i+1) + ") Destination" + str[1];
+
+                    for (int j = 0; j < 2; j++){
+                        extDir.add(str[j]);
+                        Label l = new Label(str[j]);
+                        l.setWrapText(true);
+                        listOfDirectionsExt.getChildren().add(l);
+                    }
+                    return;
+                }
+
+                extDir.add(newString);
+                Label l = new Label(newString);
+                l.setWrapText(true);
+                listOfDirectionsExt.getChildren().add(l);
+            }
+        } catch (Exception e) {
+            apiKeyPane.setVisible(true);
+
+        }
+
+    }
+
+    /**
+     * initializing step-by-step for external directions
+     */
+    public void startDirExt() {
+        stepByStepExt.setVisible(true);
+        listDirVBoxExt.setVisible(false);
+        stepByStepExt.toFront();
+
+        dirIndexExt = 0;
+
+        curDirectionExt.setText(extDir.get(dirIndexExt));
+        if (voiceDirection.isSelected()) {
+            String dirText = curDirectionExt.getText();
+            voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+        }
+    }
+
+    public void regressExt() {
+        voice.stop();
+        if (dirIndexExt != 0){
+            dirIndexExt -= 1;
+            curDirectionExt.setText(extDir.get(dirIndexExt));
+            if(voiceDirection.isSelected()) {
+                String dirText = curDirectionExt.getText();
+                voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+            }
+        }
+    }
+
+    public void progressExt() {
+        voice.stop();
+        if (dirIndexExt < extDir.size()-1){
+            dirIndexExt += 1;
+            curDirectionExt.setText(extDir.get(dirIndexExt));
+            if(voiceDirection.isSelected()) {
+                String dirText = curDirectionExt.getText();
+                voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+            }
+        }
+    }
+
+    /**
+     * going back to list directions from step-by-step
+     */
+    public void cancelDirExt() {
+        stepByStepExt.setVisible(false);
+        listDirVBoxExt.setVisible(true);
+        listDirVBoxExt.toFront();
+    }
+
+    public void clearNavExt() {
+        stepByStepExt.setVisible(false);
+        listDirVBoxExt.setVisible(false);
+    }
+
+    public String parseHtmlDir(String direction){
+        String parsed = direction.replaceAll("\\<.*?\\>", "");
+        return parsed;
+    }
+
+    public void submitApiKey(){
+        prefs.put(Settings.API_KEY, apiKey.getText());
+        apiKeyPane.setVisible(false);
+
+        if (!apiKey.getText().equals(null)){
+            invalidKey.setVisible(true);
+        }
+        findPathExt();
+    }
+    @FXML
+    public void toggleVoiceDirectionButton() {
+        if (!voiceDirection.isSelected()){
+            voice.stop();
+        } else if (internalNav.isSelected() && stepByStep.isVisible()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        } else if (externalNav.isSelected() && stepByStepExt.isVisible()) {
+            String dirText = curDirectionExt.getText();
+            voice.say(dirText.substring(dirText.indexOf(") ")), newThread);
+        }
+    }
+
+    @FXML
+    public void stopVoice() {
+        voice.stop();
     }
 }
 

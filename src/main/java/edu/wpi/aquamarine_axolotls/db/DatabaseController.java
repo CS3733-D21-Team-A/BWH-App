@@ -4,7 +4,6 @@ import edu.wpi.aquamarine_axolotls.db.enums.*;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.*;
 
@@ -20,6 +19,7 @@ public class DatabaseController implements AutoCloseable {
 	final private Table attrTable;
 	final private Table userTable;
 	final private Table serviceRequestsTable;
+	final private Table favoriteNodesTable;
 	final private Table covidSurveyTable;
 	/*
 	 * Map for getting service request tables.
@@ -56,6 +56,7 @@ public class DatabaseController implements AutoCloseable {
 		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		userTable = tableFactory.getTable(TABLES.USERS);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
+		favoriteNodesTable = tableFactory.getTable(TABLES.FAVORITE_NODES);
 		covidSurveyTable = tableFactory.getTable(TABLES.COVID_SURVEY);
 
 
@@ -678,6 +679,16 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	/** Checks to see if a user has taken the COVID survey
+	 *
+	 * @param username The username of the user
+	 * @return True if they have taken it, false otherwise
+	 * @throws SQLException
+	 */
+	public boolean hasUserTakenCovidSurvey(String username) throws SQLException{
+		return userTable.getEntry(username).get("TAKENSURVEY").equals("true");
+	}
+
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
@@ -743,7 +754,8 @@ public class DatabaseController implements AutoCloseable {
 
 	// ======= COVID SURVEY ==========
 
-	/** Adds a survey that the user took to the database
+	/** Adds a survey that the user took to the database, and changes the users TAKENSURVEY
+	 *  field to YES
 	 *
 	 * @param survey The survey that the user has submitted
 	 * @throws SQLException
@@ -754,6 +766,12 @@ public class DatabaseController implements AutoCloseable {
 		}
 		//TODO: Make it so guests create a random ID for username
 		covidSurveyTable.addEntry(survey);
+
+		String username = covidSurveyTable.getEntry(survey.get("USERNAME")).get("USERNAME");
+		Map<String, String> theUser = userTable.getEntry(username);
+		theUser.replace("TAKENSURVEY","true");
+
+		userTable.editEntry(username, theUser);
 	}
 
 	/** Gets the survey from a specific user
@@ -762,13 +780,105 @@ public class DatabaseController implements AutoCloseable {
 	 * @return The survey of the user
 	 * @throws SQLException
 	 */
-	public Map<String, String> getSurvey(String username) throws SQLException
+	public Map<String, String> getSurveyByUsername(String username) throws SQLException
 	{
 		if(covidSurveyTable.getEntry(username) != null) {
 			return covidSurveyTable.getEntry(username);
 		} else {
 			throw new SQLException();
 		}
+	}
+
+	/** Returns all of the surveys in the table
+	 *
+	 * @return The list of surveys
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getSurveys() throws SQLException
+	{
+		return covidSurveyTable.getEntries();
+	}
+
+	// ===== FAVORITE_NODES ======== Emily
+
+	/**
+	 * gets the automatically generated favid using username and node name
+	 * @param username
+	 * @param nodeName
+	 * @return
+	 */
+	String getFAVID(String username, String nodeName) throws SQLException {
+		return getFavoriteNodeByUserAndName(username, nodeName).get("FAVID");
+	}
+
+	/**
+	 * Creates a new favorite id and adds it to fav node table
+	 * @param username userID that correlates to a user in the user table
+	 * @param locationID nodeID that correlates to a node in the node table
+	 * @param nodeName the user given name for the node
+	 * @return the auto-generated FAVID
+	 */
+	public String addFavoriteNodeToUser(String username, String locationID, String nodeName) throws SQLException {
+		Map<String, String> takenValues = new HashMap<>();
+		takenValues.put("USERID", username);
+		takenValues.put("LOCATIONID", locationID);
+		takenValues.put("NODENAME", nodeName);
+
+		favoriteNodesTable.addEntry(takenValues);
+		return getFAVID(username,nodeName);
+	}
+
+	/**
+	 * Gets the favorite nodes for the user id inputted
+	 * @param username
+	 * @return list of map entries containing the favorite nodes, null if it doesn't exist
+	 */
+	public List<Map<String,String>> getFavoriteNodesForUser(String username) throws SQLException {
+		return favoriteNodesTable.getEntriesByValue("USERID", username);
+	}
+
+	/**
+	 * Gets a specific favorite node for the user id inputted
+	 * @param username
+	 * @param nodeName
+	 * @return map of the fav node values or null if it doesn't exist
+	 */
+	public Map<String,String> getFavoriteNodeByUserAndName(String username, String nodeName) throws SQLException {
+		Map<String,List<String>> filters = new HashMap();
+		filters.put("USERID", Collections.singletonList(username));
+		filters.put("NODENAME", Collections.singletonList(nodeName));
+
+		List<Map<String,String>> userFaves = favoriteNodesTable.getEntriesByValues(filters);
+		if (userFaves.size() == 0) return null;
+		else return userFaves.get(0);
+	}
+
+	/**
+	 * gets a favorite node from table using primary key
+	 * @param favid
+	 * @return the map of the favorite node associated with the favid
+	 * @throws SQLException
+	 */
+	public Map<String,String> getFavoriteNodeByFAVID(String favid) throws SQLException {
+		return favoriteNodesTable.getEntry(favid);
+	}
+
+	/**
+	 * deletes a specific fav node from a user's account
+	 * @param username
+	 * @param nodeName
+	 * @throws SQLException
+	 */
+	public void deleteFavoriteNodeFromUser(String username, String nodeName) throws SQLException {
+		favoriteNodesTable.deleteEntry(getFAVID(username,nodeName));
+	}
+
+	/**
+	 * empties favorite nodes table by calling empty table
+	 * @throws SQLException
+	 */
+	void emptyFavoriteNodesTable() throws SQLException {
+		favoriteNodesTable.emptyTable();
 	}
 
 
@@ -827,6 +937,15 @@ public class DatabaseController implements AutoCloseable {
 			put("EMAIL", "employee@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
 			put("PASSWORD", "employee");
+		}});
+
+		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
+			put("USERNAME", "guest");
+			put("FIRSTNAME", "guest");
+			put("LASTNAME", "guest");
+			put("EMAIL", "guest@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
+			put("PASSWORD", "guest");
 		}});
 	}
 

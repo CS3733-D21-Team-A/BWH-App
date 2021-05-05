@@ -343,6 +343,10 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         if (nodeIndex == 0 || nodeIndex == path.size() - 1) return false;
 
+        if(path.get(nodeIndex).equals(path.get(nodeIndex+1)) &&
+                (path.get(nodeIndex).getNodeType().equals("ELEV")
+                        || (path.get(nodeIndex).getNodeType().equals("STAI")))) return true;
+
         if((node.getNodeType().equals("STAI") &&
                 (path.get(nodeIndex+1).getNodeType().equals("STAI") ||
                         path.get(nodeIndex-1).getNodeType().equals("STAI"))) ||

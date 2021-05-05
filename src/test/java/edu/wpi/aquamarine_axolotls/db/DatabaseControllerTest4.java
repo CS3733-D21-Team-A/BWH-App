@@ -94,6 +94,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
 
@@ -106,6 +108,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -118,6 +122,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
             db.addUser(user3);
 
@@ -143,6 +149,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             assertThrows(SQLException.class, () -> {
@@ -168,6 +176,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "BananasTho");
@@ -176,6 +186,8 @@ public class DatabaseControllerTest4 {
             user2.put("EMAIL", "Sean@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
             user2.put("PASSWORD", "YourPassword");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             assertThrows(SQLException.class, () -> {
@@ -200,6 +212,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             user1.replace("LASTNAME", "DeMaio");
@@ -225,6 +239,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             user1.replace("LASTNAME", "DeMaio");
@@ -252,6 +268,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
@@ -277,6 +295,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
@@ -303,6 +323,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
             testBoi.add(user1);
@@ -316,6 +338,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
             testBoi.add(user2);
@@ -329,6 +353,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
             db.addUser(user3);
             testBoi.add(user3);
@@ -353,6 +379,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
 
@@ -365,6 +393,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -377,6 +407,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
             db.addUser(user3);
 
@@ -399,6 +431,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
 
@@ -411,6 +445,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -423,6 +459,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
             db.addUser(user3);
 
@@ -446,6 +484,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
 
@@ -458,6 +498,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -470,6 +512,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
             db.addUser(user3);
 
@@ -492,6 +536,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
 
@@ -504,6 +550,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -516,6 +564,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
             db.addUser(user3);
 
@@ -538,6 +588,8 @@ public class DatabaseControllerTest4 {
             user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
+            user1.put("TAKENSURVEY","NO");
+            user1.put("COVIDLIKELY",null);
 
             db.addUser(user1);
 
@@ -550,6 +602,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -562,6 +616,8 @@ public class DatabaseControllerTest4 {
             user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
+            user3.put("TAKENSURVEY","NO");
+            user3.put("COVIDLIKELY",null);
 
 
             db.addUser(user3);
@@ -589,6 +645,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
 
             db.addUser(user);
 
@@ -603,6 +661,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -628,6 +688,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
 
             assertEquals(null, db.getUserByUsername("Seansta18"));
 
@@ -644,6 +706,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             assertEquals(null, db.getUserByUsername("EKelley"));
             db.addUser(user2);
@@ -668,6 +732,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
 
             db.addUser(user);
 
@@ -682,6 +748,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "She/Her");
             user2.put("GENDER", "Female");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user2);
 
@@ -707,6 +775,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Female");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
 
 
             db.addUser(user);
@@ -723,6 +793,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Her");
             user2.put("GENDER", "Male");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             assertEquals(null, db.getUserByEmail("emily@gmail.com"));
             db.addUser(user2);
@@ -747,6 +819,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "Yes");
             user.put("GENDER", "Yes");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
 
             db.addUser(user);
 
@@ -774,6 +848,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "Xe/Xers");
             user.put("GENDER", "Nonbinary");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -784,6 +860,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
 
             db.addUser(user);
             db.addUser(user2);
@@ -817,6 +895,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
             db.addUser(user);
 
             Map<String, String> user2 = new HashMap<String, String>();
@@ -828,6 +908,8 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "Chris");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
+            user2.put("TAKENSURVEY","NO");
+            user2.put("COVIDLIKELY",null);
             db.addUser(user2);
 
             Map<String, String> sharedValues1 = new HashMap<String, String>();
@@ -920,6 +1002,8 @@ public class DatabaseControllerTest4 {
             user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
+            user.put("TAKENSURVEY","NO");
+            user.put("COVIDLIKELY",null);
             db.addUser(user);
 
             Map<String, String> user2 = new HashMap<String, String>();
@@ -931,6 +1015,7 @@ public class DatabaseControllerTest4 {
             user2.put("PASSWORD", "Chris");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
+            user2.put("TAKENSURVEY","NO");
             db.addUser(user2);
 
             Map<String, String> sharedValues1 = new HashMap<String, String>();
