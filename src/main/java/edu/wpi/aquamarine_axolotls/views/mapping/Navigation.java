@@ -144,14 +144,6 @@ public class Navigation extends GenericMap {
                 }
             }
         }
-//
-//        if(covidLikely.equals("true")) {
-////            options.remove("75 Francis Valet Drop-off");
-//            exit.getChildren().remove("75 Francis Valet Drop-off");
-//        } else{
-////            options.remove("Emergency Department Entrance");
-//            exit.getChildren().remove("Emergency Department Entrance");
-//        }
 
         TreeItem<String> root = new TreeItem<>("");
         root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
@@ -815,9 +807,11 @@ public class Navigation extends GenericMap {
         findPathExt();
     }
     @FXML
-    public void toggleVoiceDirectionButton(){
+    public void toggleVoiceDirectionButton() throws InterruptedException {
         if (!voiceDirection.isSelected()){
             voice.stop();
+        } else if (stepByStep.isVisible()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
         }
     }
 
