@@ -679,6 +679,16 @@ public class DatabaseController implements AutoCloseable {
 		}
 	}
 
+	/** Checks to see if a user has taken the COVID survey
+	 *
+	 * @param username The username of the user
+	 * @return True if they have taken it, false otherwise
+	 * @throws SQLException
+	 */
+	public boolean hasUserTakenCovidSurvey(String username) throws SQLException{
+		return userTable.getEntry(username).get("TAKENSURVEY").equals("true");
+	}
+
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
@@ -702,7 +712,6 @@ public class DatabaseController implements AutoCloseable {
 		return userTable.getEntry(username);
 	}
 
-	// Sean
 	/**
 	 * gets a user by email
 	 * @param email
@@ -745,7 +754,8 @@ public class DatabaseController implements AutoCloseable {
 
 	// ======= COVID SURVEY ==========
 
-	/** Adds a survey that the user took to the database
+	/** Adds a survey that the user took to the database, and changes the users TAKENSURVEY
+	 *  field to YES
 	 *
 	 * @param survey The survey that the user has submitted
 	 * @throws SQLException
@@ -756,6 +766,12 @@ public class DatabaseController implements AutoCloseable {
 		}
 		//TODO: Make it so guests create a random ID for username
 		covidSurveyTable.addEntry(survey);
+
+		String username = covidSurveyTable.getEntry(survey.get("USERNAME")).get("USERNAME");
+		Map<String, String> theUser = userTable.getEntry(username);
+		theUser.replace("TAKENSURVEY","true");
+
+		userTable.editEntry(username, theUser);
 	}
 
 	/** Gets the survey from a specific user
@@ -764,13 +780,23 @@ public class DatabaseController implements AutoCloseable {
 	 * @return The survey of the user
 	 * @throws SQLException
 	 */
-	public Map<String, String> getSurvey(String username) throws SQLException
+	public Map<String, String> getSurveyByUsername(String username) throws SQLException
 	{
 		if(covidSurveyTable.getEntry(username) != null) {
 			return covidSurveyTable.getEntry(username);
 		} else {
 			throw new SQLException();
 		}
+	}
+
+	/** Returns all of the surveys in the table
+	 *
+	 * @return The list of surveys
+	 * @throws SQLException
+	 */
+	public List<Map<String, String>> getSurveys() throws SQLException
+	{
+		return covidSurveyTable.getEntries();
 	}
 
 	// ===== FAVORITE_NODES ======== Emily
@@ -911,6 +937,15 @@ public class DatabaseController implements AutoCloseable {
 			put("EMAIL", "employee@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
 			put("PASSWORD", "employee");
+		}});
+
+		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
+			put("USERNAME", "guest");
+			put("FIRSTNAME", "guest");
+			put("LASTNAME", "guest");
+			put("EMAIL", "guest@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
+			put("PASSWORD", "guest");
 		}});
 	}
 
