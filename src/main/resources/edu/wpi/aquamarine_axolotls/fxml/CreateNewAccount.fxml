@@ -36,7 +36,7 @@
                 </JFXButton>
                 <Text nodeOrientation="LEFT_TO_RIGHT" strokeType="INSIDE" strokeWidth="0.0" text="New Account Information" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="1276.1763305664062">
                     <font>
-                        <Font name="Baskerville" size="50.0" />
+                        <Font name="Verdana" size="50.0" />
                     </font>
                     <VBox.margin>
                         <Insets bottom="5.0" />
@@ -49,7 +49,7 @@
                 </Line>
                 <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please provide the proper credentials your new account." textAlignment="CENTER" wrappingWidth="864.9440307617188">
                     <font>
-                        <Font name="Baskerville" size="25.0" />
+                        <Font name="Verdana" size="25.0" />
                     </font>
                     <VBox.margin>
                         <Insets top="20.0" />
@@ -68,7 +68,7 @@
                     <children>
                         <JFXTextField fx:id="firstName" alignment="TOP_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="First Name">
                             <font>
-                                <Font name="Baskerville" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                             <GridPane.margin>
                                 <Insets right="20.0" />
@@ -76,27 +76,27 @@
                         </JFXTextField>
                         <JFXTextField fx:id="lastName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Last Name" GridPane.columnIndex="1">
                             <font>
-                                <Font name="Baskerville" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXTextField>
                         <JFXTextField fx:id="emailAddress" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Email Address" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Baskerville" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXTextField>
                         <JFXTextField fx:id="userName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Username" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <font>
-                                <Font name="Baskerville" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXTextField>
                         <JFXPasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Password" GridPane.rowIndex="2">
                             <font>
-                                <Font name="Baskerville" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXPasswordField>
                         <JFXPasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="350.0" promptText="Confirm Password" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <font>
-                                <Font name="Baskerville" size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXPasswordField>
                     </children>
@@ -120,7 +120,7 @@
                 </ImageView>
                 <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                     <font>
-                        <Font name="Baskerville" size="24.0" />
+                        <Font name="Verdana" size="24.0" />
                     </font>
                     <HBox.margin>
                         <Insets bottom="12.0" left="5.0" top="20.0" />
@@ -135,7 +135,7 @@
     <bottom>
         <JFXButton minHeight="30.0" onAction="#submit_button" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE" BorderPane.alignment="CENTER">
             <font>
-                <Font name="Baskerville" size="40.0" />
+                <Font name="Verdana" size="40.0" />
             </font>
             <BorderPane.margin>
                 <Insets bottom="30.0" left="750.0" />

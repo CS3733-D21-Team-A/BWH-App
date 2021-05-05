@@ -27,7 +27,7 @@
 
 <BorderPane fx:id="borderPane" prefHeight="900.0" prefWidth="1300.0" style="-fx-font-family: &quot;Verdana&quot;, sans-serif;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.EdgeEditing">
    <top>
-      <VBox prefHeight="127.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="127.0" prefWidth="1300.0" style="-fx-font-family: Verdana;" BorderPane.alignment="CENTER">
          <children>
             <GridPane alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="1270.0">
                <columnConstraints>
@@ -50,7 +50,7 @@
                         </ImageView>
                         <Label prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                            <font>
-                              <Font name="Times New Roman" size="18.0" />
+                              <Font name="Verdana" size="18.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="5.0" />
@@ -69,7 +69,7 @@
                               </ImageView>
                            </graphic>
                            <font>
-                              <Font size="18.0" />
+                              <Font name="Verdana" size="20.0" />
                            </font>
                         </JFXButton>
                      </children>
@@ -99,7 +99,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                      <children>
-                        <JFXComboBox fx:id="startNodeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#startNodeHighLight" prefHeight="23.0" prefWidth="166.0" promptText="Start Node" style="-fx-font-size: 12;" />
+                        <JFXComboBox fx:id="startNodeDropdown" maxHeight="23.0" minHeight="15.0" onAction="#startNodeHighLight" prefHeight="23.0" prefWidth="166.0" promptText="Start Node" style="-fx-font-size: 12; -fx-font-family: Verdana;" />
                      </children></HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="161.0" prefWidth="272.0" style="-fx-background-color: #003da6;">
                      <children>

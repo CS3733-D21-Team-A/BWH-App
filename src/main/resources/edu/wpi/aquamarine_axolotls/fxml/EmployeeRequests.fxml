@@ -42,7 +42,7 @@
                      <children>
                         <Label text="Service Requests">
                            <font>
-                              <Font name="Baskerville" size="25.0" />
+                              <Font name="Verdana" size="25.0" />
                            </font>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -55,12 +55,12 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                                  <font>
-                                    <Font name="Baskerville" size="15.0" />
+                                    <Font name="Verdana" size="15.0" />
                                  </font>
                               </JFXButton>
                               <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="40.0" prefWidth="133.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE">
                                  <font>
-                                    <Font name="Baskerville" size="15.0" />
+                                    <Font name="Verdana" size="15.0" />
                                  </font>
                               </JFXButton>
                            </children>
@@ -95,7 +95,7 @@
                      <children>
                         <Label text="COVID Surveys">
                            <font>
-                              <Font name="Baskerville" size="25.0" />
+                              <Font name="Verdana" size="25.0" />
                            </font>
                         </Label>
                         <Line fx:id="line1" endX="175.0" stroke="#c4c4c4">
@@ -118,7 +118,7 @@
                            <children>
                               <JFXButton fx:id="changeCovidB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeCovidStatus" prefHeight="40.0" prefWidth="176.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Update COVID Status" textFill="WHITE">
                                  <font>
-                                    <Font name="Baskerville" size="15.0" />
+                                    <Font name="Verdana" size="13.0" />
                                  </font>
                               </JFXButton>
                            </children>
@@ -145,7 +145,7 @@
                   </ImageView>
                   <Label fx:id="text1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                      <font>
-                        <Font name="Baskerville" size="24.0" />
+                        <Font name="Verdana" size="24.0" />
                      </font>
                      <padding>
                         <Insets bottom="5.0" />
@@ -176,11 +176,11 @@
                      <children>
                         <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="750.0" prefWidth="1400.0">
                            <columns>
-                              <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assigned" />
-                              <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Assignee" />
-                              <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Status" />
-                              <TableColumn fx:id="serviceRequestColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Service Name" />
-                              <TableColumn fx:id="locationColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Location" />
+                              <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Assigned" />
+                              <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Assignee" />
+                              <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Status" />
+                              <TableColumn fx:id="serviceRequestColumn" prefWidth="182.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Service Name" />
+                              <TableColumn fx:id="locationColumn" prefWidth="118.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Location" />
                            </columns>
                         </TableView>
                      </children>
@@ -195,19 +195,19 @@
                            <content>
                               <TableView fx:id="covidSurveyTable" prefHeight="750.0" prefWidth="2000.0">
                                  <columns>
-                                    <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Username" />
-                                    <TableColumn fx:id="COVIDLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Covid Likely" />
-                                    <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Quarantine/Self-Isolation" />
-                                    <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Fever" />
-                                    <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Severe Cough" />
-                                    <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Shortness of Breath" />
-                                    <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Muscle Aches" />
-                                    <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Tired" />
-                                    <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Runny Nose/Nasal Congestion" />
-                                    <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Sore Throat" />
-                                    <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Nausea/Diarrhea" />
-                                    <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Loss of Taste/Smell" />
-                                    <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Baskerville;" text="Chills" />
+                                    <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
+                                    <TableColumn fx:id="COVIDLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
+                                    <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
+                                    <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
+                                    <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
+                                    <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
+                                    <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
+                                    <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
+                                    <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
+                                    <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
+                                    <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
+                                    <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
+                                    <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
                                  </columns>
                               </TableView>
                            </content>

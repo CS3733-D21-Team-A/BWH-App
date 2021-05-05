@@ -28,7 +28,7 @@
             </ImageView>
             <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                 <font>
-                    <Font name="Georgia" size="24.0" />
+                    <Font name="Verdana" size="24.0" />
                 </font>
                 <HBox.margin>
                     <Insets bottom="12.0" left="5.0" top="20.0" />
@@ -64,16 +64,16 @@
                     </viewport>
                 </ImageView>
                 <Rectangle fill="#0042a6de" height="74.0" layoutX="-4.0" layoutY="-2.0" stroke="#ff7e7e00" strokeType="INSIDE" strokeWidth="0.0" width="1306.0" />
-                <Text fx:id="welcome" fill="WHITE" fontSmoothingType="LCD" layoutX="6.0" layoutY="417.0" opacity="0.79" strokeWidth="3.0" style="-fx-fill: white; -fx-font-weight: bolder; -fx-effect: dropshadow(GAUSSIAN, white, 10, 0,0,0); -fx-font-size: 130; -fx-font-family: Georgia;" text="W E L C O M E" textAlignment="CENTER" wrappingWidth="1310.4769840240479" />
+                <Text fx:id="welcome" fill="WHITE" fontSmoothingType="LCD" layoutX="6.0" layoutY="417.0" opacity="0.79" strokeWidth="3.0" style="-fx-fill: white; -fx-font-weight: bolder; -fx-effect: dropshadow(GAUSSIAN, white, 10, 0,0,0); -fx-font-size: 130; -fx-font-family: Verdana;" text="W E L C O M E" textAlignment="CENTER" wrappingWidth="1310.4769840240479" />
                 <Rectangle arcHeight="120.0" arcWidth="30.0" fill="#0042a6cc" height="94.0" layoutX="220.0" layoutY="427.0" stroke="#ffffff00" strokeType="INSIDE" strokeWidth="0.0" width="910.0" />
                 <Text fx:id="userNameText" fill="#fccf03" layoutX="215.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin:________" textAlignment="CENTER" wrappingWidth="904.0459289550781">
                     <font>
-                        <Font name="Georgia" size="39.0" />
+                        <Font name="Verdana" size="39.0" />
                     </font>
                 </Text>
-                <JFXButton layoutX="1133.0" layoutY="8.0" onAction="#signOutPage" prefHeight="64.0" prefWidth="175.0" text="Sign Out" textFill="#fccf03">
+                <JFXButton layoutX="1165.0" layoutY="8.0" onAction="#signOutPage" prefHeight="64.0" prefWidth="143.0" text="Sign Out" textFill="#fccf03">
                     <font>
-                        <Font name="Georgia Bold" size="21.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -83,9 +83,9 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="-13.0" layoutY="8.0" onAction="#mapP" prefHeight="64.0" prefWidth="204.0" text="Navigation" textFill="#ffd000fc">
+                <JFXButton layoutX="-13.0" layoutY="8.0" onAction="#mapP" prefHeight="64.0" prefWidth="175.0" text="Navigation" textFill="#ffd000fc">
                     <font>
-                        <Font name="Georgia Bold" size="20.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -95,9 +95,9 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="154.0" layoutY="8.0" onAction="#serviceReqP" prefHeight="64.0" prefWidth="243.0" text="Service Request" textFill="#fccf03">
+                <JFXButton layoutX="137.0" layoutY="8.0" onAction="#serviceReqP" prefHeight="64.0" prefWidth="201.0" text="Service Request" textFill="#fccf03">
                     <font>
-                        <Font name="Georgia Bold" size="20.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -108,9 +108,9 @@
                     </graphic>
                 </JFXButton>
                 <StackPane fx:id="stackPane" layoutX="445.0" layoutY="303.0" prefHeight="225.0" prefWidth="407.0" />
-                <JFXButton layoutX="365.0" layoutY="8.0" onAction="#nodeP" prefHeight="64.0" prefWidth="204.0" text="Map Editing" textFill="#fccf03">
+                <JFXButton layoutX="325.0" layoutY="8.0" onAction="#nodeP" prefHeight="64.0" prefWidth="165.0" text="Map Editing" textFill="#fccf03">
                     <font>
-                        <Font name="Georgia Bold" size="20.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -120,9 +120,9 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="548.0" layoutY="8.0" onAction="#requestP" prefHeight="64.0" prefWidth="269.0" text="Employee Requests" textFill="#fccf03">
+                <JFXButton layoutX="476.0" layoutY="8.0" onAction="#requestP" prefHeight="64.0" prefWidth="240.0" text="Employee Requests" textFill="#fccf03">
                     <font>
-                        <Font name="Georgia Bold" size="20.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView fitHeight="36.0" fitWidth="36.0">
@@ -132,9 +132,9 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="797.0" layoutY="8.0" onAction="#addUser" prefHeight="64.0" prefWidth="221.0" text="Add New User" textFill="#fccf03">
+                <JFXButton layoutX="706.0" layoutY="8.0" onAction="#addUser" prefHeight="64.0" prefWidth="187.0" text="Add New User" textFill="#fccf03">
                     <font>
-                        <Font name="Georgia Bold" size="20.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -144,9 +144,9 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <JFXButton layoutX="994.0" layoutY="8.0" onAction="#settingsP" prefHeight="64.0" prefWidth="157.0" text="Settings" textFill="#fccf03">
+                <JFXButton layoutX="1039.0" layoutY="8.0" onAction="#settingsP" prefHeight="64.0" prefWidth="141.0" text="Settings" textFill="#fccf03">
                     <font>
-                        <Font name="Georgia Bold" size="20.0" />
+                        <Font name="Verdana Bold" size="15.0" />
                     </font>
                     <graphic>
                         <ImageView>
@@ -156,6 +156,18 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
+            <JFXButton layoutX="870.0" layoutY="8.0" onAction="#covidSurveyPage" prefHeight="64.0" prefWidth="187.0" text="Covid Survey" textFill="#fccf03">
+               <font>
+                  <Font name="Verdana Bold" size="15.0" />
+               </font>
+               <graphic>
+                  <ImageView>
+                     <image>
+                        <Image url="@../img/yellowIcons/covidYellow.PNG" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
             </children>
         </Pane>
     </center>
