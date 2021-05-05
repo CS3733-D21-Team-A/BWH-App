@@ -787,7 +787,12 @@ public class Navigation extends GenericMap {
         }
         findPathExt();
     }
-
+    @FXML
+    public void toggleVoiceDirectionButton(){
+        if (!voiceDirection.isSelected()){
+            voice.stop();
+        }
+    }
 
 }
 
