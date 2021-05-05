@@ -137,32 +137,18 @@ public class CovidSurvey extends GenericServiceRequest {
         survey.put("NASALCONGEST", Boolean.toString(yes9.isSelected()));
         survey.put("MORETIRED", Boolean.toString(yes10.isSelected()));
         survey.put("MUSCLEACHES", Boolean.toString(yes11.isSelected()));
-            if(Aapp.username!=null){
-                survey.put("USERNAME", Aapp.username);
-                try {
-                        db.addSurvey ( survey );
-                        System.out.println ( survey.toString () );
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace ( );
-                }
-                popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-                goHome();
-            }
-            else{
-                    try {
-                        db.addSurvey ( survey );
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace ( );
-                    }
-                    Aapp.guestHasTaken = true;
-                    popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-                    goHome();
 
-            }
-
+        survey.put("USERNAME", Aapp.username != null ? Aapp.username : "guest"); //TODO: THIS IS A WORKAROUND CHANGE THIS PLEASE
+        try {
+            db.addSurvey(survey);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
-
+        popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
+        goHome();
     }
+
+}
 
 
 

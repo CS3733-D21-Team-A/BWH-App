@@ -939,6 +939,15 @@ public class DatabaseController implements AutoCloseable {
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
 			put("PASSWORD", "employee");
 		}});
+
+		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
+			put("USERNAME", "guest");
+			put("FIRSTNAME", "guest");
+			put("LASTNAME", "guest");
+			put("EMAIL", "guest@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
+			put("PASSWORD", "guest");
+		}});
 	}
 
 }
