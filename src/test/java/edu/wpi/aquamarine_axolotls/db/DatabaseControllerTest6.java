@@ -2,17 +2,14 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
-import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 public class DatabaseControllerTest6 {
 
@@ -93,7 +90,7 @@ public class DatabaseControllerTest6 {
             List<Map<String,String>> newFavList = new ArrayList<>();
             newFavList.add(newFav);
 
-            assertEquals(db.getFavoriteNodeForUser("Alexa123", "Favorite Bathroom"),newFav);
+            assertEquals(db.getFavoriteNodeByUserAndName("Alexa123", "Favorite Bathroom"),newFav);
             assertEquals(db.getFavoriteNodesForUser("Alexa123"),newFavList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -132,8 +129,8 @@ public class DatabaseControllerTest6 {
             newFavList.add(newFav);
             newFavList.add(newFav2);
 
-            assertEquals(db.getFavoriteNodeForUser("Alexa123", "Favorite Bathroom"),newFav);
-            assertEquals(db.getFavoriteNodeForUser("Alexa123", "Parking Spot"),newFav2);
+            assertEquals(db.getFavoriteNodeByUserAndName("Alexa123", "Favorite Bathroom"),newFav);
+            assertEquals(db.getFavoriteNodeByUserAndName("Alexa123", "Parking Spot"),newFav2);
             assertEquals(db.getFavoriteNodesForUser("Alexa123"),newFavList);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -199,11 +196,11 @@ public class DatabaseControllerTest6 {
             newFavList2.add(newFav3);
             newFavList2.add(newFav4);
 
-            assertEquals(db.getFavoriteNodeForUser("Alexa123", "Favorite Bathroom"),newFav);
-            assertEquals(db.getFavoriteNodeForUser("Alexa123", "Parking Spot"),newFav2);
+            assertEquals(db.getFavoriteNodeByUserAndName("Alexa123", "Favorite Bathroom"),newFav);
+            assertEquals(db.getFavoriteNodeByUserAndName("Alexa123", "Parking Spot"),newFav2);
             assertEquals(db.getFavoriteNodesForUser("Alexa123"),newFavList);
-            assertEquals(db.getFavoriteNodeForUser("Seansta18", "Favorite Bathroom"),newFav3);
-            assertEquals(db.getFavoriteNodeForUser("Seansta18", "Parking Spot"),newFav4);
+            assertEquals(db.getFavoriteNodeByUserAndName("Seansta18", "Favorite Bathroom"),newFav3);
+            assertEquals(db.getFavoriteNodeByUserAndName("Seansta18", "Parking Spot"),newFav4);
             assertEquals(db.getFavoriteNodesForUser("Seansta18"),newFavList2);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -270,10 +267,10 @@ public class DatabaseControllerTest6 {
 
 
             db.deleteFavoriteNodeFromUser("Alexa123","Parking Spot");
-            assertEquals(newFav,db.getFavoriteNodeForUser("Alexa123","Favorite Bathroom"));
+            assertEquals(newFav,db.getFavoriteNodeByUserAndName("Alexa123","Favorite Bathroom"));
             assertEquals(db.getFavoriteNodesForUser("Alexa123"),newFavList);
-            assertEquals(db.getFavoriteNodeForUser("Seansta18", "Favorite Bathroom"),newFav3);
-            assertEquals(db.getFavoriteNodeForUser("Seansta18", "Parking Spot"),newFav4);
+            assertEquals(db.getFavoriteNodeByUserAndName("Seansta18", "Favorite Bathroom"),newFav3);
+            assertEquals(db.getFavoriteNodeByUserAndName("Seansta18", "Parking Spot"),newFav4);
             assertEquals(db.getFavoriteNodesForUser("Seansta18"),newFavList2);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -332,10 +329,10 @@ public class DatabaseControllerTest6 {
             newFav4.put("FAVID", generatedFAVID4);
             newFav4.put("NODENAME", "Parking Spot");
 
-            assertEquals(newFav,db.getFavoriteNodeForFavid(generatedFAVID));
-            assertEquals(newFav2,db.getFavoriteNodeForFavid(generatedFAVID2));
-            assertEquals(newFav3,db.getFavoriteNodeForFavid(generatedFAVID3));
-            assertEquals(newFav4,db.getFavoriteNodeForFavid(generatedFAVID4));
+            assertEquals(newFav,db.getFavoriteNodeByFAVID(generatedFAVID));
+            assertEquals(newFav2,db.getFavoriteNodeByFAVID(generatedFAVID2));
+            assertEquals(newFav3,db.getFavoriteNodeByFAVID(generatedFAVID3));
+            assertEquals(newFav4,db.getFavoriteNodeByFAVID(generatedFAVID4));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();

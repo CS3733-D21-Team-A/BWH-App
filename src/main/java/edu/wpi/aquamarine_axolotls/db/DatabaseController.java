@@ -4,7 +4,6 @@ import edu.wpi.aquamarine_axolotls.db.enums.*;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.*;
 import java.util.*;
 
@@ -777,67 +776,13 @@ public class DatabaseController implements AutoCloseable {
 	// ===== FAVORITE_NODES ======== Emily
 
 	/**
-	 * checks if the userid has any associated favorite nodes
-	 * @param username
-	 * @return true if has favorite nodes, false if does not
-	 */
-	public boolean checkUserHasFavorites(String username){
-		try{
-			if(favoriteNodesTable.getEntriesByValue("USERID", username)==null){
-				return false;
-			}
-		} catch (SQLException throwables) {
-			return false;
-		}
-		return true;
-	}
-
-	/**
-	 * checks if the favid is unique value to the user
-	 * @param username
-	 * @param nodeName
-	 * @return true if unique to the user, false if not
-	 */
-	public boolean checkValidNodeName(String username, String nodeName) {
-		List<Map<String,String>> userFavorites = getFavoriteNodesForUser(username);
-		for(Map<String,String> oneNode:userFavorites){
-			if(nodeName.equals(oneNode.get("NODENAME"))){
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * checks if the nodeID is unique value to the user
-	 * @param username
-	 * @param nodeID
-	 * @return true if is a unique to the user, false if not
-	 */
-	public boolean checkValidNodeID(String username, String nodeID) {
-		List<Map<String,String>> userFavorites = getFavoriteNodesForUser(username);
-		for(Map<String,String> oneNode:userFavorites){
-			if(nodeID.equals(oneNode.get("LOCATIONID"))){
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * gets the automatically generated favid using username and node name
 	 * @param username
 	 * @param nodeName
 	 * @return
 	 */
-	String getFAVID(String username, String nodeName) {
-		String returnValue = null;
-		try {
-			returnValue = getFavoriteNodeForUser(username, nodeName).get("FAVID");
-		}catch (SQLException throwables) {
-			return null;
-		}
-		return returnValue;
+	String getFAVID(String username, String nodeName) throws SQLException {
+		return getFavoriteNodeByUserAndName(username, nodeName).get("FAVID");
 	}
 
 	/**
@@ -855,7 +800,6 @@ public class DatabaseController implements AutoCloseable {
 
 		favoriteNodesTable.addEntry(takenValues);
 		return getFAVID(username,nodeName);
-
 	}
 
 	/**
@@ -863,12 +807,8 @@ public class DatabaseController implements AutoCloseable {
 	 * @param username
 	 * @return list of map entries containing the favorite nodes, null if it doesn't exist
 	 */
-	public List<Map<String,String>> getFavoriteNodesForUser(String username){
-		try {
-			return favoriteNodesTable.getEntriesByValue("USERID", username);
-		}catch (SQLException throwables){
-			return null;
-		}
+	public List<Map<String,String>> getFavoriteNodesForUser(String username) throws SQLException {
+		return favoriteNodesTable.getEntriesByValue("USERID", username);
 	}
 
 	/**
@@ -877,7 +817,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @param nodeName
 	 * @return map of the fav node values or null if it doesn't exist
 	 */
-	public Map<String,String> getFavoriteNodeForUser(String username,String nodeName) throws SQLException {
+	public Map<String,String> getFavoriteNodeByUserAndName(String username, String nodeName) throws SQLException {
 		Map<String,List<String>> filters = new HashMap();
 		filters.put("USERID", Collections.singletonList(username));
 		filters.put("NODENAME", Collections.singletonList(nodeName));
@@ -893,7 +833,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @return the map of the favorite node associated with the favid
 	 * @throws SQLException
 	 */
-	public Map<String,String> getFavoriteNodeForFavid(String favid) throws SQLException {
+	public Map<String,String> getFavoriteNodeByFAVID(String favid) throws SQLException {
 		return favoriteNodesTable.getEntry(favid);
 	}
 
@@ -911,9 +851,10 @@ public class DatabaseController implements AutoCloseable {
 	 * empties favorite nodes table by calling empty table
 	 * @throws SQLException
 	 */
-	public void emptyFavoriteNodesTable() throws SQLException {
+	void emptyFavoriteNodesTable() throws SQLException {
 		favoriteNodesTable.emptyTable();
 	}
+
 
 	// ===== DATABASE CREATION =====
 

@@ -129,7 +129,7 @@ public class Navigation extends GenericMap {
 
         MenuItem addStop = new MenuItem(("Add Stop"));
         MenuItem addFav = new MenuItem(("Add to Favorites"));
-        MenuItem deleteFav = new MenuItem(("Remove from favorites"));
+        MenuItem deleteFav = new MenuItem(("Remove from favorites")); //TODO: this should only show up when clicking on a favorite node
 
         treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
@@ -171,8 +171,7 @@ public class Navigation extends GenericMap {
         addFav.setOnAction((ActionEvent e) -> {
             try {
                 Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
-                if(node == null) return;
-                else {
+                if(node != null) {
                     if(fav.getChildren().size() == 0) treeTable.getRoot().getChildren().add(0, fav);
                     db.addFavoriteNodeToUser(Aapp.username, node.get("NODEID"), node.get("LONGNAME"));
                     fav.getChildren().add(new TreeItem<String>(node.get("LONGNAME")));
@@ -188,9 +187,8 @@ public class Navigation extends GenericMap {
         deleteFav.setOnAction((ActionEvent e)->{
             try {
                 Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
-                if(node == null) return;
-                else {
-                    if(db.getFavoriteNodeForUser(Aapp.username, node.get("LONGNAME")) != null){
+                if(node != null) {
+                    if(db.getFavoriteNodeByUserAndName(Aapp.username, node.get("LONGNAME")) != null){
                         for (int i = 0; i < fav.getChildren().size(); i++) {
                             String nodeName = fav.getChildren().get(i).getValue();
                             if (nodeName.equals(node.get("LONGNAME"))) {

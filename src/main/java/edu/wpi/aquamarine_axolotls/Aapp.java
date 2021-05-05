@@ -18,8 +18,8 @@ public class Aapp extends Application {
   public static List<Map<String,String>> serviceRequests = new ArrayList<>();
 
   //TODO: STORE THESE IN PREFERENCES
-  public static String userType = "Admin"; //TODO: REPLACE THIS WITH ENUM
-  public static String username =  "admin";
+  public static String userType = "Guest"; //TODO: REPLACE THIS WITH ENUM
+  public static String username;
 
 
   @Override
@@ -31,7 +31,7 @@ public class Aapp extends Application {
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/Navigation.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);
