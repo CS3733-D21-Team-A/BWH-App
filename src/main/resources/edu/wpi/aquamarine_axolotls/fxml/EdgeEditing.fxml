@@ -3,8 +3,8 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXToggleButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.Group?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
@@ -13,8 +13,6 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -25,14 +23,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.EdgeEditing">
+<BorderPane fx:id="borderPane" prefHeight="900.0" prefWidth="1300.0" style="-fx-font-family: &quot;Verdana&quot;, sans-serif;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.EdgeEditing">
    <top>
-      <VBox prefHeight="73.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="127.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
          <children>
-            <GridPane alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="600.0">
+            <GridPane alignment="CENTER_LEFT" prefHeight="115.0" prefWidth="1270.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -41,19 +38,19 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="63.0" prefWidth="291.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="640.0">
                      <padding>
                         <Insets left="10.0" top="7.0" />
                      </padding>
                      <children>
-                        <ImageView fitHeight="42.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="61.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../img/logo.png" />
                            </image>
                         </ImageView>
-                        <Label minWidth="500.0" prefHeight="27.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                        <Label prefHeight="54.0" prefWidth="216.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                            <font>
-                              <Font name="Baskerville" size="25.0" />
+                              <Font name="Times New Roman" size="18.0" />
                            </font>
                            <HBox.margin>
                               <Insets left="5.0" />
@@ -63,25 +60,26 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
-                        <JFXToggleButton fx:id="toggleButton" maxHeight="34.0" minHeight="20.0" prefHeight="21.0" prefWidth="63.0" text=" " toggleColor="#003da6" toggleLineColor="#2c5ba7">
-                           <HBox.margin>
-                              <Insets right="100.0" />
-                           </HBox.margin>
-                        </JFXToggleButton>
-                        <JFXButton onAction="#goHome" prefHeight="49.0" prefWidth="112.0" text="Home">
+                        <JFXButton onAction="#goHome" prefHeight="52.0" prefWidth="162.0" text="Home">
                            <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../img/homeBlue.png" />
                                  </image>
                               </ImageView>
                            </graphic>
+                           <font>
+                              <Font size="18.0" />
+                           </font>
                         </JFXButton>
                      </children>
                   </HBox>
                </children>
             </GridPane>
-            <Rectangle arcWidth="5.0" fill="#003da6" height="9.0" stroke="TRANSPARENT" strokeType="INSIDE" width="1300.0" />
+            <HBox prefHeight="13.0" prefWidth="1290.0" style="-fx-background-color: #003da6;">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin></HBox>
          </children>
       </VBox>
    </top>
@@ -210,65 +208,57 @@
          </children>
       </VBox>
    </left>
-   <bottom>
-      <TableView fx:id="table" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="300.0" prefWidth="752.0" BorderPane.alignment="CENTER">
-         <columns>
-            <TableColumn fx:id="edgeIdCol" prefWidth="252.79995727539062" text="Edge ID" />
-            <TableColumn fx:id="startNodeCol" minWidth="0.0" prefWidth="261.20001220703125" text="Start Node" />
-            <TableColumn fx:id="endNodeCol" prefWidth="235.800048828125" text="End Node" />
-         </columns>
-      </TableView>
-   </bottom>
    <center>
-      <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="637.0" prefWidth="836.0" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="709.0" prefWidth="1027.0" BorderPane.alignment="CENTER">
          <content>
             <Group>
                <children>
-                  <ImageView fx:id="mapImage" fitHeight="527.0" fitWidth="823.0" pickOnBounds="true" preserveRatio="true" />
-                  <Pane fx:id="mapView" prefHeight="527.0" prefWidth="836.0" onMouseClicked="#hideContextMenu" />
+                  <ImageView fx:id="mapImage" fitHeight="709.0" fitWidth="1025.0" pickOnBounds="true" preserveRatio="true" />
+                  <Pane fx:id="mapView" onMouseClicked="#hideContextMenu" prefHeight="709.0" prefWidth="1025.0" />
+                  <VBox alignment="CENTER" layoutX="850.0" layoutY="200.0" prefHeight="176.0" prefWidth="150.0">
+                     <children>
+                        <MenuBar prefHeight="26.0" prefWidth="130.0">
+                           <menus>
+                              <Menu fx:id="curFloor" mnemonicParsing="false" text="       Change Floor">
+                                 <items>
+                                    <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
+                                    <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
+                                    <MenuItem fx:id="floorL1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Floor L1" />
+                                    <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
+                                    <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
+                                    <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
+                                 </items>
+                              </Menu>
+                           </menus>
+                           <cursor>
+                              <Cursor fx:constant="S_RESIZE" />
+                           </cursor>
+                        </MenuBar>
+                        <JFXButton onAction="#zoomIn" prefHeight="25.0" prefWidth="123.0" text="Zoom In">
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <JFXButton onAction="#zoomOut" prefHeight="25.0" prefWidth="122.0" text="Zoom Out">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </JFXButton>
+                        <Label alignment="CENTER" contentDisplay="CENTER" text="Current Navigation Algorithm:" textAlignment="CENTER" wrapText="true">
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
+                        </Label>
+                        <JFXComboBox fx:id="algoSelectBox" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="26.0" prefWidth="164.0" promptText="Navigation Algorithm">
+                           <VBox.margin>
+                              <Insets left="5.0" right="5.0" />
+                           </VBox.margin>
+                        </JFXComboBox>
+                     </children>
+                  </VBox>
                </children>
             </Group>
          </content>
       </ScrollPane>
    </center>
-   <right>
-      <VBox alignment="CENTER" prefHeight="418.0" prefWidth="150.0" BorderPane.alignment="CENTER">
-         <children>
-            <MenuBar prefHeight="26.0" prefWidth="130.0">
-               <menus>
-                  <Menu mnemonicParsing="false" text="       Change Floor">
-                     <items>
-                        <!--<MenuItem fx:id="groundFloorView" mnemonicParsing="false" onAction="#changeGroundFloor" text="Ground Floor" />-->
-                        <MenuItem fx:id="floorL2View" mnemonicParsing="false" onAction="#changeFloorL2" text="Floor L2" />
-                        <MenuItem fx:id="floorL1View" mnemonicParsing="false" onAction="#changeFloorL1" text="Floor L1" />
-                        <MenuItem fx:id="floor1View" mnemonicParsing="false" onAction="#changeFloor1" text="Floor 1" />
-                        <MenuItem fx:id="floor2View" mnemonicParsing="false" onAction="#changeFloor2" text="Floor 2" />
-                        <MenuItem fx:id="floor3View" mnemonicParsing="false" onAction="#changeFloor3" text="Floor 3" />
-                     </items>
-                  </Menu>
-               </menus>
-            </MenuBar>
-            <JFXButton onAction="#zoomIn" prefHeight="25.0" prefWidth="123.0" text="Zoom In">
-               <VBox.margin>
-                  <Insets top="10.0" />
-               </VBox.margin>
-            </JFXButton>
-            <JFXButton onAction="#zoomOut" prefHeight="25.0" prefWidth="122.0" text="Zoom Out">
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
-            </JFXButton>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" prefWidth="122.0" text="Current Navigation Algorithm:" textAlignment="CENTER" wrapText="true">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Label>
-            <JFXComboBox fx:id="algoSelectBox" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="26.0" prefWidth="164.0" promptText="Navigation Algorithm">
-               <VBox.margin>
-                  <Insets left="5.0" right="5.0" />
-               </VBox.margin>
-            </JFXComboBox>
-         </children>
-      </VBox>
-   </right>
 </BorderPane>

@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -59,25 +60,6 @@ public class NodeEditing extends GenericMap {
     private JFXButton submissionButton;
 
     @FXML
-    private TableView table;
-    @FXML
-    private TableColumn nodeIDCol;
-    @FXML
-    private TableColumn lNameCol;
-    @FXML
-    private TableColumn sNameCol;
-    @FXML
-    private TableColumn xCol;
-    @FXML
-    private TableColumn yCol;
-    @FXML
-    private TableColumn floorCol;
-    @FXML
-    private TableColumn buildingCol;
-    @FXML
-    private TableColumn typeCol;
-
-    @FXML
     private Button button;
     @FXML
     private JFXButton clearButton;
@@ -104,10 +86,6 @@ public class NodeEditing extends GenericMap {
     public void initialize() throws SQLException {
 
         startUp();
-
-        table.setEditable(false);
-        table.getItems().clear();
-
         submissionlabel.setVisible(true);
         if(searchAlgorithms.size() == 0){
             searchAlgorithms.add("A Star");
@@ -123,8 +101,6 @@ public class NodeEditing extends GenericMap {
         for (Map<String, String> node : nodes) {
             options.add(node.get("LONGNAME"));
             nodeIDS.add(node.get("NODEID"));
-            Node cur = new Node(node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("LONGNAME"), node.get("SHORTNAME"), node.get("FLOOR"), node.get("BUILDING"), node.get("NODETYPE"));
-            table.getItems().add(cur);
         }
         if (SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
@@ -137,28 +113,6 @@ public class NodeEditing extends GenericMap {
         else if (algo.contains("BreadthFirstSearch")) algoSelectBox.getSelectionModel().select(2);
         else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
         else if (algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
-
-
-        nodeIDCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeID"));
-        lNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("longName"));
-        sNameCol.setCellValueFactory(new PropertyValueFactory<Node, String>("shortName"));
-        xCol.setCellValueFactory(new PropertyValueFactory<Node, String>("xcoord"));
-        yCol.setCellValueFactory(new PropertyValueFactory<Node, String>("ycoord"));
-        floorCol.setCellValueFactory(new PropertyValueFactory<Node, String>("floor"));
-        buildingCol.setCellValueFactory(new PropertyValueFactory<Node, String>("building"));
-        typeCol.setCellValueFactory(new PropertyValueFactory<Node, String>("nodeType"));
-
-        nodeDropdown.setVisible(false);
-        nodeID.setVisible(false);
-        longName.setVisible(false);
-        shortName.setVisible(false);
-        xCoor.setVisible(false);
-        yCoor.setVisible(false);
-        nodeType.setVisible(false);
-        floor.setVisible(false);
-        building.setVisible(false);
-        submissionButton.setVisible(false);
-        clearButton.setVisible(false);
 
         nodeDropdown.setItems(options);
 
