@@ -5,6 +5,7 @@ import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.Duration;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Settings;
@@ -48,6 +49,7 @@ public class Navigation extends GenericMap {
     @FXML private VBox listOfDirections;
     @FXML private Group textDirectionsGroup;
     @FXML private TreeTableView<String> treeTable;
+    @FXML private JFXToggleButton voiceDirection;
 
     @FXML private JFXComboBox destinationDropdown;
     @FXML private JFXTextField startTextfield;
@@ -85,6 +87,9 @@ public class Navigation extends GenericMap {
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
+
+        // TODO: CHANGE THIS
+        String covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -126,6 +131,8 @@ public class Navigation extends GenericMap {
                         conf.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "EXIT":
+                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+                        if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
                         exit.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "RETL":
@@ -137,6 +144,14 @@ public class Navigation extends GenericMap {
                 }
             }
         }
+//
+//        if(covidLikely.equals("true")) {
+////            options.remove("75 Francis Valet Drop-off");
+//            exit.getChildren().remove("75 Francis Valet Drop-off");
+//        } else{
+////            options.remove("Emergency Department Entrance");
+//            exit.getChildren().remove("Emergency Department Entrance");
+//        }
 
         TreeItem<String> root = new TreeItem<>("");
         root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
@@ -206,6 +221,7 @@ public class Navigation extends GenericMap {
         addStop.setOnAction((ActionEvent e)->{
             try {
                 addDestination(contextMenuX, contextMenuY);
+
             }
             catch(SQLException se) {
                 se.printStackTrace();
@@ -268,7 +284,9 @@ public class Navigation extends GenericMap {
     }
 
     public void drawNodesAndFavorites() throws SQLException{
-        drawNodes(Color.BLUE);
+        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, Color.BLUE);
+        }
         for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
             Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
             if(node.get("FLOOR").equals(FLOOR)){
@@ -284,12 +302,22 @@ public class Navigation extends GenericMap {
         if(activePath) {
             drawPath(floor);
             for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
-                if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                if (intermediatePointToDraw.get("FLOOR").equals(FLOOR)) {
+                    if (intermediatePoints.indexOf(intermediatePointToDraw) == intermediatePoints.size() - 1) {
+                        drawSingleNodeHighLight(intermediatePointToDraw, Color.MAGENTA);
+                    } else drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
+                }
             }
             if (intermediatePoints.size() > 0 && intermediatePoints.get(intermediatePoints.size() - 1).get("FLOOR").equals(FLOOR))
-                drawSingleNodeHighLight(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
+                drawSingleNode(intermediatePoints.get(intermediatePoints.size()-1),Color.MAGENTA);
         }
         else drawNodesAndFavorites();
+    }
+
+    public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
+        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, colorOfNodes);
+        }
     }
 
     /**
@@ -318,7 +346,8 @@ public class Navigation extends GenericMap {
     public void drawPath(String floor) throws SQLException{
         if(currPath.isEmpty()) return;
         FLOOR = floor;
-        drawNodesAndFloor(FLOOR, new Color(0.0 , 0.0, 1.0, 0.4));
+        drawFloor(FLOOR);
+        drawNodesNoHallWalk(new Color(0.0 , 0.0, 1.0, 0.4));
         for (int i = 0; i < currPath.size() - 1; i++) {
             if (currPath.get(i).getFloor().equals(FLOOR) &&
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
@@ -327,8 +356,14 @@ public class Navigation extends GenericMap {
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
             }
+            for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
+                if ((intermediatePointToDraw.get("FLOOR").equals(FLOOR)) &&
+                        (intermediatePoints.indexOf(intermediatePointToDraw) != intermediatePoints.size() - 1))
+                            drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE); // changed from highlight
+            }
             if (currPath.get(0).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
             if (currPath.get(currPath.size()- 1).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
+
         }
     }
     // draw floor that makes everything transparent
@@ -396,7 +431,9 @@ public class Navigation extends GenericMap {
         drawPath(FLOOR);
         highlightDirection();
         curDirection.setText(currPathDir.get(0).get(dirIndex));
-        voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+        if(voiceDirection.isSelected()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        }
     }
 
     /**
@@ -415,7 +452,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex)); //get next direction
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
@@ -433,7 +472,9 @@ public class Navigation extends GenericMap {
             changeArrow(currPathDir.get(0).get(dirIndex));
             curDirection.setText(currPathDir.get(0).get(dirIndex));
             highlightDirection();
-            voice.say(voice.getTextOptimization(curDirection.getText()),newThread);
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
         }
     }
 
@@ -615,6 +656,8 @@ public class Navigation extends GenericMap {
         //if(event.getButton().equals(MouseButton.PRIMARY)) {
         Map<String, String> newDestination = getNearestNode(x, y);
 
+        if (newDestination.get("NODETYPE").equals("HALL") || newDestination.get("NODETYPE").equals("WALK")) return;
+
         if (newDestination != null) {
             String currCloseName = newDestination.get("LONGNAME");
 
@@ -623,6 +666,7 @@ public class Navigation extends GenericMap {
                     firstNode = currCloseName;
                     firstNodeSelect = 1;
                     drawSingleNodeHighLight(newDestination,Color.GREEN);
+                    startLabel.setText(currCloseName);
                 }
                 else if ( firstNodeSelect == 1 ) {
                     stopList.clear ( );
@@ -633,6 +677,7 @@ public class Navigation extends GenericMap {
                     drawPath ( FLOOR );
                     intermediatePoints.add(newDestination);
                     drawSingleNodeHighLight(newDestination,Color.MAGENTA);
+                    endLabel.setText(currCloseName);
                 }
             }
             else {
@@ -644,11 +689,14 @@ public class Navigation extends GenericMap {
                 drawPath(FLOOR);
                 intermediatePoints.add(newDestination); // store the intermediate points, not erased when drawing new intermediate path
                 for (Map<String,String> intermediatePointToDraw : intermediatePoints){
-                    drawSingleNodeHighLight(intermediatePointToDraw,Color.ORANGE);
+                    if ((intermediatePointToDraw.get("FLOOR").equals(FLOOR)) &&
+                            (intermediatePoints.indexOf(intermediatePointToDraw) != intermediatePoints.size() - 1))
+                                drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE);
                 }
                 drawSingleNodeHighLight(newDestination,Color.MAGENTA);
             }
         }
+
     }
 
     /**
@@ -766,7 +814,12 @@ public class Navigation extends GenericMap {
         }
         findPathExt();
     }
-
+    @FXML
+    public void toggleVoiceDirectionButton(){
+        if (!voiceDirection.isSelected()){
+            voice.stop();
+        }
+    }
 
 }
 

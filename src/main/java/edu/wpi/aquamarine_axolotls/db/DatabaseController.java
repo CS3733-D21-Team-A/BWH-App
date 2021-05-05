@@ -686,8 +686,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException
 	 */
 	public boolean hasUserTakenCovidSurvey(String username) throws SQLException{
-		return userTable.getEntry(username).get("TAKENSURVEY").equals("YES");
-
+		return userTable.getEntry(username).get("TAKENSURVEY").equals("true");
 	}
 
 	/**
@@ -770,7 +769,7 @@ public class DatabaseController implements AutoCloseable {
 
 		String username = covidSurveyTable.getEntry(survey.get("USERNAME")).get("USERNAME");
 		Map<String, String> theUser = userTable.getEntry(username);
-		theUser.replace("TAKENSURVEY","YES");
+		theUser.replace("TAKENSURVEY","true");
 
 		userTable.editEntry(username, theUser);
 	}
@@ -938,6 +937,15 @@ public class DatabaseController implements AutoCloseable {
 			put("EMAIL", "employee@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
 			put("PASSWORD", "employee");
+		}});
+
+		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
+			put("USERNAME", "guest");
+			put("FIRSTNAME", "guest");
+			put("LASTNAME", "guest");
+			put("EMAIL", "guest@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
+			put("PASSWORD", "guest");
 		}});
 	}
 
