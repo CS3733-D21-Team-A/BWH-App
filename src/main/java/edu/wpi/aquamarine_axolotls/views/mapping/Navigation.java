@@ -1,5 +1,4 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
-
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.Duration;
@@ -11,6 +10,7 @@ import edu.wpi.aquamarine_axolotls.Settings;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
+import edu.wpi.aquamarine_axolotls.socketServer.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +26,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -80,7 +81,7 @@ public class Navigation extends GenericMap {
     String covidLikely;
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, IOException {
 
         startUp();
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
@@ -266,6 +267,26 @@ public class Navigation extends GenericMap {
             contextMenuY = event.getY();
         });
 
+        int second = 0;
+        String host = "192.168.1.118";
+        SocketClient client = new SocketClient(host,7777);
+        String massage;
+        massage = client.getMassage();
+        //System.out.println("get massage");
+        if(!massage.equals("Verifying Server!")){
+            System.out.println("Server Wrong!");
+            System.exit(0);
+        }
+
+        try{
+            while (true){
+                client.send("connected " + second + " s");
+                second++;
+                Thread.sleep(1000);
+            }
+        } catch (Exception e){
+
+        }
     }
 
     @Override
