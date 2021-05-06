@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -30,6 +31,12 @@ public class EdgePopUp {
     @FXML
     public void submit(){
 
+    }
+
+    public void loadHelp(ActionEvent actionEvent) {
+    }
+
+    public void cancel(ActionEvent actionEvent) {
     }
 //
 //    /**

@@ -311,7 +311,7 @@ public class MapEditing extends GenericMap {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
+        File csv = null;//fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try {
             csvHandler.importCSV(csv, TABLES.EDGES, true);
         } catch (IOException ie) {
@@ -335,7 +335,7 @@ public class MapEditing extends GenericMap {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
+        File csv = null;//fileChooser.showOpenDialog(addButton.getScene().getWindow());
         try {
             csvHandler.importCSV(csv, TABLES.EDGES, false);
         } catch (IOException ie) {
@@ -359,7 +359,7 @@ public class MapEditing extends GenericMap {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
+        File csv = null;/*fileChooser.showSaveDialog(addButton.getScene().getWindow());*/
         try {
             csvHandler.exportCSV(csv, TABLES.EDGES);
         } catch (IOException ie) {
