@@ -74,6 +74,8 @@ public class Navigation extends GenericMap {
     private Map<String,String> endPoint;
     private VoiceController voice = new VoiceController("kevin16");
     private Thread newThread = new Thread();
+    private Thread clientThread = new Thread();
+    SocketClient client = null;
 
     private static DirectionsLeg dirLeg;
     private List<String> extDir = new ArrayList<String>();
@@ -89,7 +91,8 @@ public class Navigation extends GenericMap {
         }
 
         // TODO: CHANGE THIS
-        covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        covidLikely = "false";
+        //covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -267,26 +270,33 @@ public class Navigation extends GenericMap {
             contextMenuY = event.getY();
         });
 
-        int second = 0;
-        String host = "192.168.1.118";
-        SocketClient client = new SocketClient(host,7777);
-        String massage;
-        massage = client.getMassage();
-        //System.out.println("get massage");
-        if(!massage.equals("Verifying Server!")){
-            System.out.println("Server Wrong!");
-            System.exit(0);
-        }
-
-        try{
-            while (true){
-                client.send("connected " + second + " s");
-                second++;
-                Thread.sleep(1000);
+        clientThread = new Thread(() -> {
+            int second = 0;
+            String host = "192.168.1.118";
+            try {
+                client = new SocketClient(host,7777);
+            String massage;
+            massage = client.getMassage();
+            //System.out.println("get massage");
+            if(!massage.equals("Verifying Server!")){
+                System.out.println("Server Wrong!");
+                System.exit(0);
             }
-        } catch (Exception e){
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        }
+//            try{
+//                while (true){
+//                    client.send("connected " + second + " s");
+//                    second++;
+//                    Thread.sleep(1000);
+//                }
+//            } catch (Exception e){
+//            }
+        });
+        clientThread.start();
+
     }
 
     @Override
@@ -430,7 +440,7 @@ public class Navigation extends GenericMap {
     /**
      * Starts the text directions once they're initialized
      */
-    public void startDir() throws SQLException,InterruptedException{
+    public void startDir() throws SQLException,InterruptedException, IOException{
 
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
@@ -450,6 +460,7 @@ public class Navigation extends GenericMap {
         if(voiceDirection.isSelected()) {
             voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
         }
+        client.send(curDirection.getText());
     }
 
     /**

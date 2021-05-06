@@ -48,18 +48,18 @@ public class GuestMainPage extends GenericPage {
     @FXML
     public void mapP(ActionEvent actionEvent) {
 //        sceneSwitch ( "Navigation" );
-        try {
-
-            if ( !db.hasUserTakenCovidSurvey ( Aapp.username != null ? Aapp.username : "guest") ) {
-                popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action." );
-            } else if (db.getUserByUsername( Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY") == null){
-                popUp ( "Covid Survey" ,"\n\n\n\n\nWait for an employee to approve your survey." );
-            } else {
+        //try {
+//
+//            if ( !db.hasUserTakenCovidSurvey ( Aapp.username != null ? Aapp.username : "guest") ) {
+//                popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action." );
+//            } else if (db.getUserByUsername( Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY") == null){
+//                popUp ( "Covid Survey" ,"\n\n\n\n\nWait for an employee to approve your survey." );
+//            } else {
                 sceneSwitch ( "Navigation" );
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace ( );
-        }
+//            }
+        //} catch (SQLException throwables) {
+            //throwables.printStackTrace ( );
+        //}
 
     }
 
