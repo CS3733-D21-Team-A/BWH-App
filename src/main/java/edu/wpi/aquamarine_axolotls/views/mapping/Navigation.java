@@ -74,8 +74,10 @@ public class Navigation extends GenericMap {
     private Map<String,String> endPoint;
     private VoiceController voice = new VoiceController("kevin16");
     private Thread newThread = new Thread();
-    private Thread clientThread = new Thread();
-    SocketClient client = null;
+    private Thread clientThreadSender = new Thread();
+    SocketClient clientSender = null;
+    private Thread clientThreadReceiver = new Thread();
+    SocketClient clientReceiver = null;
 
     private static DirectionsLeg dirLeg;
     private List<String> extDir = new ArrayList<String>();
@@ -91,7 +93,7 @@ public class Navigation extends GenericMap {
         }
 
         // TODO: CHANGE THIS
-        covidLikely = "false";
+        covidLikely = "false"; //TODO:change back
         //covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
@@ -270,13 +272,13 @@ public class Navigation extends GenericMap {
             contextMenuY = event.getY();
         });
 
-        clientThread = new Thread(() -> {
+        clientThreadSender = new Thread(() -> {
             int second = 0;
             String host = "192.168.1.118";
             try {
-                client = new SocketClient(host,7777);
+                clientSender = new SocketClient(host,7777);
             String massage;
-            massage = client.getMassage();
+            massage = clientSender.getMassage();
             //System.out.println("get massage");
             if(!massage.equals("Verifying Server!")){
                 System.out.println("Server Wrong!");
@@ -286,17 +288,33 @@ public class Navigation extends GenericMap {
                 e.printStackTrace();
             }
 
-//            try{
-//                while (true){
-//                    client.send("connected " + second + " s");
-//                    second++;
-//                    Thread.sleep(1000);
-//                }
-//            } catch (Exception e){
-//            }
+            try{
+                while (true){
+                    clientSender.send("connected " + second + " s");
+                    second++;
+                    Thread.sleep(1000);
+                }
+            } catch (Exception e){
+            }
         });
-        clientThread.start();
+        clientThreadSender.start();
 
+        clientThreadReceiver = new Thread(() -> {
+            try{
+            int second = 0;
+            String host = "192.168.1.118";
+            SocketClient client = new SocketClient(host,5555);
+            //System.out.println("get massage");
+
+                while (!Thread.currentThread().isInterrupted()){
+                    String message = client.getMassage();
+                    System.out.println(message);
+                    Thread.sleep(100);
+                }
+            } catch (Exception e){
+            }
+        });
+        clientThreadReceiver.start();
     }
 
     @Override
@@ -460,7 +478,7 @@ public class Navigation extends GenericMap {
         if(voiceDirection.isSelected()) {
             voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
         }
-        client.send(curDirection.getText());
+        //client.send(curDirection.getText());
     }
 
     /**

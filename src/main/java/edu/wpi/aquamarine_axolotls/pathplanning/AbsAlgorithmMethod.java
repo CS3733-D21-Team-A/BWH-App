@@ -421,7 +421,8 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     }
 
     public void handleCovidStatus() throws SQLException {
-        String covidLikely = dbControl.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        //String covidLikely = dbControl.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        String covidLikely = "false"; //TODO:change back
 
         Node francis = new Node(dbControl.getNode("FEXIT00201"));
         Node emergency = new Node(dbControl.getNode("FEXIT00301"));
