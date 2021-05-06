@@ -248,7 +248,7 @@ public class GenericMap extends GenericPage {
      * @param color color to fill the cicle
      */
     public void drawSingleNode(double x, double y, String nodeID, Color color){
-        double radius = 3;
+        double radius = (Math.PI + Math.E)/2;
 
         Circle node = new Circle();
         node.setCenterX(x);
@@ -381,7 +381,7 @@ public class GenericMap extends GenericPage {
      * @param enodeCol Color of the end node
      * @param edgeCol Color of the edge
      */
-    private void drawTwoNodesWithEdge(double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
+    private void drawTwoNodesWithEdge (double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
 
         Line edge = new Line();
         edge.setStartX(startX);
