@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.FacilitiesMaintenance">
+   <top>
+      <VBox prefHeight="342.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="83.0" prefWidth="1300.0">
+               <children>
+                  <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/logo.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets left="15.0" top="30.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="text1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="54.0" prefWidth="573.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                     <font>
+                        <Font name="Verdana" size="25.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets left="10.0" top="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0">
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </Rectangle>
+            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="56.0" prefWidth="1300.0">
+               <children>
+                  <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="40.0" prefWidth="40.0" text=" ">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../img/back icon.jpg" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </JFXButton>
+                  <JFXButton maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="59.0" prefWidth="114.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets left="1100.0" top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="10.0" top="5.0" />
+               </padding>
+            </HBox>
+            <Label fx:id="formName" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="600.0" text="Facilities Maintenance" textAlignment="RIGHT">
+               <font>
+                  <Font name="Verdana" size="57.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
+               <font>
+                  <Font name="Verdana" size="30.0" />
+               </font>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" />
+               </padding>
+            </Label>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="536.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="TOP_CENTER" prefHeight="70.0" prefWidth="1300.0">
+               <children>
+                  <JFXTextField fx:id="firstName" maxWidth="-Infinity" prefHeight="44.0" prefWidth="400.0" promptText="First Name">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXTextField>
+                  <JFXTextField fx:id="lastName" prefHeight="44.0" prefWidth="400.0" promptText="Last Name">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="1300.0">
+               <children>
+                  <JFXComboBox fx:id="locationDropdown" prefHeight="45.0" prefWidth="400.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Verdana;">
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </JFXComboBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+            <HBox maxWidth="-Infinity" minHeight="-Infinity" prefHeight="27.0" prefWidth="454.0">
+               <children>
+                  <Label prefHeight="56.0" prefWidth="252.0" text="Is the maintenance urgent?">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="20.0" />
+                     </HBox.margin>
+                  </Label>
+                  <HBox prefHeight="0.0" prefWidth="164.0">
+                     <children>
+                        <JFXRadioButton fx:id="yesRadioB" style="-jfx-selected-color: #003da6; -jfx-unselected-color: #003da6;" text="Yes ">
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font name="Verdana" size="20.0" />
+                           </font>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="noRadioB" selected="true" style="-jfx-selected-color: #003da6; -jfx-unselected-color: #003da6;" text=" No">
+                           <font>
+                              <Font name="Verdana" size="20.0" />
+                           </font>
+                        </JFXRadioButton>
+                     </children>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets top="30.0" />
+               </VBox.margin>
+            </HBox>
+            <JFXTextArea fx:id="description" focusColor="#405aa800" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="109.0" prefWidth="854.0" promptText="Please describe the service here..." style="-fx-border-color: #4d4d4d;" unFocusColor="#4d4d4d00" wrapText="true">
+               <padding>
+                  <Insets left="5.0" top="5.0" />
+               </padding>
+               <VBox.margin>
+                  <Insets top="40.0" />
+               </VBox.margin>
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXTextArea>
+         </children>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <bottom>
+      <HBox alignment="TOP_RIGHT" prefHeight="103.0" prefWidth="1300.0" BorderPane.alignment="TOP_RIGHT">
+         <children>
+            <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="69.0" prefWidth="235.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="35.0" />
+               </HBox.margin>
+            </JFXButton>
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

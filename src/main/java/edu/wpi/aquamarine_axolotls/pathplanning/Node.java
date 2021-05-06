@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
-public class Node{
+import java.util.Map;
+
+public class Node {
 
     private String nodeID;
 
@@ -42,6 +44,17 @@ public class Node{
         this.nodeType = "placeholder";
         this.longName = "placeholder";
         this.shortName = "placeholder";
+    }
+
+    public Node(Map<String, String> nodeMap){
+        this.nodeID = nodeMap.get("NODEID");
+        this.xcoord = Integer.parseInt(nodeMap.get("XCOORD"));
+        this.ycoord = Integer.parseInt(nodeMap.get("YCOORD"));
+        this.floor = nodeMap.get("FLOOR");
+        this.building = nodeMap.get("BUILDING");
+        this.nodeType = nodeMap.get("NODETYPE");
+        this.longName = nodeMap.get("LONGNAME");
+        this.shortName = nodeMap.get("SHORTNAME");
     }
 
     public String getNodeID() {
@@ -86,7 +99,16 @@ public class Node{
         return "\n" + getNodeID() + " " + getXcoord() + " " + getYcoord() + " " + getShortName();
     }
 
+    @Override
+    public boolean equals(Object o){
+        try{
+            Node n = (Node) o;
+            return n.getNodeID().equals(this.getNodeID());
+        } catch (Exception e){
+            return false;
+        }
 
+    }
 
 }
 

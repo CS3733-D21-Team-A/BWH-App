@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
-public class Edge{
+import java.util.Map;
+
+public class Edge {
 
     private String edgeID;
 
@@ -12,6 +14,22 @@ public class Edge{
         this.edgeID = ID;
         this.startNode = start;
         this.endNode = end;
+    }
+
+    Edge(Map<String, String> edgeMap){
+        this.edgeID = edgeMap.get("EDGEID");
+        this.startNode = edgeMap.get("STARTNODE");
+        this.endNode = edgeMap.get("ENDNODE");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        try {
+            Edge e = (Edge) o;
+            return e.getEdgeID().equals(this.getEdgeID());
+        } catch (Exception ex) {
+            return false;
+        }
     }
 
     public String getEdgeID(){

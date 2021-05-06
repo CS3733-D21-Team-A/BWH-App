@@ -2,170 +2,113 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.GuestMainPage">
-    <children>
-          <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="600.0">
-              <children />
-              <ImageView fitHeight="36.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                      <Image url="@../img/logo.png" />
-                  </image>
-            <HBox.margin>
-               <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
-            </HBox.margin>
-              </ImageView>
-              <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                  <font>
-                      <Font name="Times New Roman" size="12.0" />
-                  </font>
-                  <HBox.margin>
-                      <Insets bottom="12.0" left="5.0" top="20.0" />
-                  </HBox.margin>
-            <padding>
-               <Insets bottom="5.0" />
-            </padding>
-              </Label>
-         <JFXButton fx:id="shutDownB" onAction="#stop" prefHeight="37.0" prefWidth="36.0" text=" " textFill="#888d86">
-            <font>
-               <Font name="Times New Roman Bold Italic" size="20.0" />
-            </font>
-            <HBox.margin>
-               <Insets left="350.0" />
-            </HBox.margin>
-            <graphic>
-               <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../img/Blue_X.png" />
-                  </image>
-               </ImageView>
-            </graphic>
-         </JFXButton>
-          </HBox>
-      <Rectangle fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
-        <VBox alignment="CENTER" prefHeight="403.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.homepages.GuestMainPage">
+    <top>
+        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="87.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+            <children />
+            <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../img/logo.png" />
+                </image>
+                <HBox.margin>
+                    <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+                </HBox.margin>
+            </ImageView>
+            <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+                <font>
+                    <Font name="Verdana" size="24.0" />
+                </font>
+                <HBox.margin>
+                    <Insets bottom="12.0" left="5.0" top="20.0" />
+                </HBox.margin>
+                <padding>
+                    <Insets bottom="5.0" />
+                </padding>
+            </Label>
+            <JFXButton onAction="#stop" prefHeight="71.0" prefWidth="62.0" text=" ">
+                <graphic>
+                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../img/Blue_X.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+                <HBox.margin>
+                    <Insets left="680.0" />
+                </HBox.margin>
+            </JFXButton>
+
+        </HBox>
+    </top>
+    <center>
+        <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <HBox prefHeight="387.0" prefWidth="621.0">
-                    <children>
-                  <GridPane alignment="CENTER" prefHeight="361.0" prefWidth="1055.0">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="450.0" minWidth="450.0" prefWidth="450.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="340.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                              <VBox prefHeight="361.0" prefWidth="439.0" style="-fx-background-color: #003DA6;">
-                                  <children>
-                                      <HBox prefHeight="40.0" prefWidth="151.0">
-                                          <children>
-                                              <Label fx:id="text1" alignment="CENTER" prefHeight="31.0" prefWidth="151.0" text="Welcome" textFill="#fff9f9" wrapText="true">
-                                                  <font>
-                                                      <Font name="Times New Roman" size="20.0" />
-                                                  </font>
-                                                  <HBox.margin>
-                                                      <Insets top="10.0" />
-                                                  </HBox.margin>
-                                              </Label>
-                                          </children>
-                                      </HBox>
-                                      <HBox prefHeight="34.0" prefWidth="151.0">
-                                          <children>
-                                              <Label fx:id="text11" alignment="CENTER" prefHeight="14.0" prefWidth="150.0" text="Guest" textAlignment="CENTER" textFill="#fff9f9" wrapText="true">
-                                                  <font>
-                                                      <Font name="Times New Roman" size="12.0" />
-                                                  </font>
-                                                  <HBox.margin>
-                                                      <Insets bottom="10.0" top="10.0" />
-                                                  </HBox.margin>
-                                              </Label>
-                                          </children>
-                                          <VBox.margin>
-                                              <Insets />
-                                          </VBox.margin>
-                                      </HBox>
-                                      <Line endX="62.29289245605469" endY="-1.303553581237793E-4" startX="-100.0" stroke="WHITE" />
-                                      <JFXButton fx:id="signInB" onAction="#signInP" prefHeight="34.0" prefWidth="151.0" text="Sign-In" textFill="WHITE">
-                                          <VBox.margin>
-                                              <Insets bottom="10.0" top="10.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="Times New Roman" size="13.0" />
-                                          </font>
-                                      </JFXButton>
-                                      <Line endX="56.29289245605469" endY="0.8284767270088196" startX="-100.0" stroke="WHITE" />
-                                      <JFXButton fx:id="mapB" onAction="#mapP" prefHeight="34.0" prefWidth="151.0" text="Map" textFill="WHITE">
-                                          <VBox.margin>
-                                              <Insets bottom="10.0" top="10.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="Times New Roman" size="13.0" />
-                                          </font>
-                                      </JFXButton>
-                                      <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE">
-                                          <VBox.margin>
-                                              <Insets />
-                                          </VBox.margin>
-                                      </Line>
-                                      <JFXButton fx:id="serviceReqB" onAction="#serviceReqP" prefHeight="34.0" prefWidth="151.0" text="Service Requests" textFill="WHITE">
-                                          <VBox.margin>
-                                              <Insets bottom="10.0" top="10.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="Times New Roman" size="13.0" />
-                                          </font>
-                                      </JFXButton>
-                                      <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                      <JFXButton fx:id="settingsB" prefHeight="34.0" prefWidth="151.0" text="Settings" textFill="WHITE">
-                                          <VBox.margin>
-                                              <Insets bottom="10.0" top="10.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="Times New Roman" size="13.0" />
-                                          </font>
-                                      </JFXButton>
-                                      <Line endX="47.66880798339844" endY="-0.8284882307052612" startX="-100.0" stroke="WHITE" />
-                                      <JFXButton fx:id="helpB" prefHeight="34.0" prefWidth="151.0" text="Help" textFill="WHITE">
-                                          <VBox.margin>
-                                              <Insets bottom="10.0" top="10.0" />
-                                          </VBox.margin>
-                                          <font>
-                                              <Font name="Times New Roman" size="13.0" />
-                                          </font>
-                                      </JFXButton>
-                                  </children>
-                              </VBox>
-                        <ImageView fitHeight="340.0" fitWidth="450.0" GridPane.columnIndex="1">
-                           <image>
-                              <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
-                           </image>
+                <ImageView fitHeight="820.0" fitWidth="1306.0" layoutX="-5.0" layoutY="1.0" style="-fx-font-weight: bold;">
+                    <image>
+                        <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
+                    </image>
+                    <viewport>
+                        <Rectangle2D height="1100.0" minX="200.0" width="1600.0" />
+                    </viewport>
+                </ImageView>
+                <Rectangle fill="#0040a6cc" height="74.0" layoutX="-4.0" layoutY="-2.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1306.0" />
+                <Text fx:id="welcome" fill="WHITE" fontSmoothingType="LCD" layoutX="6.0" layoutY="417.0" opacity="0.79" strokeWidth="3.0" style="-fx-fill: white; -fx-font-weight: bolder; -fx-effect: dropshadow(GAUSSIAN, white, 10, 0,0,0); -fx-font-size: 130; -fx-font-family: Verdana;" text="W E L C O M E" textAlignment="CENTER" wrappingWidth="1310.4769840240479" />
+                <Rectangle arcHeight="100.0" fill="#0042a6cc" height="94.0" layoutX="220.0" layoutY="427.0" stroke="#ffffff00" strokeType="INSIDE" strokeWidth="0.0" width="910.0" />
+                <Text fx:id="userNameText" fill="#fccf03" layoutX="215.0" layoutY="489.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Guest" textAlignment="CENTER" wrappingWidth="904.0459289550781">
+                    <font>
+                        <Font name="Verdana" size="39.0" />
+                    </font>
+                </Text>
+                <JFXButton layoutX="1125.0" layoutY="8.0" onAction="#signInP" prefHeight="64.0" prefWidth="175.0" text="Sign In" textFill="#fccf03">
+                    <font>
+                        <Font name="Verdana Bold" size="21.0" />
+                    </font>
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/yellowIcons/signInYellow.PNG" />
+                            </image>
                         </ImageView>
-                        <StackPane fx:id="stackPane" prefHeight="340.0" prefWidth="450.0" GridPane.columnIndex="1" />
-                     </children>
-                  </GridPane>
-                    </children>
-                    <opaqueInsets>
-                        <Insets left="10.0" />
-                    </opaqueInsets>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-                </HBox>
+                    </graphic>
+                </JFXButton>
+                <StackPane fx:id="stackPane" layoutX="445.0" layoutY="303.0" prefHeight="225.0" prefWidth="407.0" />
+                <JFXButton layoutY="8.0" onAction="#covidSurveyPage" prefHeight="64.0" prefWidth="221.0" text="Covid Survey" textFill="#fccf03">
+                    <font>
+                        <Font name="Verdana Bold" size="20.0" />
+                    </font>
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/yellowIcons/covidYellow.PNG" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+                <JFXButton layoutX="200.0" layoutY="8.0" onAction="#mapP" prefHeight="64.0" prefWidth="204.0" text="Navigation" textFill="#ffd000fc">
+                    <font>
+                        <Font name="Verdana Bold" size="20.0" />
+                    </font>
+                    <graphic>
+                        <ImageView>
+                            <image>
+                                <Image url="@../img/yellowIcons/navYellow.PNG" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
             </children>
-        </VBox>
-    </children>
-</AnchorPane>
+        </Pane>
+    </center>
+</BorderPane>

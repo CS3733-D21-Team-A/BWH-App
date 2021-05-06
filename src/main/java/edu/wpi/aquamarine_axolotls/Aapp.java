@@ -1,6 +1,10 @@
 package edu.wpi.aquamarine_axolotls;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +14,13 @@ import javafx.stage.Stage;
 public class Aapp extends Application {
 
   private static Stage primaryStage;
+
+  public static List<Map<String,String>> serviceRequests = new ArrayList<>();
+
+  //TODO: STORE THESE IN PREFERENCES
+  public static String userType = "Guest"; //TODO: REPLACE THIS WITH ENUM
+  public static String username;
+  public static String userFirstName;
 
 
   @Override
@@ -24,6 +35,7 @@ public class Aapp extends Application {
       Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
+      primaryStage.setResizable(false);
       primaryStage.show();
     } catch (IOException e) {
       e.printStackTrace();
@@ -38,8 +50,6 @@ public class Aapp extends Application {
   public static Stage getPrimaryStage(){
     return primaryStage;
   }
-
-
 
   @Override
   public void stop() {

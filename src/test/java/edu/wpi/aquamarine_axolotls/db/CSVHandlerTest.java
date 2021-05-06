@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CSVHandlerTest {
-	private final DatabaseController db = new DatabaseController();
+	private final DatabaseController db = DatabaseController.getInstance();
 	private CSVHandler csvHandler;
 	private InputStream nodeStream;
 	private InputStream edgeStream;
@@ -20,19 +21,19 @@ public class CSVHandlerTest {
 	public CSVHandlerTest() throws URISyntaxException, SQLException, IOException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException, URISyntaxException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
-		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
-		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH);
 
 		csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(nodeStream, TABLES.NODES, true);
+		csvHandler.importCSV(edgeStream, TABLES.EDGES, true);
 
-		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath);
-		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath);
+		nodeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH);
+		edgeStream = DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH);
 	}
 
 	@AfterAll
@@ -44,19 +45,17 @@ public class CSVHandlerTest {
 
 	@Test
 	void importEdgesTest() throws SQLException, IOException {
-		assertNotNull(db.getEdges());
 		db.emptyEdgeTable();
-		assertNull(db.getEdges());
-		csvHandler.importCSV(edgeStream, DatabaseInfo.TABLES.EDGES);
+		assertEquals(0, db.getEdges().size());
+		csvHandler.importCSV(edgeStream, TABLES.EDGES, true);
 		assertNotNull(db.getEdges());
 	}
 
 	@Test
 	void importNodesTest() throws SQLException, IOException {
-		assertNotNull(db.getNodes());
 		db.emptyNodeTable();
-		assertNull(db.getNodes());
-		csvHandler.importCSV(nodeStream, DatabaseInfo.TABLES.NODES);
+		assertEquals(0, db.getNodes().size());
+		csvHandler.importCSV(nodeStream, TABLES.NODES, true);
 		assertNotNull(db.getNodes());
 	}
 
@@ -70,7 +69,7 @@ public class CSVHandlerTest {
 			assertTrue(file.createNewFile());
 			assertEquals(file.length(), 0);
 
-			csvHandler.exportCSV(file, DatabaseInfo.TABLES.EDGES);
+			csvHandler.exportCSV(file, TABLES.EDGES);
 
 			assertNotEquals(file.length(), 0);
 			assertTrue(file.delete());
@@ -90,7 +89,7 @@ public class CSVHandlerTest {
 			assertTrue(file.createNewFile());
 			assertEquals(file.length(), 0);
 
-			csvHandler.exportCSV(file, DatabaseInfo.TABLES.NODES);
+			csvHandler.exportCSV(file, TABLES.NODES);
 
 			assertNotEquals(file.length(), 0);
 			assertTrue(file.delete());

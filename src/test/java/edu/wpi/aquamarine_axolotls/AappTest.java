@@ -11,8 +11,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationExtension;
 
-import javax.xml.soap.Text;
-
 /**
  * This is an integration test for the entire application. Rather than running a single scene
  * individually, it will run the entire application as if you were running it.
@@ -51,7 +49,6 @@ public class AappTest extends FxRobot {
   public void testSettingsButton(){
     clickOn("#settingsB");
   }
-
 
 
 }

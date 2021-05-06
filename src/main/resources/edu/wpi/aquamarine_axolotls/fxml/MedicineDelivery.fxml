@@ -1,148 +1,146 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.MedicineDelivery">
-   <children>
-      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
-         <children>
-            <ImageView fitHeight="36.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.MedicineDelivery">
+         <top>
+              <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="91.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+                  <children>
+            <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../img/logo.png" />
                </image>
                <HBox.margin>
-                  <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+                  <Insets left="5.0" />
                </HBox.margin>
             </ImageView>
-            <Label fx:id="text" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
+            <Label maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="56.0" prefWidth="645.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                <font>
-                  <Font name="Times New Roman" size="12.0" />
+                  <Font name="Verdana" size="25.0" />
                </font>
-               <HBox.margin>
-                  <Insets bottom="12.0" left="5.0" top="20.0" />
-               </HBox.margin>
                <padding>
                   <Insets bottom="5.0" />
                </padding>
+               <HBox.margin>
+                  <Insets left="5.0" right="5.0" />
+               </HBox.margin>
             </Label>
-         </children>
-      </HBox>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
-      <VBox alignment="CENTER" layoutX="257.0" layoutY="79.0" prefHeight="355.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-         <children>
-            <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0">
+                  </children>
+              </HBox>
+         </top>
+         <center>
+            <Pane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="35.0" prefWidth="30.0" text=" ">
-                     <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../img/back icon.jpg" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-                  <JFXButton maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets left="475.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXButton>
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="5.0" />
-               </VBox.margin>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" />
-               </padding></HBox>
-            <Label fx:id="formName" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="34.0" prefWidth="600.0" text="Medicine Delivery Service" textAlignment="RIGHT">
+                  <GridPane layoutX="23.0" layoutY="240.0" prefHeight="380.0" prefWidth="1255.0">
+                    <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                                <JFXTextField fx:id="firstName" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient First Name" GridPane.columnIndex="1">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTextField>
+                                <JFXTextField fx:id="lastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient Last Name" GridPane.columnIndex="2">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTextField>
+                        <JFXTextField fx:id="docFirstName" maxWidth="-Infinity" prefWidth="250.0" promptText="Doctor First Name" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTextField>
+                        <JFXTextField fx:id="docLastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Doctor Last Name" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTextField>
+                                <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="27.0" prefWidth="250.0" promptText="Delivery Time" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTimePicker>
+                        <JFXTextField fx:id="medication" maxWidth="-Infinity" prefWidth="250.0" promptText="Medication" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTextField>
+                        <JFXTextField fx:id="doseSize" maxWidth="-Infinity" prefWidth="250.0" promptText="Dose Size" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXTextField>
+                                <JFXComboBox fx:id="roomNumber" prefHeight="25.0" prefWidth="250.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                     <GridPane.margin>
+                        <Insets top="40.0" />
+                     </GridPane.margin></JFXComboBox>
+                     </children>
+                  </GridPane>
+                      <JFXButton layoutX="13.0" layoutY="45.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="61.0" prefWidth="54.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="44.0" fitWidth="35.0">
+                     <image>
+                        <Image url="@../img/back icon.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+                      </JFXButton>
+            <Rectangle fill="#003da6" height="35.0" layoutX="4.0" layoutY="-7.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1302.0" />
+            <JFXButton layoutX="943.0" layoutY="694.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman" size="36.0" />
+                  <Font name="Verdana" size="30.0" />
                </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </Label>
-            <HBox alignment="CENTER" maxHeight="27.0" prefHeight="2.0" prefWidth="600.0">
-               <children>
-                  <Line endX="450.0" startX="-100.0" stroke="#c4c4c4" strokeWidth="4.0" />
-               </children>
-            </HBox>
-            <Label fx:id="description" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="32.0" prefWidth="600.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
+            </JFXButton>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-3.0" layoutY="164.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="61.0" prefWidth="1306.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="CENTER" wrapText="true">
                <font>
-                  <Font name="Calibri" size="14.0" />
+                  <Font name="Verdana" size="25.0" />
                </font>
                <padding>
                   <Insets left="20.0" right="20.0" />
                </padding>
             </Label>
-            <HBox alignment="CENTER" prefHeight="28.0" prefWidth="600.0">
-               <children>
-                  <JFXTextField fx:id="firstName" maxWidth="-Infinity" prefWidth="250.0" promptText="First Name">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXTextField fx:id="lastName" maxWidth="-Infinity" prefWidth="250.0" promptText="Last Name">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </JFXTextField>
+            <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutY="84.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="81.0" prefWidth="1305.0" text="Medicine Delivery Service" textAlignment="CENTER">
+               <font>
+                  <Font name="Verdana" size="50.0" />
+               </font>
+            </Label>
                </children>
-               <VBox.margin>
-                  <Insets bottom="5.0" top="20.0" />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="35.0" prefWidth="600.0">
-               <children>
-                  <JFXTextField fx:id="deliveryTime" maxWidth="-Infinity" prefWidth="250.0" promptText="Delivery Time">
-                     <HBox.margin>
-                        <Insets right="10.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-                  <JFXTextField fx:id="roomNumber" maxWidth="-Infinity" prefWidth="250.0" promptText="Patient's Room Number">
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
-               <children>
-                  <JFXTextField fx:id="specInstruct" maxWidth="-Infinity" prefHeight="111.0" prefWidth="292.0" promptText="Insert Special Instructions">
-                     <HBox.margin>
-                        <Insets left="35.0" right="30.0" top="5.0" />
-                     </HBox.margin>
-                  </JFXTextField>
-               </children></HBox>
-            <HBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
-               <children>
-                  <JFXButton fx:id="submitB" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="160.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Submit" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets left="400.0" />
-                     </HBox.margin>
-                  </JFXButton>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+            </Pane>
+         </center>
+      </BorderPane>

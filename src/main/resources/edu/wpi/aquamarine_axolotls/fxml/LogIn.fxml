@@ -1,130 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.LogIn">
-    <children>
-        <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="600.0">
-            <children />
-            <ImageView fitHeight="36.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@../img/logo.png" />
-                </image>
-                <HBox.margin>
-                    <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
-                </HBox.margin>
-            </ImageView>
-            <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="144.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                <font>
-                    <Font name="Times New Roman" size="12.0" />
-                </font>
-                <HBox.margin>
-                    <Insets bottom="12.0" left="5.0" top="20.0" />
-                </HBox.margin>
-                <padding>
-                    <Insets bottom="5.0" />
-                </padding>
-            </Label>
-         <StackPane fx:id="stackPane" prefHeight="150.0" prefWidth="200.0" />
-        </HBox>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="10.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="600.0" AnchorPane.topAnchor="50.0" />
-        <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="600.0" AnchorPane.topAnchor="60.0">
-            <children>
-                <JFXButton fx:id="backB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="35.0" prefWidth="30.0" text=" ">
-                    <graphic>
-                        <ImageView fitHeight="35.0" fitWidth="12.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../img/back icon.jpg" />
-                            </image>
-                        </ImageView>
-                    </graphic>
-                    <HBox.margin>
-                        <Insets top="5.0" />
-                    </HBox.margin>
-                </JFXButton>
-                <JFXButton maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="66.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textFill="WHITE">
-                    <HBox.margin>
-                        <Insets left="475.0" top="5.0" />
-                    </HBox.margin>
-                </JFXButton>
-            </children>
-            <opaqueInsets>
-                <Insets />
-            </opaqueInsets>
-            <VBox.margin>
-                <Insets bottom="10.0" top="5.0" />
-            </VBox.margin>
-            <padding>
-                <Insets bottom="10.0" left="10.0" />
-            </padding></HBox>
-      <VBox alignment="CENTER" layoutY="60.0" prefHeight="340.0" prefWidth="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="60.0">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="893.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.LogIn">
+   <top>
+      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" wrappingWidth="229.21630859375">
+            <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../img/logo.png" />
+               </image>
+               <HBox.margin>
+                  <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
+               </HBox.margin>
+            </ImageView>
+            <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="519.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
                <font>
-                  <Font name="Times New Roman" size="36.0" />
+                  <Font name="Verdana" size="24.0" />
                </font>
-               <VBox.margin>
+               <HBox.margin>
+                  <Insets bottom="12.0" left="5.0" top="20.0" />
+               </HBox.margin>
+               <padding>
                   <Insets bottom="5.0" />
-               </VBox.margin>
-            </Text>
-            <Line endX="128.2928924560547" endY="-0.7071067690849304" startX="-100.0" stroke="#003da6" strokeWidth="2.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </Line>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in using your account credentials" wrappingWidth="239.44921875">
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <right>
+      <Pane prefHeight="100.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle fill="#003da6" height="35.0" layoutX="-575.0" layoutY="-615.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1873.0" y="600.0" />
+            <JFXButton layoutX="16.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="72.0" prefWidth="322.0" text=" ">
+               <graphic>
+                  <Text fill="GREY" strokeType="OUTSIDE" strokeWidth="0.0" text="Continue As Guest" wrappingWidth="224.15419006347656">
+                     <font>
+                        <Font name="Verdana" size="24.0" />
+                     </font>
+                  </Text>
+               </graphic></JFXButton>
+            <ImageView fitHeight="51.0" fitWidth="38.0" layoutX="16.0" layoutY="33.0">
+               <image>
+                  <Image url="@../img/back icon.jpg" />
+               </image>
+            </ImageView>
+            <Text layoutX="-3.0" layoutY="112.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="INSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="1307.1650133132935">
                <font>
-                  <Font name="Times New Roman" size="13.0" />
+                  <Font name="Verdana" size="100.0" />
                </font>
-               <VBox.margin>
-                  <Insets top="5.0" />
-               </VBox.margin>
             </Text>
-            <JFXTextField fx:id="username" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" promptText="Username">
+            <Line endX="450.6532897949219" endY="0.7071243524551392" layoutX="474.0" layoutY="164.0" startX="-100.0" stroke="#003da6" strokeWidth="5.0" />
+            <Text layoutX="225.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in using your account credentials" textAlignment="CENTER" wrappingWidth="864.9440307617188">
                <font>
-                  <Font name="Times New Roman" size="13.0" />
+                  <Font name="Verdana" size="25.0" />
                </font>
-               <VBox.margin>
-                  <Insets left="10.0" right="10.0" top="15.0" />
-               </VBox.margin>
+            </Text>
+            <JFXTextField fx:id="username" layoutX="450.0" layoutY="250.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Username">
+               <font>
+                  <Font name="Verdana" size="30.0" />
+               </font>
             </JFXTextField>
-            <JFXPasswordField fx:id="password" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" promptText="Password">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
+            <JFXPasswordField fx:id="password" layoutX="450.0" layoutY="320.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Password">
                <font>
-                  <Font name="Times New Roman" size="13.0" />
+                  <Font name="Verdana" size="30.0" />
                </font>
             </JFXPasswordField>
-            <JFXComboBox fx:id="emp_or_pat" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="200.0" promptText="Type">
-               <VBox.margin>
-                  <Insets top="15.0" />
-               </VBox.margin>
-            </JFXComboBox>
-            <JFXButton fx:id="submit" minHeight="30.0" onAction="#submit_button" prefHeight="14.0" prefWidth="181.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+            <JFXButton layoutX="544.0" layoutY="572.0" minHeight="30.0" onAction="#confirmUser" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
                <font>
-                  <Font name="Times New Roman" size="18.0" />
+                  <Font name="Verdana" size="40.0" />
                </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" top="20.0" />
-               </VBox.margin>
             </JFXButton>
+            <Hyperlink layoutX="548.0" layoutY="450.0" onAction="#createNewAccount" style="-fx-underline: True;" text="Create a New Account">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink layoutX="554.0" layoutY="400.0" onAction="#forgottenPassword" style="-fx-underline: True;" text="Forgotten Password?">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Hyperlink>
+            <Pane fx:id="smsPane" layoutX="374.0" layoutY="189.0" prefHeight="488.0" prefWidth="557.0" style="-fx-background-color: white;">
+               <children>
+                  <JFXTextField fx:id="smsText" layoutX="136.0" layoutY="171.0" prefHeight="54.0" prefWidth="283.0">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXTextField>
+                  <Text fx:id="smsAuth" layoutX="-1.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the SMS Authentication sent to your cellular device: " textAlignment="CENTER" wrappingWidth="556.0228271484375">
+                     <font>
+                        <Font name="Verdana" size="25.0" />
+                     </font>
+                  </Text>
+                  <JFXButton fx:id="smsSubmit" layoutX="333.0" layoutY="387.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+                     <font>
+                        <Font name="Verdana" size="24.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="25.0" layoutY="387.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #F0F0F0;" text="Cancel">
+                     <font>
+                        <Font name="Verdana" size="24.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
          </children>
-      </VBox>
-    </children>
-</AnchorPane>
+      </Pane>
+   </right>
+</BorderPane>

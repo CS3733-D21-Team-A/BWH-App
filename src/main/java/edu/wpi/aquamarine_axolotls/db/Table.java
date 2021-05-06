@@ -7,8 +7,8 @@ import java.util.*;
  * Class acting as an entity representing/working on a SQL table.
  */
 class Table {
-	final private Connection connection;
-	final private String tableName;
+	final protected Connection connection;
+	final protected String tableName;
 	final private String primaryKey; //this isn't absolutely necessary, but may simplify things.
 	final private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 
@@ -143,7 +143,7 @@ class Table {
 	 * @return List of Maps representing ResultSet.
 	 * @throws SQLException Something went wrong.
 	 */
-	private List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
+	protected List<Map<String,String>> resultSetToList(ResultSet rs) throws SQLException {
 		List<Map<String,String>> entries = new ArrayList<>();
 		while (rs.next()) {
 			Map<String,String> entry = new HashMap<>(); // new row to add
@@ -198,11 +198,61 @@ class Table {
 	 * @return List of maps containing the results of the query.
 	 * @throws SQLException Something went wrong.
 	 */
-	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException {
+	List<Map<String,String>> getEntriesByValue(String columnName, String value) throws SQLException { //TODO: MAKE THIS HANDLE NULLS CORRECTLY
 		try (PreparedStatement smnt = connection.prepareStatement("SELECT * FROM " + tableName + " WHERE " + columnName + " = ?")) { // gets row/rows that have column name with value
 			smnt.setString(1, value);
 			try (ResultSet rs = smnt.executeQuery()) {
 				return resultSetToList(rs); // gets sql result and convert RS to List of maps
+			}
+		}
+	}
+
+	/**
+	 * Query the SQL table for entries with the provided value in the provided column.
+	 * @param filters Map of column names and values to filter by.
+	 * @return List of maps containing the results of the query.
+	 * @throws SQLException Filter with no values provided or something else went wrong.
+	 */
+	List<Map<String,String>> getEntriesByValues(Map<String,List<String>> filters) throws SQLException {
+		StringBuilder sb = new StringBuilder("SELECT * FROM " + tableName + " WHERE ");
+		String[] filterColumns = Arrays.copyOf(filters.keySet().toArray(), filters.keySet().size(), String[].class);
+
+		for (String columnName : filterColumns) { //TODO: Refactor this somehow / use better iteration
+			if (filters.get(columnName).size() == 0) {
+				throw new SQLException("Invalid filter: Cannot filter by no values.");
+			}
+
+			sb.append("(");
+
+			filters.get(columnName).forEach((i) -> {
+				sb.append(columnName);
+				if (i == null) {
+					sb.append(" IS NULL");
+				} else {
+					sb.append(" = ?");
+				}
+				sb.append(" OR ");
+			});
+
+			sb.delete(sb.length() - " OR ".length(), sb.length()); //get rid of hanging OR
+
+			sb.append(") AND ");
+			// (ID = ? OR ID = ? OR ID = ?) AND (STATUS = ? OR STATUS = ? OR STATUS = ?)
+		}
+		sb.delete(sb.length() - " AND ".length(), sb.length()); //get rid of hanging AND
+
+		try (PreparedStatement smnt = connection.prepareStatement(sb.toString())) {
+			int i = 1;
+			for (String columnName : filterColumns) {
+				for (String value : filters.get(columnName)) {
+					if (value != null) {
+						smnt.setString(i, value);
+					}
+					i++;
+				}
+			}
+			try (ResultSet rs = smnt.executeQuery()) {
+				return resultSetToList(rs);
 			}
 		}
 	}

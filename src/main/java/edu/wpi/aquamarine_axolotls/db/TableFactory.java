@@ -1,5 +1,8 @@
 package edu.wpi.aquamarine_axolotls.db;
 
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -26,9 +29,23 @@ class TableFactory {
 	 * @param table identifier for table to link to.
 	 * @return Table object representing the corresponding table in the database.
 	 */
-	Table getTable(DatabaseInfo.TABLES table) {
+	Table getTable(TABLES table) {
 		try {
-			return new Table(connection, DatabaseInfo.TABLE_NAMES.get(table));
+			return new Table(connection, table.name());
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Create and return an object representing the service request table with the corresponding name.
+	 * @param requestType identifier for service request table to link to.
+	 * @return RequestTable object representing the corresponding table in the database.
+	 */
+	RequestTable getRequestTable(SERVICEREQUEST requestType) {
+		try {
+			return new RequestTable(connection, requestType.name());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;

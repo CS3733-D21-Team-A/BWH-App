@@ -1,10 +1,10 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.TestUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
@@ -12,18 +12,18 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DatabaseControllerTest {
-	private final DatabaseController db = new DatabaseController();
+	private final DatabaseController db = DatabaseController.getInstance();
 
 	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
 
 	@BeforeEach
-	void resetDB() throws IOException, SQLException, URISyntaxException {
+	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
 		db.emptyNodeTable();
 
 		CSVHandler csvHandler = new CSVHandler(db);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.nodeResourcePath), DatabaseInfo.TABLES.NODES);
-		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.edgeResourcePath), DatabaseInfo.TABLES.EDGES);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
+		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 	}
 
 	@AfterEach
@@ -159,7 +159,7 @@ class DatabaseControllerTest {
 		try {
 			Map<String,String> before = db.getNode("aPARK019GG");
 			assertEquals("195", before.get("XCOORD"));
-			assertEquals("G", before.get("FLOOR"));
+			assertEquals("1", before.get("FLOOR"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -211,7 +211,7 @@ class DatabaseControllerTest {
 			Map<String,String> node = db.getNode("aPARK009GG");
 			assertEquals("3390", node.get("XCOORD"));
 			assertEquals("1207", node.get("YCOORD"));
-			assertEquals("G", node.get("FLOOR"));
+			assertEquals("1", node.get("FLOOR"));
 			assertEquals("Parking", node.get("BUILDING"));
 			assertEquals("PARK", node.get("NODETYPE"));
 			assertEquals("Parking Spot 9 45 Francis Street Lobby", node.get("LONGNAME"));
@@ -238,7 +238,7 @@ class DatabaseControllerTest {
 		try {
 			assertTrue(db.getNodes().size() != 0);
 			db.emptyNodeTable();
-			assertNull(db.getNodes());
+			assertEquals(0, db.getNodes().size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
@@ -438,7 +438,7 @@ class DatabaseControllerTest {
 			List<Map<String,String>> edges = db.getEdges();
 			assertTrue(edges.size() != 0);
 			db.emptyNodeTable();
-			assertNull(db.getEdges());
+			assertEquals(0, db.getEdges().size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			fail();
