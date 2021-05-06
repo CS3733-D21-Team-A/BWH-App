@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.NodePopUp">
+   <children>
+      <JFXTextField fx:id="nodeID" promptText="Node ID" />
+      <JFXTextField fx:id="longName" promptText="Long Name" />
+      <JFXTextField fx:id="shortName" promptText="Short Name" />
+      <JFXTextField promptText="X Coordinate" fx:id="xCoor" />
+      <JFXTextField fx:id="yCoor" promptText="Y Coordinate" />
+      <JFXComboBox fx:id="nodeType" prefHeight="25.0" prefWidth="610.0" promptText="Node Type" />
+      <JFXComboBox fx:id="floor" prefHeight="25.0" prefWidth="620.0" promptText="Floor" />
+      <JFXComboBox fx:id="building" prefHeight="25.0" prefWidth="620.0" promptText="Building" />
+      <JFXButton onAction="#submit" text="submit" />
+      <JFXButton onAction="#clear" text="clear" />
+      <Label fx:id="submissionStatusLabel" />
+   </children>
+</VBox>

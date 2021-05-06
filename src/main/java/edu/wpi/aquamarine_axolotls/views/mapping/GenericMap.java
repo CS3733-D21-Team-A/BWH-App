@@ -50,8 +50,9 @@ public class GenericMap extends GenericPage {
     ContextMenu contextMenu = new ContextMenu();
     double contextMenuX = 0;
     double contextMenuY = 0;
-    Map<String, String> currentNode;
+    String currentNodeID;
     Map<String, Circle> nodesOnImage = new HashMap<>();
+    Map<String, Line> linesOnImage = new HashMap<>();
 
     // Floor stuff
     static Map<String, String> floors = new HashMap<String,String>() {{
@@ -249,21 +250,47 @@ public class GenericMap extends GenericPage {
     public void drawSingleNode(double x, double y, String nodeID, Color color){
         double radius = 3;
 
-        Circle c = new Circle();
-        c.setCenterX(x);
-        c.setCenterY(y);
-        c.setRadius(radius);
-        c.setFill(color);
-        c.setStroke(color);
-        c.setVisible(true);
+        Circle node = new Circle();
+        node.setCenterX(x);
+        node.setCenterY(y);
+        node.setRadius(radius);
+        node.setFill(color);
+        node.toFront();
+        node.setStroke(color);
+        node.setVisible(true);
+
+        //Opening the popup menu
+        node.setOnMouseClicked((MouseEvent e) ->{
+            if(e.getClickCount() == 2) {
+                node.setFill(Color.YELLOW);
+                System.out.println("Successfully clicked edge");
+                currentNodeID = nodeID;
+                popUp("popuP");
+            }
+                 // TODO : make popup here
+        });
+
+        // Hover over edge to make it thicker and turn it red
+        node.setOnMouseEntered((MouseEvent e) ->{
+            node.setFill(Color.RED);
+            node.setRadius(5);
+            node.toFront();
+        });
+
+        //Moving mouse off edge will make it stop highlighting
+        node.setOnMouseExited((MouseEvent e) ->{
+            node.setFill(color);
+            node.setRadius((Math.PI + Math.E)/2);
+            node.toBack();
+        });
 
         if(nodesOnImage.containsKey(nodeID)){
-            Circle prev = nodesOnImage.get(nodeID);
-            mapView.getChildren().set(mapView.getChildren().indexOf(prev), c);
+            Circle key = nodesOnImage.get(nodeID);
+            mapView.getChildren().set(mapView.getChildren().indexOf(key), node);
         }
-        else mapView.getChildren().add(c);
+        else mapView.getChildren().add(node);
 
-        nodesOnImage.put(nodeID, c);
+        nodesOnImage.put(nodeID, node);
 
     }
 
@@ -296,12 +323,12 @@ public class GenericMap extends GenericPage {
         //x = x - (radius / 2);
         //y = y - (radius / 2);
 
-        Circle c = new Circle();
-        c.setCenterX(x);
-        c.setCenterY(y);
-        c.setRadius(radius);
-        c.setFill(color);
-        mapView.getChildren().add(c);
+        Circle node = new Circle();
+        node.setCenterX(x);
+        node.setCenterY(y);
+        node.setRadius(radius);
+        node.setFill(color);
+        mapView.getChildren().add(node);
     }
 
 
@@ -356,13 +383,48 @@ public class GenericMap extends GenericPage {
      */
     private void drawTwoNodesWithEdge(double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
 
-        Line l = new Line();
-        l.setStartX(startX);
-        l.setStartY(startY);
-        l.setEndX(endX);
-        l.setEndY(endY);
-        l.setStroke(edgeCol);
-        mapView.getChildren().add(l);
+        Line edge = new Line();
+        edge.setStartX(startX);
+        edge.setStartY(startY);
+        edge.setEndX(endX);
+        edge.setEndY(endY);
+        edge.toBack();
+        edge.setStroke(edgeCol);
+        edge.setStrokeWidth((Math.PI + Math.E)/2);
+        edge.setFill(edgeCol);
+
+        //Opening the popup menu
+        edge.setOnMouseClicked((MouseEvent e) ->{
+            if(e.getClickCount() == 2){
+                System.out.println("Successfully clicked edge");
+                edge.setStroke(Color.YELLOW); // TODO : make popup here
+                popUp("popuP");
+            }
+        });
+
+        // Hover over edge to make it thicker and turn it red
+        edge.setOnMouseEntered((MouseEvent e) ->{
+            edge.setStroke(Color.YELLOW);
+            edge.setStrokeWidth(5);
+            edge.toFront();
+        });
+
+        //Moving mouse off edge will make it stop highlighting
+        edge.setOnMouseExited((MouseEvent e) ->{
+            edge.setStroke(edgeCol);
+            edge.setStrokeWidth((Math.PI + Math.E)/2);
+            edge.toBack();
+        });
+
+        String edgeID = startID + "_" + endID;
+        if(linesOnImage.containsKey(edgeID)){
+            Line key = linesOnImage.get(edgeID);
+            mapView.getChildren().set(mapView.getChildren().indexOf(key), edge);
+            linesOnImage.get(edgeID).setStroke(Color.GREEN);
+        }
+        else mapView.getChildren().add(edge);
+
+        linesOnImage.put(edgeID, edge);
 
         drawSingleNode(startX, startY, startID, snodeCol);
         drawSingleNode(endX, endY, endID, enodeCol);
