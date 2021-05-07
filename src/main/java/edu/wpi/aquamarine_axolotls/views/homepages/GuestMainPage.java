@@ -19,80 +19,72 @@ import java.sql.SQLException;
 
 public class GuestMainPage extends GenericPage {
 
-    @FXML
-    StackPane stackPane;
+	@FXML
+	StackPane stackPane;
 
-    public DatabaseController db;
+	public DatabaseController db;
 
-    @FXML Text userNameText;
+	@FXML
+	Text userNameText;
 
-    @FXML
-    public void initialize() throws SQLException, IOException{
-        startUp();
-    }
+	@FXML
+	public void initialize() throws SQLException, IOException {
+		startUp();
+	}
 
-    void startUp() throws IOException, SQLException {
-        db = DatabaseController.getInstance();
-    }
+	void startUp() throws IOException, SQLException {
+		db = DatabaseController.getInstance();
+	}
 
-    @FXML
-    public void signInP(ActionEvent actionEvent) {
-        sceneSwitch("LogIn");
-    }
+	@FXML
+	public void signInP(ActionEvent actionEvent) {
+		sceneSwitch("LogIn");
+	}
 
-    @FXML
-    public void settingsP(ActionEvent actionEvent) {
-        sceneSwitch("Settings");
-    }
+	@FXML
+	public void settingsP(ActionEvent actionEvent) {
+		sceneSwitch("Settings");
+	}
 
-    @FXML
-    public void mapP(ActionEvent actionEvent) {
+	@FXML
+	public void mapP(ActionEvent actionEvent) {
 //        sceneSwitch ( "Navigation" );
-        try {
+		try {
 
-            if ( !db.hasUserTakenCovidSurvey ( Aapp.username != null ? Aapp.username : "guest") ) {
-                popUp ( "Covid Survey" ,"\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action." );
-            } else if (db.getUserByUsername( Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY") == null){
-                popUp ( "Covid Survey" ,"\n\n\n\n\nWait for an employee to approve your survey." );
-            } else {
-                sceneSwitch ( "Navigation" );
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace ( );
-        }
+			if (!db.hasUserTakenCovidSurvey(Aapp.username != null ? Aapp.username : "guest")) {
+				popUp("Covid Survey", "\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action.");
+			} else if (db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY") == null) {
+				popUp("Covid Survey", "\n\n\n\n\nWait for an employee to approve your survey.");
+			} else {
+				sceneSwitch("Navigation");
+			}
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
 
-    }
+	}
 
-    @FXML
-    public void stop(javafx.event.ActionEvent event){
-        JFXDialogLayout content = new JFXDialogLayout();
-        JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-        content.setHeading(new Text("Shut Down Application"));
-        content.setBody(new Text("Clicking the Shut Down button will close the application."));
-        JFXButton shutDownB = new JFXButton("Shut Down");
-        JFXButton cancel_button = new JFXButton( "Cancel");
-        shutDownB.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
-                Platform.exit();
-            }
+	@FXML
+	public void stop(javafx.event.ActionEvent event) {
+		JFXDialogLayout content = new JFXDialogLayout();
+		JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
+		content.setHeading(new Text("Shut Down Application"));
+		content.setBody(new Text("Clicking the Shut Down button will close the application."));
+		JFXButton shutDownB = new JFXButton("Shut Down");
+		JFXButton cancel_button = new JFXButton("Cancel");
+		shutDownB.setOnAction(event1 -> {
+            help.close();
+            Platform.exit();
         });
-        cancel_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
-            }
-        });
-        content.setActions(cancel_button, shutDownB);
-        help.show();
-    }
+		cancel_button.setOnAction(event12 -> help.close());
+		content.setActions(cancel_button, shutDownB);
+		help.show();
+	}
 
-    @FXML
-    public void covidSurveyPage(ActionEvent actionEvent) {
-        sceneSwitch("CovidSurvey");
-    }
-
+	@FXML
+	public void covidSurveyPage() {
+		sceneSwitch("CovidSurvey");
+	}
 
 
 }

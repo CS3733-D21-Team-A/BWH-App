@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
+import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;
@@ -34,17 +35,19 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws SQLException Something went wrong.
 	 * @throws IOException Something went wrong.
 	 */
-	private DatabaseController() throws SQLException, IOException {
-		DriverManager.registerDriver(new EmbeddedDriver());
+	private DatabaseController(boolean remote) throws SQLException, IOException {
+		DriverManager.registerDriver(new ClientDriver());
+
+		String connectionURL = "jdbc:derby:" + (remote ? "//localhost:1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
 
 		boolean dbExists;
-		try (Connection cTest = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin")) { //TODO: login credentials
+		try (Connection cTest = DriverManager.getConnection(connectionURL, "admin", "admin")) { //TODO: login credentials
 			dbExists = true;
 		} catch (SQLException e) {
 			dbExists = false;
 		}
 
-		connection = DriverManager.getConnection("jdbc:derby:BWH;create=true", "admin", "admin"); //TODO: login credentials
+		connection = DriverManager.getConnection(connectionURL+";create=true", "admin", "admin"); //TODO: login credentials
 		if (!dbExists) {
 			System.out.println("No database found. Creating new one...");
 			createDB();
@@ -88,7 +91,7 @@ public class DatabaseController implements AutoCloseable {
 	 */
 	public static DatabaseController getInstance() throws SQLException, IOException {
 		if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
-			DBControllerSingleton.instance = new DatabaseController();
+			DBControllerSingleton.instance = new DatabaseController(false); //TODO: Change this based on a global setting
 		}
 		return DBControllerSingleton.instance;
 	}
