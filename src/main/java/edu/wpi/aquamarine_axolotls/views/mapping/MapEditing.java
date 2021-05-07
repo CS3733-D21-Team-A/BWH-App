@@ -59,6 +59,7 @@ public class MapEditing extends GenericMap {
     @FXML
     public void initialize() throws SQLException, IOException {
         startUp();
+
     //====SET UP SEARCH ALGORITHM SELECTION====//
 
         if(searchAlgorithms.size() == 0){
