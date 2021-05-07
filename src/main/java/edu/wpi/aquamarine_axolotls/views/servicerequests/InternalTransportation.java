@@ -55,7 +55,7 @@ public class InternalTransportation extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.INTERNAL_TRANSPORT;
-        startUp(); // TODO : whos name should eb on the request?
+
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");

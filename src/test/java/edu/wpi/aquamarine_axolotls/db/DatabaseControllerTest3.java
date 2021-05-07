@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.ATTRIBUTE;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
@@ -9,7 +8,6 @@ import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolation
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,7 +19,7 @@ public class DatabaseControllerTest3 {
 
     private final DatabaseController db = DatabaseController.getInstance();
 
-    public DatabaseControllerTest3() throws SQLException, IOException, URISyntaxException {
+    public DatabaseControllerTest3() throws SQLException, IOException {
     }
 
     @BeforeEach
@@ -47,20 +45,10 @@ public class DatabaseControllerTest3 {
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
     }
 
-    @AfterEach
-    void closeDB() {
-        try {
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
     @AfterAll
     @BeforeAll
     static void cleanup() {
-        TestUtil.resetDB();
+        DBTestUtil.resetDB();
     }
 
     // Tests for iteration 1

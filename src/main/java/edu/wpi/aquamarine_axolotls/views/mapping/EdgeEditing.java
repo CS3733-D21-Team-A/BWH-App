@@ -165,7 +165,7 @@ public class EdgeEditing extends GenericMap {
             startNodeDropdown.setItems(nodeOptions);
             endNodeDropdown.setItems(nodeOptions);
             edgeDropdown.setItems(edgeOptions);
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

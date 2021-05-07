@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
@@ -41,20 +40,10 @@ public class DatabaseControllerTest5 {
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
     }
 
-    @AfterEach
-    void closeDB() {
-        try {
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
     @AfterAll
     @BeforeAll
     static void cleanup() {
-        TestUtil.resetDB();
+        DBTestUtil.resetDB();
     }
 
     // =========== TESTS =============
@@ -65,7 +54,7 @@ public class DatabaseControllerTest5 {
         Map<String, String> survey = new HashMap<>();
         survey.put("USERNAME", "Seansta18");
         survey.put("AREQUAR", "No");
-        survey.put("NAUSADIRRHEA", "No");
+        survey.put("NAUSEADIARRHEA", "No");
         survey.put("SHORTBREATH", "Yes");
         survey.put("HASCOUGH", "No");
         survey.put("HASFEVER", "No");
@@ -82,11 +71,11 @@ public class DatabaseControllerTest5 {
     }
 
     @Test
-    public void testAddCovidSurveyWithUserDNE() throws SQLException {
+    public void testAddCovidSurveyWithUserDNE() {
         Map<String, String> survey = new HashMap<>();
         survey.put("USERNAME", "Banana1234");
         survey.put("AREQUAR", "No");
-        survey.put("NAUSADIRRHEA", "No");
+        survey.put("NAUSEADIARRHEA", "No");
         survey.put("SHORTBREATH", "Yes");
         survey.put("HASCOUGH", "No");
         survey.put("HASFEVER", "No");
@@ -97,9 +86,7 @@ public class DatabaseControllerTest5 {
         survey.put("MORETIRED", "No");
         survey.put("MUSCLEACHES", "Yes");
 
-        assertThrows(SQLException.class, () -> {
-            db.addSurvey(survey);
-        });
+        assertThrows(SQLException.class, () -> db.addSurvey(survey));
     }
 
     @Test
@@ -107,7 +94,7 @@ public class DatabaseControllerTest5 {
         Map<String, String> survey = new HashMap<>();
         survey.put("USERNAME", "Seansta18");
         survey.put("AREQUAR", "No");
-        survey.put("NAUSADIRRHEA", "No");
+        survey.put("NAUSEADIARRHEA", "No");
         survey.put("SHORTBREATH", "Yes");
         survey.put("HASCOUGH", "No");
         survey.put("HASFEVER", "No");
@@ -119,9 +106,7 @@ public class DatabaseControllerTest5 {
         survey.put("MUSCLEACHES", "Yes");
 
         db.addSurvey(survey);
-        assertThrows(SQLException.class, () -> {
-            db.getSurveyByUsername("Banana1234");
-        });
+        assertThrows(SQLException.class, () -> db.getSurveyByUsername("Banana1234"));
     }
 
     @Test
@@ -132,7 +117,7 @@ public class DatabaseControllerTest5 {
         Map<String, String> survey = new HashMap<>();
         survey.put("USERNAME", "Seansta18");
         survey.put("AREQUAR", "No");
-        survey.put("NAUSADIRRHEA", "No");
+        survey.put("NAUSEADIARRHEA", "No");
         survey.put("SHORTBREATH", "Yes");
         survey.put("HASCOUGH", "No");
         survey.put("HASFEVER", "No");
