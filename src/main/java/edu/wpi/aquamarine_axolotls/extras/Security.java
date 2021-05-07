@@ -16,7 +16,7 @@ import javafx.util.Pair;
 
 import java.net.UnknownHostException;
 import java.sql.SQLException;
-import java.util.Collections;
+import java.util.HashMap;
 
 public class Security {
 	private Security(){} //NO INSTANTIATION >:(
@@ -46,7 +46,10 @@ public class Security {
 	 */
 	public static Pair<String,byte[]> enableTOTP(String username) throws SQLException, QrGenerationException {
 		String secret = secretGenerator.generate();
-		dbController.editUser(username, Collections.singletonMap("TOTPSECRET",secret));
+		dbController.editUser(username, new HashMap<String,String>() {{
+			put("TOTPSECRET",secret);
+			put("MFAENABLED","true");
+		}});
 		return new Pair<>(secret, makeQrCode(username,secret));
 	}
 
@@ -76,5 +79,17 @@ public class Security {
 			.build();
 
 		return new ZxingPngQrGenerator().generate(qrData);
+	}
+
+	/**
+	 * disable TOTP for the provided user
+	 * @param username username of user to disable TOTP 2FA for
+	 * @throws SQLException Something went wrong.
+	 */
+	public static void disableTOTP(String username) throws SQLException {
+		dbController.editUser(username, new HashMap<String,String>() {{
+			put("TOTPSECRET","");
+			put("MFAENABLED","false");
+		}});
 	}
 }
