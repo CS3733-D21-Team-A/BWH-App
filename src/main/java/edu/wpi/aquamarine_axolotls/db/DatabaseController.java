@@ -1,7 +1,6 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
-import javafx.util.Pair;
 import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
@@ -72,6 +71,15 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Return if the database connection is closed
+	 * @return if the database connection is closed
+	 * @throws SQLException Something went wrong.
+	 */
+	private boolean connectionIsClosed() throws SQLException {
+		return connection.isClosed();
+	}
+
+	/**
 	 * Static nested class for databasecontrollerSingleton
 	 */
 	private static class DBControllerSingleton{
@@ -84,7 +92,7 @@ public class DatabaseController {
 	 */
 	public static DatabaseController getInstance() {
 		try {
-			if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
+			if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.connectionIsClosed()){
 				DBControllerSingleton.instance = new DatabaseController();
 			}
 		} catch (SQLException | IOException e) {
@@ -95,16 +103,34 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Return if the database connection is closed
-	 * @return if the database connection is closed
+	 * Updates the connections associated with the database based on the current preference setting
+	 * Note: Shuts down the previous connection
 	 * @throws SQLException Something went wrong.
+	 * @throws IOException Something went wrong.
 	 */
-	private boolean isClosed() throws SQLException {
-		return connection.isClosed();
+	public void updateConnection() throws SQLException, IOException {
+		shutdownDB();
+		boolean dbExists = connectToDB(prefs.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+
+		nodeTable.setConnection(connection);
+		edgeTable.setConnection(connection);
+		attrTable.setConnection(connection);
+		userTable.setConnection(connection);
+		serviceRequestsTable.setConnection(connection);
+		favoriteNodesTable.setConnection(connection);
+		covidSurveyTable.setConnection(connection);
+
+		for (RequestTable table : requestsTables.values()) {
+			table.setConnection(connection);
+		}
+
+		if (!dbExists) {
+			populateDB();
+		}
 	}
 
 	/**
-	 * Connects to the Derby database based
+	 * Connects to the Derby database
 	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
 	 * @param remote Whether to try and connect to the the client-server database
 	 * @return If the database has been initialized
@@ -146,33 +172,6 @@ public class DatabaseController {
 		System.out.println(connection.isClosed());
 
 		return dbExists;
-	}
-
-	/**
-	 * Updates the connections associated with the database based on the current preference setting
-	 * Note: Shuts down the previous connection
-	 * @throws SQLException Something went wrong.
-	 * @throws IOException Something went wrong.
-	 */
-	public void updateConnection() throws SQLException, IOException {
-		shutdownDB();
-		boolean dbExists = connectToDB(prefs.get(USE_CLIENT_SERVER_DATABASE, null) != null);
-
-		nodeTable.setConnection(connection);
-		edgeTable.setConnection(connection);
-		attrTable.setConnection(connection);
-		userTable.setConnection(connection);
-		serviceRequestsTable.setConnection(connection);
-		favoriteNodesTable.setConnection(connection);
-		covidSurveyTable.setConnection(connection);
-
-		for (RequestTable table : requestsTables.values()) {
-			table.setConnection(connection);
-		}
-
-		if (!dbExists) {
-			populateDB();
-		}
 	}
 
 	/**
