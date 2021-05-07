@@ -68,8 +68,8 @@ public class NodePopUp {
         try{
             switch(mapController.state) {
                 case "New" :
-                    xCoordField.setText(String.valueOf(mapController.contextMenuX));
-                    yCoordField.setText(String.valueOf(mapController.contextMenuY));
+                    xCoordField.setText(String.valueOf((mapController.inverseXScale((int) mapController.contextMenuX)).intValue()));
+                    yCoordField.setText(String.valueOf((mapController.inverseYScale((int) mapController.contextMenuY)).intValue()));
                     break;
                 case "Edit":
                     Map<String, String> node = db.getNode(mapController.currentID);
@@ -95,13 +95,13 @@ public class NodePopUp {
 
         Map<String, String> node = new HashMap<>();
 
-        String longNameText = longName.getText();
-        String shortNameText = shortName.getText();
-        String xCoorText = xCoor.getText();
-        String yCoorText = yCoor.getText();
-        String nodeTypeText = nodeType.getSelectionModel().getSelectedItem();
-        String floorText = floor.getSelectionModel().getSelectedItem();
-        String buildingText = building.getSelectionModel().getSelectedItem();
+        String longNameText = longNameField.getText();
+        String shortNameText = shortNameField.getText();
+        String xCoorText = xCoordField.getText();
+        String yCoorText = yCoordField.getText();
+        String nodeTypeText = nodeTypeDropdown.getSelectionModel().getSelectedItem().toString();
+        String floorText = floorDropdown.getSelectionModel().getSelectedItem().toString();
+        String buildingText = buildingDropdown.getSelectionModel().getSelectedItem().toString();
 
         if (longNameText.isEmpty() ||
         shortNameText.isEmpty() ||
@@ -139,13 +139,13 @@ public class NodePopUp {
 
     @FXML
     public void clear(){
-        longName.clear();
-        shortName.clear();
-        xCoor.clear();
-        yCoor.clear();
-        nodeType.getSelectionModel().clearSelection();
-        floor.getSelectionModel().clearSelection();
-        building.getSelectionModel().clearSelection();
+        longNameField.clear();
+        shortNameField.clear();
+        xCoordField.clear();
+        yCoordField.clear();
+        nodeTypeDropdown.getSelectionModel().clearSelection();
+        floorDropdown.getSelectionModel().clearSelection();
+        buildingDropdown.getSelectionModel().clearSelection();
     }
 
     public void delete(ActionEvent actionEvent) {

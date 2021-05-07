@@ -1,11 +1,13 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.sun.prism.shader.DrawCircle_LinearGradient_PAD_AlphaTest_Loader;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
@@ -16,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -59,6 +62,10 @@ public abstract class GenericMap extends GenericPage {
 
     String state = "";
     String currentID;
+    List<Map<String, String>> selectedNodesList = new ArrayList<>();
+
+    boolean isDoubleClicked = false;
+    boolean isPrimaryDown = false;
 
     // Floor stuff
     static Map<String, String> floors = new HashMap<String,String>() {{
@@ -153,6 +160,20 @@ public abstract class GenericMap extends GenericPage {
      */
     public Double yScale(int yCoord) { return (mapImage.getFitHeight()/3400) * yCoord; }
 
+    /**
+     * Scales an x-coordinate to be in proportion to the dimensions of the map images
+     * @param xCoord int, the x-coordinate to be scaled
+     * @return Double, the coordinate post-scaling
+     */
+    public Double inverseXScale(int xCoord) { return (5000/mapImage.getFitWidth()) * xCoord; }
+
+    /**
+     * Scales a y-coordinate to be in proportion to the dimensions of the map images
+     * @param yCoord int, the y-coordinate to be scaled
+     * @return Double, the coordinate post-scaling
+     */
+    public Double inverseYScale(int yCoord) { return (3400/mapImage.getFitHeight()) * yCoord; }
+
 
     /**
      * Resets the zoom level to normal
@@ -196,19 +217,35 @@ public abstract class GenericMap extends GenericPage {
 
     public void drawEdges(Color colorOfNodes) throws SQLException {
         for (Map<String, String> edge : db.getEdges())
-            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
+            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.web("#003DA6"), Color.web("#003DA6"), Color.BLACK);
     }
+
+
 
 
     /**
      * Change the active floor
      */
-    public void changeFloor3() throws SQLException { changeFloor("3"); }
-    public void changeFloor2() throws SQLException { changeFloor("2"); }
-    public void changeFloor1() throws SQLException { changeFloor("1"); }
-    public void changeFloorL1() throws SQLException { changeFloor("L1"); }
-    public void changeFloorL2() throws SQLException { changeFloor("L2"); }
+    public void changeFloor3() throws SQLException { drawFloor("3"); }
+    public void changeFloor2() throws SQLException { drawFloor("2"); }
+    public void changeFloor1() throws SQLException { drawFloor("1"); }
+    public void changeFloorL1() throws SQLException { drawFloor("L1"); }
+    public void changeFloorL2() throws SQLException { drawFloor("L2"); }
 
+
+    public void setNodeOnImage(Circle newCircle, String nodeID){
+        Circle previousCircle = nodesOnImage.get(nodeID);
+        nodesOnImage.put(nodeID, newCircle);
+        mapView.getChildren().set(getNodeIndexOnImage(previousCircle), newCircle);
+    }
+
+    public int getNodeIndexOnImage(String nodeID){
+        return getNodeIndexOnImage(nodesOnImage.get(nodeID));
+    }
+
+    public int getNodeIndexOnImage(Circle previousCircle){
+        return mapView.getChildren().indexOf(previousCircle);
+    }
 
     /**
      * Draws a single node as a colored dot
@@ -242,14 +279,69 @@ public abstract class GenericMap extends GenericPage {
         node.setRadius(radius);
         node.setFill(color);
         node.toFront();
-        node.setStroke(color);
+        node.setStroke(Color.web("#003DA6"));
         node.setVisible(true);
 
-        //Opening the popup menu
+        //On click
+
+        node.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if(!event.isShiftDown()) return;
+            try {
+                Circle newNode = new Circle(e.getX(), e.getY(), 10, Color.web("#F4BA47")); // #7D99C9
+                Map<String, String> currentNode = db.getNode(nodeID);
+                setNodeOnImage(newNode, nodeID);
+                currentNode.put("XCOORD", String.valueOf((inverseXScale((int) event.getX())).intValue()));
+                currentNode.put("YCOORD", String.valueOf((inverseYScale((int) e.getY())).intValue()));
+                System.out.println(currentNode);
+                db.editNode(nodeID,currentNode);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
+
+//        node.setOnMousePressed((MouseEvent e) -> {
+//
+//            System.out.println("FROM drag double click" + isDoubleClicked);
+//            System.out.println("FROM drag pbutt" + e.isPrimaryButtonDown());
+//            if((/*!e.isControlDown() && */!e.isShiftDown())) return;
+//
+//            try {
+//                Circle newNode = new Circle(e.getX(), e.getY(), 10, Color.web("#F4BA47")); // #7D99C9
+//                Map<String, String> currentNode = db.getNode(nodeID);
+//                setNodeOnImage(newNode, nodeID);
+//                currentNode.put("XCOORD", String.valueOf((inverseXScale((int) e.getX())).intValue()));
+//                currentNode.put("YCOORD", String.valueOf((inverseYScale((int) e.getY())).intValue()));
+//                System.out.println(currentNode);
+//                db.editNode(nodeID,currentNode);
+//            } catch (SQLException throwables) {
+//                throwables.printStackTrace();
+//            }
+//        });
+//
+//        node.setOnMouseDragExited((MouseEvent e) ->{
+//            System.out.print("ERROR");
+//        });
+
+
+//        node.setOnDragExited((Event e) ->{
+//            dragDetected = false;
+//        });
+//
+//       node.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+//
+//       });
+
+        node.setOnMousePressed((MouseEvent e) -> {
+            if (e.getClickCount() == 2) isDoubleClicked = true;
+        });
+
+
         node.setOnMouseClicked((MouseEvent e) ->{
-            if(e.getClickCount() == 2) {
-                node.setFill(Color.YELLOW);
-                System.out.println("Successfully clicked edge");
+            //If you double click, opens up the editing menu
+//            if(e.isPrimaryButtonDown()) isPrimaryDown = true;
+            if (e.getClickCount() == 2) {
+                node.setFill(Color.web("#F4BA47"));
+                System.out.println("Successfully clicked node");
                 currentID = nodeID;
                 state = "Edit";
                 nodePopUp();
@@ -260,16 +352,14 @@ public abstract class GenericMap extends GenericPage {
 
         // Hover over edge to make it thicker and turn it red
         node.setOnMouseEntered((MouseEvent e) ->{
-            node.setFill(Color.RED);
-            node.setRadius(5);
-            node.toFront();
+                node.setRadius(5);
         });
 
         //Moving mouse off edge will make it stop highlighting
         node.setOnMouseExited((MouseEvent e) ->{
-            node.setFill(color);
-            node.setRadius((Math.PI + Math.E)/2);
-            node.toBack();
+            if (!node.getFill().equals(Color.web("#F4BA47"))) {
+                node.setRadius((Math.PI + Math.E)/2);
+            }
         });
 
         if(nodesOnImage.containsKey(nodeID)){
@@ -392,8 +482,7 @@ public abstract class GenericMap extends GenericPage {
         //Opening the popup menu
         edge.setOnMouseClicked((MouseEvent e) ->{
             if(e.getClickCount() == 2){
-                System.out.println("Successfully clicked edge");
-                edge.setStroke(Color.YELLOW); // TODO : make popup here
+                state = "Edit";
                 currentID = startID+"_"+endID;
                 edgePopUp();
             }
@@ -401,16 +490,15 @@ public abstract class GenericMap extends GenericPage {
 
         // Hover over edge to make it thicker and turn it red
         edge.setOnMouseEntered((MouseEvent e) ->{
-            edge.setStroke(Color.YELLOW);
             edge.setStrokeWidth(5);
             edge.toFront();
         });
 
-        //Moving mouse off edge will make it stop highlighting
+        //Moving mouse off edge will make it stop hig
+        // hlighting
         edge.setOnMouseExited((MouseEvent e) ->{
-            edge.setStroke(edgeCol);
             edge.setStrokeWidth((Math.PI + Math.E)/2);
-            edge.toBack();
+
         });
 
         String edgeID = startID + "_" + endID;

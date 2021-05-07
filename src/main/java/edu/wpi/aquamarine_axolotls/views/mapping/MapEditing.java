@@ -52,7 +52,6 @@ public class MapEditing extends GenericMap {
     ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
     CSVHandler csvHandler;
 
-    private List<Map<String, String>> selectedNodesList = new ArrayList<Map<String, String>>();
     private Map<String, String> anchor1 = new HashMap<>();
     private Map<String, String> anchor2 = new HashMap<>();
 
@@ -131,11 +130,6 @@ public class MapEditing extends GenericMap {
             alignVertical.setVisible(false);
             alignSlope.setVisible(false);
             selectedNodesList.clear();
-            try {
-                drawNodesAndFloor(FLOOR, Color.BLUE);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
             addAnchorPoint.setText("Add Anchor Point");
             anchor1.clear();
             anchor2.clear();
@@ -204,24 +198,25 @@ public class MapEditing extends GenericMap {
         });
 
 
-        mapView.addEventHandler(MouseEvent.MOUSE_MOVED, event ->{
-            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
-            Map<String, String> node = selectedNodesList.get(0);
-            String nodeID = node.get("NODEID");
-            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
-            if(index != -1){
-                Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
-                mapView.getChildren().set(index, c);
-                nodesOnImage.put(nodeID, c);
-                try {
-                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * event.getX())));
-                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * event.getY())));
-                    db.editNode(nodeID,node);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
+//        mapView.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+//            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
+//            Map<String, String> node = selectedNodesList.get(0);
+//            String nodeID = node.get("NODEID");
+//            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
+//            if(index != -1){
+//                Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
+//                mapView.getChildren().set(index, c);
+//                nodesOnImage.put(nodeID, c);
+//                try {
+//                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * event.getX())));
+//                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * event.getY())));
+//                    db.editNode(nodeID,node);
+//                } catch (SQLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
 
