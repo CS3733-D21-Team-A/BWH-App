@@ -104,6 +104,7 @@ final class DatabaseInfo {
 					"EMAIL VARCHAR(25) NOT NULL," +
 					"CONSTRAINT emailConst UNIQUE(EMAIL)," +
 					"USERTYPE VARCHAR(25) DEFAULT 'patient'," +
+					"TOTPSECRET VARCHAR(32)," +
 					//"USERTYPE ENUM('PATIENT', 'EMPLOYEE', "GUEST', 'ADMIN')
 					"PASSWORD VARCHAR(25) NOT NULL," +
 					"PRONOUNS VARCHAR(25)," +
