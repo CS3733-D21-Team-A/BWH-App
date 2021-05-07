@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
@@ -36,7 +35,7 @@ public class DatabaseControllerTest4 {
     @AfterAll
     @BeforeAll
     static void cleanup() {
-        TestUtil.resetDB();
+        DBTestUtil.resetDB();
     }
 /*
     @Test

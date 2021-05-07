@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import org.apache.derby.iapi.services.io.FileUtil;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +14,7 @@ class DatabaseControllerTest2 {
 	@AfterAll
 	@BeforeAll
 	static void cleanup() {
-		TestUtil.resetDB();
+		DBTestUtil.resetDB();
 	}
 
 	@Test

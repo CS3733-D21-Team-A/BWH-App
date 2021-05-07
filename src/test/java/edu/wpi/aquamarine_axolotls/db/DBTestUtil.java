@@ -1,6 +1,5 @@
-package edu.wpi.aquamarine_axolotls;
+package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import org.apache.derby.iapi.services.io.FileUtil;
 
 import java.io.File;
@@ -12,7 +11,7 @@ import static edu.wpi.aquamarine_axolotls.Settings.prefs;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class TestUtil {
+public class DBTestUtil {
 	public static void resetDB() {
 		prefs.remove(USE_CLIENT_SERVER_DATABASE);
 

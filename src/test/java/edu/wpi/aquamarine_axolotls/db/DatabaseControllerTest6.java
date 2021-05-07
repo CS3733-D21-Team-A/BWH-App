@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
@@ -34,7 +33,7 @@ public class DatabaseControllerTest6 {
     @AfterAll
     @BeforeAll
     static void cleanup() {
-        TestUtil.resetDB();
+        DBTestUtil.resetDB();
     }
 
     @Test

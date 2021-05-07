@@ -177,7 +177,7 @@ public class DatabaseController {
 	 * Note: This will shut down the connection for all currently running DatabaseControllers!
 	 * @return If shutdown was successful.
 	 */
-	public boolean shutdownDB() {
+	boolean shutdownDB() {
 		if (!usingEmbedded) {
 			System.out.println("Warning: Not allowed to shut down remote database. Action ignored");
 			return false;
