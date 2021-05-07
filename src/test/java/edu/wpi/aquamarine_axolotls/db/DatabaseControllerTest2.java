@@ -7,9 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
-import java.sql.SQLNonTransientConnectionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,22 +20,28 @@ class DatabaseControllerTest2 {
 
 	@Test
 	void dbCreation() {
-		File dir = new File("./BWH");
+		File dir = new File("./EMBEDDED_BWH_DB");
 		if (dir.exists()) {
 			assertTrue(FileUtil.removeDirectory(dir));
 		}
-		try (DatabaseController db = DatabaseController.getInstance()) {
+		try {
+			DatabaseController.getInstance().updateConnection();
 			assertTrue(dir.exists());
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 			fail();
 		}
 
-		assertTrue(DatabaseController.shutdownDB());
+		try {
+			assertTrue(DatabaseController.getInstance().shutdownDB());
+		} catch (SQLException | IOException throwables) {
+			throwables.printStackTrace();
+			fail();
+		}
 		assertTrue(FileUtil.removeDirectory(dir));
 	}
 
-	@Test
+	/*@Test //This test is deprecated since we can no longer close DatabaseControllers
 	void closingCreatesNewController() {
 		try {
 			DatabaseController db1 = DatabaseController.getInstance();
@@ -57,5 +61,5 @@ class DatabaseControllerTest2 {
 			e.printStackTrace();
 			fail();
 		}
-	}
+	}*/
 }

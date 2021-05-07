@@ -18,7 +18,7 @@ public class CSVHandlerTest {
 	private InputStream nodeStream;
 	private InputStream edgeStream;
 
-	public CSVHandlerTest() throws URISyntaxException, SQLException, IOException {}
+	public CSVHandlerTest() throws SQLException, IOException {}
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {

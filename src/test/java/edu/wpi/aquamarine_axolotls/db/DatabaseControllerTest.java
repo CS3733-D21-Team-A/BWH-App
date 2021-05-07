@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseControllerTest {
 	private final DatabaseController db = DatabaseController.getInstance();
 
-	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+	DatabaseControllerTest() throws SQLException, IOException{}
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {
@@ -24,16 +24,6 @@ class DatabaseControllerTest {
 		CSVHandler csvHandler = new CSVHandler(db);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
-	}
-
-	@AfterEach
-	void closeDB() {
-		try {
-			db.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			fail();
-		}
 	}
 
 	@AfterAll

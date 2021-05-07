@@ -33,16 +33,6 @@ public class DatabaseControllerTest4 {
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
     }
 
-    @AfterEach
-    void closeDB() {
-        try {
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
     @AfterAll
     @BeforeAll
     static void cleanup() {

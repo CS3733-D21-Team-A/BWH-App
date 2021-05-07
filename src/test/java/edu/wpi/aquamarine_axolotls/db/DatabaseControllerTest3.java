@@ -21,7 +21,7 @@ public class DatabaseControllerTest3 {
 
     private final DatabaseController db = DatabaseController.getInstance();
 
-    public DatabaseControllerTest3() throws SQLException, IOException, URISyntaxException {
+    public DatabaseControllerTest3() throws SQLException, IOException {
     }
 
     @BeforeEach
@@ -45,16 +45,6 @@ public class DatabaseControllerTest3 {
         CSVHandler csvHandler = new CSVHandler(db);
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_NODE_RESOURCE_PATH), TABLES.NODES, true);
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
-    }
-
-    @AfterEach
-    void closeDB() {
-        try {
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
     }
 
     @AfterAll
