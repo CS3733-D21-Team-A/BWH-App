@@ -98,8 +98,9 @@ public class MapEditing extends GenericMap {
         MenuItem makeEdge = new MenuItem("Make edge between selection");
 
         newNode.setOnAction((ActionEvent e) -> {
-            nodePopUp();
             state = "New";
+            currentID = "";
+            nodePopUp();
         });
 
         addAnchorPoint.setOnAction((ActionEvent e) -> {

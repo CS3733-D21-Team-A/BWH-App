@@ -39,7 +39,6 @@ import java.util.Map;
 
 public abstract class GenericMap extends GenericPage {
 
-
     // valid nodes list
     //canvas stuff
     @FXML
@@ -347,6 +346,30 @@ public abstract class GenericMap extends GenericPage {
                 nodePopUp();
 
             }
+            //Otherwise, single clicks will select/deselect nodes
+            else {
+                Circle currentCircle = nodesOnImage.get(nodeID);
+                if (currentCircle.getFill().equals(Color.web("#F4BA47"))) {
+                    try {
+                        selectedNodesList.remove(db.getNode(nodeID));
+                        System.out.println(selectedNodesList);
+                        node.setFill(Color.BLUE);
+                        setNodeOnImage(currentCircle, nodeID);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                else{
+                    try {
+                        selectedNodesList.add(db.getNode(nodeID));
+                        System.out.println(selectedNodesList);
+                        currentCircle.setFill(Color.web("#F4BA47"));
+                        setNodeOnImage(currentCircle, nodeID);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
                  // TODO : make popup here
         });
 
@@ -491,7 +514,7 @@ public abstract class GenericMap extends GenericPage {
         // Hover over edge to make it thicker and turn it red
         edge.setOnMouseEntered((MouseEvent e) ->{
             edge.setStrokeWidth(5);
-            edge.toFront();
+            edge.toBack();
         });
 
         //Moving mouse off edge will make it stop hig

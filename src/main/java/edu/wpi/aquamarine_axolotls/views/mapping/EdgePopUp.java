@@ -75,11 +75,6 @@ public class EdgePopUp {
         subject.attach(edgeIDObserver);
 
 
-
-
-
-
-
         try{
             switch(mapController.state) {
                 case "Edit":
