@@ -72,11 +72,4 @@ public class GenericPage {
         previousPages.clear(); //Need to clear the history when we go home
     }
 
-    /*
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }*/
 }
