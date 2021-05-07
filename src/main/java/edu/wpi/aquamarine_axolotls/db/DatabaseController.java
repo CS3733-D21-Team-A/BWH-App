@@ -79,14 +79,17 @@ public class DatabaseController {
 	}
 
 	/**
-	 * Get shared instance of DatabaseController
-	 * @return Instance of dbcontroller
-	 * @throws SQLException Something went wrong.
-	 * @throws IOException Something went wrong.
+	 * getinstance of dbcontroller to then use
+	 * @return Instance of dbcontroller, null if an error occurred
 	 */
-	public static DatabaseController getInstance() throws SQLException, IOException {
-		if (DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()) {
-			DBControllerSingleton.instance = new DatabaseController();
+	public static DatabaseController getInstance() {
+		try {
+			if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
+				DBControllerSingleton.instance = new DatabaseController();
+			}
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+			return null;
 		}
 		return DBControllerSingleton.instance;
 	}

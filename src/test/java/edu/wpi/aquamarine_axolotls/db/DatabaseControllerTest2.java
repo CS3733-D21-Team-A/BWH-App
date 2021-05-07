@@ -24,19 +24,16 @@ class DatabaseControllerTest2 {
 			assertTrue(FileUtil.removeDirectory(dir));
 		}
 		try {
-			DatabaseController.getInstance().updateConnection();
+			DatabaseController db;
+			assertNotNull(db = DatabaseController.getInstance());
+			db.updateConnection();
 			assertTrue(dir.exists());
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 			fail();
 		}
 
-		try {
-			assertTrue(DatabaseController.getInstance().shutdownDB());
-		} catch (SQLException | IOException throwables) {
-			throwables.printStackTrace();
-			fail();
-		}
+		assertTrue(DatabaseController.getInstance().shutdownDB());
 		assertTrue(FileUtil.removeDirectory(dir));
 	}
 

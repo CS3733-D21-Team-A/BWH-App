@@ -21,7 +21,7 @@ public class GenericServiceRequest extends GenericPage {
    // @FXML
    // JFXComboBox location; //TODO: Don't all requests need a location?
 
-    DatabaseController db;
+    DatabaseController db = DatabaseController.getInstance();
 
     Map<String,String> sharedValues = new HashMap<>();
     Map<String,String> requestValues = new HashMap<>();
@@ -106,15 +106,6 @@ public class GenericServiceRequest extends GenericPage {
     void loadHelp() {
         popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, " +
                 "time you would like to receive the request patient's room number, and an optional message ");
-    }
-
-
-    void startUp(){ //TODO: why startUp and not initialize?
-        try {
-            db = DatabaseController.getInstance();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
