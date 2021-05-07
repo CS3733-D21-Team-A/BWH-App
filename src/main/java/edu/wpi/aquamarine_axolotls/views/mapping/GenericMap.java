@@ -134,18 +134,6 @@ public abstract class GenericMap extends GenericPage {
     }
 
     /**
-     * Searches the valid nodes list for a node with the given ID
-     * @param ID String, the ID of the node to find
-     * @return The node with the given ID, once it's been found
-     */
-//    public Node getNodeFromValidID(String ID) {
-//        for (Node n : validNodes) {
-//            if (n.getNodeID().equals(ID)) return n;
-//        }
-//        return null;
-//    }
-
-    /**
      * Scales an x-coordinate to be in proportion to the dimensions of the map images
      * @param xCoord int, the x-coordinate to be scaled
      * @return Double, the coordinate post-scaling
@@ -173,7 +161,6 @@ public abstract class GenericMap extends GenericPage {
      */
     public Double inverseYScale(int yCoord) { return (3400/mapImage.getFitHeight()) * yCoord; }
 
-
     /**
      * Resets the zoom level to normal
      */
@@ -183,12 +170,26 @@ public abstract class GenericMap extends GenericPage {
         zoomGroup.setScaleY(1);
     }
 
+    /**
+     * Zooms in the map based on the position of the slider
+     */
+    public void zoom(){
+        double tick = zoomSlider.getValue();
+        System.out.println(tick);
+        zoomGroup.setScaleX(tick);
+        zoomGroup.setScaleY(tick);
+    }
 
+    /**
+     * Draws a floor image, and then draws the nodes on top
+     * @param floor The name of the floor to draw
+     * @param colorOfnodes The color of the nodes
+     * @throws SQLException
+     */
     public void drawNodesAndFloor(String floor, Color colorOfnodes) throws SQLException{
         drawFloor(floor);
         drawNodes(colorOfnodes);
     }
-
 
     /**
      * Sets the floor to be rendered, then renders that floor
@@ -202,9 +203,6 @@ public abstract class GenericMap extends GenericPage {
         linesOnImage.clear();
     }
 
-    public abstract void nodePopUp();
-    public abstract void edgePopUp();
-
     /**
      * Draws all nodes on the current floor
      */
@@ -214,14 +212,16 @@ public abstract class GenericMap extends GenericPage {
         }
     }
 
+    /**
+     * Draws all edges and nodes on the current floor
+     * @param colorOfNodes Color of the nodes to draw
+     * @throws SQLException
+     */
     public void drawEdges(Color colorOfNodes) throws SQLException {
         for (Map<String, String> edge : db.getEdges())
             drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.web("#003DA6"), Color.web("#003DA6"), Color.BLACK);
     }
-
-
-
-
+    
     /**
      * Change the active floor
      */
@@ -231,20 +231,35 @@ public abstract class GenericMap extends GenericPage {
     public void changeFloorL1() throws SQLException { drawFloor("L1"); }
     public void changeFloorL2() throws SQLException { drawFloor("L2"); }
 
-
+    /**
+     * Given a new circle and node ID, replaces the circle associated with that ID in the nodesOnImage list with the new circle
+     * @param newCircle The new circle to put in
+     * @param nodeID The ID to give that circle
+     */
     public void setNodeOnImage(Circle newCircle, String nodeID){
         Circle previousCircle = nodesOnImage.get(nodeID);
         nodesOnImage.put(nodeID, newCircle);
         mapView.getChildren().set(getNodeIndexOnImage(previousCircle), newCircle);
     }
 
-    public int getNodeIndexOnImage(String nodeID){
-        return getNodeIndexOnImage(nodesOnImage.get(nodeID));
-    }
+    /**
+     * Given a node ID, gets the index of the circle associated with that ID in the nodesOnImage list
+     * @param nodeID The nodeID to look up
+     * @return Index of the circle associated with that ID
+     */
+    public int getNodeIndexOnImage(String nodeID){ return getNodeIndexOnImage(nodesOnImage.get(nodeID)); }
 
+    /**
+     * Overload of getNodeIndexOnImage, takes a circle and returns the index of that circle
+     * @param previousCircle The circle to look up
+     * @return The index of that circle in the nodesOnImage list
+     */
     public int getNodeIndexOnImage(Circle previousCircle){
         return mapView.getChildren().indexOf(previousCircle);
     }
+
+    public abstract void nodePopUp();
+    public abstract void edgePopUp();
 
     /**
      * Draws a single node as a colored dot
@@ -256,9 +271,13 @@ public abstract class GenericMap extends GenericPage {
         drawSingleNode(Integer.parseInt(node.get("XCOORD")), Integer.parseInt(node.get("YCOORD")), node.get("NODEID"), color);
     }
 
-
-
-
+    /**
+     * Overload of drawSingleNode that takes an x and y coordinate in integers
+     * @param x Int, x coordinate
+     * @param y Int, y coordinate
+     * @param nodeID ID of the node to draw
+     * @param color Color of the node
+     */
     public void drawSingleNode(int x, int y, String nodeID, Color color){
         drawSingleNode(xScale(x), yScale(y), nodeID, color);
     }
@@ -267,6 +286,7 @@ public abstract class GenericMap extends GenericPage {
      * Draws a single circle of radius 3 at the given x and y coordinates
      * @param x x coord
      * @param y y coord
+     * @param nodeID ID to give the new node
      * @param color color to fill the cicle
      */
     public void drawSingleNode(double x, double y, String nodeID, Color color){
@@ -280,8 +300,6 @@ public abstract class GenericMap extends GenericPage {
         node.toFront();
         node.setStroke(Color.web("#003DA6"));
         node.setVisible(true);
-
-        //On click
 
         node.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if(!event.isShiftDown()) return;
@@ -334,7 +352,6 @@ public abstract class GenericMap extends GenericPage {
             if (e.getClickCount() == 2) isDoubleClicked = true;
         });
 
-
         node.setOnMouseClicked((MouseEvent e) ->{
             //If you double click, opens up the editing menu
 //            if(e.isPrimaryButtonDown()) isPrimaryDown = true;
@@ -349,6 +366,7 @@ public abstract class GenericMap extends GenericPage {
             //Otherwise, single clicks will select/deselect nodes
             else {
                 Circle currentCircle = nodesOnImage.get(nodeID);
+                //If node is already yellow (meaning it's selected) de-select it
                 if (currentCircle.getFill().equals(Color.web("#F4BA47"))) {
                     try {
                         selectedNodesList.remove(db.getNode(nodeID));
@@ -359,6 +377,7 @@ public abstract class GenericMap extends GenericPage {
                         throwables.printStackTrace();
                     }
                 }
+                //Otherwise select it
                 else{
                     try {
                         selectedNodesList.add(db.getNode(nodeID));
@@ -370,7 +389,6 @@ public abstract class GenericMap extends GenericPage {
                     }
                 }
             }
-                 // TODO : make popup here
         });
 
         // Hover over edge to make it thicker and turn it red
@@ -403,7 +421,6 @@ public abstract class GenericMap extends GenericPage {
      */
     public void drawSingleNodeHighLight(Map<String, String> node, Color color) { drawSingleNodeHighLight(xScale(Integer.parseInt(node.get("XCOORD"))), yScale(Integer.parseInt(node.get("YCOORD"))), color); }
 
-
     /**
      * Draws a single node as a colored dot
      * This version takes a node
@@ -411,7 +428,6 @@ public abstract class GenericMap extends GenericPage {
      * @param color the color to fill the node
      */
     public void drawSingleNodeHighLight(Node node, Color color) { drawSingleNodeHighLight(xScale(node.getXcoord()), yScale(node.getYcoord()), color); }
-
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -430,14 +446,6 @@ public abstract class GenericMap extends GenericPage {
         node.setRadius(radius);
         node.setFill(color);
         mapView.getChildren().add(node);
-    }
-
-
-    public void zoom(){
-        double tick = zoomSlider.getValue();
-        System.out.println(tick);
-        zoomGroup.setScaleX(tick);
-        zoomGroup.setScaleY(tick);
     }
 
 
