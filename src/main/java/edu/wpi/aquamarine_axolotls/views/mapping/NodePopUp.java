@@ -12,6 +12,7 @@ import org.apache.derby.iapi.db.Database;
 import org.apache.derby.iapi.db.DatabaseContext;
 
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +41,12 @@ public class NodePopUp extends MapEditing{
 
 
     @FXML
-    public void initialize() throws SQLException{
-
+    public void initialize() throws SQLException {
+        try {
+            db = DatabaseController.getInstance();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         floor.setItems(FXCollections
                 .observableArrayList("L2","L1","1","2","3"));
         nodeType.setItems(FXCollections
@@ -49,6 +54,8 @@ public class NodePopUp extends MapEditing{
                         "ELEV","REST", "STAI", "DEPT",
                         "LABS", "INFO", "CONF", "EXIT",
                         "RETL", "SERV"));
+        building.setItems(FXCollections
+        .observableArrayList("Parking", "BTM", "45 Francis", "Tower", "15 Francis", "Shapiro"));
 
         switch(state){
             case "New":

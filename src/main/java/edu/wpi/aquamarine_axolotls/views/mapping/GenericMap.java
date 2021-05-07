@@ -44,15 +44,18 @@ public class GenericMap extends GenericPage {
     Pane mapView;
     @FXML
     ScrollPane mapScrollPane;
+
     Group zoomGroup;
     int zoom;
     DatabaseController db;
     ContextMenu contextMenu = new ContextMenu();
     double contextMenuX = 0;
     double contextMenuY = 0;
-    String currentNodeID;
     Map<String, Circle> nodesOnImage = new HashMap<>();
     Map<String, Line> linesOnImage = new HashMap<>();
+
+    static String state = "";
+    static String currentNodeID;
 
     // Floor stuff
     static Map<String, String> floors = new HashMap<String,String>() {{
@@ -265,7 +268,8 @@ public class GenericMap extends GenericPage {
                 node.setFill(Color.YELLOW);
                 System.out.println("Successfully clicked edge");
                 currentNodeID = nodeID;
-                popUp("popuP");
+                state = "Edit";
+                popUp("NodePopUp");
             }
                  // TODO : make popup here
         });
@@ -398,7 +402,7 @@ public class GenericMap extends GenericPage {
             if(e.getClickCount() == 2){
                 System.out.println("Successfully clicked edge");
                 edge.setStroke(Color.YELLOW); // TODO : make popup here
-                popUp("popuP");
+                popUp("EdgePopUp");
             }
         });
 

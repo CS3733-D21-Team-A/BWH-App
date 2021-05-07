@@ -12,12 +12,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -42,6 +41,8 @@ public class MapEditing extends GenericMap {
     public RadioMenuItem mergeCSVButton;
     @FXML
     public RadioMenuItem exportButton;
+    @FXML
+    public Slider zoomSlider;
 
 
     ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
@@ -51,14 +52,13 @@ public class MapEditing extends GenericMap {
     private Map<String, String> anchor1 = new HashMap<>();
     private Map<String, String> anchor2 = new HashMap<>();
 
-    String state = "";
+
 
     DatabaseController db;
 
     @FXML
-    public void initialize() throws SQLException {
+    public void initialize() throws SQLException, IOException {
         startUp();
-
     //====SET UP SEARCH ALGORITHM SELECTION====//
 
         if(searchAlgorithms.size() == 0){
@@ -82,6 +82,12 @@ public class MapEditing extends GenericMap {
         else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
         else if (algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
 
+        zoomSlider.setOnMouseDragged((MouseEvent mouse) ->{
+            double tick = zoomSlider.getValue();
+            System.out.println(tick);
+            zoomGroup.setScaleX(tick);
+            zoomGroup.setScaleY(tick);
+        });
 
     //====CONTEXT MENU SETUP====//
 
@@ -93,6 +99,8 @@ public class MapEditing extends GenericMap {
         MenuItem addAnchorPoint = new MenuItem(("Add Anchor Point"));
         MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
         MenuItem makeEdge = new MenuItem("Make edge between selection");
+
+
 
         newNode.setOnAction((ActionEvent e) -> {
             popUp("NodePopUp");
@@ -220,6 +228,13 @@ public class MapEditing extends GenericMap {
         });
     }
 
+    public void zoom(){
+        double tick = zoomSlider.getValue();
+        System.out.println(tick);
+        zoomGroup.setScaleX(tick);
+        zoomGroup.setScaleY(tick);
+    }
+
     @Override
     public void changeFloor(String floor) throws SQLException {
         ObservableList<MenuItem> items = contextMenu.getItems();
@@ -311,7 +326,7 @@ public class MapEditing extends GenericMap {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
+        File csv = fileChooser.showOpenDialog(algoSelectBox.getScene().getWindow());
         try {
             csvHandler.importCSV(csv, TABLES.EDGES, true);
         } catch (IOException ie) {
@@ -322,7 +337,7 @@ public class MapEditing extends GenericMap {
 
         try {
             initialize(); //REFRESH TABLE
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -335,7 +350,7 @@ public class MapEditing extends GenericMap {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showOpenDialog(addButton.getScene().getWindow());
+        File csv = fileChooser.showOpenDialog(algoSelectBox.getScene().getWindow());
         try {
             csvHandler.importCSV(csv, TABLES.EDGES, false);
         } catch (IOException ie) {
@@ -346,7 +361,7 @@ public class MapEditing extends GenericMap {
 
         try {
             initialize(); //REFRESH TABLE
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
@@ -359,7 +374,7 @@ public class MapEditing extends GenericMap {
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("CSV Files", "*.csv")
         );
-        File csv = fileChooser.showSaveDialog(addButton.getScene().getWindow());
+        File csv = fileChooser.showSaveDialog(algoSelectBox.getScene().getWindow()); //TODO: what isthis?
         try {
             csvHandler.exportCSV(csv, TABLES.EDGES);
         } catch (IOException ie) {
