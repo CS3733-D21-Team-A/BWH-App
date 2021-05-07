@@ -15,6 +15,12 @@ import java.util.Map;
 public class EdgePopUp {
 
     @FXML
+    public JFXButton deleteButton;
+    @FXML
+    public JFXButton cancelButton;
+    @FXML
+    public JFXButton confirmButton;
+    @FXML
     private JFXComboBox startNodeDropdown;
     @FXML
     private JFXComboBox endNodeDropdown;

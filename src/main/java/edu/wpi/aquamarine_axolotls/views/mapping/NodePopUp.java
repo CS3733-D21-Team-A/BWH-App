@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.apache.derby.iapi.db.Database;
@@ -19,6 +20,28 @@ import java.util.Map;
 
 public class NodePopUp extends MapEditing{
 
+    @FXML
+    public Label nodeIDLabel;
+    @FXML
+    public JFXComboBox nodeTypeDropdown;
+    @FXML
+    public JFXTextField xCoordField;
+    @FXML
+    public JFXTextField yCoordField;
+    @FXML
+    public JFXComboBox buildingDropdown;
+    @FXML
+    public JFXComboBox floorDropdown;
+    @FXML
+    public JFXTextField shortNameField;
+    @FXML
+    public JFXButton deleteButton;
+    @FXML
+    public JFXButton cancelButton;
+    @FXML
+    public JFXButton confirmButton;
+    @FXML
+    public JFXTextField longNameField;
     @FXML
     private JFXTextField nodeID;
     @FXML
@@ -131,5 +154,16 @@ public class NodePopUp extends MapEditing{
         building.getSelectionModel().clearSelection();
     }
 
+    public void delete(ActionEvent actionEvent) {
+
+    }
+
+    public void cancel(ActionEvent actionEvent) {
+
+    }
+
+    public void loadHelp(ActionEvent actionEvent) {
+
+    }
 }
 
