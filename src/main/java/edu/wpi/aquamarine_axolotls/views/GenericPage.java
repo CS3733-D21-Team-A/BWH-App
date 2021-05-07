@@ -54,20 +54,7 @@ public class GenericPage {
     }
 
 
-    @FXML  //TODO: make this look better
-    public void popUp(String sceneName)  {
-        final Stage myDialog = new Stage();
-        myDialog.initModality(Modality.APPLICATION_MODAL);
-        myDialog.centerOnScreen();
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + sceneName + ".fxml"));
-            myDialog.setScene(new Scene(root));
-            myDialog.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-    }
 
     @FXML
     public void goHome() {

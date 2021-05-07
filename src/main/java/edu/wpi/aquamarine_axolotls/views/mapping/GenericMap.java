@@ -13,6 +13,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -33,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenericMap extends GenericPage {
+public abstract class GenericMap extends GenericPage {
 
 
     // valid nodes list
@@ -44,6 +45,8 @@ public class GenericMap extends GenericPage {
     Pane mapView;
     @FXML
     ScrollPane mapScrollPane;
+    @FXML
+    public Slider zoomSlider;
 
     Group zoomGroup;
     int zoom;
@@ -54,8 +57,8 @@ public class GenericMap extends GenericPage {
     Map<String, Circle> nodesOnImage = new HashMap<>();
     Map<String, Line> linesOnImage = new HashMap<>();
 
-    static String state = "";
-    static String currentNodeID;
+    String state = "";
+    String currentID;
 
     // Floor stuff
     static Map<String, String> floors = new HashMap<String,String>() {{
@@ -88,6 +91,16 @@ public class GenericMap extends GenericPage {
                 if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
                 else mapScrollPane.pannableProperty().set(false);
             });
+
+            // TODO : add zoom in and out with key shortcut
+/*            zoomSlider.setOnMouseDragged((MouseEvent mouse) ->{
+                double tick = zoomSlider.getValue();
+                System.out.println(tick);
+                zoomGroup.setScaleX(tick);
+                zoomGroup.setScaleY(tick);
+            });*/
+
+
             Group contentGroup = new Group();
             zoomGroup = new Group();
             contentGroup.getChildren().add(zoomGroup);
@@ -96,17 +109,9 @@ public class GenericMap extends GenericPage {
             mapScrollPane.setContent(contentGroup);
             mapImage.setPreserveRatio(false);
             mapImage.setImage(new Image(floors.get(FLOOR)));
-
             curFloor = new Menu();
 
-//            directionArrow = new Polygon();
-//            directionArrow.setFill(Color.BLUE);
-//            directionArrow.setStroke(Color.BLUE);
-//            directionArrow.setVisible(false);
-//            mapView.getChildren().add(directionArrow);
-
-            //drawFloor(FLOOR);
-            drawNodesAndFloor ( FLOOR, Color.BLUE );
+            drawFloor(FLOOR);
             zoom = 1;
         } catch (SQLException | IOException e) {
             e.printStackTrace();
@@ -148,16 +153,6 @@ public class GenericMap extends GenericPage {
      */
     public Double yScale(int yCoord) { return (mapImage.getFitHeight()/3400) * yCoord; }
 
-    /**
-     * Zooms in on the canvas and its scrollpane
-     * @param actionEvent
-     */
-    public void zoomIn(ActionEvent actionEvent) {
-        if(zoom < 3){
-            zoomGroup.setScaleX(++zoom);
-            zoomGroup.setScaleY(zoom);
-        }
-    }
 
     /**
      * Resets the zoom level to normal
@@ -166,17 +161,6 @@ public class GenericMap extends GenericPage {
         zoom = 1;
         zoomGroup.setScaleX(1);
         zoomGroup.setScaleY(1);
-    }
-
-    /**
-     * Zooms out from the canvas and its scrollpane
-     * @param actionEvent
-     */
-    public void zoomOut(ActionEvent actionEvent) {
-        if(zoom > 1){
-            zoomGroup.setScaleX(--zoom);
-            zoomGroup.setScaleY(zoom);
-        }
     }
 
 
@@ -190,13 +174,16 @@ public class GenericMap extends GenericPage {
      * Sets the floor to be rendered, then renders that floor
      * @param floor String, the floor to move to
      */
-    public void drawFloor(String floor){
+    public void drawFloor(String floor) throws SQLException{
         FLOOR = floor;
         mapImage.setImage(new Image(floors.get(FLOOR)));
         mapView.getChildren().clear();
         nodesOnImage.clear();
-        curFloor.setText( "Cur Floor : " + FLOOR);
+        linesOnImage.clear();
     }
+
+    public abstract void nodePopUp();
+    public abstract void edgePopUp();
 
     /**
      * Draws all nodes on the current floor
@@ -207,15 +194,11 @@ public class GenericMap extends GenericPage {
         }
     }
 
-
-    /**
-     * Changes the active floor and updates the visible image, nodes, and edges
-     * @param floor The new floor
-     */
-    public void changeFloor(String floor) throws SQLException{
-        drawFloor(floor);
-        drawNodes(Color.BLUE);
+    public void drawEdges(Color colorOfNodes) throws SQLException {
+        for (Map<String, String> edge : db.getEdges())
+            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
     }
+
 
     /**
      * Change the active floor
@@ -267,9 +250,10 @@ public class GenericMap extends GenericPage {
             if(e.getClickCount() == 2) {
                 node.setFill(Color.YELLOW);
                 System.out.println("Successfully clicked edge");
-                currentNodeID = nodeID;
+                currentID = nodeID;
                 state = "Edit";
-                popUp("NodePopUp");
+                nodePopUp();
+
             }
                  // TODO : make popup here
         });
@@ -333,6 +317,14 @@ public class GenericMap extends GenericPage {
         node.setRadius(radius);
         node.setFill(color);
         mapView.getChildren().add(node);
+    }
+
+
+    public void zoom(){
+        double tick = zoomSlider.getValue();
+        System.out.println(tick);
+        zoomGroup.setScaleX(tick);
+        zoomGroup.setScaleY(tick);
     }
 
 
@@ -402,7 +394,8 @@ public class GenericMap extends GenericPage {
             if(e.getClickCount() == 2){
                 System.out.println("Successfully clicked edge");
                 edge.setStroke(Color.YELLOW); // TODO : make popup here
-                popUp("EdgePopUp");
+                currentID = startID+"_"+endID;
+                edgePopUp();
             }
         });
 

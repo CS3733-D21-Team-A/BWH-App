@@ -12,15 +12,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,9 +48,6 @@ public class MapEditing extends GenericMap {
     public RadioMenuItem mergeCSVButton;
     @FXML
     public RadioMenuItem exportButton;
-    @FXML
-    public Slider zoomSlider;
-
 
     ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
     CSVHandler csvHandler;
@@ -54,13 +58,11 @@ public class MapEditing extends GenericMap {
 
 
 
-    DatabaseController db;
-
     @FXML
     public void initialize() throws SQLException, IOException {
         startUp();
 
-    //====SET UP SEARCH ALGORITHM SELECTION====//
+        //====SET UP SEARCH ALGORITHM SELECTION====//
 
         if(searchAlgorithms.size() == 0){
             searchAlgorithms.add("A Star");
@@ -83,14 +85,9 @@ public class MapEditing extends GenericMap {
         else if (algo.contains("DepthFirstSearch")) algoSelectBox.getSelectionModel().select(3);
         else if (algo.contains("BestFirstSearch")) algoSelectBox.getSelectionModel().select(4);
 
-        zoomSlider.setOnMouseDragged((MouseEvent mouse) ->{
-            double tick = zoomSlider.getValue();
-            System.out.println(tick);
-            zoomGroup.setScaleX(tick);
-            zoomGroup.setScaleY(tick);
-        });
 
-    //====CONTEXT MENU SETUP====//
+
+        //====CONTEXT MENU SETUP====//
 
         // TODO: Rewrite context menu stuff
         MenuItem newNode = new MenuItem(("New Node Here"));
@@ -101,10 +98,8 @@ public class MapEditing extends GenericMap {
         MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
         MenuItem makeEdge = new MenuItem("Make edge between selection");
 
-
-
         newNode.setOnAction((ActionEvent e) -> {
-            popUp("NodePopUp");
+            nodePopUp();
             state = "New";
         });
 
@@ -229,22 +224,49 @@ public class MapEditing extends GenericMap {
         });
     }
 
-    public void zoom(){
-        double tick = zoomSlider.getValue();
-        System.out.println(tick);
-        zoomGroup.setScaleX(tick);
-        zoomGroup.setScaleY(tick);
+
+    public void editPopUp(boolean isNode){
+        final Stage myDialog = new Stage();
+        myDialog.initModality(Modality.APPLICATION_MODAL);
+        myDialog.centerOnScreen();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + (isNode ? "Node" : "Edge") + "PopUp" + ".fxml"));
+            if(isNode){
+                NodePopUp controller = new NodePopUp(this);
+                loader.setController(controller);
+            }
+            else{
+                EdgePopUp controller = new EdgePopUp(this);
+                loader.setController(controller);
+            }
+
+            myDialog.setScene(new Scene(loader.load()));
+            myDialog.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void nodePopUp() {
+        editPopUp(true);
+    }
+
+    @FXML  //TODO: make this look better
+    public void edgePopUp() {
+        editPopUp(false);
     }
 
     @Override
-    public void changeFloor(String floor) throws SQLException {
-        ObservableList<MenuItem> items = contextMenu.getItems();
-        items.get(items.size()-1).fire(); // targets deselect
-        super.changeFloor(floor);
-        for (Map<String, String> edge : db.getEdges()) {
-            drawTwoNodesWithEdge(db.getNode(edge.get("STARTNODE")), db.getNode(edge.get("ENDNODE")), Color.BLUE, Color.BLUE, Color.BLACK);
+    public void drawFloor(String floor) throws SQLException{
+        super.drawFloor(floor);
+        if(contextMenu.getItems().size() != 0) {
+            ObservableList<MenuItem> items = contextMenu.getItems();
+            items.get(items.size()-1).fire(); // targets deselect
         }
+        drawEdges(Color.BLACK);
     }
+
 
     /**
      * Sets the strategy to be used when pathfinding based on the current state of the algorithm selectio dropdown box

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.NodePopUp">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutX="522.0" layoutY="14.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textAlignment="CENTER" textFill="WHITE">
          <font>
@@ -28,7 +28,7 @@
             </Label>
          </children>
       </HBox>
-      <GridPane alignment="CENTER_RIGHT" layoutY="91.0" prefHeight="53.0" prefWidth="600.0">
+      <GridPane alignment="CENTER" layoutY="91.0" prefHeight="56.0" prefWidth="600.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="10.0" prefWidth="600.0" />
          </columnConstraints>
@@ -42,14 +42,14 @@
                   <Font name="Verdana" size="16.0" />
                </font>
             </Label>
-            <Label fx:id="nodeIDLabel" alignment="CENTER" prefHeight="20.0" prefWidth="642.0" text="aBCDEFG" GridPane.rowIndex="1">
-               <font>
-                  <Font name="Verdana" size="16.0" />
-               </font>
-            </Label>
+            <JFXTextField fx:id="nodeIDTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="210.0" promptText="Node ID" style="-fx-font-size: 16px; -fx-font-family: Verdana;" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="200.0" />
+               </GridPane.margin>
+            </JFXTextField>
          </children>
       </GridPane>
-      <GridPane layoutY="144.0" maxWidth="600.0">
+      <GridPane layoutY="160.0" maxWidth="600.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="180.0" />
@@ -116,7 +116,7 @@
             </JFXButton>
          </children>
       </GridPane>
-      <HBox alignment="CENTER" layoutY="266.0" prefHeight="42.0" prefWidth="600.0">
+      <HBox alignment="CENTER" layoutY="280.0" prefHeight="42.0" prefWidth="600.0">
          <children>
             <JFXTextField fx:id="longNameField" prefHeight="26.0" prefWidth="200.0" promptText="Long Name" style="-fx-font-size: 16; -fx-font-family: Verdana;" />
          </children>

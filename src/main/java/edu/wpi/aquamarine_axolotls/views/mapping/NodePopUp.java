@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -18,10 +19,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NodePopUp extends MapEditing{
+public class NodePopUp {
 
     @FXML
-    public Label nodeIDLabel;
+    public JFXTextField nodeIDTextField;
     @FXML
     public JFXComboBox nodeTypeDropdown;
     @FXML
@@ -43,61 +44,50 @@ public class NodePopUp extends MapEditing{
     @FXML
     public JFXTextField longNameField;
     @FXML
-    private JFXTextField nodeID;
-    @FXML
-    private JFXTextField longName;
-    @FXML
-    private JFXTextField shortName;
-    @FXML
-    private JFXTextField xCoor;
-    @FXML
-    private JFXTextField yCoor;
-    @FXML
-    private JFXComboBox<String> nodeType;
-    @FXML
-    private JFXComboBox<String> floor;
-    @FXML
-    private JFXComboBox<String> building;
-    @FXML
-    private Label submissionStatusLabel;
-    // Make Required fields
+    public Label submissionStatusLabel;
+    MapEditing mapController;
+    DatabaseController db;
 
+    public NodePopUp(MapEditing mapController){
+        this.mapController = mapController;
+    }
 
-    @FXML
-    public void initialize() throws SQLException {
-        try {
-            db = DatabaseController.getInstance();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        floor.setItems(FXCollections
+    public void initialize() throws SQLException, IOException {
+          db = mapController.db;
+
+        System.out.println(mapController.FLOOR);
+        floorDropdown.setItems(FXCollections
                 .observableArrayList("L2","L1","1","2","3"));
-        nodeType.setItems(FXCollections
+        nodeTypeDropdown.setItems(FXCollections
                 .observableArrayList("PARK","WALK","HALL",
                         "ELEV","REST", "STAI", "DEPT",
                         "LABS", "INFO", "CONF", "EXIT",
                         "RETL", "SERV"));
-        building.setItems(FXCollections
-        .observableArrayList("Parking", "BTM", "45 Francis", "Tower", "15 Francis", "Shapiro"));
-
-        switch(state){
-            case "New":
-                xCoor.setText(String.valueOf(contextMenuX));
-                yCoor.setText(String.valueOf(contextMenuY));
-                break;
-            case "Edit":
-                Map<String, String> node = db.getNode(currentNodeID);
-                nodeID.setText(currentNodeID);
-                longName.setText(node.get("LONGNAME"));
-                shortName.setText(node.get("SHORTNAME"));
-                xCoor.setText(node.get("XCOORD"));
-                yCoor.setText(node.get("YCOORD"));
-                nodeType.getSelectionModel().select(node.get("NODETYPE"));
-                floor.getSelectionModel().select(node.get("FLOOR"));
-                building.getSelectionModel().select(node.get("BUILDING"));
-                nodeID.setEditable(false);
-                break;
+        buildingDropdown.setItems(FXCollections
+                .observableArrayList("Parking", "BTM", "45 Francis", "Tower", "15 Francis", "Shapiro"));
+        try{
+            switch(mapController.state) {
+                case "New" :
+                    xCoordField.setText(String.valueOf(mapController.contextMenuX));
+                    yCoordField.setText(String.valueOf(mapController.contextMenuY));
+                    break;
+                case "Edit":
+                    Map<String, String> node = db.getNode(mapController.currentID);
+                    nodeIDTextField.setText(mapController.currentID);
+                    longNameField.setText(node.get("LONGNAME"));
+                    shortNameField.setText(node.get("SHORTNAME"));
+                    xCoordField.setText(node.get("XCOORD"));
+                    yCoordField.setText(node.get("YCOORD"));
+                    nodeTypeDropdown.getSelectionModel().select(node.get("NODETYPE"));
+                    floorDropdown.getSelectionModel().select(node.get("FLOOR"));
+                    buildingDropdown.getSelectionModel().select(node.get("BUILDING"));
+                    nodeIDTextField.setEditable(false);
+                    break;
+            }
+        } catch(SQLException e){
+            e.printStackTrace();
         }
+
     }
 
     @FXML
@@ -123,22 +113,26 @@ public class NodePopUp extends MapEditing{
             submissionStatusLabel.setText("Invalid submission");
             return;
         }
-        else {
-            node.put("LONGNAME", longNameText);
-            node.put("SHORTNAME", shortNameText);
-            node.put("XCOORD", xCoorText);
-            node.put("YCOORD", yCoorText);
-            node.put("NODETYPE", nodeTypeText);
-            node.put("FLOOR", floorText);
-            node.put("BUILDING", buildingText);
-        }
-        switch(state){
-            case "New":
-                db.addNode(node);
-                break;
-            case "Edit":
-                db.editNode(currentNodeID, node);
-                break;
+
+        node.put("LONGNAME", longNameText);
+        node.put("SHORTNAME", shortNameText);
+        node.put("XCOORD", xCoorText);
+        node.put("YCOORD", yCoorText);
+        node.put("NODETYPE", nodeTypeText);
+        node.put("FLOOR", floorText);
+        node.put("BUILDING", buildingText);
+
+    switch(mapController.state){
+        case "New":
+            db.addNode(node);
+            mapController.drawFloor(mapController.FLOOR);
+            submissionStatusLabel.getScene().getWindow().hide();
+            break;
+        case "Edit":
+            db.editNode(mapController.currentID, node);
+            mapController.drawFloor(mapController.FLOOR);
+            submissionStatusLabel.getScene().getWindow().hide();
+            break;
         }
     }
 
