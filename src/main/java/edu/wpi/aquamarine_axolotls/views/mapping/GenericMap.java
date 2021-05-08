@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
@@ -10,6 +11,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -91,6 +93,13 @@ public abstract class GenericMap extends GenericPage {
         mapImage.setPreserveRatio(false);
         mapImage.setImage(new Image(floors.get(FLOOR)));
         curFloor = new Menu();
+
+
+        zoomSlider.addEventHandler(MouseEvent.ANY, event -> {
+            double tick = zoomSlider.getValue();
+            zoomGroup.setScaleX(tick);
+            zoomGroup.setScaleY(tick);
+        });
 
         drawFloor(FLOOR);
 
