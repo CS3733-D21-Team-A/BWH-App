@@ -168,7 +168,7 @@
       </VBox>
    </top>
    <center>
-      <JFXTabPane fx:id="tabs" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" BorderPane.alignment="TOP_LEFT">
+      <JFXTabPane fx:id="tabs" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" rotateGraphic="true" side="LEFT" tabClosingPolicy="ALL_TABS" BorderPane.alignment="TOP_LEFT">
          <tabs>
             <Tab fx:id="serviceRequests" onSelectionChanged="#showSRBox" text="Service Request">
                <content>
@@ -215,6 +215,78 @@
                      </children>
                   </AnchorPane>
                </content>
+            </Tab>
+            <Tab fx:id="covidSurveys1" onSelectionChanged="#showCovidBox">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane prefHeight="766.0" prefWidth="992.0">
+                           <content>
+                              <TableView fx:id="covidSurveyTable1" prefHeight="750.0" prefWidth="2000.0">
+                                 <columns>
+                                    <TableColumn fx:id="usernameColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
+                                    <TableColumn fx:id="COVIDLikelyColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
+                                    <TableColumn fx:id="quarantineColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
+                                    <TableColumn fx:id="feverColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
+                                    <TableColumn fx:id="coughColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
+                                    <TableColumn fx:id="shortnessOfBreathColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
+                                    <TableColumn fx:id="muscleAchesColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
+                                    <TableColumn fx:id="tiredColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
+                                    <TableColumn fx:id="nasalColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
+                                    <TableColumn fx:id="soreThroatColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
+                                    <TableColumn fx:id="nauseaDiarrheaColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
+                                    <TableColumn fx:id="lossOfTasteSmellColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
+                                    <TableColumn fx:id="chillsColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" style="-fx-rotate: 90;">
+                     <image>
+                        <Image url="@../img/ServiceReq Icons/foodDeliveryB.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Tab>
+            <Tab fx:id="covidSurveys11" onSelectionChanged="#showCovidBox" text=" ">
+               <content>
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane prefHeight="766.0" prefWidth="992.0">
+                           <content>
+                              <TableView fx:id="covidSurveyTable11" prefHeight="750.0" prefWidth="2000.0">
+                                 <columns>
+                                    <TableColumn fx:id="usernameColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
+                                    <TableColumn fx:id="COVIDLikelyColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
+                                    <TableColumn fx:id="quarantineColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
+                                    <TableColumn fx:id="feverColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
+                                    <TableColumn fx:id="coughColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
+                                    <TableColumn fx:id="shortnessOfBreathColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
+                                    <TableColumn fx:id="muscleAchesColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
+                                    <TableColumn fx:id="tiredColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
+                                    <TableColumn fx:id="nasalColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
+                                    <TableColumn fx:id="soreThroatColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
+                                    <TableColumn fx:id="nauseaDiarrheaColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
+                                    <TableColumn fx:id="lossOfTasteSmellColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
+                                    <TableColumn fx:id="chillsColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+               <graphic>
+                  <ImageView fitHeight="25.0" fitWidth="25.0" style="-fx-rotate: 90;">
+                     <image>
+                        <Image url="@../img/ServiceReq Icons/medicineDeliveryB.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Tab>
          </tabs>
          <BorderPane.margin>

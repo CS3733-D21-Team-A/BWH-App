@@ -90,7 +90,7 @@
                     <graphic>
                         <ImageView fitHeight="40.0" fitWidth="42.0">
                             <image>
-                                <Image url="@../img/ServiceReq%20Icons/homeButton.png" />
+                                <Image url="@../img/ServiceReq Icons/homeButton.png" />
                             </image>
                         </ImageView>
                     </graphic>

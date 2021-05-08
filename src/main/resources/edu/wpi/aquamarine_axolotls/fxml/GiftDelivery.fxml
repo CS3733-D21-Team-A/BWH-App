@@ -43,7 +43,7 @@
                 </JFXButton>
                 <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="320.0" layoutY="105.0">
                     <image>
-                        <Image url="@../img/ServiceReq Icons/giftDeliveryB.png" />
+                        <Image url="@../img/ServiceReq Icons/giftDeliveryb.png" />
                     </image>
                 </ImageView>
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
