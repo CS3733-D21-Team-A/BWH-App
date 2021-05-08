@@ -237,6 +237,7 @@ public class MapEditing extends GenericMap {
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             if(nodeBeingDragged != null){ //If we've double-clicked and dragged, move the node
                 changeNodeCoordinatesOnImage(nodeBeingDragged, event.getX(), event.getY());
+                mapScrollPane.setPannable(false);
             }
         });
 
@@ -253,6 +254,7 @@ public class MapEditing extends GenericMap {
                 }
                 updateEdgesConnectedToNode(nodeBeingDragged); //Visually update the edges connected to that node
                 nodeBeingDragged = null; //We're no longer dragging anything
+                mapScrollPane.setPannable(true);
             }
         });
     }

@@ -212,6 +212,7 @@ public abstract class GenericMap extends GenericPage {
         setNodeOnImage(currentNode, nodeID);
     }
 
+
     public void setMultipleNodesOnImage(List<Map<String, String>> nodes, Color colorOfNodes){
         for(Map<String, String> node : nodes){
             node.get("NODEID");
