@@ -103,12 +103,14 @@ public class MapEditing extends GenericMap {
         alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
         makeEdge = new MenuItem("Make edge between selection");
 
+        //Handler for the button that adds a new node
         newNode.setOnAction((ActionEvent e) -> {
             state = "New";
             currentID = "";
             nodePopUp();
         });
 
+        //Handler for the button that adds an anchor point
         addAnchorPoint.setOnAction((ActionEvent e) -> {
             Map<String, String> selectedNode = null;
             try {
@@ -132,6 +134,7 @@ public class MapEditing extends GenericMap {
 
         });
 
+        //Handler for the button that deselects everything
         deselect.setOnAction((ActionEvent e) -> {
             alignHorizontal.setVisible(false);
             alignVertical.setVisible(false);
@@ -149,6 +152,7 @@ public class MapEditing extends GenericMap {
             deselect.setVisible(false);
         });
 
+        //Handler for the button that aligns the selection vertically
         alignVertical.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()) {
@@ -162,6 +166,7 @@ public class MapEditing extends GenericMap {
 
         });
 
+        //Handler for the button that aligns the selection horizontally
         alignHorizontal.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()){
@@ -174,6 +179,7 @@ public class MapEditing extends GenericMap {
             }
         });
 
+        //Handler for the button that aligns everything on a slope between two points
         alignSlope.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()){
@@ -185,60 +191,58 @@ public class MapEditing extends GenericMap {
             }
         });
 
+        //Handler for the button that makes a new edge
         makeEdge.setOnAction((ActionEvent e) -> {
 
         });
 
-        //Align horizontal, align vertical
+        //Aligning and deselecting shouldn't be initially visible since they require a selection to work
         alignHorizontal.setVisible(false);
         alignVertical.setVisible(false);
         alignSlope.setVisible(false);
         deselect.setVisible(false);
 
+        //Add everything to the context menu
         contextMenu.getItems().clear();
         contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
 
+        //Update the context menu when it's requested
         mapView.setOnContextMenuRequested(event -> {
-            contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
-            contextMenuX = event.getX();
+            contextMenu.show(mapView, event.getScreenX(), event.getScreenY()); //Show the menu
+            contextMenuX = event.getX(); //Update X and Y coords of contextmenu
             contextMenuY = event.getY();
             Map<String, String> nearestNode = null;
-            try {
+            try { //Get the nearest node to the context menu -- will be used in subsequent operatinos
                 nearestNode = getNearestNode(contextMenuX, contextMenuY);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
 
-            if (nearestNode == null) {
+            if (nearestNode == null) { //If there's nothing nearby, set add anchor point to be invisible
                 addAnchorPoint.setVisible(false);
             }
             else {
                 addAnchorPoint.setVisible(true);
             }
 
-            if (selectedNodesList.isEmpty() && anchor1.isEmpty() && anchor2.isEmpty()){
+            if (selectedNodesList.isEmpty() && anchor1.isEmpty() && anchor2.isEmpty()){ //If there's nothing selected, set deselect to be invisible
                 deselect.setVisible(false);
             }
             else {
                 deselect.setVisible(true);
             }
-
-            /*if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
-                newNode.setVisible(true);
-            }
-            else {
-                newNode.setVisible(false);
-            }*/
         });
 
+        //Event handler for when the mouse is clicked and dragged, used for dragging nodes around
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            if(nodeBeingDragged != null){
+            if(nodeBeingDragged != null){ //If we've double-clicked and dragged, move the node
                 changeNodeCoordinatesOnImage(nodeBeingDragged, event.getX(), event.getY());
             }
         });
 
-        mapView.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> { // TODO: REDRAW EDGES
-            if (nodeBeingDragged != null) {
+        //Event handler for when the mouse is released
+        mapView.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> {
+            if (nodeBeingDragged != null) { //If we were dragging a node, update the database with its new position
                 try {
                     Map<String, String> newCoords = new HashMap<>();
                     newCoords.put("XCOORD", String.valueOf(Math.round(inverseXScale(event.getX()))));
@@ -247,13 +251,17 @@ public class MapEditing extends GenericMap {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                updateEdgesConnectedToNode(nodeBeingDragged);
-                nodeBeingDragged = null;
+                updateEdgesConnectedToNode(nodeBeingDragged); //Visually update the edges connected to that node
+                nodeBeingDragged = null; //We're no longer dragging anything
             }
         });
     }
 
 
+    /**
+     * Brings up the editing popup for users to change values of an edge/node
+     * @param isNode Whether this is a node or edge
+     */
     public void editPopUp(boolean isNode){
         final Stage myDialog = new Stage();
         myDialog.initModality(Modality.APPLICATION_MODAL);
@@ -276,16 +284,23 @@ public class MapEditing extends GenericMap {
         }
     }
 
+
     @FXML
     public void nodePopUp() {
         editPopUp(true);
     }
+
 
     @FXML  //TODO: make this look better
     public void edgePopUp() {
         editPopUp(false);
     }
 
+
+    /**
+     * Switches to a given floor, then draws all nodes and edges on it
+     * @param floor Floor to move to
+     */
     @Override
     public void drawFloor(String floor) {
         try {
@@ -324,6 +339,13 @@ public class MapEditing extends GenericMap {
         }
     }
 
+
+    /**
+     * Aligns the current selection horizontally relative to a selected anchor point
+     * @param nodes List of nodes to align
+     * @param anchorPoint Anchor point to align relative to
+     * @throws SQLException
+     */
     public void alignNodesHorizontal(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
         String anchorY = anchorPoint.get("YCOORD");
         for (Map<String, String> node : nodes) {
@@ -336,6 +358,13 @@ public class MapEditing extends GenericMap {
 
     }
 
+
+    /**
+     * Aligns the current selection in a vertical line relative to a selected anchor point
+     * @param nodes List of nodes to align
+     * @param anchorPoint Anchor point to align relative to
+     * @throws SQLException
+     */
     public void alignNodesVertical(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
         drawFloor(FLOOR);
         String anchorX = anchorPoint.get("XCOORD");
@@ -350,6 +379,14 @@ public class MapEditing extends GenericMap {
 
     }
 
+
+    /**
+     * Aligns the current selection in a line between two anchors
+     * @param nodes Nodes to align
+     * @param anchorPoint1 First anchor
+     * @param anchorPoint2 Second anchor
+     * @throws SQLException
+     */
     //TODO : loss of accuarcy causing errors
     public void alignNodesBetweenTwoNodes(List<Map<String, String>> nodes, Map<String, String> anchorPoint1, Map<String, String> anchorPoint2) throws SQLException {
         drawFloor(FLOOR); //TODO : remove this

@@ -179,6 +179,7 @@ public abstract class GenericMap extends GenericPage {
         else mapView.getChildren().set(getNodeIndexOnImage(nodeID), newCircle);
     }
 
+
     /**
      *
      * @param nodeID
@@ -198,6 +199,7 @@ public abstract class GenericMap extends GenericPage {
             e.printStackTrace();
         }
     }
+
 
     /**
      *
@@ -226,6 +228,7 @@ public abstract class GenericMap extends GenericPage {
         return mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
     }
 
+
     /**
      * Changes the color of the circle representing the nodeID on the map
      * @param nodeID a ID that links to a node in the database
@@ -236,6 +239,7 @@ public abstract class GenericMap extends GenericPage {
         currentNode.setFill(color);
     }
 
+
     /**
      * Removes a given nodeID from the map
      * @param nodeID a ID that links to a node in the database
@@ -245,6 +249,7 @@ public abstract class GenericMap extends GenericPage {
         nodesOnImage.remove(nodeID);
         mapView.getChildren().remove(index);
     }
+
 
     /**
      * Re-draws all the edges connected to a particular node
@@ -261,10 +266,12 @@ public abstract class GenericMap extends GenericPage {
         }
     }
 
+
     /**
      * Pop up that happens when user clicks a node
      */
     public abstract void nodePopUp();
+
 
     /**
      * Pop up that happens when user clicks an edge
@@ -288,6 +295,7 @@ public abstract class GenericMap extends GenericPage {
         }
     }
 
+
     /**
      * Draws a single node as a colored dot
      * This version takes a map of string to string
@@ -304,6 +312,7 @@ public abstract class GenericMap extends GenericPage {
         }
 
     }
+
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -471,6 +480,7 @@ public abstract class GenericMap extends GenericPage {
 
 
     //====ARROWS
+
     /**
      * Draws up and down arrows to signify floor change for a given edge
      * @param edgeID representation of an edge in the database
@@ -492,6 +502,7 @@ public abstract class GenericMap extends GenericPage {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Draws up and down arrows to signify floor change for a given edge (two nodes)
@@ -562,8 +573,8 @@ public abstract class GenericMap extends GenericPage {
     }
 
 
-
 //=== CONTEXT MENU FUNCTIONS ===//
+
     /**
      * Hides context menu when left mouse button is pressed
      * @param event the mouse click event
@@ -575,6 +586,7 @@ public abstract class GenericMap extends GenericPage {
 
 
 //=== CLICK FUNCTIONALITY ==//
+
     /**
      * Finds the node closest to a given location on the map, if such a node exists within a radius of 20 pixels
      * @param x The x-coordinate about which the search is centered
