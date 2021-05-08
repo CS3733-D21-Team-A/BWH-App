@@ -153,7 +153,16 @@ public class NodePopUp extends GenericPage {
     }
 
     public void delete(ActionEvent actionEvent) {
-
+        String nodeID = nodeIDTextField.getText();
+        try {
+            mapController.selectedNodesList.clear();
+            mapController.removeNodeOnImage(nodeID);
+            db.deleteNode(nodeID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mapController.drawFloor(mapController.FLOOR);
+        submissionStatusLabel.getScene().getWindow().hide();
     }
 
     public void cancel(ActionEvent actionEvent) {
