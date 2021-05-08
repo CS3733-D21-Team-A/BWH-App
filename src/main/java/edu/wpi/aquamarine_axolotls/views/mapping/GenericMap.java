@@ -65,6 +65,7 @@ public abstract class GenericMap extends GenericPage {
     DatabaseController db;
     String state = "";
     String currentID;
+    double magicNumber = (Math.PI + Math.E) / 2.0;
 
     /**
      * Responsible for setting up the map
@@ -295,7 +296,7 @@ public abstract class GenericMap extends GenericPage {
      * @param color color to fill the cicle
      */
     private void drawSingleNode(double x, double y, String nodeID, Color color){
-        double radius = (Math.PI + Math.E)/2;
+        double radius = magicNumber;
 
         Circle node = new Circle();
         node.setCenterX(x);
@@ -305,49 +306,50 @@ public abstract class GenericMap extends GenericPage {
         node.toFront();
         node.setStroke(darkBlue);
 
-
         node.setOnMousePressed((MouseEvent e) ->{
-            if(e.getClickCount() == 2) nodeBeingDragged = nodeID;
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+                if(e.getClickCount() == 2) nodeBeingDragged = nodeID;
+            }
         });
 
-        node.setOnMouseClicked((MouseEvent e) ->{
-            //System.out.println(e.getClickCount());
-            if(e.getClickCount() == 2) {
-                node.setFill(yellow);
-                System.out.println("Successfully clicked node");
-                currentID = nodeID;
-                state = "Edit";
-                nodePopUp();
+        node.setOnMouseClicked((MouseEvent e) -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)){
 
-            }
-            //Otherwise, single clicks will select/deselect nodes
-            else {
-                Circle currentCircle = nodesOnImage.get(nodeID);
-                if (currentCircle.getFill().equals(yellow)) {
-                    try {
-                        selectedNodesList.remove(db.getNode(nodeID));
-                        if(selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
-                        node.setFill(darkBlue);
-                        setNodeOnImage(currentCircle, nodeID);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                //System.out.println(e.getClickCount());
+                if (e.getClickCount() == 2) {
+                    node.setFill(yellow);
+                    System.out.println("Successfully clicked node");
+                    currentID = nodeID;
+                    state = "Edit";
+                    nodePopUp();
                 }
-                else{
-                    try {
-                        selectedNodesList.add(db.getNode(nodeID));
-                        contextMenu.getItems().get(1).setVisible(true);
-                        currentCircle.setFill(yellow);
-                        setNodeOnImage(currentCircle, nodeID);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                //Otherwise, single clicks will select/deselect nodes
+                else {
+                    Circle currentCircle = nodesOnImage.get(nodeID);
+                    if (currentCircle.getFill().equals(yellow)) {
+                        try {
+                            selectedNodesList.remove(db.getNode(nodeID));
+                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
+                            node.setFill(darkBlue);
+                            setNodeOnImage(currentCircle, nodeID);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            selectedNodesList.add(db.getNode(nodeID));
+                            //contextMenu.getItems().get(1).setVisible(true);
+                            currentCircle.setFill(yellow);
+                            setNodeOnImage(currentCircle, nodeID);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
                     }
                 }
             }
         });
 
         setNodeOnImage(node, nodeID);
-
 
     }
 
@@ -409,7 +411,7 @@ public abstract class GenericMap extends GenericPage {
         edge.setEndY(endY);
         edge.toBack();
         edge.setStroke(edgeCol);
-        edge.setStrokeWidth((Math.PI + Math.E)/2);
+        edge.setStrokeWidth(magicNumber);
         edge.setFill(edgeCol);
 
         //Opening the popup menu
@@ -429,7 +431,7 @@ public abstract class GenericMap extends GenericPage {
 
         //Moving mouse off edge will make it stop highlighting
         edge.setOnMouseExited((MouseEvent e) ->{
-            edge.setStrokeWidth((Math.PI + Math.E)/2);
+            edge.setStrokeWidth(magicNumber);
         });
 
         String edgeID = startID + "_" + endID;
@@ -582,7 +584,7 @@ public abstract class GenericMap extends GenericPage {
      * @param endY The second pairs y value
      * @return The Euclidean distance between the two pairs of coordinates
      */
-    private double findDistance(double startX, double startY, double endX, double endY){
+    protected double findDistance(double startX, double startY, double endX, double endY){
         // find differnce between two coordinates
         double xOff = endX - startX;
         double yOff = endY - startY;
@@ -593,14 +595,6 @@ public abstract class GenericMap extends GenericPage {
 
         return dist;
     }
-
-
-
-
-
-
-
-
 
 
 

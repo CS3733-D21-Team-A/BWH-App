@@ -70,6 +70,7 @@ public class NodePopUp {
                 case "New" :
                     xCoordField.setText(String.valueOf((mapController.inverseXScale((int) mapController.contextMenuX)).intValue()));
                     yCoordField.setText(String.valueOf((mapController.inverseYScale((int) mapController.contextMenuY)).intValue()));
+                    deleteButton.setVisible(false);
                     break;
                 case "Edit":
                     Map<String, String> node = db.getNode(mapController.currentID);
@@ -82,6 +83,7 @@ public class NodePopUp {
                     floorDropdown.getSelectionModel().select(node.get("FLOOR"));
                     buildingDropdown.getSelectionModel().select(node.get("BUILDING"));
                     nodeIDTextField.setEditable(false);
+                    deleteButton.setVisible(true);
                     break;
             }
         } catch(SQLException e){
@@ -122,18 +124,18 @@ public class NodePopUp {
         node.put("FLOOR", floorText);
         node.put("BUILDING", buildingText);
 
-    switch(mapController.state){
-        case "New":
-            db.addNode(node);
-            mapController.drawFloor(mapController.FLOOR);
-            submissionStatusLabel.getScene().getWindow().hide();
-            break;
-        case "Edit":
-            db.editNode(mapController.currentID, node);
-            mapController.drawFloor(mapController.FLOOR);
-            submissionStatusLabel.getScene().getWindow().hide();
-            break;
+        switch(mapController.state){
+            case "New":
+                String nodeIDText = nodeIDTextField.getText();
+                node.put("NODEID", nodeIDText);
+                db.addNode(node);
+                break;
+            case "Edit":
+                db.editNode(mapController.currentID, node);
+                break;
         }
+        mapController.drawFloor(mapController.FLOOR);
+        submissionStatusLabel.getScene().getWindow().hide();
     }
 
 

@@ -101,7 +101,7 @@ public class MapEditing extends GenericMap {
         alignVertical = new MenuItem(("Align Vertical"));
         alignHorizontal = new MenuItem(("Align Horizontal"));
         deselect = new MenuItem(("Deselect Nodes"));
-        delete = new MenuItem(("Delete Node"));
+//        delete = new MenuItem(("Delete Node"));
         addAnchorPoint = new MenuItem(("Add Anchor Point"));
         alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
         makeEdge = new MenuItem("Make edge between selection");
@@ -135,26 +135,32 @@ public class MapEditing extends GenericMap {
 
         });
 
-        delete.setOnAction((ActionEvent e) -> {
-            for(Map<String, String> node : selectedNodesList){
-                try {
-                    String nodeID = node.get("NODEID");
-                    db.deleteNode(nodeID);
-                    removeNodeOnImage(nodeID);
-                    selectedNodesList.remove(node);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
-
-        });
+//        delete.setOnAction((ActionEvent e) -> {
+//            for(Map<String, String> node : selectedNodesList){
+//                try {
+//                    String nodeID = node.get("NODEID");
+//                    db.deleteNode(nodeID);
+//                    removeNodeOnImage(nodeID);
+//                    selectedNodesList.remove(node);
+//                } catch (SQLException throwables) {
+//                    throwables.printStackTrace();
+//                }
+//            }
+//
+//        });
 
         deselect.setOnAction((ActionEvent e) -> {
             alignHorizontal.setVisible(false);
             alignVertical.setVisible(false);
             alignSlope.setVisible(false);
+            deselect.setVisible(false);
+            for (Map<String, String> node: selectedNodesList){
+                drawSingleNode(node.get("NODEID"), darkBlue);
+            }
             selectedNodesList.clear();
             addAnchorPoint.setText("Add Anchor Point");
+            if (!anchor1.isEmpty()) drawSingleNode(anchor1.get("NODEID"), darkBlue);
+            if (!anchor2.isEmpty()) drawSingleNode(anchor2.get("NODEID"), darkBlue);
             anchor1.clear();
             anchor2.clear();
 
@@ -198,23 +204,41 @@ public class MapEditing extends GenericMap {
         alignHorizontal.setVisible(false);
         alignVertical.setVisible(false);
         alignSlope.setVisible(false);
+        deselect.setVisible(false);
 
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode, delete, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
+        contextMenu.getItems().addAll(newNode,/* delete,*/ addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
 
         mapView.setOnContextMenuRequested(event -> {
             contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
             contextMenuX = event.getX();
             contextMenuY = event.getY();
+            Map<String, String> nearestNode = null;
             try {
-                if (getNearestNode(contextMenuX, contextMenuY) == null) {
-                    addAnchorPoint.setVisible(false);
-                }
-                else {
-                    addAnchorPoint.setVisible(true);
-                }
+                nearestNode = getNearestNode(contextMenuX, contextMenuY);
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+
+            if (nearestNode == null) {
+                addAnchorPoint.setVisible(false);
+            }
+            else {
+                addAnchorPoint.setVisible(true);
+            }
+
+            if (selectedNodesList.isEmpty() && anchor1.isEmpty() && anchor2.isEmpty()){
+                deselect.setVisible(false);
+            }
+            else {
+                deselect.setVisible(true);
+            }
+
+            if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
+                newNode.setVisible(true);
+            }
+            else {
+                newNode.setVisible(false);
             }
         });
 

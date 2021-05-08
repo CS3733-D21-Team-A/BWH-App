@@ -115,7 +115,7 @@ public class EdgePopUp {
                 if(!edgeIDLabel.getText().equals(mapController.currentID)) db.deleteEdge(mapController.currentID);
                 break;
         }
-        db.addEdge(edge);
+        if(!db.edgeExists(edge.get("EDGEID"))) db.addEdge(edge);
         mapController.drawFloor(mapController.FLOOR);
         edgeIDLabel.getScene().getWindow().hide();
 
