@@ -21,7 +21,7 @@
         <Pane prefHeight="900.0" prefWidth="556.0" BorderPane.alignment="CENTER">
             <children>
                 <Circle fill="#1f93ff00" layoutX="363.0" layoutY="149.0" radius="79.0" smooth="false" stroke="#003da6" strokeType="INSIDE" strokeWidth="5.0" />
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="Please provide at least 30 minutes between your desired delivery time and order placement." textAlignment="RIGHT" wrapText="true">
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="Please fill out all fields and select the appropriate level of emergency for your desired transportation." textAlignment="RIGHT" wrapText="true">
                     <font>
                         <Font name="Verdana" size="20.0" />
                     </font>
