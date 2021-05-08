@@ -57,7 +57,6 @@ public class MapEditing extends GenericMap {
     MenuItem alignVertical = new MenuItem(("Align Vertical"));
     MenuItem alignHorizontal = new MenuItem(("Align Horizontal"));
     MenuItem deselect = new MenuItem(("Deselect Nodes"));
-    MenuItem delete = new MenuItem(("Deselect Nodes"));
     MenuItem addAnchorPoint = new MenuItem(("Add Anchor Point"));
     MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
     MenuItem makeEdge = new MenuItem("Make edge between selection");
@@ -101,7 +100,6 @@ public class MapEditing extends GenericMap {
         alignVertical = new MenuItem(("Align Vertical"));
         alignHorizontal = new MenuItem(("Align Horizontal"));
         deselect = new MenuItem(("Deselect Nodes"));
-//        delete = new MenuItem(("Delete Node"));
         addAnchorPoint = new MenuItem(("Add Anchor Point"));
         alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
         makeEdge = new MenuItem("Make edge between selection");
@@ -135,27 +133,13 @@ public class MapEditing extends GenericMap {
 
         });
 
-//        delete.setOnAction((ActionEvent e) -> {
-//            for(Map<String, String> node : selectedNodesList){
-//                try {
-//                    String nodeID = node.get("NODEID");
-//                    db.deleteNode(nodeID);
-//                    removeNodeOnImage(nodeID);
-//                    selectedNodesList.remove(node);
-//                } catch (SQLException throwables) {
-//                    throwables.printStackTrace();
-//                }
-//            }
-//
-//        });
-
         deselect.setOnAction((ActionEvent e) -> {
             alignHorizontal.setVisible(false);
             alignVertical.setVisible(false);
             alignSlope.setVisible(false);
             deselect.setVisible(false);
             for (Map<String, String> node: selectedNodesList){
-                drawSingleNode(node.get("NODEID"), darkBlue);
+                nodesOnImage.get(node.get("NODEID")).setFill(darkBlue);
             }
             selectedNodesList.clear();
             addAnchorPoint.setText("Add Anchor Point");
@@ -163,6 +147,7 @@ public class MapEditing extends GenericMap {
             if (!anchor2.isEmpty()) drawSingleNode(anchor2.get("NODEID"), darkBlue);
             anchor1.clear();
             anchor2.clear();
+            deselect.setVisible(false);
 
         });
         alignVertical.setOnAction((ActionEvent e) -> {
@@ -207,7 +192,7 @@ public class MapEditing extends GenericMap {
         deselect.setVisible(false);
 
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode,/* delete,*/ addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
+        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
 
         mapView.setOnContextMenuRequested(event -> {
             contextMenu.show(mapView, event.getScreenX(), event.getScreenY());

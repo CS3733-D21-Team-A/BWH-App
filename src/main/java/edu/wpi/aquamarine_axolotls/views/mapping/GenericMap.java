@@ -98,7 +98,7 @@ public abstract class GenericMap extends GenericPage {
     }
 
 
-    //=== BUTTON PRESSES ===//
+//=== BUTTON PRESSES ===//
     /**
      * Change the active floor
      */
@@ -109,7 +109,7 @@ public abstract class GenericMap extends GenericPage {
     public void changeFloorL2() throws SQLException { drawFloor("L2"); }
 
 
-    //=== SCALING FUNCTIONS ===//
+//=== SCALING FUNCTIONS ===//
     /**
      * Scales an x-coordinate to be in proportion to the dimensions of the map images
      * @param xCoord int, the x-coordinate to be scaled
@@ -151,7 +151,8 @@ public abstract class GenericMap extends GenericPage {
 
     }
 
-    //=== MAP CONTENT FUNCTIONS ===//
+
+//=== MAP CONTENT FUNCTIONS ===//
 
     /**
      * Switches to a given floor and draws its image on the screen
@@ -256,7 +257,7 @@ public abstract class GenericMap extends GenericPage {
     public abstract void edgePopUp();
 
 
-    //=== DRAW FUNCTIONS ===//
+//=== DRAW FUNCTIONS ===//
 
     //====NODE FUNCTIONS
 
@@ -331,7 +332,7 @@ public abstract class GenericMap extends GenericPage {
                             selectedNodesList.remove(db.getNode(nodeID));
                             //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
                             node.setFill(darkBlue);
-                            setNodeOnImage(currentCircle, nodeID);
+                            //setNodeOnImage(currentCircle, nodeID);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -340,7 +341,7 @@ public abstract class GenericMap extends GenericPage {
                             selectedNodesList.add(db.getNode(nodeID));
                             //contextMenu.getItems().get(1).setVisible(true);
                             currentCircle.setFill(yellow);
-                            setNodeOnImage(currentCircle, nodeID);
+                            //setNodeOnImage(currentCircle, nodeID);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -539,7 +540,7 @@ public abstract class GenericMap extends GenericPage {
 
 
 
-    //=== CONTEXT MENU FUNCTIONS ===//
+//=== CONTEXT MENU FUNCTIONS ===//
     /**
      * Hides context menu when left mouse button is pressed
      * @param event the mouse click event
@@ -550,7 +551,7 @@ public abstract class GenericMap extends GenericPage {
     }
 
 
-    //=== CLICK FUNCTIONALITY ==//
+//=== CLICK FUNCTIONALITY ==//
     /**
      * Finds the node closest to a given location on the map, if such a node exists within a radius of 20 pixels
      * @param x The x-coordinate about which the search is centered
