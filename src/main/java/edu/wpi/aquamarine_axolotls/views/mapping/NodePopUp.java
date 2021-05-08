@@ -123,18 +123,6 @@ public class NodePopUp extends GenericPage {
         String buildingText = buildingDropdown.getSelectionModel().getSelectedItem().toString();
         String nodeIDText = nodeIDTextField.getText();
 
-//        if (nodeIDText.isEmpty() ||
-//        longNameText.isEmpty() ||
-//        shortNameText.isEmpty() ||
-//        xCoorText.isEmpty() ||
-//        yCoorText.isEmpty() ||
-//        nodeTypeText.isEmpty() ||
-//        floorText.isEmpty() ||
-//        buildingText.isEmpty()) {
-//            submissionStatusLabel.setText("Invalid submission");
-//            return;
-//        }
-
         node.put("LONGNAME", longNameText);
         node.put("SHORTNAME", shortNameText);
         node.put("XCOORD", xCoorText);

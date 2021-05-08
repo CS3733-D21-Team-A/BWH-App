@@ -170,7 +170,7 @@ public class MapEditing extends GenericMap {
         alignHorizontal.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()){
-                    alignNodesHorizontal(selectedNodesList, anchor2);
+                    alignNodesHorizontal(selectedNodesList, anchor1);
                     deselect.fire();
                 }
             }
@@ -365,14 +365,15 @@ public class MapEditing extends GenericMap {
      */
     public void alignNodesHorizontal(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
         String anchorY = anchorPoint.get("YCOORD");
+        updateNodeOnImage(anchorPoint.get("NODEID"));
         for (Map<String, String> node : nodes) {
-            node.put("YCOORD", anchorY); // CHANGE TO NEW NODE IF NOT WORKING
+            node.replace("YCOORD", anchorY); // CHANGE TO NEW NODE IF NOT WORKING
             db.editNode(node.get("NODEID"), node); // IF THIS ISNT WORKING YOU HAVE TO CHANGE TO new node
             updateNodeOnImage(node.get("NODEID"));
         }
+        drawFloor(FLOOR);
         selectedNodesList.clear();
         anchor1.clear();
-
     }
 
 
@@ -383,14 +384,14 @@ public class MapEditing extends GenericMap {
      * @throws SQLException
      */
     public void alignNodesVertical(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
-        drawFloor(FLOOR);
         String anchorX = anchorPoint.get("XCOORD");
         updateNodeOnImage(anchorPoint.get("NODEID"));
         for (Map<String, String> node : nodes) {
-            node.put("XCOORD", anchorX);
+            node.replace("XCOORD", anchorX);
             db.editNode(node.get("NODEID"), node);
             updateNodeOnImage(node.get("NODEID"));
         }
+        drawFloor(FLOOR);
         selectedNodesList.clear();
         anchor1.clear();
 
@@ -406,22 +407,28 @@ public class MapEditing extends GenericMap {
      */
     //TODO : loss of accuarcy causing errors
     public void alignNodesBetweenTwoNodes(List<Map<String, String>> nodes, Map<String, String> anchorPoint1, Map<String, String> anchorPoint2) throws SQLException {
-        drawFloor(FLOOR); //TODO : remove this
-        double anchorX1 = (Integer.parseInt(anchorPoint1.get("XCOORD")));
-        double anchorY1 = -1 * (Integer.parseInt(anchorPoint1.get("YCOORD")));
-        double anchorX2 = (Integer.parseInt(anchorPoint2.get("XCOORD")));
-        double anchorY2 = -1 * (Integer.parseInt(anchorPoint2.get("YCOORD")));
-        double anchorSlope = (anchorY2 - anchorY1) / (anchorX2 - anchorX1);
+
+        double anchorX1 = Integer.parseInt(anchorPoint1.get("XCOORD"));
+        double anchorY1 = Integer.parseInt(anchorPoint1.get("YCOORD"));
+        double anchorX2 = Integer.parseInt(anchorPoint2.get("XCOORD"));
+        double anchorY2 = Integer.parseInt(anchorPoint2.get("YCOORD"));
+
+        double anchorSlope = (anchorX2 - anchorX1) / (anchorY2 - anchorY1);
+
         for (Map<String, String> node : nodes) {
-            double originalX = (Integer.parseInt(node.get("XCOORD")));
-            double originalY = -1 * (Integer.parseInt(node.get("YCOORD")));
-            double newX = (originalX + Math.pow(anchorSlope, 2) * anchorX1 - anchorSlope * anchorY1 + anchorSlope * originalY) / (1 + Math.pow(anchorSlope, 2));
-            double newY = -1 * (anchorSlope * newX + anchorY1 - anchorSlope * anchorX1);
-            node.put("XCOORD", String.valueOf( (int) Math.round(newX)));
-            node.put("YCOORD", String.valueOf((int) Math.round(newY)));
+
+            double originalX = Integer.parseInt(node.get("XCOORD"));
+            double originalY = Integer.parseInt(node.get("YCOORD"));
+
+            double newY = (originalY + Math.pow(anchorSlope, 2) * anchorY1 - anchorSlope * anchorX1 + anchorSlope * originalX) / (1 + Math.pow(anchorSlope, 2));
+            double newX = (anchorSlope * newY + anchorX1 - anchorSlope * anchorY1);
+
+            node.replace("XCOORD", String.valueOf( (int) Math.round(newX)));
+            node.replace("YCOORD", String.valueOf((int) Math.round(newY)));
             db.editNode(node.get("NODEID"), node);
             updateNodeOnImage(node.get("NODEID"));
         }
+        drawFloor(FLOOR);
         selectedNodesList.clear();
         anchor1.clear();
         anchor2.clear();
