@@ -11,6 +11,7 @@ import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.socketServer.*;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -297,21 +298,28 @@ public class Navigation extends GenericMap {
             } catch (Exception e){
             }
         });
-        clientThreadSender.start();
+        //clientThreadSender.start();
 
         clientThreadReceiver = new Thread(() -> {
             try{
             int second = 0;
             String host = "192.168.1.118";
-            SocketClient client = new SocketClient(host,5555);
+            clientReceiver = new SocketClient(host,5555);
             //System.out.println("get massage");
 
                 while (!Thread.currentThread().isInterrupted()){
-                    String message = client.getMassage();
-                    System.out.println(message);
-                    Thread.sleep(100);
+                    String message = clientReceiver.getMassage();
+                    //System.out.println(message);
+                    Double[] robotCoordinate = getROSCoordinate(message);
+                    if (robotCoordinate != null){
+                    //System.out.println(robotCoordinate[0] + "," + robotCoordinate[1] + "," + robotCoordinate[2]);
+                    Platform.runLater(() -> drawArrow(robotCoordinate[0]/3.28*20+500,-robotCoordinate[1]/3.28*20+500,FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                    }//TODO:cast and scale
+                    System.out.println(robotCoordinate[0]/3.28*20 + "," + -robotCoordinate[1]/3.28*20 + "," + -robotCoordinate[2]*180/Math.PI+90);
+                    //Thread.sleep(250);
                 }
             } catch (Exception e){
+                e.printStackTrace();
             }
         });
         clientThreadReceiver.start();

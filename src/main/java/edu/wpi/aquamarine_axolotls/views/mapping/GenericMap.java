@@ -429,7 +429,7 @@ public class GenericMap extends GenericPage {
 
         Polygon floorChangeArrow = new Polygon();
 
-        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow); //TODO:remomve
         directionArrow = new Polygon();
         directionArrow.setFill(Color.BLUE);
         directionArrow.setStroke(Color.BLUE);
@@ -547,6 +547,41 @@ public class GenericMap extends GenericPage {
 
     void removeDirectionArrow(){
         if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
+    }
+
+
+    Double[] getROSCoordinate(String packet){
+        String[] parts = packet.split(",");
+        //System.out.println("first: " + parts[0] + ", " + parts[1] + ", " + parts[2]);
+        int count = parts[2].length() - parts[2].replaceAll("\\.","").length();
+        if(count > 1){
+            parts[2] = parts[2].split("\\.")[0] + "." + parts[2].split("\\.")[1];
+            //System.out.println("parse once: " + parts[2]);
+            int countMinus = parts[2].length() - parts[2].replaceAll("-","").length();
+            if(parts[2].indexOf("-") != 0 && countMinus == 1){
+                //System.out.println("in one");
+                parts[2] = parts[2].split("-")[0];
+                //System.out.println("parse twice: " + parts[2]);
+            }
+            if(countMinus > 1){
+                //System.out.println("in two");
+                parts[2] = "-" + parts[2].split("-")[1];
+                //System.out.println("parse twice: " + parts[2]);
+            }
+        }
+        System.out.println(parts[0] + ", " + parts[1] + ", " + parts[2]);
+
+        Double xCoord = Double.valueOf(parts[0]);
+        Double yCoord = Double.valueOf(parts[1]);
+        Double yaw = Double.valueOf(parts[2]);
+
+        Double [] coordinate = new Double[3];
+        coordinate[0] = xCoord;
+        coordinate[1] = yCoord;
+        coordinate[2] = yaw;
+
+        //System.out.println(coordinate);
+        return coordinate;
     }
 
     //private double get
