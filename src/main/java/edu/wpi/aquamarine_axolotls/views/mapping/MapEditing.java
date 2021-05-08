@@ -66,9 +66,8 @@ public class MapEditing extends GenericMap {
     @FXML
     public void initialize() throws SQLException, IOException {
         startUp();
-        drawFloor(FLOOR);
 
-        //====SET UP SEARCH ALGORITHM SELECTION====//
+    //====SET UP SEARCH ALGORITHM SELECTION====//
 
         if(searchAlgorithms.size() == 0){
             searchAlgorithms.add("A Star");
@@ -93,7 +92,7 @@ public class MapEditing extends GenericMap {
 
 
 
-        //====CONTEXT MENU SETUP====//
+    //====CONTEXT MENU SETUP====//
 
         // TODO: Rewrite context menu stuff
         newNode = new MenuItem(("New Node Here"));
@@ -148,8 +147,8 @@ public class MapEditing extends GenericMap {
             anchor1.clear();
             anchor2.clear();
             deselect.setVisible(false);
-
         });
+
         alignVertical.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()) {
@@ -162,6 +161,7 @@ public class MapEditing extends GenericMap {
             }
 
         });
+
         alignHorizontal.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()){
@@ -173,6 +173,7 @@ public class MapEditing extends GenericMap {
                 se.printStackTrace();
             }
         });
+
         alignSlope.setOnAction((ActionEvent e) -> {
             try {
                 if(!selectedNodesList.isEmpty()){
@@ -183,9 +184,12 @@ public class MapEditing extends GenericMap {
                 se.printStackTrace();
             }
         });
+
         makeEdge.setOnAction((ActionEvent e) -> {
 
         });
+
+        //Align horizontal, align vertical
         alignHorizontal.setVisible(false);
         alignVertical.setVisible(false);
         alignSlope.setVisible(false);
@@ -219,62 +223,13 @@ public class MapEditing extends GenericMap {
                 deselect.setVisible(true);
             }
 
-            if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
+            /*if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
                 newNode.setVisible(true);
             }
             else {
                 newNode.setVisible(false);
-            }
+            }*/
         });
-
-
-        /*mapView.setOnMousePressed((MouseEvent e) -> {
-            if (!e.isPrimaryButtonDown()){
-                mapScrollPane.pannableProperty().set(true);
-                return;
-            }
-
-            try {
-                Map<String, String> selected = getNearestNode(e.getX(), e.getY());
-                if(selected == null) return;
-                String nodeID = selected.get("NODEID");
-                mapScrollPane.pannableProperty().set(false);
-                Circle newCircle = new Circle(e.getX(), e.getY(), 10, Color.web("#F4BA47")); // #7D99C9 //TODO: UPDATE COLOR AND SIZE INSTEAD OF MAKING NEW CIRCLE
-                Map<String, String> currentNode = db.getNode(nodeID);
-                setNodeOnImage(newCircle, nodeID);
-                currentNode.put("XCOORD", String.valueOf((inverseXScale((int) e.getX())).intValue()));
-                currentNode.put("YCOORD", String.valueOf((inverseYScale((int) e.getY())).intValue()));
-                System.out.println(currentNode);
-                db.editNode(nodeID,currentNode);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });*/
-
-        // old working code
-//        mapView.setOnMouseDragEntered((MouseEvent e) -> {
-//            if (!e.isPrimaryButtonDown()){
-//                mapScrollPane.pannableProperty().set(true);
-//                return;
-//            }
-//
-//            System.out.println("HERE");
-//            try {
-//                Map<String, String> selected = getNearestNode(e.getX(), e.getY());
-//                if(selected == null) return;
-//                String nodeID = selected.get("NODEID");
-//                mapScrollPane.pannableProperty().set(false);
-//                Circle newCircle = new Circle(e.getX(), e.getY(), 3, Color.BLUE); // #7D99C9
-//                Map<String, String> currentNode = db.getNode(nodeID);
-//                setNodeOnImage(newCircle, nodeID);
-//                currentNode.put("XCOORD", String.valueOf((inverseXScale((int) e.getX())).intValue()));
-//                currentNode.put("YCOORD", String.valueOf((inverseYScale((int) e.getY())).intValue()));
-//                db.editNode(nodeID,currentNode);
-//            } catch (SQLException throwables) {
-//                throwables.printStackTrace();
-//            }
-//        });
-
 
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             if(nodeBeingDragged != null){
@@ -292,30 +247,10 @@ public class MapEditing extends GenericMap {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                updateEdgesConnectedToNode(nodeBeingDragged);
                 nodeBeingDragged = null;
             }
         });
-
-
-//        mapView.addEventHandler(MouseEvent.ANY, event ->{
-//            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
-//            System.out.println("HERE");
-//            Map<String, String> node = selectedNodesList.get(0);
-//            String nodeID = node.get("NODEID");
-//            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
-//            if(index != -1){
-//                Circle c = new Circle(event.getX(), event.getY(), 3, Color.LIGHTCORAL);
-//                mapView.getChildren().set(index, c);
-//                nodesOnImage.put(nodeID, c);
-//                try {
-//                    node.put("XCOORD", String.valueOf((int) ((5000/mapImage.getFitWidth()) * event.getX())));
-//                    node.put("YCOORD", String.valueOf((int) ((3400/mapImage.getFitHeight()) * event.getY())));
-//                    db.editNode(nodeID,node);
-//                } catch (SQLException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
     }
 
 
@@ -357,10 +292,11 @@ public class MapEditing extends GenericMap {
             changeFloorImage(floor);
             drawEdges(Color.BLACK);
             drawNodes(darkBlue);
-            if(contextMenu.getItems().size() != 0) {
+            /*if(contextMenu.getItems().contains(deselect)) {
                 ObservableList<MenuItem> items = contextMenu.getItems();
-                items.get(items.size()-1).fire(); // targets deselect
-            }
+                items.get(items.indexOf(deselect)).fire(); // targets deselect
+            }*/
+            deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -65,7 +65,7 @@ public abstract class GenericMap extends GenericPage {
     DatabaseController db;
     String state = "";
     String currentID;
-    double magicNumber = (Math.PI + Math.E) / 2.0;
+    double magicNumber = (Math.PI + Math.E) / 2.0; //this is used as the radius for the nodes because Chris likes it. I don't know why
 
     /**
      * Responsible for setting up the map
@@ -247,6 +247,21 @@ public abstract class GenericMap extends GenericPage {
     }
 
     /**
+     * Re-draws all the edges connected to a particular node
+     * @param nodeID
+     */
+    public void updateEdgesConnectedToNode(String nodeID) {
+        try {
+            List<Map<String, String>> connectedEdges = db.getEdgesConnectedToNode(nodeID);
+            for (Map<String, String> edge : connectedEdges) {
+                drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
      * Pop up that happens when user clicks a node
      */
     public abstract void nodePopUp();
@@ -348,6 +363,14 @@ public abstract class GenericMap extends GenericPage {
                     }
                 }
             }
+        });
+
+        node.setOnMouseEntered((MouseEvent e) -> {
+            node.setRadius(5);
+        });
+
+        node.setOnMouseExited((MouseEvent e) -> {
+            node.setRadius(magicNumber);
         });
 
         setNodeOnImage(node, nodeID);
