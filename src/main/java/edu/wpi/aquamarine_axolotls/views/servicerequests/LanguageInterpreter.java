@@ -51,7 +51,7 @@ public class LanguageInterpreter extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.LANGUAGE_INTERPRETER;
-        startUp();
+
         languageSelect.setItems(FXCollections
                 .observableArrayList("Espanol", "Portugues", "Francais", "Polskie"));
         nodeIDS = new ArrayList<String>();

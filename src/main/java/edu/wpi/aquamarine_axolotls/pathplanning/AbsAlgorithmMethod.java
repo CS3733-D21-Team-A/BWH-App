@@ -53,7 +53,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                     ));
                 }
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

@@ -55,7 +55,9 @@ dependencies {
             'org.jvoicexml:cmu_us_kal:1.2.3-SNAPSHOT',
             'org.jvoicexml:cmu_time_awb:1.2.3-SNAPSHOT',
             'org.jvoicexml:en_us:1.2.3-SNAPSHOT',
-            'org.jvoicexml:freetts:1.2.3-SNAPSHOT'
+            'org.jvoicexml:freetts:1.2.3-SNAPSHOT',
+
+            'dev.samstevens.totp:totp:1.7.1'
     )
 
 

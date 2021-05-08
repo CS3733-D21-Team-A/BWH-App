@@ -68,8 +68,8 @@ public class FloralDelivery extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.FLORAL_DELIVERY;
-        startUp();
-      roomNumber.setItems(FXCollections
+
+        roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
         flowerOptions.setItems(FXCollections

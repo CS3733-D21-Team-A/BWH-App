@@ -104,7 +104,7 @@ public class GenericMap extends GenericPage {
             //drawFloor(FLOOR);
             drawNodesAndFloor ( FLOOR, Color.BLUE );
             zoom = 1;
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
