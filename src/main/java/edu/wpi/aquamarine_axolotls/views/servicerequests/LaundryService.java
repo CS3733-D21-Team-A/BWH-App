@@ -66,7 +66,7 @@ public class LaundryService extends GenericServiceRequest {
                 (a) -> !a.getText().isEmpty()
         ));
         serviceRequestType = SERVICEREQUEST.LAUNDRY;
-        startUp();
+
         loadOptions.setItems(FXCollections
                 .observableArrayList("Delicates", "Light", "Heavy"));
         nodeIDS = new ArrayList<String>();

@@ -40,7 +40,7 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
             email.setText(db.getUserByUsername(Aapp.username).get("EMAIL"));
             pronouns.setText(db.getUserByUsername(Aapp.username).get("PRONOUNS"));
             gender.setText(db.getUserByUsername(Aapp.username).get("GENDER"));
-        } catch (SQLException | IOException throwables) {
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 

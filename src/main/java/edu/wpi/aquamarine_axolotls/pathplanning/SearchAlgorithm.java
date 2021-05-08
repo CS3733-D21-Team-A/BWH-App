@@ -49,7 +49,7 @@ public class SearchAlgorithm{
                         edgeMap.get(j).get("ENDNODE")
                 ));
             }
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
