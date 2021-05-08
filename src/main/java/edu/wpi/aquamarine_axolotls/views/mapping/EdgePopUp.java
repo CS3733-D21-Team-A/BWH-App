@@ -38,6 +38,8 @@ public class EdgePopUp extends GenericPage{
     private Label edgeIDLabel;
     @FXML
     private Label submissionStatusLabel;
+    @FXML
+    public Label titleLabel;
 
     MapEditing mapController;
 
@@ -78,12 +80,20 @@ public class EdgePopUp extends GenericPage{
 
         try{
             switch(mapController.state) {
+                case "New" :
+                    titleLabel.setText("Add Edge");
+                    startNodeDropdown.getSelectionModel().select(mapController.selectedNodesList.get(0).get("NODEID"));
+                    endNodeDropdown.getSelectionModel().select(mapController.selectedNodesList.get(1).get("NODEID"));
+                    deleteButton.setVisible(false);
+                    break;
                 case "Edit":
+                    titleLabel.setText("Edit Edge");
                     Map<String, String> edge = db.getEdge(mapController.currentID);
                     subject.setItem(0, edge.get("STARTNODE"));
                     subject.setItem(1, edge.get("ENDNODE"));
                     startNodeDropdown.getSelectionModel().select(edge.get("STARTNODE"));
                     endNodeDropdown.getSelectionModel().select(edge.get("ENDNODE"));
+                    deleteButton.setVisible(true);
                     break;
             }
         } catch(SQLException e){

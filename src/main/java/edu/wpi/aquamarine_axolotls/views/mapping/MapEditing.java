@@ -193,7 +193,9 @@ public class MapEditing extends GenericMap {
 
         //Handler for the button that makes a new edge
         makeEdge.setOnAction((ActionEvent e) -> {
-
+            state = "New";
+            currentID = "";
+            edgePopUp();
         });
 
         //Aligning and deselecting shouldn't be initially visible since they require a selection to work
@@ -204,7 +206,7 @@ public class MapEditing extends GenericMap {
 
         //Add everything to the context menu
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
+        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect, makeEdge);
 
         //Update the context menu when it's requested
         mapView.setOnContextMenuRequested(event -> {
@@ -216,6 +218,13 @@ public class MapEditing extends GenericMap {
                 nearestNode = getNearestNode(contextMenuX, contextMenuY);
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+
+            if (selectedNodesList.size() == 2){
+                makeEdge.setVisible(true);
+            }
+            else {
+                makeEdge.setVisible(false);
             }
 
             if (nearestNode == null) { //If there's nothing nearby, set add anchor point to be invisible
@@ -231,6 +240,15 @@ public class MapEditing extends GenericMap {
             else {
                 deselect.setVisible(true);
             }
+
+
+
+            /*if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
+                newNode.setVisible(true);
+            }
+            else {
+                newNode.setVisible(false);
+            }*/
         });
 
         //Event handler for when the mouse is clicked and dragged, used for dragging nodes around
@@ -286,18 +304,15 @@ public class MapEditing extends GenericMap {
         }
     }
 
-
     @FXML
     public void nodePopUp() {
         editPopUp(true);
     }
 
-
     @FXML  //TODO: make this look better
     public void edgePopUp() {
         editPopUp(false);
     }
-
 
     /**
      * Switches to a given floor, then draws all nodes and edges on it
