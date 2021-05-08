@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Observer;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Subject;
 import javafx.collections.FXCollections;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EdgePopUp {
+public class EdgePopUp extends GenericPage{
 
     @FXML
     public JFXButton deleteButton;
@@ -116,6 +117,7 @@ public class EdgePopUp {
                 break;
         }
         if(!db.edgeExists(edge.get("EDGEID"))) db.addEdge(edge);
+        else popUp("ERROR", "That edge already exists. Please try again.");
         mapController.drawFloor(mapController.FLOOR);
         edgeIDLabel.getScene().getWindow().hide();
 

@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -19,7 +20,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NodePopUp {
+public class NodePopUp extends GenericPage {
 
     @FXML
     public JFXTextField nodeIDTextField;
@@ -128,7 +129,8 @@ public class NodePopUp {
             case "New":
                 String nodeIDText = nodeIDTextField.getText();
                 node.put("NODEID", nodeIDText);
-                db.addNode(node);
+                if(!db.nodeExists(nodeIDText)) db.addNode(node);
+                else popUp("ERROR", "That Node ID already exists. Please enter a new Node ID.");
                 break;
             case "Edit":
                 db.editNode(mapController.currentID, node);
