@@ -480,8 +480,6 @@ public abstract class GenericMap extends GenericPage {
      */
     private void drawArrow(double centerX, double centerY, String startFloor, String endFloor, double rotationAngle){
 
-        Polygon floorChangeArrow = new Polygon();
-
         if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
         directionArrow = new Polygon();
         directionArrow.setFill(darkBlue);
@@ -504,22 +502,7 @@ public abstract class GenericMap extends GenericPage {
         if (endFloor.equals("L1")) endFloor = "-1";
         if (endFloor.equals("L2")) endFloor = "-2";
 
-        if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
-            floorChangeArrow.setFill(Color.GREEN);
-            floorChangeArrow.setRotate(0);
-            for (int i = 0; i < points.length; i++) {
-                floorChangeArrow.getPoints().add(points[i]);
-            }
-            mapView.getChildren().add(floorChangeArrow);
-        } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
-            floorChangeArrow.setFill(Color.RED);
-            floorChangeArrow.setRotate(180);
-            for (int i = 0; i < points.length; i++) {
-                floorChangeArrow.getPoints().add(points[i]);
-            }
-            mapView.getChildren().add(floorChangeArrow);
-        } else /*if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor))*/{
-
+        if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor)){
             directionArrow.getPoints().removeAll();
             directionArrow.getPoints().addAll(points);
             directionArrow.setScaleX(5.0/7.0);
@@ -527,6 +510,30 @@ public abstract class GenericMap extends GenericPage {
             directionArrow.setRotate(rotationAngle);
             directionArrow.setVisible(true);
             mapView.getChildren().add(directionArrow);
+        } else {
+
+            Polygon floorChangeArrow = new Polygon();
+            floorChangeArrow.toFront();
+
+            if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
+                floorChangeArrow.setFill(Color.GREEN);
+                floorChangeArrow.setRotate(0);
+            } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
+                floorChangeArrow.setFill(Color.RED);
+                floorChangeArrow.setRotate(180);
+            }
+
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
+            }
+            mapView.getChildren().add(floorChangeArrow);
+
+            String finalEndFloor = endFloor;
+            floorChangeArrow.setOnMousePressed((MouseEvent e) ->{
+                FLOOR = finalEndFloor;
+                drawFloor(finalEndFloor);
+            });
+
         }
     }
 
