@@ -22,8 +22,8 @@ public class Security {
 	private Security(){} //NO INSTANTIATION >:(
 
 	final static private DatabaseController dbController = DatabaseController.getInstance();
-	private final static SecretGenerator secretGenerator = new DefaultSecretGenerator();
-	private final static CodeVerifier codeVerifier;
+	final static private SecretGenerator secretGenerator = new DefaultSecretGenerator();
+	final static private CodeVerifier codeVerifier;
 
 	static {
 		TimeProvider tp;
