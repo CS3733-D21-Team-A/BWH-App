@@ -595,23 +595,9 @@ public abstract class GenericMap extends GenericPage {
     }
 
 
-    public void drawNodesAndFloor(String floor, Color colorOfnodes) throws SQLException{
-        drawFloor(floor);
-        drawNodes(colorOfnodes);
-    }
 
 
-    /**
-     * Sets the floor to be rendered, then renders that floor
-     * @param floor String, the floor to move to
-     */
-    public void drawFloor(String floor) throws SQLException{
-        FLOOR = floor;
-        mapImage.setImage(new Image(floors.get(FLOOR)));
-        mapView.getChildren().clear();
-        nodesOnImage.clear();
-        linesOnImage.clear();
-    }
+
 
 
 
