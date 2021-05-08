@@ -33,10 +33,10 @@ import static edu.wpi.aquamarine_axolotls.Settings.prefs;
 import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
-    @Override
+/*    @Override
     public void drawFloor(String floor) throws SQLException {
 
-    }
+    }*/
 
     @Override
     public void nodePopUp() {
@@ -45,6 +45,11 @@ public class Navigation extends GenericMap {
 
     @Override
     public void edgePopUp() {
+
+    }
+
+    @Override
+    public void drawFloor(String floor) {
 
     }
     //

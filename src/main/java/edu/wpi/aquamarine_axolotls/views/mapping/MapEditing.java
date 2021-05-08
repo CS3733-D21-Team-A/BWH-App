@@ -17,10 +17,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.input.ContextMenuEvent;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -28,6 +25,7 @@ import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,11 +53,21 @@ public class MapEditing extends GenericMap {
     private Map<String, String> anchor1 = new HashMap<>();
     private Map<String, String> anchor2 = new HashMap<>();
 
+    MenuItem newNode = new MenuItem(("New Node Here"));
+    MenuItem alignVertical = new MenuItem(("Align Vertical"));
+    MenuItem alignHorizontal = new MenuItem(("Align Horizontal"));
+    MenuItem deselect = new MenuItem(("Deselect Nodes"));
+    MenuItem delete = new MenuItem(("Deselect Nodes"));
+    MenuItem addAnchorPoint = new MenuItem(("Add Anchor Point"));
+    MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
+    MenuItem makeEdge = new MenuItem("Make edge between selection");
+
 
 
     @FXML
     public void initialize() throws SQLException, IOException {
         startUp();
+        drawFloor(FLOOR);
 
         //====SET UP SEARCH ALGORITHM SELECTION====//
 
@@ -89,13 +97,14 @@ public class MapEditing extends GenericMap {
         //====CONTEXT MENU SETUP====//
 
         // TODO: Rewrite context menu stuff
-        MenuItem newNode = new MenuItem(("New Node Here"));
-        MenuItem alignVertical = new MenuItem(("Align Vertical"));
-        MenuItem alignHorizontal = new MenuItem(("Align Horizontal"));
-        MenuItem deselect = new MenuItem(("Deselect Nodes"));
-        MenuItem addAnchorPoint = new MenuItem(("Add Anchor Point"));
-        MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
-        MenuItem makeEdge = new MenuItem("Make edge between selection");
+        newNode = new MenuItem(("New Node Here"));
+        alignVertical = new MenuItem(("Align Vertical"));
+        alignHorizontal = new MenuItem(("Align Horizontal"));
+        deselect = new MenuItem(("Deselect Nodes"));
+        delete = new MenuItem(("Delete Node"));
+        addAnchorPoint = new MenuItem(("Add Anchor Point"));
+        alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
+        makeEdge = new MenuItem("Make edge between selection");
 
         newNode.setOnAction((ActionEvent e) -> {
             state = "New";
@@ -122,7 +131,21 @@ public class MapEditing extends GenericMap {
                 anchor2 = selectedNode;
                 addAnchorPoint.setText("Change 2nd Anchor Point");
             }
-            drawSingleNode( Integer.parseInt(selectedNode.get("XCOORD")), Integer.parseInt(selectedNode.get("YCOORD")), selectedNode.get("NODEID"), Color.PURPLE);
+            drawSingleNode(selectedNode.get("NODEID"), Color.PURPLE);
+
+        });
+
+        delete.setOnAction((ActionEvent e) -> {
+            for(Map<String, String> node : selectedNodesList){
+                try {
+                    String nodeID = node.get("NODEID");
+                    db.deleteNode(nodeID);
+                    removeNodeOnImage(nodeID);
+                    selectedNodesList.remove(node);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
 
         });
 
@@ -177,31 +200,97 @@ public class MapEditing extends GenericMap {
         alignSlope.setVisible(false);
 
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
+        contextMenu.getItems().addAll(newNode, delete, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect);
 
-        mapView.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-
-            public void handle(ContextMenuEvent event) {
-                contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
-                contextMenuX = event.getX();
-                contextMenuY = event.getY();
-                try {
-                    if (getNearestNode(contextMenuX, contextMenuY) == null) {
-                        addAnchorPoint.setVisible(false);
-                    }
-                    else {
-                        addAnchorPoint.setVisible(true);
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
+        mapView.setOnContextMenuRequested(event -> {
+            contextMenu.show(mapView, event.getScreenX(), event.getScreenY());
+            contextMenuX = event.getX();
+            contextMenuY = event.getY();
+            try {
+                if (getNearestNode(contextMenuX, contextMenuY) == null) {
+                    addAnchorPoint.setVisible(false);
                 }
+                else {
+                    addAnchorPoint.setVisible(true);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
 
+        /*mapView.setOnMousePressed((MouseEvent e) -> {
+            if (!e.isPrimaryButtonDown()){
+                mapScrollPane.pannableProperty().set(true);
+                return;
+            }
 
-//        mapView.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+            try {
+                Map<String, String> selected = getNearestNode(e.getX(), e.getY());
+                if(selected == null) return;
+                String nodeID = selected.get("NODEID");
+                mapScrollPane.pannableProperty().set(false);
+                Circle newCircle = new Circle(e.getX(), e.getY(), 10, Color.web("#F4BA47")); // #7D99C9 //TODO: UPDATE COLOR AND SIZE INSTEAD OF MAKING NEW CIRCLE
+                Map<String, String> currentNode = db.getNode(nodeID);
+                setNodeOnImage(newCircle, nodeID);
+                currentNode.put("XCOORD", String.valueOf((inverseXScale((int) e.getX())).intValue()));
+                currentNode.put("YCOORD", String.valueOf((inverseYScale((int) e.getY())).intValue()));
+                System.out.println(currentNode);
+                db.editNode(nodeID,currentNode);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });*/
+
+        // old working code
+//        mapView.setOnMouseDragEntered((MouseEvent e) -> {
+//            if (!e.isPrimaryButtonDown()){
+//                mapScrollPane.pannableProperty().set(true);
+//                return;
+//            }
+//
+//            System.out.println("HERE");
+//            try {
+//                Map<String, String> selected = getNearestNode(e.getX(), e.getY());
+//                if(selected == null) return;
+//                String nodeID = selected.get("NODEID");
+//                mapScrollPane.pannableProperty().set(false);
+//                Circle newCircle = new Circle(e.getX(), e.getY(), 3, Color.BLUE); // #7D99C9
+//                Map<String, String> currentNode = db.getNode(nodeID);
+//                setNodeOnImage(newCircle, nodeID);
+//                currentNode.put("XCOORD", String.valueOf((inverseXScale((int) e.getX())).intValue()));
+//                currentNode.put("YCOORD", String.valueOf((inverseYScale((int) e.getY())).intValue()));
+//                db.editNode(nodeID,currentNode);
+//            } catch (SQLException throwables) {
+//                throwables.printStackTrace();
+//            }
+//        });
+
+
+        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+            if(nodeBeingDragged != null){
+                changeNodeCoordinatesOnImage(nodeBeingDragged, event.getX(), event.getY());
+            }
+        });
+
+        mapView.addEventHandler(MouseEvent.MOUSE_RELEASED, event -> { // TODO: REDRAW EDGES
+            if (nodeBeingDragged != null) {
+                try {
+                    Map<String, String> newCoords = new HashMap<>();
+                    newCoords.put("XCOORD", String.valueOf(Math.round(inverseXScale(event.getX()))));
+                    newCoords.put("YCOORD", String.valueOf(Math.round(inverseYScale(event.getY()))));
+                    db.editNode(nodeBeingDragged, newCoords);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                nodeBeingDragged = null;
+            }
+        });
+
+
+//        mapView.addEventHandler(MouseEvent.ANY, event ->{
 //            if(!event.isControlDown() || selectedNodesList.isEmpty()) return;
+//            System.out.println("HERE");
 //            Map<String, String> node = selectedNodesList.get(0);
 //            String nodeID = node.get("NODEID");
 //            int index = mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
@@ -254,13 +343,19 @@ public class MapEditing extends GenericMap {
     }
 
     @Override
-    public void drawFloor(String floor) throws SQLException{
-        super.drawFloor(floor);
-        if(contextMenu.getItems().size() != 0) {
-            ObservableList<MenuItem> items = contextMenu.getItems();
-            items.get(items.size()-1).fire(); // targets deselect
+    public void drawFloor(String floor) {
+        try {
+            changeFloorImage(floor);
+            drawEdges(Color.BLACK);
+            drawNodes(darkBlue);
+            if(contextMenu.getItems().size() != 0) {
+                ObservableList<MenuItem> items = contextMenu.getItems();
+                items.get(items.size()-1).fire(); // targets deselect
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        drawEdges(Color.BLACK);
+
     }
 
 
@@ -285,28 +380,28 @@ public class MapEditing extends GenericMap {
     }
 
     public void alignNodesHorizontal(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
-        drawFloor(FLOOR);
         String anchorY = anchorPoint.get("YCOORD");
         for (Map<String, String> node : nodes) {
-            Map<String, String> newNode = new HashMap<String, String>();
-            newNode.put("YCOORD", anchorY);
-            db.editNode(node.get("NODEID"), newNode);
+            node.put("YCOORD", anchorY); // CHANGE TO NEW NODE IF NOT WORKING
+            db.editNode(node.get("NODEID"), node); // IF THIS ISNT WORKING YOU HAVE TO CHANGE TO new node
+            updateNodeOnImage(node.get("NODEID"));
         }
-        drawNodesAndFloor(FLOOR, Color.BLUE);
+        selectedNodesList.clear();
+        anchor1.clear();
 
     }
 
     public void alignNodesVertical(List<Map<String, String>> nodes, Map<String, String> anchorPoint) throws SQLException {
         drawFloor(FLOOR);
         String anchorX = anchorPoint.get("XCOORD");
-        drawSingleNode(Double.parseDouble(anchorPoint.get("XCOORD")), Double.parseDouble(anchorPoint.get("YCOORD")), anchorPoint.get("NODEID"), Color.RED);
+        updateNodeOnImage(anchorPoint.get("NODEID"));
         for (Map<String, String> node : nodes) {
-            Map<String, String> newNode = new HashMap<String, String>();
-            newNode.put("XCOORD", anchorX);
-            db.editNode(node.get("NODEID"), newNode);
+            node.put("XCOORD", anchorX);
+            db.editNode(node.get("NODEID"), node);
+            updateNodeOnImage(node.get("NODEID"));
         }
-        drawNodesAndFloor(FLOOR, Color.BLUE);
-
+        selectedNodesList.clear();
+        anchor1.clear();
 
     }
 
@@ -321,17 +416,16 @@ public class MapEditing extends GenericMap {
         for (Map<String, String> node : nodes) {
             double originalX = (Integer.parseInt(node.get("XCOORD")));
             double originalY = -1 * (Integer.parseInt(node.get("YCOORD")));
-            //System.out.println("Current Node coords \n" + "X3 = " + originalX + "  Y3 = " + originalY * -1 + "\n");
             double newX = (originalX + Math.pow(anchorSlope, 2) * anchorX1 - anchorSlope * anchorY1 + anchorSlope * originalY) / (1 + Math.pow(anchorSlope, 2));
             double newY = -1 * (anchorSlope * newX + anchorY1 - anchorSlope * anchorX1);
-            //System.out.println("New current Node coords \n" + "X3 = " + newX + "  Y3 = " + newY);
-            //drawSingleNode(newX, newY, Color.GREEN);
-            Map<String, String> newNode = new HashMap<String, String>();
-            newNode.put("XCOORD", String.valueOf( (int) Math.round(newX)));
-            newNode.put("YCOORD", String.valueOf((int) Math.round(newY)));
-            db.editNode(node.get("NODEID"), newNode);
+            node.put("XCOORD", String.valueOf( (int) Math.round(newX)));
+            node.put("YCOORD", String.valueOf((int) Math.round(newY)));
+            db.editNode(node.get("NODEID"), node);
+            updateNodeOnImage(node.get("NODEID"));
         }
-        drawNodesAndFloor(FLOOR, Color.BLUE);
+        selectedNodesList.clear();
+        anchor1.clear();
+        anchor2.clear();
     }
 
 
