@@ -44,7 +44,7 @@
                 </JFXButton>
                 <ImageView fitHeight="122.0" fitWidth="90.0" layoutX="319.0" layoutY="93.0">
                     <image>
-                        <Image url="@../img/ServiceReq%20Icons/medicineDeliveryB.png" />
+                        <Image url="@../img/ServiceReq Icons/medicineDeliveryB.png" />
                     </image>
                 </ImageView>
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
@@ -118,9 +118,6 @@
                             </GridPane.margin></JFXComboBox>
                     </children>
                 </GridPane>
-
-                <JFXComboBox fx:id="giftOptions" prefHeight="50.0" prefWidth="250.0" promptText="Gift Options" style="-fx-font-size: 20; -fx-font-family: Verdana;">
-                </JFXComboBox>
 
                 <JFXTextArea fx:id="persMessage" layoutX="86.0" layoutY="635.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
                     <font>
