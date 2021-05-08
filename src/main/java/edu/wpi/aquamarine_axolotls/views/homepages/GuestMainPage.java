@@ -44,6 +44,7 @@ public class GuestMainPage extends GenericPage {
     public void settingsP(ActionEvent actionEvent) {
         sceneSwitch("Settings");
     }
+    //TODO: need to make a guest version for settings page; its getting a null
 
     @FXML
     public void mapP(ActionEvent actionEvent) {
