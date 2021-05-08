@@ -46,6 +46,8 @@ public class NodePopUp extends GenericPage {
     public JFXTextField longNameField;
     @FXML
     public Label submissionStatusLabel;
+    @FXML
+    public Label titleLabel;
     MapEditing mapController;
     DatabaseController db;
 
@@ -69,11 +71,13 @@ public class NodePopUp extends GenericPage {
         try{
             switch(mapController.state) {
                 case "New" :
+                    titleLabel.setText("Add Node");
                     xCoordField.setText(String.valueOf((mapController.inverseXScale((int) mapController.contextMenuX)).intValue()));
                     yCoordField.setText(String.valueOf((mapController.inverseYScale((int) mapController.contextMenuY)).intValue()));
                     deleteButton.setVisible(false);
                     break;
                 case "Edit":
+                    titleLabel.setText("Edit Node");
                     Map<String, String> node = db.getNode(mapController.currentID);
                     nodeIDTextField.setText(mapController.currentID);
                     longNameField.setText(node.get("LONGNAME"));
@@ -98,6 +102,18 @@ public class NodePopUp extends GenericPage {
 
         Map<String, String> node = new HashMap<>();
 
+        if (longNameField.getText().isEmpty() ||
+        shortNameField.getText().isEmpty() ||
+        xCoordField.getText().isEmpty() ||
+        yCoordField.getText().isEmpty() ||
+        nodeTypeDropdown.getSelectionModel().getSelectedItem() == null ||
+        floorDropdown.getSelectionModel().getSelectedItem() == null ||
+        buildingDropdown.getSelectionModel().getSelectedItem() == null ||
+        nodeIDTextField.getText().isEmpty()){
+            submissionStatusLabel.setText("Invalid submission");
+            return;
+        }
+
         String longNameText = longNameField.getText();
         String shortNameText = shortNameField.getText();
         String xCoorText = xCoordField.getText();
@@ -105,17 +121,19 @@ public class NodePopUp extends GenericPage {
         String nodeTypeText = nodeTypeDropdown.getSelectionModel().getSelectedItem().toString();
         String floorText = floorDropdown.getSelectionModel().getSelectedItem().toString();
         String buildingText = buildingDropdown.getSelectionModel().getSelectedItem().toString();
+        String nodeIDText = nodeIDTextField.getText();
 
-        if (longNameText.isEmpty() ||
-        shortNameText.isEmpty() ||
-        xCoorText.isEmpty() ||
-        yCoorText.isEmpty() ||
-        nodeTypeText.isEmpty() ||
-        floorText.isEmpty() ||
-        buildingText.isEmpty()) {
-            submissionStatusLabel.setText("Invalid submission");
-            return;
-        }
+//        if (nodeIDText.isEmpty() ||
+//        longNameText.isEmpty() ||
+//        shortNameText.isEmpty() ||
+//        xCoorText.isEmpty() ||
+//        yCoorText.isEmpty() ||
+//        nodeTypeText.isEmpty() ||
+//        floorText.isEmpty() ||
+//        buildingText.isEmpty()) {
+//            submissionStatusLabel.setText("Invalid submission");
+//            return;
+//        }
 
         node.put("LONGNAME", longNameText);
         node.put("SHORTNAME", shortNameText);
@@ -127,7 +145,6 @@ public class NodePopUp extends GenericPage {
 
         switch(mapController.state){
             case "New":
-                String nodeIDText = nodeIDTextField.getText();
                 node.put("NODEID", nodeIDText);
                 if(!db.nodeExists(nodeIDText)) db.addNode(node);
                 else popUp("ERROR", "That Node ID already exists. Please enter a new Node ID.");
@@ -165,8 +182,10 @@ public class NodePopUp extends GenericPage {
         submissionStatusLabel.getScene().getWindow().hide();
     }
 
+    @FXML
     public void cancel(ActionEvent actionEvent) {
-
+        clear();
+        submissionStatusLabel.getScene().getWindow().hide();
     }
 
 

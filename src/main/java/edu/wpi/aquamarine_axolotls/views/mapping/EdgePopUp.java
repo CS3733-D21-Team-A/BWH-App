@@ -92,10 +92,16 @@ public class EdgePopUp extends GenericPage{
 
     }
 
-
     @FXML
     public void delete(){
-
+        String edgeID = edgeIDLabel.getText();
+        try {
+            db.deleteEdge(edgeID);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        mapController.drawFloor(mapController.FLOOR);
+        submissionStatusLabel.getScene().getWindow().hide();
     }
 
     @FXML
@@ -126,7 +132,9 @@ public class EdgePopUp extends GenericPage{
     public void loadHelp(ActionEvent actionEvent) {
     }
 
+    @FXML
     public void cancel(ActionEvent actionEvent) {
+        edgeIDLabel.getScene().getWindow().hide();
     }
 
 }
