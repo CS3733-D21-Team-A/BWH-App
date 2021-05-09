@@ -1,16 +1,30 @@
 package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import dev.samstevens.totp.exceptions.QrGenerationException;
+import dev.samstevens.totp.secret.DefaultSecretGenerator;
+import dev.samstevens.totp.secret.SecretGenerator;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 
+import javax.imageio.ImageIO;
+import javax.swing.text.html.ImageView;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -32,10 +46,24 @@ public class NewAccount extends GenericPage {
     private JFXPasswordField password;
     @FXML
     private JFXPasswordField confirmPassword;
+
+    @FXML
+    private ImageView tfaView;
+
+    @FXML private Label tfaSource;
     @FXML
     private Label passwordMatchLabel;
 
+    @FXML
+    private Pane tfaPane;
+    @FXML
+    private JFXButton submitButton;
+    @FXML
+    private JFXCheckBox tfa;
+
     private DatabaseController db;
+
+    private Security security;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
@@ -54,7 +82,7 @@ public class NewAccount extends GenericPage {
 
     @FXML
     public void submit_button(ActionEvent actionEvent) throws SQLException {
-        String email = emailAddress.getText();
+        String email = emailAddress.getText ( );
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -63,41 +91,70 @@ public class NewAccount extends GenericPage {
             popUp("Failed Submission.", "\n\n\n\n\n\nInvalid email.");
 
         }*/
-        if (firstName.getText().isEmpty() || lastName.getText().isEmpty() ||
-                emailAddress.getText().isEmpty() || userName.getText().isEmpty()) {
-            popUp("Failed Submission.", "\n\n\n\n\nPlease fill out all fields listed.");
+        if ( firstName.getText ( ).isEmpty ( ) || lastName.getText ( ).isEmpty ( ) ||
+             emailAddress.getText ( ).isEmpty ( ) || userName.getText ( ).isEmpty ( ) ) {
+            popUp ( "Failed Submission." ,"\n\n\n\n\nPlease fill out all fields listed." );
             return;
         }
 
-        if (!password.getText().equals(confirmPassword.getText())) {
-            popUp("Account Creation Failed", "\n\n\n\n\n\nThe two passwords do not match, Try again.");
+        if ( !password.getText ( ).equals ( confirmPassword.getText ( ) ) ) {
+            popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nThe two passwords do not match, Try again." );
             return;
         }
 
-        if (db.checkUserExists(userName.getText())) {
-            popUp("Account Creation Failed", "\n\n\n\n\n\nUsername already exists.");
+        if ( db.checkUserExists ( userName.getText ( ) ) ) {
+            popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUsername already exists." );
             return;
         }
 
-        for (Map<String, String> usr : db.getUsers()) {
-            if (usr.get("EMAIL").equals(email)) {
-                popUp("Account Creation Failed", "\n\n\n\n\n\nUser with this email already exists.");
+        for (Map<String, String> usr : db.getUsers ( )) {
+            if ( usr.get ( "EMAIL" ).equals ( email ) ) {
+                popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUser with this email already exists." );
                 return;
             }
         }
+        Map<String, String> user = new HashMap<String, String> ( );
+        user.put ( "USERNAME" ,userName.getText ( ) );
+        user.put ( "FIRSTNAME" ,firstName.getText ( ) );
+        user.put ( "LASTNAME" ,lastName.getText ( ) );
+        user.put ( "EMAIL" ,emailAddress.getText ( ) );
+        user.put ( "USERTYPE" ,"Patient" );
+        user.put ( "PASSWORD" ,password.getText ( ) );
+        db.addUser ( user );
+        popUp ( "Account Success" ,"\n\n\n\n\n\nThe account you submitted was successfully created." );
 
-        Map<String, String> user = new HashMap<String, String>();
-        user.put("USERNAME", userName.getText());
-        user.put("FIRSTNAME", firstName.getText());
-        user.put("LASTNAME", lastName.getText());
-        user.put("EMAIL", emailAddress.getText());
-        user.put("USERTYPE", "Patient" );
-        user.put("PASSWORD", password.getText());
-        db.addUser(user);
-        popUp ( "Account Success", "\n\n\n\n\n\nThe account you submitted was successfully created." );
+        if ( tfa.isSelected ( ) ) {
 
+            tfaSelected();
+        }
 
-        sceneSwitch("LogIn");
-
+        else {
+            sceneSwitch ( "LogIn" );
+        }
     }
-}
+
+    public void tfaSelected(){
+        tfaPane.setVisible ( true );
+        submitButton.setVisible (false  );
+        try {
+            security.enableTOTP ( Aapp.username );
+            readByteArray();
+        } catch (QrGenerationException | SQLException | IOException e) {
+            e.printStackTrace ( );
+        }
+        tfaSource.setText ( "" );
+    }
+
+
+    public void readByteArray() throws IOException {
+
+        BufferedImage bImage = ImageIO.read(security.makeQrCode(Aapp.username, ""));
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ImageIO.write(bImage, "png", bos );
+        byte [] data = bos.toByteArray();
+        ByteArrayInputStream bis = new ByteArrayInputStream(data);
+        BufferedImage bImage2 = ImageIO.read(bis);
+        ImageIO.write(bImage2, "jpg", new File ("security.jpg") );
+       // tfaView.setImage("security.jpg");;
+        }
+    }
