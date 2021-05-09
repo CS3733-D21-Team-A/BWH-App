@@ -4,20 +4,15 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import javafx.fxml.FXML;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class PatientMainPage extends GuestMainPage{
 
-    public void initialize() throws IOException, SQLException {
+    public void initialize() {
         startUp();
     }
 
-    @Override
-    public void startUp() throws SQLException, IOException {
-        super.startUp();
+    public void startUp() {
         userNameText.setText(PREFERENCES.get(USER_TYPE,null) + ": " + PREFERENCES.get(USER_FIRST_NAME,null));
     }
 

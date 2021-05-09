@@ -62,12 +62,7 @@ public class GuestMainPage extends GenericPage {
             help.close();
             Platform.exit();
         });
-        cancel_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                help.close();
-            }
-        });
+        cancel_button.setOnAction(event -> help.close());
         content.setActions(cancel_button, shutDownB);
         help.show();
     }
