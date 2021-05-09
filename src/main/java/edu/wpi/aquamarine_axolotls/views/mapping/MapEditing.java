@@ -56,10 +56,10 @@ public class MapEditing extends GenericMap {
     MenuItem newNode = new MenuItem(("New Node Here"));
     MenuItem alignVertical = new MenuItem(("Align Vertical"));
     MenuItem alignHorizontal = new MenuItem(("Align Horizontal"));
-    MenuItem deselect = new MenuItem(("Deselect Nodes"));
     MenuItem addAnchorPoint = new MenuItem(("Add Anchor Point"));
     MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
     MenuItem makeEdge = new MenuItem("Make edge between selection");
+    MenuItem deselect = new MenuItem(("Deselect Nodes"));
 
 
 
@@ -98,10 +98,10 @@ public class MapEditing extends GenericMap {
         newNode = new MenuItem(("New Node Here"));
         alignVertical = new MenuItem(("Align Vertical"));
         alignHorizontal = new MenuItem(("Align Horizontal"));
-        deselect = new MenuItem(("Deselect Nodes"));
         addAnchorPoint = new MenuItem(("Add Anchor Point"));
         alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
         makeEdge = new MenuItem("Make edge between selection");
+        deselect = new MenuItem(("Deselect Nodes"));
 
         //Handler for the button that adds a new node
         newNode.setOnAction((ActionEvent e) -> {
@@ -199,14 +199,17 @@ public class MapEditing extends GenericMap {
         });
 
         //Aligning and deselecting shouldn't be initially visible since they require a selection to work
+        newNode.setVisible(true);
+        addAnchorPoint.setVisible(false);
         alignHorizontal.setVisible(false);
         alignVertical.setVisible(false);
         alignSlope.setVisible(false);
+        makeEdge.setVisible(false);
         deselect.setVisible(false);
 
         //Add everything to the context menu
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, deselect, makeEdge);
+        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, makeEdge, deselect);
 
         //Update the context menu when it's requested
         mapView.setOnContextMenuRequested(event -> {
@@ -214,7 +217,7 @@ public class MapEditing extends GenericMap {
             contextMenuX = event.getX(); //Update X and Y coords of contextmenu
             contextMenuY = event.getY();
             Map<String, String> nearestNode = null;
-            try { //Get the nearest node to the context menu -- will be used in subsequent operatinos
+            try { //Get the nearest node to the context menu -- will be used in subsequent operations
                 nearestNode = getNearestNode(contextMenuX, contextMenuY);
             } catch (SQLException e) {
                 e.printStackTrace();
