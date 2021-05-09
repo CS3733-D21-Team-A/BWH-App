@@ -113,7 +113,7 @@ public class UserSettings extends GenericPage {
         reloadDB();
     }
 
-    public void reloadDB() throws SQLException {
+    public void reloadDB() {
         boolean usingEmbedded;
 
         try {
@@ -125,14 +125,18 @@ public class UserSettings extends GenericPage {
         }
 
         String instanceID = PREFERENCES.get(INSTANCE_ID,null);
-        if (!db.checkUserExists(instanceID)) {
-            Map<String,String> instanceUser = new HashMap<>();
-            instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
-            instanceUser.put("USERNAME",instanceID);
-            instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
-            instanceUser.put("PASSWORD",instanceID); //this should never be used, but it's a thing
+        try {
+            if (!db.checkUserExists(instanceID)) {
+                Map<String,String> instanceUser = new HashMap<>();
+                instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+                instanceUser.put("USERNAME",instanceID);
+                instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
+                instanceUser.put("PASSWORD",instanceID); //this should never be used, but it's a thing
 
-            db.addUser(instanceUser);
+                db.addUser(instanceUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         if (PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null) {
