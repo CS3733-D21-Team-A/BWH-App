@@ -23,6 +23,8 @@ public class Aapp extends Application {
 
   public static List<Map<String,String>> serviceRequests = new ArrayList<>();
 
+  private final DatabaseController db = DatabaseController.getInstance();
+
   @Override
   public void init() {
     System.out.println("Starting Up");
@@ -30,11 +32,9 @@ public class Aapp extends Application {
 
   private void createInstanceUser() throws SQLException {
     Map<String,String> instanceUser = new HashMap<>();
-    String usertype = DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST);
 
-    instanceUser.put("USERTYPE",usertype);
+    instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
 
-    DatabaseController db = DatabaseController.getInstance();
     String instanceID;
     do {
       instanceID = UUID.randomUUID().toString();
@@ -62,6 +62,17 @@ public class Aapp extends Application {
       if (usertype.equals(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST))) {
         PREFERENCES.put(USER_NAME, PREFERENCES.get(INSTANCE_ID,null));
       }
+    }
+
+    String instanceID = PREFERENCES.get(INSTANCE_ID,null);
+    if (!db.checkUserExists(instanceID)) {
+      Map<String,String> instanceUser = new HashMap<>();
+      instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+      instanceUser.put("USERNAME",instanceID);
+      instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
+      instanceUser.put("PASSWORD",instanceID); //this should never be used, but it's a thing
+
+      db.addUser(instanceUser);
     }
 
 

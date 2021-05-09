@@ -10,6 +10,7 @@ import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
