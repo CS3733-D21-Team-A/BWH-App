@@ -43,7 +43,7 @@ public class GuestMainPage extends GenericPage {
 
 	@FXML
 	public void settingsP(ActionEvent actionEvent) {
-		sceneSwitch("Settings");
+		sceneSwitch("UserSettings");
 	}
 
 	@FXML
