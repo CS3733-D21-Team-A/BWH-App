@@ -20,7 +20,7 @@
       </JFXButton>
       <HBox alignment="CENTER" layoutY="40.0" prefHeight="42.0" prefWidth="600.0">
          <children>
-            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="318.0" text="Edge Editing" textAlignment="CENTER">
+            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="318.0" text="Edit Edge" textAlignment="CENTER">
                <font>
                   <Font name="Verdana" size="30.0" />
                </font>

@@ -303,6 +303,9 @@ public abstract class GenericMap extends GenericPage {
         for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
             drawSingleNode(node.get("NODEID"), colorOfNodes);
         }
+        for (Map<String, String> node: selectedNodesList){
+            drawSingleNode(node.get("NODEID"), yellow);
+        }
     }
 
 

@@ -328,7 +328,7 @@ public class MapEditing extends GenericMap {
                 ObservableList<MenuItem> items = contextMenu.getItems();
                 items.get(items.indexOf(deselect)).fire(); // targets deselect
             }*/
-            deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
+            //deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
         } catch (SQLException e) {
             e.printStackTrace();
         }
