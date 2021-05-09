@@ -1,11 +1,15 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -15,12 +19,18 @@ import java.util.*;
 public class Navigation extends GenericMap {
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
     List<Map<String, String>> currentPath = new ArrayList<>();
+    @FXML
     private TreeTableView<String> treeTable;
     String covidLikely;
-/*    @Override
-    public void drawFloor(String floor) throws SQLException {
+    @FXML
+    VBox treeViewSideMenu;
+    @FXML
+    VBox listOfDirectionsSideMenu;
+    @FXML
+    VBox stepByStepSideMenu;
+    @FXML
+    JFXDrawer drawer;
 
-    }*/
 
 
     public void initialize() throws java.sql.SQLException{
@@ -28,6 +38,9 @@ public class Navigation extends GenericMap {
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
+
+        treeViewSideMenu.setVisible(true);
+        drawer.setSidePane(treeViewSideMenu);
 
         // TODO: CHANGE THIS
         covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
@@ -71,8 +84,8 @@ public class Navigation extends GenericMap {
                         conf.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "EXIT":
-                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
-                        if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
+//                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+  //                      if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
                         exit.getChildren().add(new TreeItem<>(longName));
                         break;
                     case "RETL":
@@ -108,13 +121,13 @@ public class Navigation extends GenericMap {
     @Override
     public void drawFloor(String floor) {
         changeFloorImage(floor);
-        if(currentPath.size() > 0){
-            drawNodes(Color.web("#003da6", .4));
-            drawPath();
-        }
-        else{
-            drawNodes(darkBlue);
-        }
+//        if(currentPath.size() > 0){
+//            drawNodes(Color.web("#003da6", .4));
+//            drawPath();
+//        }
+//        else{
+//            drawNodes(darkBlue);
+//        }
     }
 
     @Override
@@ -186,14 +199,19 @@ public class Navigation extends GenericMap {
     /**
      * Uses the current search algorithm to find a path between all the current stops, then display that path on screen
      */
+    @FXML
     void findPath() {
-        for (int i = 0; i < stopList.size() - 1; i++) {
-            String currentStart = stopList.get(i);
-            String currentEnd = stopList.get(i + 1);
-            List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
-            currentPath.addAll(path);
-        }
-        drawPath();
+        stepByStepSideMenu.setVisible(false);
+        listOfDirectionsSideMenu.setVisible(true);
+        treeViewSideMenu.setVisible(false);
+        drawer.setSidePane(listOfDirectionsSideMenu);
+//        for (int i = 0; i < stopList.size() - 1; i++) {
+//            String currentStart = stopList.get(i);
+//            String currentEnd = stopList.get(i + 1);
+//            List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
+//            currentPath.addAll(path);
+//        }
+//        drawPath();
     }
 
     /**
@@ -228,6 +246,50 @@ public class Navigation extends GenericMap {
 
             }
         }
+    }
+
+    public void submitApiKey(ActionEvent actionEvent) {
+    }
+
+    public void toggleVoiceDirectionButton(ActionEvent actionEvent) {
+    }
+
+
+    public void startPath(ActionEvent actionEvent) {
+        stepByStepSideMenu.setVisible(true);
+        listOfDirectionsSideMenu.setVisible(false);
+        treeViewSideMenu.setVisible(false);
+        drawer.setSidePane(stepByStepSideMenu);
+    }
+
+    public void goToStepByStep(ActionEvent actionEvent) {
+        stepByStepSideMenu.setVisible(true);
+        listOfDirectionsSideMenu.setVisible(false);
+        treeViewSideMenu.setVisible(false);
+        drawer.setSidePane(stepByStepSideMenu);
+    }
+
+    public void clearNav(ActionEvent actionEvent) {
+    }
+
+    public void changeFloor3(){
+        if(drawer.isClosed()){
+            mapScrollPane.setLayoutX(351);
+            mapScrollPane.setPrefWidth(949);
+            drawer.open();
+        }
+        else{
+            mapScrollPane.setLayoutX(0);
+            mapScrollPane.setPrefWidth(1300);
+            drawer.close();
+        }
+    }
+
+    public void goToListOfDirections(ActionEvent actionEvent) {
+        listOfDirectionsSideMenu.setVisible(true);
+        stepByStepSideMenu.setVisible(false);
+        treeViewSideMenu.setVisible(false);
+        drawer.setSidePane(listOfDirectionsSideMenu);
     }
 
     //
