@@ -22,7 +22,7 @@ public class Navigation extends GenericMap {
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
     List<Map<String, String>> currentPath = new ArrayList<>();
 
-    String covidLikely;
+    String covidLikely = "false";
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
@@ -112,8 +112,11 @@ public class Navigation extends GenericMap {
         sideControllers.get(0).treeTable.setRoot(root);
         sideControllers.get(0).treeTable.setShowRoot(false);
         sideControllers.get(0).treeTable.getColumns().add(treeTableColumn1);
-    }
 
+        drawer.setVisible(false);
+
+        drawNodes(darkBlue);
+    }
 
 
 
@@ -130,13 +133,13 @@ public class Navigation extends GenericMap {
     @Override
     public void drawFloor(String floor) {
         changeFloorImage(floor);
-//        if(currentPath.size() > 0){
-//            drawNodes(Color.web("#003da6", .4));
-//            drawPath();
-//        }
-//        else{
-//            drawNodes(darkBlue);
-//        }
+        if(currentPath.size() > 0){
+            drawNodes(Color.web("#003da6", .4));
+            drawPath();
+        }
+        else{
+            drawNodes(darkBlue);
+        }
     }
 
     @Override
@@ -149,12 +152,15 @@ public class Navigation extends GenericMap {
         }
     }
 
-    protected void regress() {
+    public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
+        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+            if (covidLikely != null) {
+                if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) {}
+                else if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) {}
+            }
+            else if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node.get("NODEID"), colorOfNodes);
+        }
     }
-
-    protected void progress() {
-    }
-
 
     public void drawFavorites(){
         try {
@@ -176,13 +182,14 @@ public class Navigation extends GenericMap {
         }
     }
 
-    public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
-        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
-            if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) {}
-            else if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) {}
-            else if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node.get("NODEID"), colorOfNodes);
-        }
+    protected void regress() {
     }
+
+    protected void progress() {
+    }
+
+
+
 
     @Override
     public Circle setEventHandler(Circle node, String nodeID) {
@@ -204,7 +211,9 @@ public class Navigation extends GenericMap {
         });
 
         node.setOnMouseExited((MouseEvent e) -> {
-            node.setRadius(magicNumber);
+            if (node.getFill().equals(darkBlue)) {
+                node.setRadius(magicNumber);
+            }
         });
 
         return node;
@@ -217,13 +226,15 @@ public class Navigation extends GenericMap {
     @FXML
     void findPath() {
         drawer.setSidePane(listOfDirectionsSideMenu);
-//        for (int i = 0; i < stopList.size() - 1; i++) {
-//            String currentStart = stopList.get(i);
-//            String currentEnd = stopList.get(i + 1);
-//            List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
-//            currentPath.addAll(path);
-//        }
-//        drawPath();
+        drawer.setVisible(true);
+        currentPath.clear();
+        for (int i = 0; i < stopList.size() - 1; i++) {
+            String currentStart = stopList.get(i);
+            String currentEnd = stopList.get(i + 1);
+            List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
+            currentPath.addAll(path);
+        }
+        drawPath();
     }
 
     /**
@@ -231,13 +242,20 @@ public class Navigation extends GenericMap {
      */
     void drawPath(){
         linesOnImage.clear();
+        nodesOnImage.clear();
+        mapView.getChildren().clear();
+        try {
+            drawNodesNoHallWalk(darkBlue);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         for(int i = 0; i < currentPath.size() - 1; i++){
             Map<String, String> node = currentPath.get(i);
             Map<String, String> nextNode = currentPath.get(i+1);
             if(!node.get("FLOOR").equals(nextNode.get("FLOOR"))){
-                drawArrow(node.get("NODEID") + "_" + node.get("EDGEID"));
+                drawArrow(node.get("NODEID") + "_" + nextNode.get("NODEID"));
             }
-            else {
+            else if (node.get("FLOOR").equals(FLOOR)) {
                 Color color = darkBlue;
                 int radius = 3;
                 if(i == 0){
@@ -248,16 +266,25 @@ public class Navigation extends GenericMap {
                     color = Color.RED;
                     radius = 5;
                 }
-                else if(stopList.contains(node)){
+                else if(stopList.contains(node.get("NODEID"))){
                     color = Color.ORANGE;
                     radius = 5;
                 }
-                drawSingleEdge(node.get("NODEID") + "_" + node.get("EDGEID"), Color.BLACK);
-                changeNodeColorOnImage(node.get("NODEID"), color);
+                drawSingleEdge(node.get("NODEID") + "_" + nextNode.get("NODEID"), Color.BLACK);
+                drawSingleEdge(nextNode.get("NODEID") + "_" + node.get("NODEID"), Color.BLACK);
+                if ((node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) {
+                    drawSingleNode(node.get("NODEID"), color);
+                }
+                else changeNodeColorOnImage(node.get("NODEID"), color);
                 updateNodeSize(node.get("NODEID"), radius);
 
             }
         }
+        if (currentPath.get(currentPath.size() - 1).get("FLOOR").equals(FLOOR)) {
+            changeNodeColorOnImage(currentPath.get(currentPath.size() - 1).get("NODEID"), Color.RED);
+            updateNodeSize(currentPath.get(currentPath.size() - 1).get("NODEID"), 5);
+        }
+
     }
 
     public void submitApiKey(ActionEvent actionEvent) {
@@ -272,6 +299,12 @@ public class Navigation extends GenericMap {
     }
 
     public void clearNav(ActionEvent actionEvent) {
+        stopList.clear();
+        currentPath.clear();
+        linesOnImage.clear();
+        nodesOnImage.clear();
+        mapView.getChildren().clear();
+        drawFloor(FLOOR);
     }
 
     public void changeFloor3(){
@@ -279,11 +312,13 @@ public class Navigation extends GenericMap {
             mapScrollPane.setLayoutX(351);
             mapScrollPane.setPrefWidth(949);
             drawer.open();
+            drawer.setVisible(true);
         }
         else{
             mapScrollPane.setLayoutX(0);
             mapScrollPane.setPrefWidth(1300);
             drawer.close();
+            drawer.setVisible(false);
         }
     }
 

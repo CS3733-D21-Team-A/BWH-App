@@ -426,19 +426,23 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         Node francis = new Node(dbControl.getNode("FEXIT00201"));
         Node emergency = new Node(dbControl.getNode("FEXIT00301"));
 
-        nodes.remove(covidLikely.equals("true") ? francis : emergency);
+        if (covidLikely != null) {
+            nodes.remove(covidLikely.equals("true") ? francis : emergency);
 
-        Node toAdd = covidLikely.equals("true") ? emergency : francis;
-        if(!nodes.contains(toAdd)) nodes.add(toAdd);
+            Node toAdd = covidLikely.equals("true") ? emergency : francis;
+            if(!nodes.contains(toAdd)) nodes.add(toAdd);
 
-        List<Edge> francisEdges = dbControl.getEdgesConnectedToNode("FEXIT00201").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
-        List<Edge> emergencyEdges = dbControl.getEdgesConnectedToNode("FEXIT00301").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
+            List<Edge> francisEdges = dbControl.getEdgesConnectedToNode("FEXIT00201").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
+            List<Edge> emergencyEdges = dbControl.getEdgesConnectedToNode("FEXIT00301").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
 
-        edges.removeAll(covidLikely.equals("true") ? francisEdges : emergencyEdges);
+            edges.removeAll(covidLikely.equals("true") ? francisEdges : emergencyEdges);
 
-        for (Edge edge : covidLikely.equals("true") ? emergencyEdges : francisEdges) {
-            if (!edges.contains(edge)) edges.add(edge);
+            for (Edge edge : covidLikely.equals("true") ? emergencyEdges : francisEdges) {
+                if (!edges.contains(edge)) edges.add(edge);
+            }
         }
+
+
     }
 
     abstract List<Map<String, String>> getPathImpl(String startLongName, String endLongName);
