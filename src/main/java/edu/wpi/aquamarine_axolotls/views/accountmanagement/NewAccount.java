@@ -128,7 +128,6 @@ public class NewAccount extends GenericPage {
         user.put ( "USERTYPE" ,"Patient" );
         user.put ( "PASSWORD" ,password.getText ( ) );
         db.addUser ( user );
-        popUp ( "Account Success" ,"\n\n\n\n\n\nThe account you submitted was successfully created." );
 
         if ( tfa.isSelected ( ) ) {
 
@@ -136,6 +135,7 @@ public class NewAccount extends GenericPage {
         }
 
         else {
+            popUp ( "Account Success" ,"\n\n\n\n\n\nThe account you submitted was successfully created." );
             sceneSwitch ( "LogIn" );
         }
     }
@@ -146,20 +146,18 @@ public class NewAccount extends GenericPage {
         try {
             Pair<String,byte[]> TOTPinformation = Security.enableTOTP (userName.getText());
             readByteArray(TOTPinformation.getValue ());
+            tfaSource.setText ( "Secret: \n"+ TOTPinformation.getKey ());
+
         } catch (QrGenerationException | SQLException | IOException e) {
             e.printStackTrace ( );
         }
-        tfaSource.setText ( "" );
     }
 
 
     public void readByteArray(byte[]  pair) throws IOException {
-        byte[] byteArray=pair; //need to initialize it
-        tfaView = new javafx.scene.image.ImageView ( String.valueOf ( byteArray ) );
-        tfaView.getImage();
+        Image img = new Image(new ByteArrayInputStream(pair));
 
-      //  BufferedImage img = ImageIO.read ( new ByteArrayInputStream ( pair ) );
-      //  plzwork.setImage( Image.impl_fromPlatformImage ( ( img ) ) );
+        tfaView.setImage  ( img );
     }
 }
 

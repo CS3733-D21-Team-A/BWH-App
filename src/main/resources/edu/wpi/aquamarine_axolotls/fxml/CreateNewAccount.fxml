@@ -166,9 +166,9 @@
                         <Font name="Verdana" size="20.0" />
                      </font>
                   </JFXButton>
-                  <Label fx:id="tfaSource" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="338.0" text="Source: ">
+                  <Label fx:id="tfaSource" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="407.0" text="Secret: " wrapText="true">
                      <font>
-                        <Font name="Verdana" size="18.0" />
+                        <Font name="Verdana" size="10.0" />
                      </font>
                   </Label>
                </children>
