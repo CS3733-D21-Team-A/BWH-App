@@ -355,11 +355,13 @@ public abstract class GenericMap extends GenericPage {
 
                 //System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2) {
-                    node.setFill(yellow);
-                    System.out.println("Successfully clicked node");
-                    currentID = nodeID;
-                    state = "Edit";
-                    nodePopUp();
+                    if(e.isStillSincePress()) {
+                        node.setFill(yellow);
+                        System.out.println("Successfully clicked node");
+                        currentID = nodeID;
+                        state = "Edit";
+                        nodePopUp();
+                    }
                 }
                 //Otherwise, single clicks will select/deselect nodes
                 else {
