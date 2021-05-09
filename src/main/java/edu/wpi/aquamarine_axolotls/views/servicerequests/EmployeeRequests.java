@@ -148,7 +148,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             srVbox.toFront();
 
             refresh();
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

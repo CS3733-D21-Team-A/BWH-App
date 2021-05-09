@@ -64,7 +64,7 @@ public class MedicineDelivery extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.MEDICINE_DELIVERY;
-        startUp();
+
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");

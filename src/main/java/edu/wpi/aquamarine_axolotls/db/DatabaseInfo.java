@@ -104,12 +104,15 @@ final class DatabaseInfo {
 					"EMAIL VARCHAR(25) NOT NULL," +
 					"CONSTRAINT emailConst UNIQUE(EMAIL)," +
 					"USERTYPE VARCHAR(25) DEFAULT 'patient'," +
+					"TOTPSECRET VARCHAR(32)," +
+					"MFAENABLED VARCHAR(5) DEFAULT 'false'," +
 					//"USERTYPE ENUM('PATIENT', 'EMPLOYEE', "GUEST', 'ADMIN')
 					"PASSWORD VARCHAR(25) NOT NULL," +
 					"PRONOUNS VARCHAR(25)," +
 					"GENDER VARCHAR(50),"+
-					"TAKENSURVEY VARCHAR(25) DEFAULT 'false'," +
-					"COVIDLIKELY VARCHAR(25)" +
+					"TAKENSURVEY VARCHAR(5) DEFAULT 'false'," +
+					"COVIDLIKELY VARCHAR(5)," +
+					"ENTRYAPPROVED VARCHAR(5)" +
 					")";
 
 	// ========== ATTRIBUTES STRINGS ==========

@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
@@ -33,20 +32,10 @@ public class DatabaseControllerTest4 {
         csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
     }
 
-    @AfterEach
-    void closeDB() {
-        try {
-            db.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            fail();
-        }
-    }
-
     @AfterAll
     @BeforeAll
     static void cleanup() {
-        TestUtil.resetDB();
+        DBTestUtil.resetDB();
     }
 /*
     @Test
