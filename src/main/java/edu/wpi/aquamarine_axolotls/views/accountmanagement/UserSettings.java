@@ -22,8 +22,6 @@ public class UserSettings extends GenericPage {
 
     @FXML private JFXButton reloadDbButton;
     @FXML private JFXCheckBox databasePicker;
-    @FXML private HBox saveHbox;
-    @FXML private HBox editHbox;
 
     @FXML private JFXTextField firstName;
     @FXML private JFXTextField lastName;
@@ -35,13 +33,9 @@ public class UserSettings extends GenericPage {
     private final DatabaseController db = DatabaseController.getInstance();
 
     public void initialize(){
-        //editHbox.setVisible(true);
-        //saveHbox.setVisible(false);
-        //editHbox.toFront();
-
-        databasePicker.setVisible(Aapp.userType.equals("Admin"));
-        reloadDbButton.setVisible(Aapp.userType.equals("Admin"));
-        databasePicker.setSelected(prefs.get(USE_CLIENT_SERVER_DATABASE,null) != null);
+        //databasePicker.setVisible(Aapp.userType.equals("Admin")); //TODO: RE-ADD THESE ELEMENTS
+        //reloadDbButton.setVisible(Aapp.userType.equals("Admin"));
+        //databasePicker.setSelected(prefs.get(USE_CLIENT_SERVER_DATABASE,null) != null);
 
         try{
             userName.setText(Aapp.username);
@@ -63,9 +57,6 @@ public class UserSettings extends GenericPage {
     }
 
     public void editAccount() {
-   //     editHbox.setVisible(false);
-     //   saveHbox.setVisible(true);
-       // saveHbox.toFront();
 
         firstName.setEditable(true);
         lastName.setEditable(true);
@@ -75,9 +66,6 @@ public class UserSettings extends GenericPage {
     }
 
     public void saveEdits() {
-  //      editHbox.setVisible(true);
-    //    saveHbox.setVisible(false);
-      //  editHbox.toFront();
 
         firstName.setEditable(false);
         lastName.setEditable(false);
