@@ -99,6 +99,7 @@ public abstract class GenericMap extends GenericPage {
             double tick = zoomSlider.getValue();
             zoomGroup.setScaleX(tick);
             zoomGroup.setScaleY(tick);
+            zoomGroup.setScaleZ(tick);
         });
 
         drawFloor(FLOOR);
