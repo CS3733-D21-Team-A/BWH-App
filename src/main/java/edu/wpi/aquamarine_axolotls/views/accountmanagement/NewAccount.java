@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,7 +93,9 @@ public class NewAccount extends GenericPage {
         user.put("LASTNAME", lastName.getText());
         user.put("EMAIL", emailAddress.getText());
         user.put("USERTYPE", "Patient" );
-        user.put("PASSWORD", password.getText());
+
+        Security.addHashedPassword(user,password.getText());
+
         db.addUser(user);
         popUp ( "Account Success", "\n\n\n\n\n\nThe account you submitted was successfully created." );
 

@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
 import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Pane;
@@ -32,7 +33,7 @@ public class LogIn extends GenericPage {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have not filled in both the username and password fields");
 			return;
 		}
-		if (!db.checkUserMatchesPass(CUusername, CUpassword)) {
+		if (!Security.secureVerifyAccount(CUusername,CUpassword)) {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
 				+ "or the account does not exist");
 			return;
