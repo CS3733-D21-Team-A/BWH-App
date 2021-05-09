@@ -13,6 +13,10 @@ import java.sql.SQLException;
 import java.util.*;
 
 public class Navigation extends GenericMap {
+    List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
+    List<Map<String, String>> currentPath = new ArrayList<>();
+    private TreeTableView<String> treeTable;
+    String covidLikely;
 /*    @Override
     public void drawFloor(String floor) throws SQLException {
 
