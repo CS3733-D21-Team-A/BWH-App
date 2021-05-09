@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DBTestUtil {
 	public static void resetDB() {
-		prefs.remove(USE_CLIENT_SERVER_DATABASE);
+		PREFERENCES.remove(USE_CLIENT_SERVER_DATABASE);
 
 		File dir = new File("./EMBEDDED_BWH_DB");
 		if (dir.exists()) {

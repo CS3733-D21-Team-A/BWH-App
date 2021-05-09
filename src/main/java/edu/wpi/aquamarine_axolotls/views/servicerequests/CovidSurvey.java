@@ -1,20 +1,15 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import edu.wpi.aquamarine_axolotls.Aapp;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
-import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class CovidSurvey extends GenericServiceRequest {
     @FXML
@@ -61,7 +56,9 @@ public class CovidSurvey extends GenericServiceRequest {
         survey.put("MORETIRED", Boolean.toString(yes10.isSelected()));
         survey.put("MUSCLEACHES", Boolean.toString(yes11.isSelected()));
 
-        survey.put("USERNAME", Aapp.username != null ? Aapp.username : "guest"); //TODO: THIS IS A WORKAROUND CHANGE THIS PLEASE
+        String username = PREFERENCES.get(USER_NAME,null);
+
+        survey.put("USERNAME", username);
         try {
             db.addSurvey(survey);
         } catch (SQLException throwables) {
