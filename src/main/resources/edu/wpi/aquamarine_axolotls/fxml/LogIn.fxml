@@ -3,123 +3,71 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="893.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.LogIn">
-   <top>
-      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="116.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../img/logo.png" />
-               </image>
-               <HBox.margin>
-                  <Insets bottom="15.0" left="10.0" right="5.0" top="20.0" />
-               </HBox.margin>
-            </ImageView>
-            <Label fx:id="text" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="76.0" prefWidth="519.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-               <font>
-                  <Font name="Verdana" size="24.0" />
-               </font>
-               <HBox.margin>
-                  <Insets bottom="12.0" left="5.0" top="20.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="5.0" />
-               </padding>
-            </Label>
-         </children>
-      </HBox>
-   </top>
-   <right>
+   <center>
       <Pane prefHeight="100.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle fill="#003da6" height="35.0" layoutX="-575.0" layoutY="-615.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1873.0" y="600.0" />
-            <JFXButton layoutX="16.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="72.0" prefWidth="322.0" text=" ">
-               <graphic>
-                  <Text fill="GREY" strokeType="OUTSIDE" strokeWidth="0.0" text="Continue As Guest" wrappingWidth="224.15419006347656">
-                     <font>
-                        <Font name="Verdana" size="24.0" />
-                     </font>
-                  </Text>
-               </graphic></JFXButton>
-            <ImageView fitHeight="51.0" fitWidth="38.0" layoutX="16.0" layoutY="33.0">
-               <image>
-                  <Image url="@../img/back icon.jpg" />
-               </image>
-            </ImageView>
-            <Text layoutX="-3.0" layoutY="112.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="INSIDE" strokeWidth="0.0" text="Welcome" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="1307.1650133132935">
+            <Text fill="#003da6" layoutX="84.0" layoutY="220.0" nodeOrientation="LEFT_TO_RIGHT" strokeType="INSIDE" strokeWidth="0.0" style="-fx-background-color: #003da6;" text="Welcome" textAlignment="CENTER" textOrigin="CENTER" wrappingWidth="1219.8440809249878">
                <font>
-                  <Font name="Verdana" size="100.0" />
+                  <Font name="Verdana Bold" size="110.0" />
                </font>
             </Text>
-            <Line endX="450.6532897949219" endY="0.7071243524551392" layoutX="474.0" layoutY="164.0" startX="-100.0" stroke="#003da6" strokeWidth="5.0" />
-            <Text layoutX="225.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in using your account credentials" textAlignment="CENTER" wrappingWidth="864.9440307617188">
+            <Text fill="#646464" layoutX="239.0" layoutY="312.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please sign in using your account credentials" textAlignment="CENTER" wrappingWidth="906.6199035644531">
                <font>
                   <Font name="Verdana" size="25.0" />
                </font>
             </Text>
-            <JFXTextField fx:id="username" layoutX="450.0" layoutY="250.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Username">
+            <JFXTextField fx:id="username" layoutX="370.0" layoutY="366.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="62.0" prefWidth="560.0" promptText="Username" style="-fx-background-color: F0F0F0; -fx-border-radius: 30;" unFocusColor="#646464">
                <font>
                   <Font name="Verdana" size="30.0" />
                </font>
             </JFXTextField>
-            <JFXPasswordField fx:id="password" layoutX="450.0" layoutY="320.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="400.0" promptText="Password">
+            <JFXPasswordField fx:id="password" layoutX="370.0" layoutY="460.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="560.0" promptText="Password" style="-fx-background-color: F0F0F0;" unFocusColor="#646464">
                <font>
                   <Font name="Verdana" size="30.0" />
                </font>
             </JFXPasswordField>
-            <JFXButton layoutX="544.0" layoutY="572.0" minHeight="30.0" onAction="#confirmUser" prefHeight="79.0" prefWidth="229.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+            <JFXButton layoutX="440.0" layoutY="652.0" minHeight="30.0" onAction="#confirmUser" prefHeight="79.0" prefWidth="420.0" style="-fx-background-radius: 7; -fx-background-color: F4BA47;" text="Submit" textFill="#003da6">
                <font>
-                  <Font name="Verdana" size="40.0" />
+                  <Font name="Verdana" size="30.0" />
                </font>
             </JFXButton>
-            <Hyperlink layoutX="548.0" layoutY="450.0" onAction="#createNewAccount" style="-fx-underline: True;" text="Create a New Account">
+            <Hyperlink layoutX="483.0" layoutY="578.0" onAction="#createNewAccount" style="-fx-underline: True;" text="Sign Up">
                <font>
-                  <Font name="Verdana" size="18.0" />
+                  <Font name="Verdana" size="20.0" />
                </font>
             </Hyperlink>
-            <Hyperlink layoutX="554.0" layoutY="400.0" onAction="#forgottenPassword" style="-fx-underline: True;" text="Forgotten Password?">
+            <Hyperlink layoutX="620.0" layoutY="578.0" onAction="#forgottenPassword" style="-fx-underline: True;" text="Forgotten Password?">
                <font>
-                  <Font name="Verdana" size="18.0" />
+                  <Font name="Verdana" size="20.0" />
                </font>
             </Hyperlink>
-            <Pane fx:id="smsPane" layoutX="374.0" layoutY="189.0" prefHeight="488.0" prefWidth="557.0" style="-fx-background-color: white;">
-               <children>
-                  <JFXTextField fx:id="smsText" layoutX="136.0" layoutY="171.0" prefHeight="54.0" prefWidth="283.0">
-                     <font>
-                        <Font name="Verdana" size="20.0" />
-                     </font>
-                  </JFXTextField>
-                  <Text fx:id="smsAuth" layoutX="-1.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the SMS Authentication sent to your cellular device: " textAlignment="CENTER" wrappingWidth="556.0228271484375">
-                     <font>
-                        <Font name="Verdana" size="25.0" />
-                     </font>
-                  </Text>
-                  <JFXButton fx:id="smsSubmit" layoutX="333.0" layoutY="387.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #003da6;" text="Submit" textFill="WHITE">
-                     <font>
-                        <Font name="Verdana" size="24.0" />
-                     </font>
-                  </JFXButton>
-                  <JFXButton layoutX="25.0" layoutY="387.0" prefHeight="70.0" prefWidth="200.0" style="-fx-background-color: #F0F0F0;" text="Cancel">
-                     <font>
-                        <Font name="Verdana" size="24.0" />
-                     </font>
-                  </JFXButton>
-               </children>
-            </Pane>
+            <JFXButton layoutX="11.0" layoutY="11.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="46.0" prefWidth="282.0" style="-fx-background-color: #7D99C9; -fx-background-radius: 10;" text="Continue As Guest" textFill="#f0f0f0">
+               <font>
+                  <Font name="Verdana" size="21.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="31.0" fitWidth="32.0">
+                     <image>
+                        <Image url="@../img/back icon.jpg" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <ImageView fitHeight="160.0" fitWidth="139.0" layoutX="256.0" layoutY="152.0">
+               <image>
+                  <Image url="@../img/logo.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
-   </right>
+   </center>
 </BorderPane>
