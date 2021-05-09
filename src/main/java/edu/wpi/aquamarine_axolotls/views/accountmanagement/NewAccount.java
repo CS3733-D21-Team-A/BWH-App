@@ -144,7 +144,7 @@ public class NewAccount extends GenericPage {
         tfaPane.setVisible ( true );
         submitButton.setVisible (false  );
         try {
-            Pair<String,byte[]> TOTPinformation = security.enableTOTP ( Aapp.username );
+            Pair<String,byte[]> TOTPinformation = Security.enableTOTP (userName.getText());
             readByteArray(TOTPinformation.getValue ());
         } catch (QrGenerationException | SQLException | IOException e) {
             e.printStackTrace ( );

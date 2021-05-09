@@ -39,7 +39,7 @@ public class Security {
 
 
 	/**
-	 * Enables TOTP 2FA for the provided user
+	 * Enables TOTP 2FA for the provided user (Assumes provided user is already in the database)
 	 * @return User's TOTP secret and a QR code for it
 	 * @param username Username of user to enable TOTP 2FA for
 	 * @throws SQLException Something went wrong.
