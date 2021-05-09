@@ -12,17 +12,6 @@ import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class CovidSurvey extends GenericServiceRequest {
-
-
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
     @FXML
     private JFXCheckBox yes1;
     @FXML
@@ -47,12 +36,13 @@ public class CovidSurvey extends GenericServiceRequest {
     private JFXCheckBox yes11;
 
     @FXML
-    public void helpButton() {
-        popUp("CovidSurvey", "\n\n\nPlease fill out this survey to the best of your ability. ");
+    public void initialize() {
+    //startUp ();
     }
 
     @FXML //TODO: Submit to database
     public void submitButton() {
+        goHome();
         Map<String, String> survey = new HashMap<> (); // TODO: username is null for guests
         survey.put("AREQUAR", Boolean.toString(yes1.isSelected()));
         survey.put("NAUSEADIARRHEA", Boolean.toString(yes2.isSelected()));
@@ -75,7 +65,6 @@ public class CovidSurvey extends GenericServiceRequest {
             throwables.printStackTrace();
         }
         popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-        goHome();
     }
 
 }

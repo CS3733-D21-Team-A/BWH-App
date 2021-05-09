@@ -20,16 +20,9 @@ public class LogIn extends GenericPage {
 	private JFXTextField username;
 	@FXML
 	private JFXPasswordField password;
-	@FXML
-	private Pane smsPane;
 
-	private DatabaseController db;
+	private DatabaseController db = DatabaseController.getInstance();
 
-	@FXML
-	public void initialize() throws SQLException, IOException, URISyntaxException {
-		db = DatabaseController.getInstance();
-		smsPane.setVisible(false);
-	}
 
 	public void confirmUser() throws SQLException {
 		String CUusername = username.getText();

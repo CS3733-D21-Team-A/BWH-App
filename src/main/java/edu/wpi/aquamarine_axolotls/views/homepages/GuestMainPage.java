@@ -19,22 +19,14 @@ import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class GuestMainPage extends GenericPage {
 
-	@FXML
-	StackPane stackPane;
+    @FXML
+    StackPane stackPane;
 
-	public DatabaseController db;
+    DatabaseController db = DatabaseController.getInstance();
 
-	@FXML
-	Text userNameText;
+    @FXML Text userNameText;
 
-	@FXML
-	public void initialize() throws SQLException, IOException {
-		startUp();
-	}
 
-	void startUp() throws IOException, SQLException {
-		db = DatabaseController.getInstance();
-	}
 
 	@FXML
 	public void signInP() {
@@ -70,10 +62,15 @@ public class GuestMainPage extends GenericPage {
             help.close();
             Platform.exit();
         });
-		cancel_button.setOnAction(event12 -> help.close());
-		content.setActions(cancel_button, shutDownB);
-		help.show();
-	}
+        cancel_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                help.close();
+            }
+        });
+        content.setActions(cancel_button, shutDownB);
+        help.show();
+    }
 
 	@FXML
 	public void covidSurveyPage() {

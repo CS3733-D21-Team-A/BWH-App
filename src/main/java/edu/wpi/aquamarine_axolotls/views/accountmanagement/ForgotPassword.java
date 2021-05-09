@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
@@ -12,6 +13,8 @@ public class ForgotPassword extends GenericPage {
         @FXML private JFXTextField username;
         @FXML private JFXTextField email;
         @FXML private JFXPasswordField password;
+        @FXML private JFXTextField tfa;
+        @FXML private JFXButton next;
 
         private final DatabaseController db = DatabaseController.getInstance();
 
@@ -35,6 +38,14 @@ public class ForgotPassword extends GenericPage {
             } catch (SQLException throwables) {
                 throwables.printStackTrace ( );
             }
+        }
+
+        public void next_button(){
+            tfa.setVisible (true);
+            tfa.setVisible ( true );
+            next.setVisible ( false );
+
+
         }
 
     }

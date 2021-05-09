@@ -10,6 +10,7 @@ public class EmployeeMainPage extends PatientMainPage {
     public void initialize() throws IOException, SQLException {
         startUp();
     }
+
     @FXML
     public void requestP() {
         sceneSwitch("EmployeeRequests");
