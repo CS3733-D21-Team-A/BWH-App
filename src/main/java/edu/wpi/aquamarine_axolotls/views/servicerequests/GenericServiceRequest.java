@@ -1,17 +1,18 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.*;
+
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class GenericServiceRequest extends GenericPage {
     @FXML
@@ -79,7 +80,7 @@ public class GenericServiceRequest extends GenericPage {
             requestValues.put(field.getColumn(), field.getValue());
         }
 
-        sharedValues.put("AUTHORID", Aapp.username);
+        sharedValues.put("AUTHORID", PREFERENCES.get(USER_NAME,null));
         sharedValues.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
         sharedValues.put("FIRSTNAME", firstName.getText());
         sharedValues.put("LASTNAME", lastName.getText());

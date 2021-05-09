@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -43,11 +45,11 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
         userType.setItems( FXCollections
-                .observableArrayList("Employee", "Admin")
+                .observableArrayList(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE),DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.ADMIN))
         );
     }
     @FXML
-    public void submit_button(ActionEvent actionEvent) throws SQLException {
+    public void submit_button() throws SQLException {
         String email = emailAddress.getText();
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";

@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.Settings">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.UserSettings">
    <bottom>
         <Pane prefHeight="752.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
             <children>
