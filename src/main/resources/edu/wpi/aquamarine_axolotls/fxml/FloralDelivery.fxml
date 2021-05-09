@@ -27,7 +27,7 @@
                 <Circle fill="#1f93ff00" layoutX="363.0" layoutY="149.0" radius="79.0" smooth="false" stroke="#003da6" strokeType="INSIDE" strokeWidth="5.0" />
                 <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="For best results, please select a delivery time and date at least 12 hours from the time you fill out the form. Be sure to add a special message to the delivery for a personalized touch." textAlignment="RIGHT" wrapText="true">
                     <font>
-                        <Font name="Verdana" size="20.0" />
+                        <Font name="Verdana" size="18.0" />
                     </font>
                     <padding>
                         <Insets left="20.0" right="20.0" />
@@ -38,11 +38,6 @@
                         <Font name="Verdana Bold" size="70.0" />
                     </font>
                 </Label>
-                <JFXButton layoutX="180.0" layoutY="704.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
-                    <font>
-                        <Font name="Verdana" size="30.0" />
-                    </font>
-                </JFXButton>
                 <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="321.0" layoutY="110.0">
                     <image>
                         <Image url="@../img/ServiceReq%20Icons/floralDeliveryB.png" />
@@ -129,4 +124,14 @@
             </children>
         </Pane>
     </left>
+   <center>
+          <JFXButton maxHeight="-Infinity" maxWidth="255.0" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+              <font>
+                  <Font name="Verdana" size="30.0" />
+              </font>
+         <BorderPane.margin>
+            <Insets left="600.0" top="600.0" />
+         </BorderPane.margin>
+          </JFXButton>
+   </center>
 </BorderPane>

@@ -15,26 +15,21 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.NewAccount">
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.Settings">
    <bottom>
-        <Pane prefHeight="892.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+        <Pane prefHeight="752.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
             <children>
                 <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="30.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="84.0" prefWidth="392.0" text="Settings" textAlignment="RIGHT" textFill="#003da6" wrapText="true">
                     <font>
                         <Font name="Verdana Bold" size="70.0" />
                     </font>
                 </Label>
-                <JFXButton layoutX="1023.0" layoutY="-3.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Edit Account" textFill="WHITE">
-                    <font>
-                        <Font name="Verdana" size="30.0" />
-                    </font>
-                </JFXButton>
-            <JFXButton defaultButton="true" layoutX="39.0" layoutY="123.0" prefHeight="79.0" prefWidth="262.0" text="About" textFill="#003da6">
+            <JFXButton defaultButton="true" layoutX="39.0" layoutY="123.0" onAction="#aboutP" prefHeight="79.0" prefWidth="262.0" text="About" textFill="#003da6">
                <font>
                   <Font name="Verdana Bold" size="40.0" />
                </font>
             </JFXButton>
-            <JFXButton cancelButton="true" layoutX="35.0" layoutY="211.0" prefHeight="79.0" prefWidth="262.0" text="Credit" textFill="#003da6">
+            <JFXButton cancelButton="true" layoutX="35.0" layoutY="211.0" onAction="#creditsP" prefHeight="79.0" prefWidth="262.0" text="Credit" textFill="#003da6">
                <font>
                   <Font name="Verdana Bold" size="40.0" />
                </font>
@@ -43,7 +38,7 @@
         </Pane>
    </bottom>
    <right>
-        <Pane prefHeight="839.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+        <Pane prefHeight="83.0" prefWidth="765.0" BorderPane.alignment="CENTER">
             <children>
                 <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="72.0" prefWidth="80.0" text=" " />
                 <GridPane layoutX="152.0" layoutY="111.0" prefHeight="656.0" prefWidth="620.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -175,6 +170,11 @@
                   </Label>
                     </children>
                 </GridPane>
+            <JFXButton layoutX="121.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="254.0" minWidth="235.0" mnemonicParsing="false" onAction="#saveEdits" prefHeight="58.0" prefWidth="254.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Save Account" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="30.0" />
+               </font>
+            </JFXButton>
             </children>
         </Pane>
    </right>
@@ -193,4 +193,14 @@
               </graphic>
           </JFXButton>
    </left>
+   <center>
+          <JFXButton maxHeight="-Infinity" maxWidth="235.0" minWidth="235.0" mnemonicParsing="false" onAction="#editAccount" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Edit Account" textFill="WHITE" BorderPane.alignment="CENTER">
+              <font>
+                  <Font name="Verdana" size="30.0" />
+              </font>
+         <BorderPane.margin>
+            <Insets left="1700.0" />
+         </BorderPane.margin>
+          </JFXButton>
+   </center>
 </BorderPane>

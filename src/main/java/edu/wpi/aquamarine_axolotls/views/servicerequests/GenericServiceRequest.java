@@ -102,12 +102,6 @@ public class GenericServiceRequest extends GenericPage {
     }
 
 
-    @FXML
-    void loadHelp() {
-        popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, " +
-                "time you would like to receive the request patient's room number, and an optional message ");
-    }
-
 
     void startUp(){ //TODO: why startUp and not initialize?
         try {

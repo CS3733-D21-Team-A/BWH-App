@@ -25,7 +25,7 @@
          <children>
                       <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="Please provide at least 30 minutes between your desired delivery time and order placement. Be sure to include information about any allergies or sensitivities to ensure your safety." textAlignment="RIGHT" wrapText="true">
                           <font>
-                              <Font name="Verdana" size="20.0" />
+                              <Font name="Verdana" size="18.0" />
                           </font>
                           <padding>
                               <Insets left="20.0" right="20.0" />
@@ -36,11 +36,6 @@
                               <Font name="Verdana Bold" size="70.0" />
                           </font>
                       </Label>
-                    <JFXButton layoutX="180.0" layoutY="704.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
-                        <font>
-                            <Font name="Verdana" size="30.0" />
-                        </font>
-                    </JFXButton>
             <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="320.0" layoutY="100.0">
                <image>
                   <Image url="@../img/ServiceReq Icons/foodDeliveryB.png" />
@@ -127,4 +122,14 @@
                </children>
             </Pane>
    </left>
+   <center>
+              <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+                  <font>
+                      <Font name="Verdana" size="30.0" />
+                  </font>
+         <BorderPane.margin>
+            <Insets left="600.0" top="600.0" />
+         </BorderPane.margin>
+              </JFXButton>
+   </center>
       </BorderPane>

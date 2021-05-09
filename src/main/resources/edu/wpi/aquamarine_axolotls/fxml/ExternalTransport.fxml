@@ -36,11 +36,6 @@
                         <Font name="Verdana Bold" size="70.0" />
                     </font>
                 </Label>
-                <JFXButton layoutX="180.0" layoutY="704.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
-                    <font>
-                        <Font name="Verdana" size="30.0" />
-                    </font>
-                </JFXButton>
                 <ImageView fitHeight="92.0" fitWidth="131.0" layoutX="298.0" layoutY="114.0">
                     <image>
                         <Image url="@../img/ServiceReq Icons/externalTransportB.png" />
@@ -65,13 +60,10 @@
                         <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <JFXTextField fx:id="patientFirstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's First Name" style="-fx-font-family: Verdana;">
+                        <JFXTextField fx:id="patientFirstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Patient's First Name" style="-fx-font-family: Verdana; -fx-font-size: 20;">
                             <GridPane.margin>
                                 <Insets top="40.0" />
-                            </GridPane.margin>
-                            <font>
-                                <Font name="Verdana" size="20.0" />
-                            </font></JFXTextField>
+                            </GridPane.margin></JFXTextField>
                         <JFXTextField fx:id="patientLastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" minWidth="280.0" prefHeight="100.0" prefWidth="267.0" promptText="Patient's Last Name" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1">
                             <GridPane.margin>
                                 <Insets top="40.0" />
@@ -126,4 +118,14 @@
             </children>
         </Pane>
     </left>
+   <center>
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+              <font>
+                  <Font name="Verdana" size="30.0" />
+              </font>
+         <BorderPane.margin>
+            <Insets left="600.0" top="600.0" />
+         </BorderPane.margin>
+          </JFXButton>
+   </center>
 </BorderPane>

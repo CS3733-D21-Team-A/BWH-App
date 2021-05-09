@@ -14,8 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
-    @FXML HBox saveHbox;
-    @FXML HBox editHbox;
+   // @FXML HBox saveHbox;
+    //@FXML HBox editHbox;
 
     @FXML JFXTextField firstName;
     @FXML JFXTextField lastName;
@@ -27,9 +27,9 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
     DatabaseController db;
 
     public void initialize(){
-        editHbox.setVisible(true);
-        saveHbox.setVisible(false);
-        editHbox.toFront();
+        //editHbox.setVisible(true);
+        //saveHbox.setVisible(false);
+        //editHbox.toFront();
 
         try{
             db = DatabaseController.getInstance();
@@ -53,9 +53,9 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
     }
 
     public void editAccount() {
-        editHbox.setVisible(false);
-        saveHbox.setVisible(true);
-        saveHbox.toFront();
+   //     editHbox.setVisible(false);
+     //   saveHbox.setVisible(true);
+       // saveHbox.toFront();
 
         firstName.setEditable(true);
         lastName.setEditable(true);
@@ -65,9 +65,9 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
     }
 
     public void saveEdits() {
-        editHbox.setVisible(true);
-        saveHbox.setVisible(false);
-        editHbox.toFront();
+  //      editHbox.setVisible(true);
+    //    saveHbox.setVisible(false);
+      //  editHbox.toFront();
 
         firstName.setEditable(false);
         lastName.setEditable(false);
@@ -89,5 +89,13 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    public void aboutP() {
+        sceneSwitch ( "AboutPage" );
+    }
+        public void creditsP(){
+            sceneSwitch ( "CreditsPage" );
+
     }
 }

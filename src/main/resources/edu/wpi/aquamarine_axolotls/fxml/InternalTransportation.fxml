@@ -34,11 +34,6 @@
                         <Font name="Verdana Bold" size="70.0" />
                     </font>
                 </Label>
-                <JFXButton layoutX="180.0" layoutY="704.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
-                    <font>
-                        <Font name="Verdana" size="30.0" />
-                    </font>
-                </JFXButton>
                 <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="323.0" layoutY="85.0" />
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
             </children>
@@ -98,4 +93,14 @@
             </children>
         </Pane>
     </left>
+   <center>
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+              <font>
+                  <Font name="Verdana" size="30.0" />
+              </font>
+         <BorderPane.margin>
+            <Insets left="600.0" top="600.0" />
+         </BorderPane.margin>
+          </JFXButton>
+   </center>
 </BorderPane>

@@ -47,7 +47,6 @@ public class GuestMainPage extends GenericPage {
 
     @FXML
     public void mapP(ActionEvent actionEvent) {
-//        sceneSwitch ( "Navigation" );
         try {
 
             if ( !db.hasUserTakenCovidSurvey ( Aapp.username != null ? Aapp.username : "guest") ) {
