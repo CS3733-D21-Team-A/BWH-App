@@ -19,7 +19,7 @@
 
 <AnchorPane maxHeight="900.0" maxWidth="1300.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.homepages.PatientMainPage">
     <children>
-        <ImageView fitHeight="900.0" fitWidth="1300.0" layoutX="102.0" layoutY="104.0" preserveRatio="true" scaleX="1.25" scaleY="1.25" style="-fx-font-weight: bold;" AnchorPane.bottomAnchor="-104.0" AnchorPane.leftAnchor="115.0" AnchorPane.topAnchor="104.0">
+        <ImageView fitHeight="900.0" fitWidth="1300.0" layoutX="113.0" layoutY="-51.0" preserveRatio="true" scaleX="1.25" scaleY="1.25" style="-fx-font-weight: bold;" AnchorPane.bottomAnchor="51.0" AnchorPane.leftAnchor="113.0" AnchorPane.topAnchor="-51.0">
             <image>
                 <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
             </image>
@@ -32,7 +32,7 @@
                 <Text fx:id="welcome" fill="WHITE" fontSmoothingType="LCD" opacity="0.79" strokeWidth="3.0" style="-fx-fill: white; -fx-font-weight: bolder; -fx-effect: dropshadow(GAUSSIAN, white, 10, 0,0,0); -fx-font-size: 130; -fx-font-family: Verdana;" text="W E L C O M E" textAlignment="CENTER" wrappingWidth="1148.8770084381104" />
                 <Group>
                     <children>
-                        <Rectangle arcHeight="120.0" arcWidth="30.0" fill="#0042a6cc" height="94.0" stroke="#ffffff00" strokeType="INSIDE" strokeWidth="0.0" width="910.0" />
+                        <Rectangle arcHeight="120.0" arcWidth="30.0" fill="#0042a6bf" height="94.0" stroke="#ffffff00" strokeType="INSIDE" strokeWidth="0.0" width="910.0" />
                         <Text fx:id="userNameText" fill="#fccf03" layoutX="2.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin:________" textAlignment="CENTER" wrappingWidth="904.0459289550781">
                             <font>
                                 <Font name="Verdana" size="39.0" />
@@ -42,7 +42,7 @@
                 </Group>
             </children>
         </VBox>
-        <Rectangle fill="#0042a6" height="84.0" stroke="#ff7e7e00" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <Rectangle fill="#0042a6be" height="84.0" stroke="#ff7e7e00" strokeType="INSIDE" strokeWidth="0.0" width="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
         <StackPane fx:id="serviceRequestPane" prefHeight="346.0" prefWidth="524.0" style="-fx-background-color: F0F0F0; -fx-border-radius: 10; visibility: false;" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="80.0">
             <children>
                 <GridPane>
@@ -264,15 +264,6 @@
                                 <ImageView>
                                     <image>
                                         <Image url="@../img/yellowIcons/signOutYellow.PNG" />
-                                    </image>
-                                </ImageView>
-                            </graphic>
-                        </JFXButton>
-                        <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#stop" prefHeight="51.0" prefWidth="44.0" text=" exit" textFill="#fccf03">
-                            <graphic>
-                                <ImageView fitHeight="33.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@../img/exitB.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
