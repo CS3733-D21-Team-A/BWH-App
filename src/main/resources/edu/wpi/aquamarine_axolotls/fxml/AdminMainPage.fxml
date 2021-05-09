@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="900.0" maxWidth="1300.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.homepages.AdminMainPage">
+<AnchorPane maxHeight="900.0" maxWidth="1300.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.homepages.AdminMainPage">
    <children>
       <StackPane fx:id="managePane" prefHeight="173.0" prefWidth="482.0" style="-fx-background-color: F0F0F0; -fx-border-radius: 10; visibility: false;" AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="80.0">
          <children>
