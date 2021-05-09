@@ -21,7 +21,7 @@ import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class GenericPage {
 
-    static String currentPage = "GuestMainPage"; //TODO: This will need to change once we get persistent logins set up
+    static String currentPage = PREFERENCES.get(USER_TYPE,null)+"MainPage";
     static Stack<String> previousPages = new Stack<>();
 
     @FXML
