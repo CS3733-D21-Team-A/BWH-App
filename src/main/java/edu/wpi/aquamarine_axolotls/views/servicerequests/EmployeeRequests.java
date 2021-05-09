@@ -3,7 +3,6 @@ package edu.wpi.aquamarine_axolotls.views.servicerequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTabPane;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
@@ -11,16 +10,12 @@ import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +71,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
             ObservableList<String> names;
 
-            USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(prefs.get(USER_TYPE,null));
+            USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
 
             if (usertype != null) {
                 switch (usertype) {
@@ -100,7 +95,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                         break;
                     case EMPLOYEE:
                         names = FXCollections.observableArrayList();
-                        Map<String, String> usr = db.getUserByUsername(prefs.get(USER_NAME, null));
+                        Map<String, String> usr = db.getUserByUsername(PREFERENCES.get(USER_NAME, null));
                         String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
                         names.add(name);
                         assignD.setItems(names);
@@ -155,7 +150,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         List<Map<String, String>> serviceRequests = null;
         List<Map<String, String>> covSurveys = null;
         try {
-            switch (DatabaseUtil.USER_TYPE_NAMES.inverse().get(prefs.get(USER_TYPE,null))) {
+            switch (DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null))) {
                 case ADMIN:
                 case EMPLOYEE:
                     serviceRequests = db.getServiceRequests();
@@ -170,7 +165,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                         covidSurveyTable.getItems().add(new CovidSurvey(survey));
                     }
                 case PATIENT:
-                    serviceRequests = db.getServiceRequestsByAuthor(prefs.get(USER_NAME,null));
+                    serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
                     srTable.getItems().clear();
                     for (Map<String, String> req : serviceRequests) {
                         srTable.getItems().add(new Request(req));

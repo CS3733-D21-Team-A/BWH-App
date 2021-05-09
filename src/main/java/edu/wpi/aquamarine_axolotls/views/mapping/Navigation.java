@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Settings;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -89,10 +88,10 @@ public class Navigation extends GenericMap {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
-        this.username = prefs.get(USER_NAME,null);
+        this.username = PREFERENCES.get(USER_NAME,null);
 
         // TODO: This uses a workaround to handle guests. Change it
-        covidLikely = db.getUserByUsername(username != null ? username : "guest").get("COVIDLIKELY");
+        covidLikely = db.getUserByUsername(username).get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -261,7 +260,7 @@ public class Navigation extends GenericMap {
             }
         });
         contextMenu.getItems().clear();
-        if (prefs.get(USER_TYPE,null) == null) contextMenu.getItems().addAll(addStop);
+        if (PREFERENCES.get(USER_TYPE,null) == null) contextMenu.getItems().addAll(addStop);
         else contextMenu.getItems().addAll(addStop, addFav, deleteFav);
 
         mapView.setOnContextMenuRequested(event -> {
@@ -819,7 +818,7 @@ public class Navigation extends GenericMap {
     }
 
     public void submitApiKey(){
-        prefs.put(Settings.API_KEY, apiKey.getText());
+        PREFERENCES.put(Settings.API_KEY, apiKey.getText());
         apiKeyPane.setVisible(false);
 
         if (!apiKey.getText().equals(null)){

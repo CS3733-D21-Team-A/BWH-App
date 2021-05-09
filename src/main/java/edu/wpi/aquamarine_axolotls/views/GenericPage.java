@@ -3,7 +3,6 @@ package edu.wpi.aquamarine_axolotls.views;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,12 +13,11 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.Stack;
 
 import static edu.wpi.aquamarine_axolotls.Settings.USER_TYPE;
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class GenericPage {
 
@@ -60,29 +58,9 @@ public class GenericPage {
 
     @FXML
     public void goHome() {
-        USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(prefs.get(USER_TYPE,null));
-        if (usertype == null) sceneSwitch("GuestMainPage");
-        else {
-            switch (usertype) {
-                case EMPLOYEE:
-                    sceneSwitch("EmployeeMainPage");
-                    break;
-                case PATIENT:
-                    sceneSwitch("PatientMainPage");
-                    break;
-                case ADMIN:
-                    sceneSwitch("AdminMainPage");
-                    break;
-            }
-        }
+        USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
+        sceneSwitch(usertype+"MainPage");
         previousPages.clear(); //Need to clear the history when we go home
     }
 
-    /*
-    public void menu(){
-        if(transition.getRate() == -1) menuDrawer.open();
-        else menuDrawer.close();
-        transition.setRate(transition.getRate() * -1);
-        transition.play();
-    }*/
 }

@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 /**
@@ -47,7 +47,7 @@ public class DatabaseController {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		boolean dbExists = connectToDB(prefs.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -110,7 +110,7 @@ public class DatabaseController {
 	 */
 	public void updateConnection() throws SQLException, IOException {
 		shutdownDB();
-		boolean dbExists = connectToDB(prefs.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
 
 		nodeTable.setConnection(connection);
 		edgeTable.setConnection(connection);
@@ -756,7 +756,7 @@ public class DatabaseController {
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
-	 * @return true if the username does not exist, false if it does
+	 * @return true if a user with the desired username exists
 	 * @throws SQLException
 	 */
 	public boolean checkUserExists(String username) throws SQLException

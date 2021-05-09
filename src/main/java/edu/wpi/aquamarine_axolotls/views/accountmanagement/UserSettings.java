@@ -1,21 +1,18 @@
 package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
-public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
+public class UserSettings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
     @FXML HBox saveHbox;
     @FXML HBox editHbox;
 
@@ -35,7 +32,7 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
         saveHbox.setVisible(false);
         editHbox.toFront();
 
-        this.username = prefs.get(USER_NAME,null);
+        this.username = PREFERENCES.get(USER_NAME,null);
 
         try{
             db = DatabaseController.getInstance();
@@ -91,7 +88,7 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
             user.put("GENDER", gender.getText());
 
             db.editUser(username, user);
-            prefs.put(USER_FIRST_NAME, firstName.getText());
+            PREFERENCES.put(USER_FIRST_NAME, firstName.getText());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

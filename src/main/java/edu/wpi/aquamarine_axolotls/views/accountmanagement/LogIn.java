@@ -46,9 +46,9 @@ public class LogIn extends GenericPage {
 		}
 		try {
 			Map<String, String> usr = db.getUserByUsername(CUusername);
-			prefs.put(USER_TYPE,usr.get("USERTYPE"));
-			prefs.put(USER_NAME,usr.get("USERNAME"));
-			prefs.put(USER_FIRST_NAME,usr.get("FIRSTNAME"));
+			PREFERENCES.put(USER_TYPE,usr.get("USERTYPE"));
+			PREFERENCES.put(USER_NAME,usr.get("USERNAME"));
+			PREFERENCES.put(USER_FIRST_NAME,usr.get("FIRSTNAME"));
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
 		}

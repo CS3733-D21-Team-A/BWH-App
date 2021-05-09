@@ -1,9 +1,7 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
@@ -424,7 +422,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     }
 
     public void handleCovidStatus() throws SQLException {
-        String username = prefs.get(USER_NAME,null);
+        String username = PREFERENCES.get(USER_NAME,null);
         String covidLikely = dbControl.getUserByUsername(username != null ? username : "guest").get("COVIDLIKELY");
 
         Node francis = new Node(dbControl.getNode("FEXIT00201"));

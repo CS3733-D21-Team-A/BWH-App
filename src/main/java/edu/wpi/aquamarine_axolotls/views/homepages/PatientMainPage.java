@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import javafx.event.ActionEvent;
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -17,21 +18,26 @@ public class PatientMainPage extends GuestMainPage{
     @Override
     public void startUp() throws SQLException, IOException {
         super.startUp();
-        userNameText.setText(prefs.get(USER_TYPE,null) + ": " + prefs.get(USER_FIRST_NAME,null));
+        userNameText.setText(PREFERENCES.get(USER_TYPE,null) + ": " + PREFERENCES.get(USER_FIRST_NAME,null));
     }
 
     @FXML
-    public void serviceReqP(ActionEvent actionEvent) {
+    public void serviceReqP() {
         sceneSwitch("DefaultServicePage");
     }
 
     @FXML
     public void signOutPage(){
         popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        prefs.remove(USER_NAME);
-        prefs.remove(USER_TYPE);
-        prefs.remove(USER_FIRST_NAME);
+        PREFERENCES.put(USER_TYPE, DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+        PREFERENCES.put(USER_NAME, PREFERENCES.get(INSTANCE_ID,null));
+        PREFERENCES.remove(USER_FIRST_NAME);
         goHome();
+    }
+
+    @FXML
+    public void settingsP() {
+        sceneSwitch("UserSettings");
     }
 
 }
