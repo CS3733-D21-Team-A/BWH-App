@@ -452,10 +452,13 @@ public abstract class GenericMap extends GenericPage {
             Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
             double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
             double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
+            double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
+            double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
             String startFloor = startNode.get("FLOOR");
             String endFloor = endNode.get("FLOOR");
             if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
-                drawArrow(startX, startY, startFloor, endFloor, 0.0);
+                drawArrow(startX, startY, startFloor, endFloor, 0.0); // draw an up arrow at one node
+                drawArrow(endX, endY, endFloor, startFloor, 0.0);     // and a down arrow at the other
             }
 
         } catch (SQLException e) {

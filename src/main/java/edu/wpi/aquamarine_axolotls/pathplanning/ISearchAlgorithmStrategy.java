@@ -1,9 +1,11 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public interface ISearchAlgorithmStrategy {
-    public List<Node> getPath(String startID, String endID);
+    public List<Map<String, String>> getPath(String startID, String endID);
 
     public double getETA(List<Node> path);
 

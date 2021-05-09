@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class SearchAlgorithmContext {
 
@@ -38,7 +40,7 @@ public class SearchAlgorithmContext {
      * @param endLongName The ID of the node to go to
      * @return The list of nodes that constitute the path
      */
-    public List<Node> getPath(String startLongName, String endLongName){
+    public List<Map<String, String>> getPath(String startLongName, String endLongName){
         return context.getPath(startLongName, endLongName);
     }
 

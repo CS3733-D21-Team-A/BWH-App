@@ -441,9 +441,9 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         }
     }
 
-    abstract List<Node> getPathImpl(String startLongName, String endLongName);
+    abstract List<Map<String, String>> getPathImpl(String startLongName, String endLongName);
 
-    public List<Node> getPath(String startLongName, String endLongName) {
+    public List<Map<String, String>> getPath(String startLongName, String endLongName) {
         System.out.println("GETTING PATH");
         try {
             handleCovidStatus();
