@@ -137,6 +137,7 @@ public class DatabaseController {
 	/**
 	 * Connects to the Derby database
 	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
+	 * Note: Creates a database if one isn't present
 	 * @param remote Whether to try and connect to the the client-server database
 	 * @return Pair whose key is if we need to construct a new database and value is whether we are using the embedded database
 	 * @throws SQLException Something went wrong.
@@ -174,7 +175,6 @@ public class DatabaseController {
 			System.out.println("No database found. Creating new one...");
 			createDB(connection);
 		}
-		System.out.println(connection.isClosed());
 
 		return new Pair<>(dbExists, usingEmbedded);
 	}
