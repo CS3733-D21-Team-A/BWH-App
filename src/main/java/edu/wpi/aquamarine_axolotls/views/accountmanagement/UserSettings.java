@@ -38,6 +38,8 @@ public class UserSettings extends GenericPage {
         //reloadDbButton.setVisible(Aapp.userType.equals("Admin"));
         //databasePicker.setSelected(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null);
 
+        username = PREFERENCES.get(USER_NAME,null);
+
         try{
             userName.setText(username);
             firstName.setText(db.getUserByUsername(username).get("FIRSTNAME"));
