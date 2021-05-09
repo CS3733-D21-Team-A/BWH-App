@@ -42,7 +42,7 @@ public class CovidSurvey extends GenericServiceRequest {
 
     @FXML
     public void initialize() {
-    startUp ();
+    //startUp ();
     }
 
     @FXML //TODO: Submit to database

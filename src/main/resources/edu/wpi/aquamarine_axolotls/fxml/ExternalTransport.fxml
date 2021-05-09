@@ -76,13 +76,10 @@
                             <GridPane.margin>
                                 <Insets top="40.0" />
                             </GridPane.margin></JFXTextField>
-                        <JFXTextField fx:id="destination" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Destination" style="-fx-font-family: Verdana;" GridPane.rowIndex="2">
+                        <JFXTextField fx:id="destination" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Destination" style="-fx-font-family: Verdana; -fx-font-size: 20;" GridPane.rowIndex="2">
                             <GridPane.margin>
                                 <Insets top="40.0" />
-                            </GridPane.margin>
-                            <font>
-                                <Font name="Hiragino Sans GB W3" size="20.0" />
-                            </font></JFXTextField>
+                            </GridPane.margin></JFXTextField>
                         <JFXComboBox fx:id="modeOfTrans" maxWidth="320.0" minWidth="280.0" prefHeight="50.0" prefWidth="320.0" promptText="Mode of Transportation" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <GridPane.margin>
                                 <Insets right="25.0" top="40.0" />

@@ -49,7 +49,7 @@
    <left>
             <Pane prefHeight="839.0" prefWidth="800.0" BorderPane.alignment="CENTER">
                <children>
-                        <GridPane alignment="CENTER" layoutX="57.0" layoutY="219.0" maxHeight="807.0" maxWidth="1612.0" minHeight="192.0" prefHeight="355.0" prefWidth="642.0">
+                        <GridPane alignment="CENTER" layoutX="57.0" layoutY="219.0" maxHeight="807.0" maxWidth="1612.0" minHeight="192.0" prefHeight="355.0" prefWidth="714.0">
                             <columnConstraints>
                                 <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="300.0" />
@@ -101,9 +101,9 @@
                         </JFXComboBox>
                             </children>
                         </GridPane>
-                  <JFXTextArea fx:id="dietaryRestA" layoutX="76.0" layoutY="585.0" prefHeight="71.0" prefWidth="582.0" promptText="Please list any dietary restrictions, alergies or preferences. ">
+                  <JFXTextArea fx:id="dietaryRestA" layoutX="113.0" layoutY="615.0" prefHeight="71.0" prefWidth="582.0" promptText="Please list any dietary restrictions, alergies or preferences. ">
                      <font>
-                        <Font name="Verdana" size="20.0" />
+                        <Font name="Verdana" size="18.0" />
                      </font>
                      <padding>
                         <Insets top="20.0" />

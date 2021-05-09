@@ -38,7 +38,7 @@
                 </Label>
                 <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="320.0" layoutY="105.0">
                     <image>
-                        <Image url="@../img/ServiceReq Icons/giftDeliveryb.png" />
+                        <Image url="@../img/ServiceReq%20Icons/giftDeliveryb.png" />
                     </image>
                 </ImageView>
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
@@ -49,7 +49,7 @@
     <left>
         <Pane prefHeight="839.0" prefWidth="800.0" BorderPane.alignment="CENTER">
             <children>
-                <GridPane alignment="CENTER" layoutX="57.0" layoutY="90.0" maxHeight="807.0" maxWidth="1612.0" minHeight="200.0" prefHeight="560.0" prefWidth="635.0">
+                <GridPane alignment="CENTER" layoutX="97.0" layoutY="97.0" maxHeight="807.0" maxWidth="1612.0" minHeight="200.0" prefHeight="560.0" prefWidth="635.0">
                     <columnConstraints>
                         <ColumnConstraints />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="400.0" />
@@ -82,10 +82,10 @@
                         </JFXDatePicker>
                     </children>
                 </GridPane>
-                <JFXComboBox fx:id="giftOptions" prefHeight="50.0" prefWidth="250.0" promptText="Gift Options" style="-fx-font-size: 20; -fx-font-family: Verdana;">
+                <JFXComboBox fx:id="giftOptions" layoutX="260.0" layoutY="512.0" prefHeight="50.0" prefWidth="250.0" promptText="Gift Options" style="-fx-font-size: 20; -fx-font-family: Verdana;">
                 </JFXComboBox>
 
-                <JFXTextArea fx:id="persMessage" layoutX="77.0" layoutY="490.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
+                <JFXTextArea fx:id="persMessage" layoutX="100.0" layoutY="592.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
                     <font>
                         <Font name="Verdana" size="20.0" />
                     </font>
