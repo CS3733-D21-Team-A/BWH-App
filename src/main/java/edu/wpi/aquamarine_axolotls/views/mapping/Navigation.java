@@ -289,16 +289,16 @@ public class Navigation extends GenericMap {
                 e.printStackTrace();
             }
 
-            try{
-                while (true){
-                    clientSender.send("connected " + second + " s");
-                    second++;
-                    Thread.sleep(1000);
-                }
-            } catch (Exception e){
-            }
+//            try{
+//                while (true){
+//                    clientSender.send("connected " + second + " s");
+//                    second++;
+//                    Thread.sleep(1000);
+//                }
+//            } catch (Exception e){
+//            }
         });
-        //clientThreadSender.start();
+        clientThreadSender.start();
 
         clientThreadReceiver = new Thread(() -> {
             try{
@@ -322,7 +322,7 @@ public class Navigation extends GenericMap {
                 e.printStackTrace();
             }
         });
-        clientThreadReceiver.start();
+        //clientThreadReceiver.start();
     }
 
     @Override
@@ -486,7 +486,8 @@ public class Navigation extends GenericMap {
         if(voiceDirection.isSelected()) {
             voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
         }
-        //client.send(curDirection.getText());
+        String sendPacket = getROSDirection();
+        clientSender.send(sendPacket);
     }
 
     /**
@@ -896,6 +897,14 @@ public class Navigation extends GenericMap {
     @FXML
     public void stopVoice() {
         voice.stop();
+    }
+
+    private String getROSDirection(){
+        String coordinateList = "";
+        for (Node n: currPath) {
+            coordinateList += n.getXcoord() + "," + n.getYcoord() + ";";
+        }
+        return coordinateList;
     }
 }
 
