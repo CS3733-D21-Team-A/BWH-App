@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static edu.wpi.aquamarine_axolotls.views.mapping.GenericMap.darkBlue;
+
 public class EdgePopUp extends GenericPage{
 
     @FXML
@@ -132,11 +134,16 @@ public class EdgePopUp extends GenericPage{
                 if(!edgeIDLabel.getText().equals(mapController.currentID)) db.deleteEdge(mapController.currentID);
                 break;
         }
-        if(!db.edgeExists(edge.get("EDGEID"))) db.addEdge(edge);
-        else popUp("ERROR", "That edge already exists. Please try again.");
+        if(!db.edgeExists(edge.get("EDGEID")) &&
+                !db.edgeExists(edge.get("ENDNODE") + "_" + edge.get("STARTNODE"))){
+            db.addEdge(edge);
+        } else {
+            popUp("ERROR", "That edge already exists.");
+        }
         mapController.drawFloor(mapController.FLOOR);
         edgeIDLabel.getScene().getWindow().hide();
 
+        mapController.deselect.fire();
     }
 
     public void loadHelp(ActionEvent actionEvent) {

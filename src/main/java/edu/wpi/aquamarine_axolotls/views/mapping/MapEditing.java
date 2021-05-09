@@ -242,7 +242,6 @@ public class MapEditing extends GenericMap {
             }
 
 
-
             /*if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
                 newNode.setVisible(true);
             }
