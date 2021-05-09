@@ -20,10 +20,12 @@ public class ForgotPassword extends GenericPage {
         @FXML private JFXTextField username;
         @FXML private JFXTextField email;
         @FXML private JFXPasswordField password;
+        @FXML private JFXTextField tfa;
+        @FXML private JFXButton next;
 
         private final DatabaseController db = DatabaseController.getInstance();
 
-        public void submit_button()  {
+        public void submit_button(javafx.event.ActionEvent event)  {
             String usrname = username.getText();
             String eml = email.getText ();
             String pass = password.getText ();
@@ -52,6 +54,14 @@ public class ForgotPassword extends GenericPage {
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
+        }
+
+        public void next_button(){
+            tfa.setVisible (true);
+            tfa.setVisible ( true );
+            next.setVisible ( false );
+
+
         }
 
     }

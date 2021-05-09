@@ -10,6 +10,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 public class Aapp extends Application {
 
@@ -33,6 +34,7 @@ public class Aapp extends Application {
     Aapp.primaryStage = primaryStage;
     try {
       Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
+
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);

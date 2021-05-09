@@ -47,7 +47,7 @@ public class LogIn extends GenericPage {
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
-        smsPane.setVisible(false);
+        //smsPane.setVisible(false);
     }
 /*
     public void smsCancel(){
