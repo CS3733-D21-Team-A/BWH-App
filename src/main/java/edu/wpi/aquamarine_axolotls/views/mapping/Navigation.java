@@ -2,7 +2,6 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
-import com.google.maps.model.Duration;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -10,6 +9,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Settings;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
+import javafx.animation.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +24,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import com.google.maps.model.Duration;
+
+
 
 import java.sql.SQLException;
 import java.util.*;
@@ -349,7 +353,7 @@ public class Navigation extends GenericMap {
         for (int i = 0; i < currPath.size() - 1; i++) {
             if (currPath.get(i).getFloor().equals(FLOOR) &&
                     currPath.get(i + 1).getFloor().equals(FLOOR)) {
-                drawTwoNodesWithEdge(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
+                drawAnimatedPath(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
             }
             if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
                 drawArrow(currPath.get(i), currPath.get(i+1));
@@ -364,6 +368,102 @@ public class Navigation extends GenericMap {
 
         }
     }
+
+    /**
+     * Draws animated path
+     * This version takes two maps of string to string
+     *      * @param snode Node to start with
+     *      * @param enode Node to end at
+     *      * @param snodeCol Color of the start node
+     *      * @param enodeCol Color of the end node
+     *      * @param edgeCol Color of the edge
+     */
+
+    void drawAnimatedPath(Map<String, String> snode, Map<String, String> enode, Color snodeCol, Color enodeCol, Color edgeCol) {
+        if (snode.get("FLOOR").equals(FLOOR) && enode.get("FLOOR").equals(FLOOR)){
+            double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
+            double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            String startID = snode.get("NODEID");
+            double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
+            double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
+            String endID = enode.get("NODEID");
+            drawAnimatedPath(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
+        }
+    }
+
+    /**
+     * Draws animated path
+     * This version takes two node objects
+     * @param snode Node to start with
+     * @param enode Node to end at
+     * @param snodeCol Color of the start node
+     * @param enodeCol Color of the end node
+     * @param edgeCol Color of the edge
+     */
+    void drawAnimatedPath(Node snode, Node enode, Color snodeCol, Color enodeCol, Color edgeCol) {
+        if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
+            double startX = xScale(snode.getXcoord());
+            double startY = yScale(snode.getYcoord());
+            double endX = xScale(enode.getXcoord());
+            double endY = yScale(enode.getYcoord());
+            String startID = snode.getNodeID();
+            String endID = enode.getNodeID();
+            drawAnimatedPath(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
+        }
+    }
+
+    /**
+     * Draws animated path
+     * @param snodeCol Color of the start node
+     * @param enodeCol Color of the end node
+     * @param edgeCol Color of the edge
+     */
+    private void drawAnimatedPath(double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
+
+        Line l = new Line();
+        l.getStrokeDashArray().addAll(25d, 10d);
+        l.setStartX(startX);
+        l.setStartY(startY);
+        l.setEndX(endX);
+        l.setEndY(endY);
+        l.setStroke(edgeCol);
+
+        final double maxOffset =
+                l.getStrokeDashArray().stream()
+                        .reduce(
+                                0d,
+                                (a, b) -> a + b
+                        );
+
+        Timeline timeline = new Timeline(
+                new KeyFrame(
+
+                        javafx.util.Duration.ZERO,
+                        new KeyValue(
+                                l.strokeDashOffsetProperty(),
+                                0,
+                                Interpolator.LINEAR
+                        )
+                ),
+                new KeyFrame(
+                        javafx.util.Duration.seconds(2),
+                        new KeyValue(
+                                l.strokeDashOffsetProperty(),
+                                maxOffset,
+                                Interpolator.LINEAR
+                        )
+                )
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setRate(-1.0);
+        timeline.play();
+
+        mapView.getChildren().add(l);
+
+        drawSingleNode(startX, startY, startID, snodeCol);
+        drawSingleNode(endX, endY, endID, enodeCol);
+    }
+
     // draw floor that makes everything transparent
 
 
