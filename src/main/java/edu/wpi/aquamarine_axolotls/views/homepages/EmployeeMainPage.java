@@ -1,17 +1,13 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import edu.wpi.aquamarine_axolotls.Aapp;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
 public class EmployeeMainPage extends PatientMainPage {
     @FXML StackPane managePane;
 
-    public void initialize() throws IOException, SQLException {
+    public void initialize() {
         startUp();
         managePane.setOnMouseExited(mouseEvent -> {
             if (managePane.isVisible()) {
@@ -20,13 +16,14 @@ public class EmployeeMainPage extends PatientMainPage {
             }
         });
     }
+
     @FXML
-    public void requestP(ActionEvent actionEvent) {
+    public void requestP() {
         sceneSwitch("EmployeeRequests");
     }
 
     @FXML
-    public void serviceReqEP(ActionEvent actionEvent) {
+    public void serviceReqEP() {
         sceneSwitch("EmployeeServiceRequestPage");
     }
 

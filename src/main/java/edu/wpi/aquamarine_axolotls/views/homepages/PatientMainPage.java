@@ -1,34 +1,23 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import edu.wpi.aquamarine_axolotls.Aapp;
-import javafx.event.ActionEvent;
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class PatientMainPage extends GuestMainPage{
     @FXML StackPane serviceRequestPane;
 
-    public void initialize() throws IOException, SQLException {
+    public void initialize() {
         startUp();
     }
 
-    @Override
-    public void startUp() throws SQLException, IOException {
-        super.startUp();
-        userNameText.setText ( Aapp.userType + ": " + Aapp.userFirstName );
-
-        serviceRequestPane.setOnMouseExited(mouseEvent -> {
-            if (serviceRequestPane.isVisible()) {
-                serviceRequestPane.setVisible(false);
-                serviceRequestPane.toBack();
-            }
-        });
+    public void startUp() {
+        userNameText.setText(PREFERENCES.get(USER_TYPE,null) + ": " + PREFERENCES.get(USER_FIRST_NAME,null));
     }
 
-    @FXML
     public void serviceReqP(ActionEvent actionEvent) {
         serviceRequestPane.setVisible(true);
         serviceRequestPane.toFront();
@@ -82,12 +71,15 @@ public class PatientMainPage extends GuestMainPage{
     @FXML
     public void signOutPage(){
         popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        Aapp.username = null;
-        Aapp.userType = "Guest";
-        Aapp.userFirstName = null;
+        PREFERENCES.put(USER_TYPE, DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+        PREFERENCES.put(USER_NAME, PREFERENCES.get(INSTANCE_ID,null));
+        PREFERENCES.remove(USER_FIRST_NAME);
         goHome();
     }
 
-
+    @FXML
+    public void settingsP() {
+        sceneSwitch("UserSettings");
+    }
 
 }

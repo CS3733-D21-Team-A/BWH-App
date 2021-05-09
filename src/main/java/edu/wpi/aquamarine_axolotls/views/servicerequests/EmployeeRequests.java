@@ -3,27 +3,25 @@ package edu.wpi.aquamarine_axolotls.views.servicerequests;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTabPane;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
@@ -71,31 +69,38 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         try {
             db = DatabaseController.getInstance();
 
-            if(Aapp.userType.equals("Patient")){ // only display their service requests
-                assignB.setVisible(false);
-                changeStatusB.setVisible(false);
-                statusD.setVisible(false);
-                assignD.setVisible(false);
-                line.setVisible(false);
-                tabs.getTabs().remove(covidSurveys);
-            }
-            else if(Aapp.userType.equals("Admin")){
-                ObservableList<String> names = FXCollections.observableArrayList();
-                List<Map<String, String>> users = db.getUsers();
-                for(Map<String, String> user : users){
-                    if(user.get("USERTYPE").equals("Employee")){
-                        names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
-                    }
-                }
-                assignD.setItems(names);
+            ObservableList<String> names;
 
-            }
-            else if(Aapp.userType.equals("Employee")){
-                ObservableList<String> names = FXCollections.observableArrayList();
-                Map<String, String> usr = db.getUserByUsername(Aapp.username);
-                String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
-                names.add(name);
-                assignD.setItems(names);
+            USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
+
+            if (usertype != null) {
+                switch (usertype) {
+                    case PATIENT: // only display their service requests
+                        assignB.setVisible(false);
+                        changeStatusB.setVisible(false);
+                        statusD.setVisible(false);
+                        assignD.setVisible(false);
+                        line.setVisible(false);
+                        tabs.getTabs().remove(covidSurveys);
+                        break;
+                    case ADMIN:
+                        names = FXCollections.observableArrayList();
+                        List<Map<String, String>> users = db.getUsers();
+                        for (Map<String, String> user : users) {
+                            if (user.get("USERTYPE").equals("Employee")) {
+                                names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
+                            }
+                        }
+                        assignD.setItems(names);
+                        break;
+                    case EMPLOYEE:
+                        names = FXCollections.observableArrayList();
+                        Map<String, String> usr = db.getUserByUsername(PREFERENCES.get(USER_NAME, null));
+                        String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
+                        names.add(name);
+                        assignD.setItems(names);
+                        break;
+                }
             }
 
             //COVID Status
@@ -130,19 +135,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             soreThroatColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("soreThroat"));
             nauseaDiarrheaColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("nauseaDiarrhea"));
 
-//            this.username = survey.get("USERNAME");
-//            this.quarantine = survey.get("AREQUAR");
-//            this.fever = survey.get("HASFEVER");
-//            this.cough = survey.get("HASCOUGH");
-//            this.shortnessOfBreath = survey.get("SHORTBREATH");
-//            this.muscleAches = survey.get("MUSCLEACHES");
-//            this.tired = survey.get("MORETIRED");
-//            this.nasalCongestion = survey.get("NASALCONGEST");
-//            this.soreThroat = survey.get("SORETHROAT");
-//            this.nauseaDiarrhea = survey.get("NAUSEADIARRHEA");
-//            this.lossOfTasteSmell = survey.get("LOSSTASTESMELL");
-//            this.chills = survey.get("NEWCHILLS");
-// covid likely
             srVbox.setVisible(true);
             covidVbox.setVisible(false);
             srVbox.toFront();
@@ -158,37 +150,33 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         List<Map<String, String>> serviceRequests = null;
         List<Map<String, String>> covSurveys = null;
         try {
+            switch (DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null))) {
+                case ADMIN:
+                case EMPLOYEE:
+                    serviceRequests = db.getServiceRequests();
+                    srTable.getItems().clear();
+                    for (Map<String, String> req : serviceRequests) {
+                        srTable.getItems().add(new Request(req));
+                    }
 
-            if(Aapp.userType.equals("Admin") || Aapp.userType.equals("Employee")){
-                serviceRequests = db.getServiceRequests();
-                srTable.getItems().clear();
-                for(Map<String, String> req : serviceRequests){
-                    srTable.getItems().add(new Request(req));
-                }
-
-                covSurveys = db.getSurveys();
-                covidSurveyTable.getItems().clear();
-                for (Map<String, String> survey : covSurveys){
-                    covidSurveyTable.getItems().add(new CovidSurvey(survey));
-                }
+                    covSurveys = db.getSurveys();
+                    covidSurveyTable.getItems().clear();
+                    for (Map<String, String> survey : covSurveys) {
+                        covidSurveyTable.getItems().add(new CovidSurvey(survey));
+                    }
+                case PATIENT:
+                    serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
+                    srTable.getItems().clear();
+                    for (Map<String, String> req : serviceRequests) {
+                        srTable.getItems().add(new Request(req));
+                    }
             }
-            else if(Aapp.userType.equals("Patient")){
-                serviceRequests = db.getServiceRequestsByAuthor(Aapp.username);
-                srTable.getItems().clear();
-                for(Map<String, String> req : serviceRequests){
-                    srTable.getItems().add(new Request(req));
-                }
-            }
-        } catch (SQLException e) {
+        } catch(SQLException e){
             e.printStackTrace();
         }
 
     }
 
-    @FXML
-    public void goToService() {
-        sceneSwitch("AdminMainPage");
-    }
 
     @FXML
     public void assign(){

@@ -8,7 +8,6 @@ import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.Settings;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -29,7 +28,7 @@ import javafx.scene.paint.Color;
 import java.sql.SQLException;
 import java.util.*;
 
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
@@ -60,6 +59,8 @@ public class Navigation extends GenericMap {
     @FXML private Tab internalNav;
     @FXML private Tab externalNav;
 
+    private String username;
+
 
     ObservableList<String> options = FXCollections.observableArrayList();
     private int firstNodeSelect = 0;
@@ -87,8 +88,10 @@ public class Navigation extends GenericMap {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
-        // TODO: CHANGE THIS
-        covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        this.username = PREFERENCES.get(USER_NAME,null);
+
+        // TODO: This uses a workaround to handle guests. Change it
+        covidLikely = db.getUserByUsername(username).get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -158,7 +161,7 @@ public class Navigation extends GenericMap {
         );
 
         drawNodesAndFloor("1", Color.BLUE);
-        List<Map<String, String>> favorites = db.getFavoriteNodesForUser(Aapp.username);
+        List<Map<String, String>> favorites = db.getFavoriteNodesForUser(username);
         for(Map<String, String> node: favorites) fav.getChildren().add(new TreeItem<>(node.get("NODENAME")));
         if(favorites.isEmpty()) treeTable.getRoot().getChildren().remove(0);
 
@@ -223,7 +226,7 @@ public class Navigation extends GenericMap {
                 Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
                 if(node != null) {
                     if(fav.getChildren().size() == 0) treeTable.getRoot().getChildren().add(0, fav);
-                    db.addFavoriteNodeToUser(Aapp.username, node.get("NODEID"), node.get("LONGNAME"));
+                    db.addFavoriteNodeToUser(username, node.get("NODEID"), node.get("LONGNAME"));
                     fav.getChildren().add(new TreeItem<String>(node.get("LONGNAME")));
                     if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
                     else drawSingleNode(node, Color.HOTPINK);
@@ -238,12 +241,12 @@ public class Navigation extends GenericMap {
             try {
                 Map<String, String> node = getNearestNode(contextMenuX, contextMenuY);
                 if(node != null) {
-                    if(db.getFavoriteNodeByUserAndName(Aapp.username, node.get("LONGNAME")) != null){
+                    if(db.getFavoriteNodeByUserAndName(username, node.get("LONGNAME")) != null){
                         for (int i = 0; i < fav.getChildren().size(); i++) {
                             String nodeName = fav.getChildren().get(i).getValue();
                             if (nodeName.equals(node.get("LONGNAME"))) {
                                 fav.getChildren().remove(i);
-                                db.deleteFavoriteNodeFromUser(Aapp.username, nodeName);
+                                db.deleteFavoriteNodeFromUser(username, nodeName);
                                 drawSingleNode(node, Color.BLUE);
                                 break;
                             }
@@ -257,7 +260,7 @@ public class Navigation extends GenericMap {
             }
         });
         contextMenu.getItems().clear();
-        if (Aapp.userType.equals("Guest")) contextMenu.getItems().addAll(addStop);
+        if (PREFERENCES.get(USER_TYPE,null) == null) contextMenu.getItems().addAll(addStop);
         else contextMenu.getItems().addAll(addStop, addFav, deleteFav);
 
         mapView.setOnContextMenuRequested(event -> {
@@ -280,7 +283,7 @@ public class Navigation extends GenericMap {
             else if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")){}
             else if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node, Color.BLUE);
         }
-        for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
+        for(Map<String, String> fav : db.getFavoriteNodesForUser(username)){
             Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
             if(node.get("FLOOR").equals(FLOOR)){
                 if(node.get("NODETYPE").equals("PARK")) drawSingleNode(node, Color.YELLOW);
@@ -815,7 +818,7 @@ public class Navigation extends GenericMap {
     }
 
     public void submitApiKey(){
-        prefs.put(Settings.API_KEY, apiKey.getText());
+        PREFERENCES.put(Settings.API_KEY, apiKey.getText());
         apiKeyPane.setVisible(false);
 
         if (!apiKey.getText().equals(null)){
