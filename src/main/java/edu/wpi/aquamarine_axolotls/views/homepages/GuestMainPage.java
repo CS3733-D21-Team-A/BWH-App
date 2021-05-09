@@ -40,10 +40,10 @@ public class GuestMainPage extends GenericPage {
         sceneSwitch("LogIn");
     }
 
-    @FXML
-    public void settingsP(ActionEvent actionEvent) {
-        sceneSwitch("Settings");
-    }
+	@FXML
+	public void settingsP(ActionEvent actionEvent) {
+		sceneSwitch("UserSettings");
+	}
 
     @FXML
     public void mapP(ActionEvent actionEvent) {
