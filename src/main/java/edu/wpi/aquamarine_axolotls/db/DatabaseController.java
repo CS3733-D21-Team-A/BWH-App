@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
+import javafx.util.Pair;
 import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
@@ -47,7 +48,7 @@ public class DatabaseController {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null).getKey();
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -105,12 +106,14 @@ public class DatabaseController {
 	/**
 	 * Updates the connections associated with the database based on the current preference setting
 	 * Note: Shuts down the previous connection
+	 * @return boolean indicating if we are using the embedded database
 	 * @throws SQLException Something went wrong.
 	 * @throws IOException Something went wrong.
 	 */
-	public void updateConnection() throws SQLException, IOException {
+	public boolean updateConnection() throws SQLException, IOException {
 		shutdownDB();
-		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		boolean dbExists = bools.getKey();
 
 		nodeTable.setConnection(connection);
 		edgeTable.setConnection(connection);
@@ -127,16 +130,18 @@ public class DatabaseController {
 		if (!dbExists) {
 			populateDB();
 		}
+
+		return bools.getValue();
 	}
 
 	/**
 	 * Connects to the Derby database
 	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
 	 * @param remote Whether to try and connect to the the client-server database
-	 * @return If the database has been initialized
+	 * @return Pair whose key is if we need to construct a new database and value is whether we are using the embedded database
 	 * @throws SQLException Something went wrong.
 	 */
-	private Boolean connectToDB(boolean remote) throws SQLException {
+	private Pair<Boolean,Boolean> connectToDB(boolean remote) throws SQLException {
 		String connectionURL = "jdbc:derby:" + (remote ? "//localhost:1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
 		this.usingEmbedded = !remote;
 
@@ -171,7 +176,7 @@ public class DatabaseController {
 		}
 		System.out.println(connection.isClosed());
 
-		return dbExists;
+		return new Pair<>(dbExists, usingEmbedded);
 	}
 
 	/**

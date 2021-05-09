@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Group?>
@@ -223,6 +224,30 @@
                                  </JFXTextField>
                              </children>
                          </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="945.0">
+                           <children>
+                              <JFXCheckBox fx:id="databasePicker" alignment="CENTER_RIGHT" onAction="#updateDB" text="User Client-Server Database">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets right="25.0" />
+                                 </padding>
+                              </JFXCheckBox>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="31.0" prefWidth="945.0">
+                           <children>
+                              <JFXButton fx:id="reloadDbButton" onAction="#reloadDB" style="-fx-background-color: #003da6; -fx-border-radius: 7;" text="Reload Database Connection" textFill="WHITE">
+                                 <font>
+                                    <Font name="Verdana Old Face" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets right="25.0" />
+                                 </HBox.margin>
+                              </JFXButton>
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

@@ -1,7 +1,11 @@
 package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
@@ -12,31 +16,38 @@ import java.util.Map;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
-public class UserSettings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
-    @FXML HBox saveHbox;
-    @FXML HBox editHbox;
+public class UserSettings extends GenericPage {
 
-    @FXML JFXTextField firstName;
-    @FXML JFXTextField lastName;
-    @FXML JFXTextField pronouns;
-    @FXML JFXTextField gender;
-    @FXML JFXTextField userName;
-    @FXML JFXTextField email;
+    @FXML private JFXButton reloadDbButton;
+    @FXML private JFXCheckBox databasePicker;
+    @FXML private HBox saveHbox;
+    @FXML private HBox editHbox;
 
-    DatabaseController db;
+    @FXML private JFXTextField firstName;
+    @FXML private JFXTextField lastName;
+    @FXML private JFXTextField pronouns;
+    @FXML private JFXTextField gender;
+    @FXML private JFXTextField userName;
+    @FXML private JFXTextField email;
+
+    private final DatabaseController db = DatabaseController.getInstance();
 
     private String username;
 
     public void initialize(){
         editHbox.setVisible(true);
         saveHbox.setVisible(false);
+
         editHbox.toFront();
 
         this.username = PREFERENCES.get(USER_NAME,null);
 
-        try{
-            db = DatabaseController.getInstance();
+        String userType = PREFERENCES.get(USER_TYPE,null);
+        databasePicker.setVisible(userType.equals(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.ADMIN)));
+        reloadDbButton.setVisible(userType.equals(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.ADMIN)));
+        databasePicker.setSelected(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null);
 
+        try{
             userName.setText(username);
             firstName.setText(db.getUserByUsername(username).get("FIRSTNAME"));
             lastName.setText(db.getUserByUsername(username).get("LASTNAME"));
@@ -91,6 +102,31 @@ public class UserSettings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
             PREFERENCES.put(USER_FIRST_NAME, firstName.getText());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }
+    }
+
+    public void updateDB() {
+        if (databasePicker.isSelected()) PREFERENCES.put(USE_CLIENT_SERVER_DATABASE,"true");
+        else PREFERENCES.remove(USE_CLIENT_SERVER_DATABASE);
+
+        reloadDB();
+    }
+
+    public void reloadDB() {
+        boolean usingEmbedded;
+
+        try {
+            usingEmbedded = db.updateConnection();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+            popUp("Database Update","An error occurred when updating the database connection. THIS SHOULD NEVER HAPPEN FIGURE OUT WHAT HAPPENED AAAAAAAAAAAAAAAAAAA");
+            return;
+        }
+
+        if (PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null) {
+            popUp("Database Update", usingEmbedded ? "Unable to connect to client-server database. Falling back to embedded database." : "Connected to client-server database!");
+        } else {
+            popUp("Database Update", "Connected to embdedded database!");
         }
     }
 }
