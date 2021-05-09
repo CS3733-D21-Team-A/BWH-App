@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.NavigationTreeViewSideMenu">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="351.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.SideMenu">
    <children>
        <VBox prefHeight="259.0" prefWidth="351.0" style="-fx-background-color: #003da6;">
            <children>
@@ -33,7 +33,7 @@
                </HBox>
                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="117.0" prefWidth="351.0">
                    <children>
-                       <Label fx:id="startLabelTreeView" prefHeight="41.0" prefWidth="301.0" style="-fx-background-radius: 13; -fx-background-color: #FFFFFF;" text="Start Location">
+                       <Label fx:id="startLabel" prefHeight="41.0" prefWidth="301.0" style="-fx-background-radius: 13; -fx-background-color: #FFFFFF;" text="Start Location">
                            <VBox.margin>
                                <Insets bottom="15.0" />
                            </VBox.margin>
@@ -41,7 +41,7 @@
                                <Insets left="15.0" />
                            </padding>
                        </Label>
-                       <Label prefHeight="41.0" prefWidth="301.0" style="-fx-background-radius: 13; -fx-background-color: #FFFFFF;" text="End Location">
+                       <Label fx:id="endLabel" prefHeight="41.0" prefWidth="301.0" style="-fx-background-radius: 13; -fx-background-color: #FFFFFF;" text="End Location">
                            <padding>
                                <Insets left="15.0" />
                            </padding>
@@ -50,7 +50,7 @@
                </VBox>
                <HBox alignment="CENTER" prefHeight="64.0" prefWidth="351.0">
                    <children>
-                       <JFXButton onAction="#clearNav" prefHeight="33.6" prefWidth="108.0" style="-fx-background-radius: 5; -fx-background-color: #7D99C9;" text="Cancel" textFill="#f0f0f0" />
+                       <JFXButton onAction="#clearNav" prefHeight="33.6" prefWidth="108.0" style="-fx-background-radius: 5; -fx-background-color: #7D99C9;" text="Clear" textFill="#f0f0f0" />
                        <JFXButton onAction="#findPath" prefHeight="33.6" prefWidth="149.0" style="-fx-background-radius: 5; -fx-background-color: #F4BA47;" text="Find Path" textFill="#646464">
                            <HBox.margin>
                                <Insets left="10.0" />

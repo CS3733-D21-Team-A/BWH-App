@@ -21,12 +21,14 @@ import java.util.*;
 public class Navigation extends GenericMap {
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
     List<Map<String, String>> currentPath = new ArrayList<>();
-    @FXML
-    private TreeTableView<String> treeTable;
+
     String covidLikely;
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
+
+    ArrayList<SideMenu> sideControllers = new ArrayList<>();
+    SideMenu currentMenu;
     @FXML
     JFXDrawer drawer;
 
@@ -34,7 +36,9 @@ public class Navigation extends GenericMap {
 
     public void initialize() throws java.sql.SQLException, IOException {
 
-        treeViewSideMenu = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/TreeViewSideMenu.fxml"));
+        treeViewSideMenu = setUpSideMenu("SideMenuTreeView");
+        listOfDirectionsSideMenu = setUpSideMenu("SideMenuListOfDirections");
+        stepByStepSideMenu = setUpSideMenu("SideMenuStepByStep");
 
         startUp();
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
@@ -42,6 +46,7 @@ public class Navigation extends GenericMap {
         }
 
         drawer.setSidePane(treeViewSideMenu);
+        currentMenu = sideControllers.get(0);
 
         // TODO: CHANGE THIS
         covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
@@ -104,10 +109,13 @@ public class Navigation extends GenericMap {
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
         treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue()));
-        treeTable.setRoot(root);
-        treeTable.setShowRoot(false);
-        treeTable.getColumns().add(treeTableColumn1);
+        sideControllers.get(0).treeTable.setRoot(root);
+        sideControllers.get(0).treeTable.setShowRoot(false);
+        sideControllers.get(0).treeTable.getColumns().add(treeTableColumn1);
     }
+
+
+
 
     @Override
     public void nodePopUp() {
@@ -139,6 +147,12 @@ public class Navigation extends GenericMap {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    protected void regress() {
+    }
+
+    protected void progress() {
     }
 
 
@@ -202,9 +216,6 @@ public class Navigation extends GenericMap {
      */
     @FXML
     void findPath() {
-        stepByStepSideMenu.setVisible(false);
-        listOfDirectionsSideMenu.setVisible(true);
-        treeViewSideMenu.setVisible(false);
         drawer.setSidePane(listOfDirectionsSideMenu);
 //        for (int i = 0; i < stopList.size() - 1; i++) {
 //            String currentStart = stopList.get(i);
@@ -257,16 +268,6 @@ public class Navigation extends GenericMap {
 
 
     public void startPath(ActionEvent actionEvent) {
-        stepByStepSideMenu.setVisible(true);
-        listOfDirectionsSideMenu.setVisible(false);
-        treeViewSideMenu.setVisible(false);
-        drawer.setSidePane(stepByStepSideMenu);
-    }
-
-    public void goToStepByStep(ActionEvent actionEvent) {
-        stepByStepSideMenu.setVisible(true);
-        listOfDirectionsSideMenu.setVisible(false);
-        treeViewSideMenu.setVisible(false);
         drawer.setSidePane(stepByStepSideMenu);
     }
 
@@ -286,12 +287,32 @@ public class Navigation extends GenericMap {
         }
     }
 
-    public void goToListOfDirections(ActionEvent actionEvent) {
-        listOfDirectionsSideMenu.setVisible(true);
-        stepByStepSideMenu.setVisible(false);
-        treeViewSideMenu.setVisible(false);
-        drawer.setSidePane(listOfDirectionsSideMenu);
+                                            //=== SIDE BAR METHODS ===//
+    protected void goToTreeView() {
+        drawer.setSidePane(treeViewSideMenu);
+        currentMenu = sideControllers.get(0);
     }
+
+    public void goToListOfDirections(ActionEvent actionEvent) {
+        drawer.setSidePane(listOfDirectionsSideMenu);
+        currentMenu = sideControllers.get(1);
+    }
+
+    public void goToStepByStep(ActionEvent actionEvent) {
+        drawer.setSidePane(stepByStepSideMenu);
+        currentMenu = sideControllers.get(2);
+    }
+
+    public VBox setUpSideMenu(String name) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + name +  ".fxml"));
+        loader.load();
+        SideMenu controller = loader.getController();
+        controller.navController = this;
+        sideControllers.add(controller);
+        return loader.getRoot();
+    }
+
+
 
     //
 //    @FXML private Label startLabel;
