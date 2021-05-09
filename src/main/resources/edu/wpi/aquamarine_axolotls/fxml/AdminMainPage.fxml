@@ -356,7 +356,7 @@
                         </ImageView>
                      </graphic>
                   </JFXButton>
-                  <JFXButton onAction="#serviceReqP" prefHeight="64.0" prefWidth="223.0" text="Service Request" textFill="#fccf03">
+                  <JFXButton onAction="#serviceReqEP" prefHeight="64.0" prefWidth="223.0" text="Service Request" textFill="#fccf03">
                      <font>
                         <Font name="Verdana Bold" size="18.0" />
                      </font>

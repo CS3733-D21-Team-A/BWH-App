@@ -5,6 +5,8 @@ import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
+import java.awt.event.ActionEvent;
+
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class PatientMainPage extends GuestMainPage{

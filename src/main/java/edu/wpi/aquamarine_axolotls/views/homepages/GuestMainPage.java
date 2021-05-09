@@ -22,23 +22,9 @@ import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class GuestMainPage extends GenericPage {
 
-    @FXML
-    StackPane stackPane;
-
     DatabaseController db = DatabaseController.getInstance();
 
     @FXML Text userNameText;
-
-
-
-    @FXML
-    public void initialize() throws SQLException, IOException{
-        startUp();
-    }
-
-    void startUp() throws IOException, SQLException {
-        db = DatabaseController.getInstance();
-    }
 
     @FXML
     public void signInP(ActionEvent actionEvent) {
@@ -61,23 +47,6 @@ public class GuestMainPage extends GenericPage {
 		}
 
 	}
-
-	@FXML
-	public void stop() {
-		JFXDialogLayout content = new JFXDialogLayout();
-		JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
-		content.setHeading(new Text("Shut Down Application"));
-		content.setBody(new Text("Clicking the Shut Down button will close the application."));
-		JFXButton shutDownB = new JFXButton("Shut Down");
-		JFXButton cancel_button = new JFXButton("Cancel");
-		shutDownB.setOnAction(event1 -> {
-            help.close();
-            Platform.exit();
-        });
-        cancel_button.setOnAction(event -> help.close());
-        content.setActions(cancel_button, shutDownB);
-        help.show();
-    }
 
 	@FXML
 	public void covidSurveyPage() {
