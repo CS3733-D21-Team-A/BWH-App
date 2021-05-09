@@ -110,8 +110,9 @@ final class DatabaseInfo {
 					"PASSWORD VARCHAR(25) NOT NULL," +
 					"PRONOUNS VARCHAR(25)," +
 					"GENDER VARCHAR(50),"+
-					"TAKENSURVEY VARCHAR(25) DEFAULT 'false'," +
-					"COVIDLIKELY VARCHAR(25)" +
+					"TAKENSURVEY VARCHAR(5) DEFAULT 'false'," +
+					"COVIDLIKELY VARCHAR(5)," +
+					"ENTRYAPPROVED VARCHAR(5)" +
 					")";
 
 	// ========== ATTRIBUTES STRINGS ==========
