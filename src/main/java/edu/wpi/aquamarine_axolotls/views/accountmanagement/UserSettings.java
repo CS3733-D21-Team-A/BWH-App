@@ -3,10 +3,10 @@ package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.HBox;
 
@@ -15,8 +15,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class UserSettings extends GenericPage {
 
@@ -32,18 +31,22 @@ public class UserSettings extends GenericPage {
 
     private final DatabaseController db = DatabaseController.getInstance();
 
+    private String username;
+
     public void initialize(){
         //databasePicker.setVisible(Aapp.userType.equals("Admin")); //TODO: RE-ADD THESE ELEMENTS
         //reloadDbButton.setVisible(Aapp.userType.equals("Admin"));
-        //databasePicker.setSelected(prefs.get(USE_CLIENT_SERVER_DATABASE,null) != null);
+        //databasePicker.setSelected(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null);
+
+        username = PREFERENCES.get(USER_NAME,null);
 
         try{
-            userName.setText(Aapp.username);
-            firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));
-            lastName.setText(db.getUserByUsername(Aapp.username).get("LASTNAME"));
-            email.setText(db.getUserByUsername(Aapp.username).get("EMAIL"));
-            pronouns.setText(db.getUserByUsername(Aapp.username).get("PRONOUNS"));
-            gender.setText(db.getUserByUsername(Aapp.username).get("GENDER"));
+            userName.setText(username);
+            firstName.setText(db.getUserByUsername(username).get("FIRSTNAME"));
+            lastName.setText(db.getUserByUsername(username).get("LASTNAME"));
+            email.setText(db.getUserByUsername(username).get("EMAIL"));
+            pronouns.setText(db.getUserByUsername(username).get("PRONOUNS"));
+            gender.setText(db.getUserByUsername(username).get("GENDER"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -82,8 +85,8 @@ public class UserSettings extends GenericPage {
             user.put("PRONOUNS", pronouns.getText());
             user.put("GENDER", gender.getText());
 
-            db.editUser(Aapp.username, user);
-            Aapp.userFirstName = firstName.getText();
+            db.editUser(username, user);
+            PREFERENCES.put(USER_FIRST_NAME, firstName.getText());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -92,14 +95,13 @@ public class UserSettings extends GenericPage {
     public void aboutP() {
         sceneSwitch ( "AboutPage" );
     }
-        public void creditsP(){
-            sceneSwitch ( "CreditsPage" );
-
+    public void creditsP(){
+        sceneSwitch ( "CreditsPage" );
     }
 
     public void updateDB() {
-        if (databasePicker.isSelected()) prefs.put(USE_CLIENT_SERVER_DATABASE,"true");
-        else prefs.remove(USE_CLIENT_SERVER_DATABASE);
+        if (databasePicker.isSelected()) PREFERENCES.put(USE_CLIENT_SERVER_DATABASE,"true");
+        else PREFERENCES.remove(USE_CLIENT_SERVER_DATABASE);
 
         reloadDB();
     }
@@ -115,7 +117,22 @@ public class UserSettings extends GenericPage {
             return;
         }
 
-        if (prefs.get(USE_CLIENT_SERVER_DATABASE,null) != null) {
+        String instanceID = PREFERENCES.get(INSTANCE_ID,null);
+        try {
+            if (!db.checkUserExists(instanceID)) {
+                Map<String,String> instanceUser = new HashMap<>();
+                instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+                instanceUser.put("USERNAME",instanceID);
+                instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
+                instanceUser.put("PASSWORD",instanceID); //this should never be used, but it's a thing
+
+                db.addUser(instanceUser);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null) {
             popUp("Database Update", usingEmbedded ? "Unable to connect to client-server database. Falling back to embedded database." : "Connected to client-server database!");
         } else {
             popUp("Database Update", "Connected to embdedded database!");
