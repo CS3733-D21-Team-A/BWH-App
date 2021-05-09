@@ -278,6 +278,7 @@ public class MapEditing extends GenericMap {
     }
 
 
+
     /**
      * Brings up the editing popup for users to change values of an edge/node
      * @param isNode Whether this is a node or edge
@@ -320,19 +321,92 @@ public class MapEditing extends GenericMap {
      */
     @Override
     public void drawFloor(String floor) {
+        changeFloorImage(floor);
+        drawEdges();
+        drawNodes(darkBlue);
+        /*if(contextMenu.getItems().contains(deselect)) {
+            ObservableList<MenuItem> items = contextMenu.getItems();
+            items.get(items.indexOf(deselect)).fire(); // targets deselect
+        }*/
+        deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
+    }
+
+    public void drawNodes(Color colorOfNodes) {
         try {
-            changeFloorImage(floor);
-            drawEdges(Color.BLACK);
-            drawNodes(darkBlue);
-            /*if(contextMenu.getItems().contains(deselect)) {
-                ObservableList<MenuItem> items = contextMenu.getItems();
-                items.get(items.indexOf(deselect)).fire(); // targets deselect
-            }*/
-            deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
+            for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+                drawSingleNode(node.get("NODEID"), colorOfNodes);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Draws all edges on the current floor, check for floor is in drawTwoNodesWithEdge
+     */
+    public void drawEdges() {
+        try {
+            for (Map<String, String> edge : db.getEdges())
+                drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Circle setEventHandler(Circle node, String nodeID) {
+        node.setOnMousePressed((MouseEvent e) ->{
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+                if(e.getClickCount() == 2) nodeBeingDragged = nodeID;
+            }
+        });
+
+        node.setOnMouseClicked((MouseEvent e) -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+
+                //System.out.println(e.getClickCount());
+                if (e.getClickCount() == 2) {
+                    node.setFill(yellow);
+                    System.out.println("Successfully clicked node");
+                    currentID = nodeID;
+                    state = "Edit";
+                    nodePopUp();
+                }
+                //Otherwise, single clicks will select/deselect nodes
+                else {
+                    Circle currentCircle = nodesOnImage.get(nodeID);
+                    if (currentCircle.getFill().equals(yellow)) {
+                        try {
+                            selectedNodesList.remove(db.getNode(nodeID));
+                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
+                            node.setFill(darkBlue);
+                            //setNodeOnImage(currentCircle, nodeID);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            selectedNodesList.add(db.getNode(nodeID));
+                            //contextMenu.getItems().get(1).setVisible(true);
+                            currentCircle.setFill(yellow);
+                            //setNodeOnImage(currentCircle, nodeID);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+
+        node.setOnMouseEntered((MouseEvent e) -> {
+            node.setRadius(5);
+        });
+
+        node.setOnMouseExited((MouseEvent e) -> {
+            node.setRadius(magicNumber);
+        });
+
+        return node;
     }
 
 

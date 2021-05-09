@@ -1,42 +1,95 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
-import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.DirectionsStep;
-import com.google.maps.model.Duration;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXToggleButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Settings;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
-import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 import java.sql.SQLException;
 import java.util.*;
-
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
-import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
 /*    @Override
     public void drawFloor(String floor) throws SQLException {
 
     }*/
+
+
+    public void initialize() throws java.sql.SQLException{
+        startUp();
+        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
+            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        }
+
+        // TODO: CHANGE THIS
+        covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+
+        TreeItem<String> park = new TreeItem<>("Parking Spots");
+        TreeItem<String> rest = new TreeItem<>("Restrooms");
+        TreeItem<String> stai = new TreeItem<>("Stairs");
+        TreeItem<String> dept = new TreeItem<>("Departments");
+        TreeItem<String> labs = new TreeItem<>("Laboratories");
+        TreeItem<String> info = new TreeItem<>("Help Desks");
+        TreeItem<String> conf = new TreeItem<>("Conference Rooms");
+        TreeItem<String> exit = new TreeItem<>("Entrances");
+        TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
+        TreeItem<String> serv = new TreeItem<>("Non Medical Services");
+        TreeItem<String> fav = new TreeItem<>("Favorites");
+
+        for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
+            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
+                String nodeType = node.get("NODETYPE");
+                String longName = node.get("LONGNAME");
+                switch (nodeType){
+                    case "PARK":
+                        park.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "REST":
+                        rest.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "STAI":
+                        stai.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "DEPT":
+                        dept.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "LABS":
+                        labs.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "INFO":
+                        info.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "CONF":
+                        conf.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "EXIT":
+                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+                        if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
+                        exit.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "RETL":
+                        retl.getChildren().add(new TreeItem<>(longName));
+                        break;
+                    case "SERV":
+                        serv.getChildren().add(new TreeItem<>(longName));
+                        break;
+                }
+            }
+        }
+
+        TreeItem<String> root = new TreeItem<>("");
+        root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
+        TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
+        treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue()));
+        treeTable.setRoot(root);
+        treeTable.setShowRoot(false);
+        treeTable.getColumns().add(treeTableColumn1);
+    }
 
     @Override
     public void nodePopUp() {
@@ -50,8 +103,129 @@ public class Navigation extends GenericMap {
 
     @Override
     public void drawFloor(String floor) {
-
+        changeFloorImage(floor);
+        if(currentPath.size() > 0){
+            drawNodes(Color.web("#003da6", .4));
+            drawPath();
+        }
+        else{
+            drawNodes(darkBlue);
+        }
     }
+
+    @Override
+    public void drawNodes(Color colorOfNodes) {
+        try {
+            drawNodesNoHallWalk(darkBlue);
+            drawFavorites();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void drawFavorites(){
+        try {
+            for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
+                Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
+                if(node.get("FLOOR").equals(FLOOR)){
+                    String color;
+                    double opacity;
+                    if(node.get("NODETYPE").equals("PARK")) color = "#FFFF00";
+                    else color = "#FF69B4";
+
+                    if(currentPath.size() > 0) opacity = .4;
+                    else opacity = 1;
+                    changeNodeColorOnImage(node.get("NODEID"), Color.web(color, opacity));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
+        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+            if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) {}
+            else if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) {}
+            else if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) drawSingleNode(node.get("NODEID"), colorOfNodes);
+        }
+    }
+
+    @Override
+    public Circle setEventHandler(Circle node, String nodeID) {
+        //When you click a node in navigation, it gets selected/de-selected
+        node.setOnMouseClicked((MouseEvent e) -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)) {
+                if (stopList.contains(nodeID)) { //If the node you click is already in the stopList, it gets removed
+                    stopList.remove(nodeID); //So you can toggle destinations
+                }
+                else stopList.add(nodeID); //Otherwise, add the node's ID to the stopList
+
+                if (stopList.size() >= 2) findPath(); //After adding the node, if the stopList is at least 2 items, we find the path
+
+            }
+        });
+
+        node.setOnMouseEntered((MouseEvent e) -> {
+            node.setRadius(5);
+        });
+
+        node.setOnMouseExited((MouseEvent e) -> {
+            node.setRadius(magicNumber);
+        });
+
+        return node;
+    }
+
+
+    /**
+     * Uses the current search algorithm to find a path between all the current stops, then display that path on screen
+     */
+    void findPath() {
+        for (int i = 0; i < stopList.size() - 1; i++) {
+            String currentStart = stopList.get(i);
+            String currentEnd = stopList.get(i + 1);
+            List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
+            currentPath.addAll(path);
+        }
+        drawPath();
+    }
+
+    /**
+     * Draws the current path onto the map
+     */
+    void drawPath(){
+        linesOnImage.clear();
+        for(int i = 0; i < currentPath.size() - 1; i++){
+            Map<String, String> node = currentPath.get(i);
+            Map<String, String> nextNode = currentPath.get(i+1);
+            if(!node.get("FLOOR").equals(nextNode.get("FLOOR"))){
+                drawArrow(node.get("NODEID") + "_" + node.get("EDGEID"));
+            }
+            else {
+                Color color = darkBlue;
+                int radius = 3;
+                if(i == 0){
+                    color = Color.GREEN;
+                    radius = 5;
+                }
+                else if(i == currentPath.size() - 1){
+                    color = Color.RED;
+                    radius = 5;
+                }
+                else if(stopList.contains(node)){
+                    color = Color.ORANGE;
+                    radius = 5;
+                }
+                drawSingleEdge(node.get("NODEID") + "_" + node.get("EDGEID"), Color.BLACK);
+                changeNodeColorOnImage(node.get("NODEID"), color);
+                updateNodeSize(node.get("NODEID"), radius);
+
+            }
+        }
+    }
+
     //
 //    @FXML private Label startLabel;
 //    @FXML private Label endLabel;
@@ -101,76 +275,6 @@ public class Navigation extends GenericMap {
 //    @FXML
 //    public void initialize() throws SQLException {
 //
-//        startUp();
-//        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
-//            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
-//        }
-//
-//        // TODO: CHANGE THIS
-//        covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
-//
-//        TreeItem<String> park = new TreeItem<>("Parking Spots");
-//        TreeItem<String> rest = new TreeItem<>("Restrooms");
-//        TreeItem<String> stai = new TreeItem<>("Stairs");
-//        TreeItem<String> dept = new TreeItem<>("Departments");
-//        TreeItem<String> labs = new TreeItem<>("Laboratories");
-//        TreeItem<String> info = new TreeItem<>("Help Desks");
-//        TreeItem<String> conf = new TreeItem<>("Conference Rooms");
-//        TreeItem<String> exit = new TreeItem<>("Entrances");
-//        TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
-//        TreeItem<String> serv = new TreeItem<>("Non Medical Services");
-//        TreeItem<String> fav = new TreeItem<>("Favorites");
-//
-//        for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
-//            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
-//                options.add(node.get("LONGNAME"));
-//                String nodeType = node.get("NODETYPE");
-//                String longName = node.get("LONGNAME");
-//                switch (nodeType){
-//                    case "PARK":
-//                        park.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "REST":
-//                        rest.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "STAI":
-//                        stai.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "DEPT":
-//                        dept.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "LABS":
-//                        labs.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "INFO":
-//                        info.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "CONF":
-//                        conf.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "EXIT":
-//                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
-//                        if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
-//                        exit.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "RETL":
-//                        retl.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                    case "SERV":
-//                        serv.getChildren().add(new TreeItem<>(longName));
-//                        break;
-//                }
-//            }
-//        }
-//
-//        TreeItem<String> root = new TreeItem<>("");
-//        root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
-//        TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
-//        treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
-//                new ReadOnlyStringWrapper(p.getValue().getValue()));
-//        treeTable.setRoot(root);
-//        treeTable.setShowRoot(false);
-//        treeTable.getColumns().add(treeTableColumn1);
 //
 //        destinationDropdown.setItems(FXCollections
 //                .observableArrayList("Emergency Room", "Valet", "Parking Spot")
@@ -356,62 +460,8 @@ public class Navigation extends GenericMap {
 //        treeTable.toFront();
 //    }
 //
-//    // draw path method
-//    public void drawPath(String floor) throws SQLException{
-//        if(currPath.isEmpty()) return;
-//        FLOOR = floor;
-//        drawFloor(FLOOR);
-//        drawNodesNoHallWalk(new Color(0.0 , 0.0, 1.0, 0.4));
-//        for (int i = 0; i < currPath.size() - 1; i++) {
-//            if (currPath.get(i).getFloor().equals(FLOOR) &&
-//                    currPath.get(i + 1).getFloor().equals(FLOOR)) {
-//                drawTwoNodesWithEdge(currPath.get(i), currPath.get(i + 1), Color.BLUE, Color.BLUE, Color.BLACK);
-//            }
-//            if (!(currPath.get(i).getFloor().equals(currPath.get(i+1).getFloor()))){
-//                drawArrow(currPath.get(i), currPath.get(i+1));
-//            }
-//            for (Map<String, String> intermediatePointToDraw : intermediatePoints) {
-//                if ((intermediatePointToDraw.get("FLOOR").equals(FLOOR)) &&
-//                        (intermediatePoints.indexOf(intermediatePointToDraw) != intermediatePoints.size() - 1))
-//                            drawSingleNodeHighLight(intermediatePointToDraw, Color.ORANGE); // changed from highlight
-//            }
-//            if (currPath.get(0).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(0),Color.GREEN);
-//            if (currPath.get(currPath.size()- 1).getFloor().equals(FLOOR)) drawSingleNodeHighLight(currPath.get(currPath.size()-1),Color.MAGENTA);
-//
-//        }
-//    }
-//    // draw floor that makes everything transparent
 //
 //
-//    /**
-//     * Uses the A-star algorithm to find the shortest path between a given start and end node
-//     * @param start String, long name of start node
-//     * @param end   String, long name of end node
-//     */
-//    public void findPathSingleSegment(String start, String end) throws SQLException {
-//        double etaTotal, minutes, seconds;
-//
-//        currPath.addAll(SearchAlgorithmContext.getSearchAlgorithmContext().getPath(start, end));
-//        System.out.println(SearchAlgorithmContext.getSearchAlgorithmContext().context);
-//
-//        etaTotal = SearchAlgorithmContext.getSearchAlgorithmContext().getETA(currPath);
-//        minutes = Math.floor(etaTotal);
-//        seconds = Math.floor((etaTotal - minutes) * 60);
-//        etaLabel.setText((int) minutes + " min " + (int) seconds + " sec");
-//
-//        if (currPath.isEmpty()) return;
-//
-//        firstNodeSelect = 0;
-//        activePath = true;
-//        List<Node> toRemove = new ArrayList<>();
-//        for(Node n : currPath){ // TODO : move this to
-//            if(SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(currPath, n)) toRemove.add(n);
-//        }
-//        currPath.removeAll(toRemove);
-//        currPathDir.clear();
-//        currPathDir = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currPath);
-//        initializeDirections();
-//    }
 //
 //    /**
 //     * Cancels the current set of text directions

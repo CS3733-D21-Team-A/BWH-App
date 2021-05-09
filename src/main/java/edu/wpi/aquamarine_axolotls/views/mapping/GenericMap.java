@@ -169,7 +169,7 @@ public abstract class GenericMap extends GenericPage {
      * @param floor the floor that will be drawn
      * @throws SQLException error with database
      */
-    public void changeFloorImage(String floor) throws SQLException {
+    public void changeFloorImage(String floor) {
         FLOOR = floor;
         mapImage.setImage(new Image(floors.get(FLOOR)));
         mapView.getChildren().clear();
@@ -225,7 +225,7 @@ public abstract class GenericMap extends GenericPage {
 
     public void setMultipleNodesOnImage(List<Map<String, String>> nodes, Color colorOfNodes){
         for(Map<String, String> node : nodes){
-            node.get("NODEID");
+            node.get("NODEID"); // TODO : implement this
         }
     }
 
@@ -248,6 +248,16 @@ public abstract class GenericMap extends GenericPage {
     public void changeNodeColorOnImage(String nodeID, Color color){ // WILL BE USED IN NAVIGATION
         Circle currentNode = nodesOnImage.get(nodeID);
         currentNode.setFill(color);
+    }
+
+    /**
+     * Changes the size of the circle representing the nodeID on the map
+     * @param nodeID a ID that links to a node in the database
+     * @param radius size to change the circle to be
+     */
+    public void updateNodeSize(String nodeID, int radius){ // WILL BE USED IN NAVIGATION
+        Circle currentNode = nodesOnImage.get(nodeID);
+        currentNode.setRadius(radius);
     }
 
 
@@ -300,11 +310,8 @@ public abstract class GenericMap extends GenericPage {
      * @param colorOfNodes the color the nodes will be displayed as on the map
      * @throws SQLException error with database
      */
-    public void drawNodes(Color colorOfNodes) throws SQLException{
-        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
-            drawSingleNode(node.get("NODEID"), colorOfNodes);
-        }
-    }
+    public abstract void drawNodes(Color colorOfNodes);
+
 
 
     /**
@@ -324,6 +331,8 @@ public abstract class GenericMap extends GenericPage {
 
     }
 
+    public abstract Circle setEventHandler(Circle node, String nodeID);
+
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -333,7 +342,6 @@ public abstract class GenericMap extends GenericPage {
      */
     private void drawSingleNode(double x, double y, String nodeID, Color color){
         double radius = magicNumber;
-
         Circle node = new Circle();
         node.setCenterX(x);
         node.setCenterY(y);
@@ -342,73 +350,12 @@ public abstract class GenericMap extends GenericPage {
         node.toFront();
         node.setStroke(darkBlue);
 
-        node.setOnMousePressed((MouseEvent e) ->{
-            if (e.getButton().equals(MouseButton.PRIMARY)){
-                if(e.getClickCount() == 2) nodeBeingDragged = nodeID;
-            }
-        });
-
-        node.setOnMouseClicked((MouseEvent e) -> {
-            if (e.getButton().equals(MouseButton.PRIMARY)){
-
-                //System.out.println(e.getClickCount());
-                if (e.getClickCount() == 2) {
-                    node.setFill(yellow);
-                    System.out.println("Successfully clicked node");
-                    currentID = nodeID;
-                    state = "Edit";
-                    nodePopUp();
-                }
-                //Otherwise, single clicks will select/deselect nodes
-                else {
-                    Circle currentCircle = nodesOnImage.get(nodeID);
-                    if (currentCircle.getFill().equals(yellow)) {
-                        try {
-                            selectedNodesList.remove(db.getNode(nodeID));
-                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
-                            node.setFill(darkBlue);
-                            //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    } else {
-                        try {
-                            selectedNodesList.add(db.getNode(nodeID));
-                            //contextMenu.getItems().get(1).setVisible(true);
-                            currentCircle.setFill(yellow);
-                            //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    }
-                }
-            }
-        });
-
-        node.setOnMouseEntered((MouseEvent e) -> {
-            node.setRadius(5);
-        });
-
-        node.setOnMouseExited((MouseEvent e) -> {
-            node.setRadius(magicNumber);
-        });
-
+        setEventHandler(node, nodeID);
         setNodeOnImage(node, nodeID);
-
     }
 
 
     //====EDGE FUNCTIONS
-    /**
-     * Draws all edges on the current floor, check for floor is in drawTwoNodesWithEdge
-     * @param colorOfNodes
-     * @throws SQLException
-     */
-    public void drawEdges(Color colorOfNodes) throws SQLException {
-        for (Map<String, String> edge : db.getEdges())
-            drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
-    }
-
 
     /**
      * Draws a line on the map that represents an edge.
