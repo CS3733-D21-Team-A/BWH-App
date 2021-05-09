@@ -34,15 +34,13 @@ public class Navigation extends GenericMap {
 
     public void initialize() throws java.sql.SQLException, IOException {
 
-        FXMLLoader treeView = FXMLLoader.load(getClass().getResource("edu/wpi/aquamarine_axolotls/fxml/NavigationTreeViewSideMenu.fxml"));
-        treeViewSideMenu = treeView.getRoot();
+        treeViewSideMenu = FXMLLoader.load(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/TreeViewSideMenu.fxml"));
 
         startUp();
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
-        treeViewSideMenu.setVisible(true);
         drawer.setSidePane(treeViewSideMenu);
 
         // TODO: CHANGE THIS
