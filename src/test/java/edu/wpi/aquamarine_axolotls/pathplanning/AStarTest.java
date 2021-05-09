@@ -1,17 +1,11 @@
 package edu.wpi.aquamarine_axolotls.pathplanning;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
-import edu.wpi.aquamarine_axolotls.pathplanning.Edge;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
-import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithm;
+import edu.wpi.aquamarine_axolotls.db.DBTestUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.io.IOException;
 import org.junit.jupiter.api.TestInstance;
 
-import java.net.URISyntaxException;
-import java.sql.SQLException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +26,7 @@ public class AStarTest {
 
     @BeforeAll
     public void setupTestNodesEdges() {
-        TestUtil.resetDB();
+        DBTestUtil.resetDB();
 
         testNodes.add(new Node("A", 10, 6, floor, building, type, "Anesthesia Conf Floor L1", shortName));
         testNodes.add(new Node("B", 9, 2, floor, building, type, "Medical Records Conference Room Floor L1", shortName));

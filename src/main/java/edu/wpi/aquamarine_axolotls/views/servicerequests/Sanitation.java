@@ -35,7 +35,7 @@ public class Sanitation extends GenericServiceRequest {
 		));
 
 		serviceRequestType = SERVICEREQUEST.SANITATION;
-		startUp();
+
 		nodeIDS = new ArrayList<>();
 		nodeIDS.add("FINFO00101");
 		nodeIDS.add("EINFO00101");

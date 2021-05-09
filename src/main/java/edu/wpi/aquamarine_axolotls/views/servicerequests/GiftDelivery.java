@@ -47,7 +47,7 @@ public class GiftDelivery extends GenericServiceRequest {
                 (a) -> a.getValue() != null));
         serviceRequestType = SERVICEREQUEST.GIFT_DELIVERY;
 
-        startUp();
+
         giftOptions.setItems(FXCollections
                 .observableArrayList("Hospital T-Shirt", "Teddy Bear", "Hospital Mug"));
         nodeIDS = new ArrayList<String>();

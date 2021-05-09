@@ -23,16 +23,7 @@ public class ForgotPassword extends GenericPage {
         @FXML private JFXTextField tfa;
         @FXML private JFXButton next;
 
-        private DatabaseController db;
-
-        @FXML
-        public void initialize() {
-            try {
-                db = DatabaseController.getInstance();
-            } catch (SQLException | IOException e) {
-                e.printStackTrace ( );
-            }
-        }
+        private final DatabaseController db = DatabaseController.getInstance();
 
         public void submit_button(javafx.event.ActionEvent event)  {
             String usrname = username.getText();
