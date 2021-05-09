@@ -5,23 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import static edu.wpi.aquamarine_axolotls.Settings.USER_TYPE;
+import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+
 public class Aapp extends Application {
 
   private static Stage primaryStage;
 
   public static List<Map<String,String>> serviceRequests = new ArrayList<>();
-
-  //TODO: STORE THESE IN PREFERENCES
-  public static String userType = "Guest"; //TODO: REPLACE THIS WITH ENUM
-  public static String username;
-  public static String userFirstName;
-
 
   @Override
   public void init() {
@@ -31,8 +31,9 @@ public class Aapp extends Application {
   @Override
   public void start(Stage primaryStage) {
     Aapp.primaryStage = primaryStage;
+
     try {
-      Parent root = FXMLLoader.load(getClass().getResource("fxml/GuestMainPage.fxml"));
+      Parent root = FXMLLoader.load(getClass().getResource("fxml/" + prefs.get(USER_TYPE,"Guest") + "MainPage.fxml"));
       Scene scene = new Scene(root);
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);

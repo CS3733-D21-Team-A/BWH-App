@@ -1,6 +1,5 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -14,12 +13,12 @@ public class AdminMainPage extends EmployeeMainPage {
     }
 
     @FXML
-    public void nodeP(ActionEvent actionEvent) {
+    public void nodeP() {
         sceneSwitch("NodeEditing");
     }
 
     @FXML
-    public void addUser(ActionEvent actionEvent) {
+    public void addUser() {
         sceneSwitch("AdminNewUser");
     }
 

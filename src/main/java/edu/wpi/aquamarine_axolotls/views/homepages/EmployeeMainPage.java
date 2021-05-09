@@ -1,7 +1,5 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import edu.wpi.aquamarine_axolotls.Aapp;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -13,12 +11,12 @@ public class EmployeeMainPage extends PatientMainPage {
         startUp();
     }
     @FXML
-    public void requestP(ActionEvent actionEvent) {
+    public void requestP() {
         sceneSwitch("EmployeeRequests");
     }
 
     @FXML
-    public void serviceReqEP(ActionEvent actionEvent) {
+    public void serviceReqEP() {
         sceneSwitch("EmployeeServiceRequestPage");
     }
 }

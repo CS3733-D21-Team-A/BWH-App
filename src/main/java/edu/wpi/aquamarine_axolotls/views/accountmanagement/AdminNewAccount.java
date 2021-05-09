@@ -47,7 +47,7 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
         );
     }
     @FXML
-    public void submit_button(ActionEvent actionEvent) throws SQLException {
+    public void submit_button() throws SQLException {
         String email = emailAddress.getText();
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";

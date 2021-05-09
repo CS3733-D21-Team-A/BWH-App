@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+
 public class CovidSurvey extends GenericServiceRequest {
 
 
@@ -71,7 +74,9 @@ public class CovidSurvey extends GenericServiceRequest {
         survey.put("MORETIRED", Boolean.toString(yes10.isSelected()));
         survey.put("MUSCLEACHES", Boolean.toString(yes11.isSelected()));
 
-        survey.put("USERNAME", Aapp.username != null ? Aapp.username : "guest"); //TODO: THIS IS A WORKAROUND CHANGE THIS PLEASE
+        String username = prefs.get(USER_NAME,null);
+
+        survey.put("USERNAME", username != null ? username : "guest"); //TODO: THIS IS A WORKAROUND CHANGE THIS PLEASE
         try {
             db.addSurvey(survey);
         } catch (SQLException throwables) {

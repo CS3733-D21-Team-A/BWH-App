@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.*;
 
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+
 public class GenericServiceRequest extends GenericPage {
     @FXML
     JFXTextField firstName;
@@ -79,7 +82,7 @@ public class GenericServiceRequest extends GenericPage {
             requestValues.put(field.getColumn(), field.getValue());
         }
 
-        sharedValues.put("AUTHORID", Aapp.username);
+        sharedValues.put("AUTHORID", prefs.get(USER_NAME,null));
         sharedValues.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
         sharedValues.put("FIRSTNAME", firstName.getText());
         sharedValues.put("LASTNAME", lastName.getText());

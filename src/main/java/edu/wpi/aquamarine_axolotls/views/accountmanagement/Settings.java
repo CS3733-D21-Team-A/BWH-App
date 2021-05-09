@@ -13,6 +13,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static edu.wpi.aquamarine_axolotls.Settings.*;
+
 public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
     @FXML HBox saveHbox;
     @FXML HBox editHbox;
@@ -26,20 +28,24 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
 
     DatabaseController db;
 
+    private String username;
+
     public void initialize(){
         editHbox.setVisible(true);
         saveHbox.setVisible(false);
         editHbox.toFront();
 
+        this.username = prefs.get(USER_NAME,null);
+
         try{
             db = DatabaseController.getInstance();
 
-            userName.setText(Aapp.username);
-            firstName.setText(db.getUserByUsername(Aapp.username).get("FIRSTNAME"));
-            lastName.setText(db.getUserByUsername(Aapp.username).get("LASTNAME"));
-            email.setText(db.getUserByUsername(Aapp.username).get("EMAIL"));
-            pronouns.setText(db.getUserByUsername(Aapp.username).get("PRONOUNS"));
-            gender.setText(db.getUserByUsername(Aapp.username).get("GENDER"));
+            userName.setText(username);
+            firstName.setText(db.getUserByUsername(username).get("FIRSTNAME"));
+            lastName.setText(db.getUserByUsername(username).get("LASTNAME"));
+            email.setText(db.getUserByUsername(username).get("EMAIL"));
+            pronouns.setText(db.getUserByUsername(username).get("PRONOUNS"));
+            gender.setText(db.getUserByUsername(username).get("GENDER"));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -84,8 +90,8 @@ public class Settings extends GenericPage { //TODO: RENAME THIS CLASS PLEASE
             user.put("PRONOUNS", pronouns.getText());
             user.put("GENDER", gender.getText());
 
-            db.editUser(Aapp.username, user);
-            Aapp.userFirstName = firstName.getText();
+            db.editUser(username, user);
+            prefs.put(USER_FIRST_NAME, firstName.getText());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

@@ -1,11 +1,12 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
 import java.sql.SQLException;
+
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class PatientMainPage extends GuestMainPage{
 
@@ -16,7 +17,7 @@ public class PatientMainPage extends GuestMainPage{
     @Override
     public void startUp() throws SQLException, IOException {
         super.startUp();
-        userNameText.setText ( Aapp.userType + ": " + Aapp.userFirstName );
+        userNameText.setText(prefs.get(USER_TYPE,null) + ": " + prefs.get(USER_FIRST_NAME,null));
     }
 
     @FXML
@@ -27,9 +28,9 @@ public class PatientMainPage extends GuestMainPage{
     @FXML
     public void signOutPage(){
         popUp("Sign Out", "\n\n\n\n\nYou have been signed out of your account.");
-        Aapp.username = null;
-        Aapp.userType = "Guest";
-        Aapp.userFirstName = null;
+        prefs.remove(USER_NAME);
+        prefs.remove(USER_TYPE);
+        prefs.remove(USER_FIRST_NAME);
         goHome();
     }
 

@@ -16,6 +16,9 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+
 
 public class GuestMainPage extends GenericPage {
 
@@ -37,23 +40,22 @@ public class GuestMainPage extends GenericPage {
 	}
 
 	@FXML
-	public void signInP(ActionEvent actionEvent) {
+	public void signInP() {
 		sceneSwitch("LogIn");
 	}
 
 	@FXML
-	public void settingsP(ActionEvent actionEvent) {
+	public void settingsP() {
 		sceneSwitch("Settings");
 	}
 
 	@FXML
-	public void mapP(ActionEvent actionEvent) {
-//        sceneSwitch ( "Navigation" );
+	public void mapP() {
 		try {
-
-			if (!db.hasUserTakenCovidSurvey(Aapp.username != null ? Aapp.username : "guest")) {
+			String username = prefs.get(USER_NAME,null);
+			if (!db.hasUserTakenCovidSurvey(username != null ? username : "guest")) {
 				popUp("Covid Survey", "\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action.");
-			} else if (db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY") == null) {
+			} else if (db.getUserByUsername(username != null ? username : "guest").get("COVIDLIKELY") == null) {
 				popUp("Covid Survey", "\n\n\n\n\nWait for an employee to approve your survey.");
 			} else {
 				sceneSwitch("Navigation");
@@ -65,7 +67,7 @@ public class GuestMainPage extends GenericPage {
 	}
 
 	@FXML
-	public void stop(javafx.event.ActionEvent event) {
+	public void stop() {
 		JFXDialogLayout content = new JFXDialogLayout();
 		JFXDialog help = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.BOTTOM);
 		content.setHeading(new Text("Shut Down Application"));

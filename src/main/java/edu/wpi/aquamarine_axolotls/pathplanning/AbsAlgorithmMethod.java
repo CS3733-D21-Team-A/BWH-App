@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+
 public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
     //TODO: MAKE JAVADOCS :(
@@ -421,7 +424,8 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     }
 
     public void handleCovidStatus() throws SQLException {
-        String covidLikely = dbControl.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        String username = prefs.get(USER_NAME,null);
+        String covidLikely = dbControl.getUserByUsername(username != null ? username : "guest").get("COVIDLIKELY");
 
         Node francis = new Node(dbControl.getNode("FEXIT00201"));
         Node emergency = new Node(dbControl.getNode("FEXIT00301"));
