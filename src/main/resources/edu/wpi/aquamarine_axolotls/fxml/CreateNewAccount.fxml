@@ -101,7 +101,7 @@
                                 <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="email" maxWidth="400.0" prefHeight="25.0" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
+                        <JFXTextField fx:id="emailAddress" maxWidth="400.0" prefHeight="25.0" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
                             <font>
                                 <Font name="Verdana" size="30.0" />
                             </font>
@@ -137,7 +137,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-            <Pane fx:id="tfaPane" layoutX="73.0" layoutY="90.0" prefHeight="677.0" prefWidth="729.0" style="-fx-background-color: white;">
+            <Pane fx:id="tfaPane" layoutX="73.0" layoutY="90.0" prefHeight="677.0" prefWidth="729.0" style="-fx-background-color: white; visibility: false;">
                <children>
                   <Text layoutX="32.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Two Factor Authentication Confirmation" textAlignment="CENTER" wrappingWidth="649.619384765625">
                      <font>

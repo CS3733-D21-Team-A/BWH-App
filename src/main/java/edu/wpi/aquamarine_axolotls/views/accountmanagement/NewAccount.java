@@ -18,8 +18,10 @@ import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
+import javafx.util.Pair;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.text.html.ImageView;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -33,7 +35,8 @@ import java.util.Map;
 
 
 public class NewAccount extends GenericPage {
-
+    @FXML
+    public javafx.scene.image.ImageView tfaView;
     @FXML
     private JFXTextField firstName;
     @FXML
@@ -48,9 +51,10 @@ public class NewAccount extends GenericPage {
     private JFXPasswordField confirmPassword;
 
     @FXML
-    private ImageView tfaView;
+    private ImageView view;
 
     @FXML private Label tfaSource;
+
     @FXML
     private Label passwordMatchLabel;
 
@@ -65,24 +69,26 @@ public class NewAccount extends GenericPage {
 
     private Security security;
 
+    public NewAccount ( ) {
+    }
+
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
         Subject subject = new Subject();
         PasswordObserver passwordObserver = new PasswordObserver(subject, passwordMatchLabel);
+        subject.attach ( passwordObserver );
+    //    password.textProperty().addListener(observable -> {
+      //      subject.setNewPassword(password.getText());
+       // });
 
-        password.textProperty().addListener(observable -> {
-            subject.setNewPassword(password.getText());
-        });
-
-        confirmPassword.textProperty().addListener(observable -> {
-            subject.setConfirmPassword(confirmPassword.getText());
-        });
+        //confirmPassword.textProperty().addListener(observable -> {
+          //  subject.setConfirmPassword(confirmPassword.getText());
+       //  });
     }
 
     @FXML
     public void submit_button(ActionEvent actionEvent) throws SQLException {
-        String email = emailAddress.getText ( );
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -108,6 +114,7 @@ public class NewAccount extends GenericPage {
         }
 
         for (Map<String, String> usr : db.getUsers ( )) {
+            String email = emailAddress.getText ( );
             if ( usr.get ( "EMAIL" ).equals ( email ) ) {
                 popUp ( "Account Creation Failed" ,"\n\n\n\n\n\nUser with this email already exists." );
                 return;
@@ -137,8 +144,8 @@ public class NewAccount extends GenericPage {
         tfaPane.setVisible ( true );
         submitButton.setVisible (false  );
         try {
-            security.enableTOTP ( Aapp.username );
-            readByteArray();
+            Pair<String,byte[]> TOTPinformation = security.enableTOTP ( Aapp.username );
+            readByteArray(TOTPinformation.getValue ());
         } catch (QrGenerationException | SQLException | IOException e) {
             e.printStackTrace ( );
         }
@@ -146,15 +153,13 @@ public class NewAccount extends GenericPage {
     }
 
 
-    public void readByteArray() throws IOException {
+    public void readByteArray(byte[]  pair) throws IOException {
+        byte[] byteArray=pair; //need to initialize it
+        tfaView = new javafx.scene.image.ImageView ( String.valueOf ( byteArray ) );
+        tfaView.getImage();
 
-        BufferedImage bImage = ImageIO.read(security.makeQrCode(Aapp.username, ""));
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ImageIO.write(bImage, "png", bos );
-        byte [] data = bos.toByteArray();
-        ByteArrayInputStream bis = new ByteArrayInputStream(data);
-        BufferedImage bImage2 = ImageIO.read(bis);
-        ImageIO.write(bImage2, "jpg", new File ("security.jpg") );
-       // tfaView.setImage("security.jpg");;
-        }
+      //  BufferedImage img = ImageIO.read ( new ByteArrayInputStream ( pair ) );
+      //  plzwork.setImage( Image.impl_fromPlatformImage ( ( img ) ) );
     }
+}
+
