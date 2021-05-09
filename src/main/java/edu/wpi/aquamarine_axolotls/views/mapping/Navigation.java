@@ -316,16 +316,16 @@ public class Navigation extends GenericMap {
                     Double[] robotCoordinate = getROSCoordinate(message);
                     if (robotCoordinate != null){
                     //System.out.println(robotCoordinate[0] + "," + robotCoordinate[1] + "," + robotCoordinate[2]);
-                    Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]/3.28*30+2500)),yScale((int)(-robotCoordinate[1]/3.28*30+1500)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                    Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
                     }//TODO:cast and scale
-                    System.out.println(robotCoordinate[0]/3.28*20 + "," + -robotCoordinate[1]/3.28*20 + "," + -robotCoordinate[2]*180/Math.PI+90);
+                    System.out.println((robotCoordinate[0]*10+2130) + "," + (-robotCoordinate[1]*10+1050) + "," + -robotCoordinate[2]*180/Math.PI+90);
                     //Thread.sleep(250);
                 }
             } catch (Exception e){
                 e.printStackTrace();
             }
         });
-        //clientThreadReceiver.start();
+        clientThreadReceiver.start();
     }
 
     @Override
