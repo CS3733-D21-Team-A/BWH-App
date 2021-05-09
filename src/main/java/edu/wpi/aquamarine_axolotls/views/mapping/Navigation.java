@@ -6,6 +6,7 @@ import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -22,18 +24,19 @@ public class Navigation extends GenericMap {
     @FXML
     private TreeTableView<String> treeTable;
     String covidLikely;
-    @FXML
     VBox treeViewSideMenu;
-    @FXML
     VBox listOfDirectionsSideMenu;
-    @FXML
     VBox stepByStepSideMenu;
     @FXML
     JFXDrawer drawer;
 
 
 
-    public void initialize() throws java.sql.SQLException{
+    public void initialize() throws java.sql.SQLException, IOException {
+
+        FXMLLoader treeView = FXMLLoader.load(getClass().getResource("edu/wpi/aquamarine_axolotls/fxml/NavigationTreeViewSideMenu.fxml"));
+        treeViewSideMenu = treeView.getRoot();
+
         startUp();
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
