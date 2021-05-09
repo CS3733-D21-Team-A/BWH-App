@@ -23,9 +23,9 @@
             <children>
                 <GridPane>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="247.99991455078126" minWidth="10.0" prefWidth="241.599951171875" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.53339233398435" minWidth="10.0" prefWidth="267.200048828125" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="254.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="10.0" prefWidth="241.599951171875" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.0" minWidth="10.0" prefWidth="267.200048828125" />
+                        <ColumnConstraints />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -37,14 +37,14 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="208.0" onAction="#floralDelivP" text="Floral Delivery" textFill="#003da6">
+                                <JFXButton onAction="#floralDelivP" prefHeight="64.0" prefWidth="206.0" text="Floral Delivery" textFill="#003da6">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/floralDeliveryB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -53,14 +53,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="208.0" onAction="#foodDeliveryP" text="Food Delivery" textFill="#003da6">
+                                <JFXButton onAction="#foodDeliveryP" prefHeight="64.0" prefWidth="193.0" text="Food Delivery" textFill="#003da6">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="41.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/foodDeliveryB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -69,14 +69,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="193.0" onAction="#giftDelivP" text="Gift Delivery" textFill="#003da6">
+                                <JFXButton onAction="#giftDelivP" prefHeight="64.0" prefWidth="182.0" text="Gift Delivery" textFill="#003da6">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/giftDeliveryb.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -85,14 +85,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="3">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="241.0" onAction="#medicineDelivP" text="Medicine Delivery" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#languageP" prefHeight="64.0" prefWidth="232.0" text="Language Interpreter" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/languageInterpreterB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -101,14 +101,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="4">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="199.0" onAction="#facilityMainP" text="Maintenance" textFill="#003da6">
+                                <JFXButton onAction="#facilityMainP" prefHeight="64.0" prefWidth="182.0" text="Maintenance" textFill="#003da6">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/mainteanceB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -117,14 +117,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="239.0" onAction="#externalTransP" text="External Transport" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#laundryP" prefHeight="64.0" prefWidth="238.0" text="Laundry Services" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/laundryServicesB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -133,14 +133,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="228.0" onAction="#internalTransport" text="Internal Transport" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#sanitationP" prefHeight="64.0" prefWidth="177.0" text="Sanitation" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/sanitationB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -149,14 +149,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="217.0" onAction="#laundryP" text="Laundry Services" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#externalTransP" prefHeight="64.0" prefWidth="239.0" text="External Transport" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/externalTransportB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -165,14 +165,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="154.0" onAction="#sanitationP" text="Sanitation" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#internalTransport" prefHeight="64.0" prefWidth="240.0" text="Internal Transport" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/internalTransport.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -181,14 +181,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                             <children>
-                                <JFXButton prefHeight="64.0" prefWidth="257.0" onAction="#languageP" text="Language Interpreter" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#medicineDelivP" prefHeight="64.0" prefWidth="241.0" text="Medicine Delivery" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
-                                        <ImageView>
+                                        <ImageView fitHeight="41.0" fitWidth="40.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                                <Image url="@../img/medicineDeliveryB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -204,7 +204,7 @@
                                     <graphic>
                                         <ImageView fitHeight="36.0" fitWidth="36.0">
                                             <image>
-                                                <Image url="@../img/yellowIcons/employeeRequestYellow.PNG" />
+                                                <Image url="@../img/employeeRequest.PNG" />
                                             </image>
                                         </ImageView>
                                     </graphic>
@@ -231,28 +231,28 @@
                     <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                             <children>
-                                <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="239.0" text="Employee Requests" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="239.0" text="View Employee Requests" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
                                     <graphic>
                                         <ImageView fitHeight="36.0" fitWidth="36.0">
                                             <image>
-                                                <Image url="@../img/yellowIcons/employeeRequestYellow.PNG" />
+                                                <Image url="@../img/employeeRequest.PNG" />
                                             </image>
                                         </ImageView>
                                     </graphic>
                                 </JFXButton>
                             </children>
                         </HBox>
-                        <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="194.0" text="Covid Surveys" textFill="#003da6" wrapText="true" GridPane.rowIndex="1">
+                        <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="194.0" text="View Covid Surveys" textFill="#003da6" wrapText="true" GridPane.rowIndex="1">
                             <font>
                                 <Font name="Verdana" size="18.0" />
                             </font>
                             <graphic>
                                 <ImageView fitHeight="36.0" fitWidth="36.0">
                                     <image>
-                                        <Image url="@../img/yellowIcons/employeeRequestYellow.PNG" />
+                                        <Image url="@../img/covid.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -335,14 +335,14 @@
                                 </ImageView>
                             </graphic>
                         </JFXButton>
-                        <JFXButton onAction="#manageP" prefHeight="64.0" prefWidth="187.0" text="Management" textFill="#fccf03">
+                        <JFXButton onAction="#manageP" prefHeight="64.0" prefWidth="200.0" text="Management" textFill="#fccf03">
                             <font>
                                 <Font name="Verdana Bold" size="18.0" />
                             </font>
                             <graphic>
-                                <ImageView>
+                                <ImageView fitHeight="33.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/yellowIcons/mapEditYellow.PNG" />
+                                        <Image url="@../img/management.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -375,11 +375,11 @@
                                 </ImageView>
                             </graphic>
                         </JFXButton>
-                        <JFXButton onAction="#stop" prefHeight="51.0" prefWidth="44.0" text=" exit" textFill="#fccf03">
+                        <JFXButton contentDisplay="GRAPHIC_ONLY" onAction="#stop" prefHeight="51.0" prefWidth="44.0" text=" exit" textFill="#fccf03">
                             <graphic>
                                 <ImageView fitHeight="33.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@../img/Blue_X.png" />
+                                        <Image url="@../img/exitB.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
