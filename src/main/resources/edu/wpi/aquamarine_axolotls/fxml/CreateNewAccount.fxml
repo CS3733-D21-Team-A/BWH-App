@@ -155,13 +155,13 @@
                         <Font name="Verdana" size="30.0" />
                      </font>
                   </Text>
-                  <JFXTextField layoutX="396.0" layoutY="475.0" prefHeight="60.0" prefWidth="312.0" />
-                  <JFXButton layoutX="560.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#submit_button" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
+                  <JFXTextField fx:id="verification" layoutX="396.0" layoutY="475.0" prefHeight="60.0" prefWidth="312.0" />
+                  <JFXButton layoutX="560.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#tfasubmit_button" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
                      <font>
                         <Font name="Verdana" size="20.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton layoutX="366.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#submit_button" prefHeight="61.0" prefWidth="150.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Cancel" textFill="#7d99c9">
+                  <JFXButton layoutX="366.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#cancel2fa" prefHeight="61.0" prefWidth="150.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Cancel" textFill="#7d99c9">
                      <font>
                         <Font name="Verdana" size="20.0" />
                      </font>
@@ -169,6 +169,11 @@
                   <Label fx:id="tfaSource" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="407.0" text="Secret: " wrapText="true">
                      <font>
                         <Font name="Verdana" size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="verfIncorrect" layoutX="56.0" layoutY="630.0" prefHeight="58.0" prefWidth="621.0" style="visibility: false;" text="The verification code that you entered was incorrect. Please try again." wrapText="true">
+                     <font>
+                        <Font name="Verdana" size="15.0" />
                      </font>
                   </Label>
                </children>

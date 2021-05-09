@@ -50,6 +50,7 @@ public class NewAccount extends GenericPage {
     @FXML
     private JFXPasswordField confirmPassword;
 
+    @FXML private JFXTextField verification;
     @FXML
     private ImageView view;
 
@@ -58,6 +59,8 @@ public class NewAccount extends GenericPage {
     @FXML
     private Label passwordMatchLabel;
 
+    @FXML
+    private Label verfIncorrect;
     @FXML
     private Pane tfaPane;
     @FXML
@@ -68,9 +71,6 @@ public class NewAccount extends GenericPage {
     private DatabaseController db;
 
     private Security security;
-
-    public NewAccount ( ) {
-    }
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
@@ -142,6 +142,7 @@ public class NewAccount extends GenericPage {
 
     public void tfaSelected(){
         tfaPane.setVisible ( true );
+        verfIncorrect.setVisible ( false );
         submitButton.setVisible (false  );
         try {
             Pair<String,byte[]> TOTPinformation = Security.enableTOTP (userName.getText());
@@ -151,6 +152,7 @@ public class NewAccount extends GenericPage {
         } catch (QrGenerationException | SQLException | IOException e) {
             e.printStackTrace ( );
         }
+
     }
 
 
@@ -158,6 +160,30 @@ public class NewAccount extends GenericPage {
         Image img = new Image(new ByteArrayInputStream(pair));
 
         tfaView.setImage  ( img );
+    }
+
+
+    public void tfasubmit_button() throws SQLException {
+        boolean verificationSuccess = Security.verifyTOTP(userName.getText (),verification.getText ( ) );
+        if(verificationSuccess){
+            popUp ( "Account Success" ,"\n\n\n\n\n\nThe account you submitted was successfully created." );
+            sceneSwitch ( "LogIn" );
+        }
+        else{
+            verfIncorrect.setVisible ( true );
+
+        }
+
+    }
+
+    public void cancel2fa(){
+        tfaPane.setVisible ( false );
+        try {
+            db.deleteUser ( userName.getText () );
+        } catch (SQLException throwables) {
+            throwables.printStackTrace ( );
+        }
+        submitButton.setVisible ( true );
     }
 }
 
