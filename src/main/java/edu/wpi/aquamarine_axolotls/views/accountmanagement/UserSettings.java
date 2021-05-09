@@ -1,15 +1,25 @@
 package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXCheckBox;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import dev.samstevens.totp.exceptions.QrGenerationException;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.util.Pair;
 
+import javax.swing.text.html.ImageView;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -28,6 +38,29 @@ public class UserSettings extends GenericPage {
     @FXML private JFXTextField gender;
     @FXML private JFXTextField userName;
     @FXML private JFXTextField email;
+    @FXML private GridPane gridPane;
+    @FXML private JFXTextField phoneNumber;
+    @FXML private JFXTextField verification;
+    @FXML private ImageView view;
+
+    @FXML
+    public javafx.scene.image.ImageView tfaView;
+    @FXML private Label tfaSource;
+
+    @FXML
+    private Label passwordMatchLabel;
+
+    @FXML
+    private Label verfIncorrect;
+    @FXML
+    private Pane tfaPane;
+
+    @FXML
+    private JFXCheckBox tfa;
+
+    @FXML
+    private StackPane stackPane;
+
 
     private final DatabaseController db = DatabaseController.getInstance();
 
@@ -47,6 +80,9 @@ public class UserSettings extends GenericPage {
             email.setText(db.getUserByUsername(username).get("EMAIL"));
             pronouns.setText(db.getUserByUsername(username).get("PRONOUNS"));
             gender.setText(db.getUserByUsername(username).get("GENDER"));
+            if(db.getUserByUsername ( username ).get ( "MFAENABLED" ).equals ( "true" )){
+                tfa.setSelected (true);
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -56,7 +92,14 @@ public class UserSettings extends GenericPage {
         lastName.setEditable(false);
         email.setEditable(false);
         pronouns.setEditable(false);
+        phoneNumber.setEditable ( false );
         gender.setEditable(false);
+        tfa.setDisable ( true );
+        stackPane.setVisible ( false );
+
+
+
+
     }
 
     public void editAccount() {
@@ -64,8 +107,11 @@ public class UserSettings extends GenericPage {
         firstName.setEditable(true);
         lastName.setEditable(true);
         email.setEditable(true);
+        phoneNumber.setEditable ( true );
         pronouns.setEditable(true);
         gender.setEditable(true);
+        tfa.setDisable ( false );
+
     }
 
     public void saveEdits() {
@@ -75,6 +121,9 @@ public class UserSettings extends GenericPage {
         email.setEditable(false);
         pronouns.setEditable(false);
         gender.setEditable(false);
+        phoneNumber.setEditable ( false );
+        tfa.setDisable ( true );
+
 
         try{
             Map<String, String> user = new HashMap<String, String>();
@@ -91,6 +140,78 @@ public class UserSettings extends GenericPage {
             throwables.printStackTrace();
         }
     }
+
+
+
+        public void tfaSelected(){
+        if(tfa.isSelected ()) {
+            tfaPane.setVisible ( true );
+            gridPane.setVisible ( false );
+            verfIncorrect.setVisible ( false );
+            try {
+                Pair<String, byte[]> TOTPinformation = Security.enableTOTP ( username );
+                readByteArray ( TOTPinformation.getValue ( ) );
+                tfaSource.setText ( "Secret: \n" + TOTPinformation.getKey ( ) );
+
+            } catch (QrGenerationException | SQLException | IOException e) {
+                e.printStackTrace ( );
+            }
+        }
+        else{
+            stackPane.setVisible ( true );
+                JFXDialogLayout content = new JFXDialogLayout();
+                JFXDialog tfadisable = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.TOP);
+                content.setHeading(new Text ("Disabling Two-Factor"));
+                content.setBody(new Text("Are you sure you would like to disable two-factor authentication."));
+                JFXButton disable = new JFXButton("Disable");
+                JFXButton cancel_button = new JFXButton("Cancel");
+                disable.setOnAction(event1 -> {
+                    tfadisable.close();
+                    cancel2fa();
+                });
+                cancel_button.setOnAction(event -> tfadisable.close());
+                content.setActions(cancel_button, disable);
+                tfadisable.show();
+            }
+
+        }
+
+
+    public void readByteArray(byte[]  pair) throws IOException {
+        Image img = new Image(new ByteArrayInputStream (pair));
+        tfaView.setImage  ( img );
+    }
+
+
+    public void tfasubmit_button() throws SQLException {
+        boolean verificationSuccess = Security.verifyTOTP(username,verification.getText ( ) );
+        if(verificationSuccess){
+            popUp ( "Two Factor Authentication Success" ,"\n\n\n\n\n\n Two-Factor Authentication successfully enabled" );
+        }
+        else{
+            verfIncorrect.setVisible ( true );
+        }
+    }
+
+    public void cancel2fa(){
+        tfaPane.setVisible ( false );
+        try {
+            Security.disableTOTP ( username );
+        } catch (SQLException throwables) {
+            throwables.printStackTrace ( );
+        }
+        gridPane.setVisible ( true );
+        tfa.setSelected ( false );
+    }
+
+
+
+
+
+
+
+
+
 
     public void aboutP() {
         sceneSwitch ( "AboutPage" );
@@ -138,4 +259,6 @@ public class UserSettings extends GenericPage {
             popUp("Database Update", "Connected to embdedded database!");
         }
     }
+
+
 }
