@@ -103,7 +103,7 @@ public class MapEditing extends GenericMap {
         makeEdge = new MenuItem("Make Edge Between Selection");
         deleteNodes = new MenuItem("Delete Selected Nodes");
         deleteEdges = new MenuItem("Delete Selected Edges");
-        deselect = new MenuItem(("Deselect Nodes"));
+        deselect = new MenuItem(("Deselect All"));
 
         //Handler for the button that adds a new node
         newNode.setOnAction((ActionEvent e) -> {
@@ -145,7 +145,11 @@ public class MapEditing extends GenericMap {
             for (Map<String, String> node: selectedNodesList){
                 nodesOnImage.get(node.get("NODEID")).setFill(darkBlue);
             }
+            for (Map<String, String> edge: selectedEdgesList){
+                linesOnImage.get(edge.get("EDGEID")).setStroke(Color.BLACK);
+            }
             selectedNodesList.clear();
+            selectedEdgesList.clear();
             addAnchorPoint.setText("Add Anchor Point");
             if (!anchor1.isEmpty()) drawSingleNode(anchor1.get("NODEID"), darkBlue);
             if (!anchor2.isEmpty()) drawSingleNode(anchor2.get("NODEID"), darkBlue);
