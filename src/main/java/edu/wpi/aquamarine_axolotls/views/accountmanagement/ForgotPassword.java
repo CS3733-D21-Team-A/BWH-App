@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class ForgotPassword extends GenericPage {
@@ -59,9 +60,9 @@ public class ForgotPassword extends GenericPage {
             }
         }
 
-        public void verifyEmailConf(){
+        public void verifyEmailConf() throws IOException {
             if(!verifyEmail.getText ().isEmpty ()){
-
+                emailService.sendAccountResetEmail(email.getText(), username.getText(), "1"); //TODO: resetCode
                 String emailConf = "";
                 if(verifyEmail.getText ().equals(emailConf)){
                     second.setVisible ( false );
