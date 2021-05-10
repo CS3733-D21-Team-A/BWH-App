@@ -5,17 +5,9 @@ import java.util.Map;
 import java.io.IOException;
 import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
-import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 
 import com.sendgrid.helpers.mail.objects.Personalization;
-import edu.wpi.aquamarine_axolotls.Settings;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-
-
-import java.sql.*;
-import java.util.List;
-import java.util.Map;
 
 import static edu.wpi.aquamarine_axolotls.Settings.EMAIL_API_KEY;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
@@ -24,11 +16,8 @@ public class EmailService {
 	private EmailService(){} //no instantiation allowed
 
 	private static final String ACCOUNT_CONFIRM_TEMPLATE = "d-ae1015ad10034e53845d03c85698f60a";
-
-	public static void main(String[] args) throws IOException {
-		sendAccountCreationEmail("meetite@gmail.com","nyoma","N'yoma");
-	}
-
+	private static final String ACCOUNT_RESET_TEMPLATE = null; //TODO: GET THE TEMPLATE ID
+	private static final String SERVICE_REQUEST_TEMPLATE = null; //TODO: GET TEMPLATE ID
 
 	/**
 	 * Sends the provided email
@@ -53,11 +42,8 @@ public class EmailService {
 	 * @param email address to send email to
 	 * @param username username of account associated with email
 	 * @param firstName of user associated with account
-	 * @return if email sent successfully
 	 */
 	public static void sendAccountCreationEmail(String email, String username, String firstName) throws IOException {
-		//TODO: IMPLEMENT THIS
-
 		Mail mail = new Mail();
 		mail.setFrom(new Email("groupasofteng@gmail.com"));
 		mail.setTemplateId(ACCOUNT_CONFIRM_TEMPLATE);
@@ -78,8 +64,19 @@ public class EmailService {
 	 * @param username username of account associated with email
 	 * @param resetCode reset code to send to user
 	 */
-	public static void sendAccountResetEmail(String email, String username, String resetCode) {
-		//TODO: IMPLEMENT THIS
+	public static void sendAccountResetEmail(String email, String username, String resetCode) throws IOException {
+		Mail mail = new Mail();
+		mail.setFrom(new Email("groupasofteng@gmail.com"));
+		mail.setTemplateId(ACCOUNT_RESET_TEMPLATE);
+
+		Personalization personalization = new Personalization();
+		personalization.addTo(new Email(email));
+		personalization.addDynamicTemplateData("username", username);
+		personalization.addDynamicTemplateData("resetCode", resetCode);
+
+		mail.addPersonalization(personalization);
+
+		send(mail);
 	}
 
 	/**
@@ -88,7 +85,28 @@ public class EmailService {
 	 * @param username username of account associated with email
 	 * @param requestValues values of request to send in email
 	 */
-	public static void sendServiceRequestConfirmation(String email, String username, Map<String,String> requestValues) {
-		//TODO: IMPLEMENT THIS
+	public static void sendServiceRequestConfirmation(String email, String username, Map<String,String> requestValues) throws IOException {
+		Mail mail = new Mail();
+		mail.setFrom(new Email("groupasofteng@gmail.com"));
+		mail.setTemplateId(SERVICE_REQUEST_TEMPLATE);
+
+		StringBuilder details = new StringBuilder();
+
+		for (String key : requestValues.keySet()) {
+			details.append("<b>");
+			details.append(key);
+			details.append("</b>: ");
+			details.append(requestValues.get(key));
+			details.append("\n");
+		}
+
+		Personalization personalization = new Personalization();
+		personalization.addTo(new Email(email));
+		personalization.addDynamicTemplateData("username", username);
+		personalization.addDynamicTemplateData("resetCode", details.toString());
+
+		mail.addPersonalization(personalization);
+
+		send(mail);
 	}
 }
