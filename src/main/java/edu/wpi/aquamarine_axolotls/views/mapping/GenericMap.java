@@ -70,6 +70,7 @@ public class GenericMap extends GenericPage {
     //List<Node> validNodes = new ArrayList<>();
     ObservableList<String> options = FXCollections.observableArrayList();
 
+
     // METHODS
 
     /**
@@ -569,7 +570,7 @@ public class GenericMap extends GenericPage {
                 //System.out.println("parse twice: " + parts[2]);
             }
         }
-        System.out.println(parts[0] + ", " + parts[1] + ", " + parts[2]);
+        //System.out.println(parts[0] + ", " + parts[1] + ", " + parts[2]);
 
         Double xCoord = Double.valueOf(parts[0]);
         Double yCoord = Double.valueOf(parts[1]);
@@ -583,7 +584,5 @@ public class GenericMap extends GenericPage {
         //System.out.println(coordinate);
         return coordinate;
     }
-
-    //private double get
 
 }

@@ -8,6 +8,7 @@ import java.util.prefs.BackingStoreException;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
+import edu.wpi.aquamarine_axolotls.socketServer.SocketClient;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,13 @@ public class Aapp extends Application {
   public static List<Map<String,String>> serviceRequests = new ArrayList<>();
 
   private final DatabaseController db = DatabaseController.getInstance();
+
+  public static boolean serverRunning;
+
+  public static Thread clientThreadSender = new Thread();
+  public static SocketClient clientSender = null;
+  public static Thread clientThreadReceiver = new Thread();
+  public static SocketClient clientReceiver = null;
 
   @Override
   public void init() {
@@ -51,6 +59,8 @@ public class Aapp extends Application {
   @Override
   public void start(Stage primaryStage) throws SQLException, BackingStoreException {
     Aapp.primaryStage = primaryStage;
+
+    serverRunning = false;
 
     String usertype = PREFERENCES.get(USER_TYPE,null);
     if (usertype == null) { // First run

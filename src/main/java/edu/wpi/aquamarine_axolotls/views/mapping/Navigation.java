@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXToggleButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.Settings;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
@@ -47,6 +48,7 @@ public class Navigation extends GenericMap {
     @FXML private Group textDirectionsGroup;
     @FXML private TreeTableView<String> treeTable;
     @FXML private JFXToggleButton voiceDirection;
+    @FXML private JFXToggleButton robotConnection;
 
     @FXML private JFXComboBox destinationDropdown;
     @FXML private JFXTextField startTextfield;
@@ -76,15 +78,14 @@ public class Navigation extends GenericMap {
     private Map<String,String> endPoint;
     private VoiceController voice = new VoiceController("kevin16");
     private Thread newThread = new Thread();
-    private Thread clientThreadSender = new Thread();
-    SocketClient clientSender = null;
-    private Thread clientThreadReceiver = new Thread();
-    SocketClient clientReceiver = null;
 
     private static DirectionsLeg dirLeg;
     private List<String> extDir = new ArrayList<String>();
     int dirIndexExt = 0;
     String covidLikely;
+
+    public Navigation() throws IOException {
+    }
 
     @FXML
     public void initialize() throws SQLException, IOException {
@@ -275,57 +276,6 @@ public class Navigation extends GenericMap {
             contextMenuX = event.getX();
             contextMenuY = event.getY();
         });
-
-        clientThreadSender = new Thread(() -> {
-            int second = 0;
-            String host = "192.168.1.118";
-            try {
-                clientSender = new SocketClient(host,7777);
-            String massage;
-            massage = clientSender.getMassage();
-            //System.out.println("get massage");
-            if(!massage.equals("Verifying Server!")){
-                System.out.println("Server Wrong!");
-                System.exit(0);
-            }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-//            try{
-//                while (true){
-//                    clientSender.send("connected " + second + " s");
-//                    second++;
-//                    Thread.sleep(1000);
-//                }
-//            } catch (Exception e){
-//            }
-        });
-        clientThreadSender.start();
-
-        clientThreadReceiver = new Thread(() -> {
-            try{
-            int second = 0;
-            String host = "192.168.1.118";
-            clientReceiver = new SocketClient(host,5555);
-            //System.out.println("get massage");
-
-                while (!Thread.currentThread().isInterrupted()){
-                    String message = clientReceiver.getMassage();
-                    //System.out.println(message);
-                    Double[] robotCoordinate = getROSCoordinate(message);
-                    if (robotCoordinate != null){
-                    //System.out.println(robotCoordinate[0] + "," + robotCoordinate[1] + "," + robotCoordinate[2]);
-                    Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
-                    }//TODO:cast and scale
-                    System.out.println((robotCoordinate[0]*10+2130) + "," + (-robotCoordinate[1]*10+1050) + "," + -robotCoordinate[2]*180/Math.PI+90);
-                    //Thread.sleep(250);
-                }
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-        });
-        clientThreadReceiver.start();
     }
 
     @Override
@@ -490,7 +440,7 @@ public class Navigation extends GenericMap {
             voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
         }
         String sendPacket = getROSDirection();
-        clientSender.send(sendPacket);
+        Aapp.clientSender.send(sendPacket);
     }
 
     /**
@@ -908,6 +858,74 @@ public class Navigation extends GenericMap {
             coordinateList += n.getXcoord() + "," + n.getYcoord() + ";";
         }
         return coordinateList;
+    }
+
+    @FXML
+    public void toggleRobotConnectionButton() throws IOException, InterruptedException {
+        if (robotConnection.isSelected() && !Aapp.serverRunning){
+            String host = "192.168.1.118";
+            Aapp.clientSender = new SocketClient(host,7777);
+            Aapp.clientReceiver = new SocketClient(host,5555);
+            Aapp.clientThreadSender = new Thread(() -> {
+                try {
+                    String massage;
+                    massage = Aapp.clientSender.getMassage();
+                    //System.out.println("get massage");
+                    if(!massage.equals("Verifying Server!")){
+                        System.out.println("Server Wrong!");
+                        System.exit(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//            try{
+//                while (true){
+//                    clientSender.send("connected " + second + " s");
+//                    second++;
+//                    Thread.sleep(1000);
+//                }
+//            } catch (Exception e){
+//            }
+            });
+            Aapp.clientThreadSender.start();
+
+            Aapp.clientThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientReceiver.getMassage();
+                        Double[] robotCoordinate = getROSCoordinate(message);
+                        if (robotCoordinate != null && FLOOR == "L1"){
+                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),"L1",-robotCoordinate[2]*180/Math.PI+90));
+                        }//TODO:cast and scale
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadReceiver.start();
+            Aapp.serverRunning = true;
+            System.out.println("server running");
+        }
+        else if(robotConnection.isSelected() && Aapp.serverRunning){
+            Aapp.clientThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientReceiver.getMassage();
+                        Double[] robotCoordinate = getROSCoordinate(message);
+                        if (robotCoordinate != null && FLOOR == "L1"){
+                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),"L1",-robotCoordinate[2]*180/Math.PI+90));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadReceiver.start();
+        }
+        else if(!robotConnection.isSelected() && Aapp.serverRunning){
+            Aapp.clientThreadReceiver.stop();
+            removeDirectionArrow();
+        }
     }
 }
 
