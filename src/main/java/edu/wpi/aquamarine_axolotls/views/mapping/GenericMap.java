@@ -78,11 +78,7 @@ public abstract class GenericMap extends GenericPage {
      * Responsible for setting up the map
      */
     public void startUp(){
-        try {
-            db = DatabaseController.getInstance();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        db = DatabaseController.getInstance();
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);

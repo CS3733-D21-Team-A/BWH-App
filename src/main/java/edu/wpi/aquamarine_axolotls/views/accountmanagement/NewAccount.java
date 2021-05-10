@@ -154,7 +154,7 @@ public class NewAccount extends GenericPage {
             readByteArray(TOTPinformation.getValue ());
             tfaSource.setText ( "Secret: \n"+ TOTPinformation.getKey ());
 
-        } catch ( SQLException | IOException e) {
+        } catch (SQLException | IOException | QrGenerationException e) {
             e.printStackTrace ( );
         }
 
