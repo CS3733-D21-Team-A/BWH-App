@@ -59,9 +59,9 @@ public class MapEditing extends GenericMap {
     MenuItem addAnchorPoint;
     MenuItem alignSlope;
     MenuItem makeEdge;
+    MenuItem deleteNodes;
+    MenuItem deleteEdges;
     MenuItem deselect;
-
-
 
     @FXML
     public void initialize() throws SQLException, IOException {
@@ -100,7 +100,9 @@ public class MapEditing extends GenericMap {
         alignHorizontal = new MenuItem(("Align Horizontal"));
         addAnchorPoint = new MenuItem(("Add Anchor Point"));
         alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
-        makeEdge = new MenuItem("Make edge between selection");
+        makeEdge = new MenuItem("Make Edge Between Selection");
+        deleteNodes = new MenuItem("Delete Selected Nodes");
+        deleteEdges = new MenuItem("Delete Selected Edges");
         deselect = new MenuItem(("Deselect Nodes"));
 
         //Handler for the button that adds a new node
@@ -137,6 +139,8 @@ public class MapEditing extends GenericMap {
             alignVertical.setVisible(false);
             alignSlope.setVisible(false);
             makeEdge.setVisible(false);
+            deleteNodes.setVisible(false);
+            deleteEdges.setVisible(false);
             addAnchorPoint.setVisible(false);
             for (Map<String, String> node: selectedNodesList){
                 nodesOnImage.get(node.get("NODEID")).setFill(darkBlue);
@@ -218,6 +222,37 @@ public class MapEditing extends GenericMap {
 
         });
 
+        deleteNodes.setOnAction((ActionEvent e) -> {
+            for (Map<String, String> node: selectedNodesList){
+                try {
+                    String nodeID = node.get("NODEID");
+                    removeNodeOnImage(nodeID);
+                    for (Map<String, String> edge : db.getEdgesConnectedToNode(nodeID)){
+                        removeEdgeOnImage(edge.get("EDGEID"));
+                    }
+                    db.deleteNode(nodeID);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            selectedNodesList.clear();
+            //drawFloor(FLOOR);
+        });
+
+        deleteEdges.setOnAction((ActionEvent e) ->{
+            for (Map<String, String> edge: selectedEdgesList){
+                try {
+                    String edgeID = edge.get("EDGEID");
+                    removeEdgeOnImage(edgeID);
+                    db.deleteEdge(edgeID);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            selectedEdgesList.clear();
+            //drawFloor(FLOOR);
+        });
+
         //Aligning and deselecting shouldn't be initially visible since they require a selection to work
         newNode.setVisible(false);
         addAnchorPoint.setVisible(false);
@@ -225,11 +260,13 @@ public class MapEditing extends GenericMap {
         alignVertical.setVisible(false);
         alignSlope.setVisible(false);
         makeEdge.setVisible(false);
+        deleteNodes.setVisible(false);
+        deleteEdges.setVisible(false);
         deselect.setVisible(false);
 
         //Add everything to the context menu
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignHorizontal, alignVertical, alignSlope, makeEdge, deselect);
+        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignHorizontal, alignVertical, alignSlope, makeEdge, deleteNodes, deleteEdges, deselect);
 
         //Update the context menu when it's requested
         mapView.setOnContextMenuRequested(event -> {
@@ -278,6 +315,18 @@ public class MapEditing extends GenericMap {
                 makeEdge.setVisible(false);
             }
 
+            if(!selectedNodesList.isEmpty()){
+                deleteNodes.setVisible(true);
+            } else{
+                deleteNodes.setVisible(false);
+            }
+
+            if(!selectedEdgesList.isEmpty()){
+                deleteEdges.setVisible(true);
+            } else{
+                deleteEdges.setVisible(false);
+            }
+
             if (!selectedNodesList.isEmpty() || !anchor1.isEmpty() || !anchor2.isEmpty()){ //If there's nothing selected, set deselect to be invisible
                 deselect.setVisible(true);
             }
@@ -285,13 +334,6 @@ public class MapEditing extends GenericMap {
                 deselect.setVisible(false);
             }
 
-
-            /*if (findDistance(event.getX(), event.getY(), Integer.parseInt(nearestNode.get("XCOORD")), Integer.parseInt(nearestNode.get("YCOORD"))) > magicNumber){
-                newNode.setVisible(true);
-            }
-            else {
-                newNode.setVisible(false);
-            }*/
         });
 
         //Event handler for when the mouse is clicked and dragged, used for dragging nodes around

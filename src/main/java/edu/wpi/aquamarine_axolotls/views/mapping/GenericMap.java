@@ -62,6 +62,7 @@ public abstract class GenericMap extends GenericPage {
     Map<String, Circle> nodesOnImage = new HashMap<>();
     Map<String, Line> linesOnImage = new HashMap<>();
     List<Map<String, String>> selectedNodesList = new ArrayList<>();
+    List<Map<String, String>> selectedEdgesList = new ArrayList<>();
     String FLOOR = "1";
     Group zoomGroup;
     int zoomLevel;
@@ -240,6 +241,14 @@ public abstract class GenericMap extends GenericPage {
         return mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
     }
 
+    /**
+     * Gets the index of the line on the map that corresponds to edgeID
+     * @param edgeID a ID that links to an edge in the database
+     * @return
+     */
+    public int getEdgeIndexOnImage(String edgeID){
+        return mapView.getChildren().indexOf(linesOnImage.get(edgeID));
+    }
 
     /**
      * Changes the color of the circle representing the nodeID on the map
@@ -263,6 +272,15 @@ public abstract class GenericMap extends GenericPage {
         mapView.getChildren().remove(index);
     }
 
+    /**
+     * Removes a given edgeID from the map
+     * @param edgeID a ID that links to a edge in the database
+     */
+    public void removeEdgeOnImage(String edgeID){
+        int index = getEdgeIndexOnImage(edgeID);
+        linesOnImage.remove(edgeID);
+        mapView.getChildren().remove(index);
+    }
 
     /**
      * Re-draws all the edges connected to a particular node
@@ -368,18 +386,16 @@ public abstract class GenericMap extends GenericPage {
                 }
                 //Otherwise, single clicks will select/deselect nodes
                 else {
-                    Circle currentCircle = nodesOnImage.get(nodeID);
                     try {
                         if (selectedNodesList.contains(db.getNode(nodeID))) {
                             selectedNodesList.remove(db.getNode(nodeID));
-                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
                             node.setFill(darkBlue);
-                            //setNodeOnImage(currentCircle, nodeID);
+                            if(!db.getNode(nodeID).get("FLOOR").equals(FLOOR)){
+                                removeNodeOnImage(nodeID);
+                            }
                         } else {
                             selectedNodesList.add(db.getNode(nodeID));
-                            //contextMenu.getItems().get(1).setVisible(true);
                             node.setFill(yellow);
-                            //setNodeOnImage(currentCircle, nodeID);
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -461,13 +477,29 @@ public abstract class GenericMap extends GenericPage {
         edge.setStrokeWidth(magicNumber);
         edge.setFill(edgeCol);
 
+        String edgeID = startID + "_" + endID;
+
         //Opening the popup menu
         edge.setOnMouseClicked((MouseEvent e) ->{
-            if(e.getClickCount() == 2){
-                state = "Edit";
-                currentID = startID+"_"+endID;
-                edgePopUp();
+
+            try {
+                if (selectedEdgesList.contains(db.getEdge(edgeID))) {
+                    selectedEdgesList.remove(db.getEdge(edgeID));
+                    edge.setStroke(Color.BLACK);
+                } else {
+                    selectedEdgesList.add(db.getEdge(edgeID));
+                    edge.setStroke(yellow);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+
+//
+//            if(e.getClickCount() == 2){
+//                state = "Edit";
+//                currentID = startID+"_"+endID;
+//                edgePopUp();
+//            }
         });
 
         // Hover over edge to make it thicker
@@ -481,7 +513,6 @@ public abstract class GenericMap extends GenericPage {
             edge.setStrokeWidth(magicNumber);
         });
 
-        String edgeID = startID + "_" + endID;
         if(linesOnImage.containsKey(edgeID)){
             Line key = linesOnImage.get(edgeID);
             mapView.getChildren().set(mapView.getChildren().indexOf(key), edge);
