@@ -59,7 +59,7 @@ dependencies {
 
             'dev.samstevens.totp:totp:1.7.1',
 
-            'com.sendgrid:sendgrid-java:4.7.3'
+            'com.sendgrid:sendgrid-java:4.7.2'
     )
 
 
