@@ -818,7 +818,7 @@ public class Navigation extends GenericMap {
     }
 
     public void submitApiKey(){
-        PREFERENCES.put(Settings.API_KEY, apiKey.getText());
+        PREFERENCES.put(Settings.GOOGLE_MAPS_API_KEY, apiKey.getText());
         apiKeyPane.setVisible(false);
 
         if (!apiKey.getText().equals(null)){
