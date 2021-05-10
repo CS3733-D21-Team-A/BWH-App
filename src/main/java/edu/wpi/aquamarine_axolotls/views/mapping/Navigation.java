@@ -344,7 +344,9 @@ public class Navigation extends GenericMap {
             }
             currentPath.addAll(path);
         }
+        curPathDirections.clear();
         curPathDirections = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currentPath);
+        sideControllers.get(1).clearListOfDirections();
         for(String direction : curPathDirections.get(0)){
             sideControllers.get(1).addToListOfDirections(direction);
         }
@@ -565,12 +567,13 @@ public class Navigation extends GenericMap {
         else {
             Map<String, String> node = db.getNode(curID);
             changeNodeColorOnImage(curID, darkBlue);
-            if(currentStepNumber + 1 < curPathDirections.get(1).size()){
+            /*if(currentStepNumber + 1 < curPathDirections.get(1).size()){
                 String nextID = curPathDirections.get(1).get(currentStepNumber+1);
-                nextID = nextID.substring(0, nextID.indexOf("_"));
+                if (nextID.contains("_")) nextID = nextID.substring(0, nextID.indexOf("_"));
                 changeNodeColorOnImage(nextID, yellow);
             }
-            else changeNodeColorOnImage(curID, yellow);
+            else*/ if(currentStepNumber != 0) changeNodeColorOnImage(curID, yellow);
+            else changeNodeColorOnImage(curID, Color.GREEN);
             if (currentStepNumber == curPathDirections.get(1).size() - 1) drawPathArrow(node, node); // TODO : could cause issues
             else {
                 String nextNodes = curPathDirections.get(1).get(currentStepNumber + 1);
@@ -587,7 +590,10 @@ public class Navigation extends GenericMap {
     public void unHighlightDirection() throws SQLException{
         String curDirectionID = curPathDirections.get(1).get(currentStepNumber);
         if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
-        else { if(currentStepNumber != 0) changeNodeColorOnImage(curDirectionID, darkBlue); }
+        else {
+            if(currentStepNumber == curPathDirections.get(1).size() - 1) changeNodeColorOnImage(curDirectionID, Color.RED);
+            else if(currentStepNumber != 0) changeNodeColorOnImage(curDirectionID, darkBlue);
+        }
     }
 
 

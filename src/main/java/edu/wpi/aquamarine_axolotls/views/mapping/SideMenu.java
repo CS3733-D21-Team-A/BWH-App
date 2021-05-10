@@ -106,6 +106,10 @@ public class SideMenu extends Navigation{
         listOfDirections.getChildren().add(directionContainer);
     }
 
+    public void clearListOfDirections(){
+        listOfDirections.getChildren().clear();
+    }
+
     public void setStartLabel(String startingPoint) {
         this.startLabel.setText(startingPoint);
     }
