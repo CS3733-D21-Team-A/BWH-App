@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -32,6 +33,7 @@ public class ForgotPassword extends GenericPage {
 
 
     private final DatabaseController db = DatabaseController.getInstance();
+    private EmailService emailService = new EmailService();
 
         public void userCheck()  {
             String usrname = username.getText();
@@ -59,7 +61,7 @@ public class ForgotPassword extends GenericPage {
 
         public void verifyEmailConf(){
             if(!verifyEmail.getText ().isEmpty ()){
-                //EMAIL CONFIRMATION
+
                 String emailConf = "";
                 if(verifyEmail.getText ().equals(emailConf)){
                     second.setVisible ( false );
