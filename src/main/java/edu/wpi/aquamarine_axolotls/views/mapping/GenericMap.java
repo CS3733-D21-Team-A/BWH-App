@@ -304,12 +304,6 @@ public abstract class GenericMap extends GenericPage {
     public abstract void nodePopUp();
 
 
-    /**
-     * Pop up that happens when user clicks an edge
-     */
-    public abstract void edgePopUp();
-
-
 //=== DRAW FUNCTIONS ===//
 
     //====NODE FUNCTIONS

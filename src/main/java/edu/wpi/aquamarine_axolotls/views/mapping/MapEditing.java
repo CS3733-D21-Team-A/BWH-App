@@ -365,22 +365,16 @@ public class MapEditing extends GenericMap {
 
     /**
      * Brings up the editing popup for users to change values of an edge/node
-     * @param isNode Whether this is a node or edge
      */
-    public void editPopUp(boolean isNode){
+    public void editPopUp(){
         final Stage myDialog = new Stage();
         myDialog.initModality(Modality.APPLICATION_MODAL);
         myDialog.centerOnScreen();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + (isNode ? "Node" : "Edge") + "PopUp" + ".fxml"));
-            if(isNode){
-                NodePopUp controller = new NodePopUp(this);
-                loader.setController(controller);
-            }
-            else{
-                EdgePopUp controller = new EdgePopUp(this);
-                loader.setController(controller);
-            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + "Node" + "PopUp" + ".fxml"));
+
+            NodePopUp controller = new NodePopUp(this);
+            loader.setController(controller);
 
             myDialog.setScene(new Scene(loader.load()));
             myDialog.show();
@@ -391,12 +385,7 @@ public class MapEditing extends GenericMap {
 
     @FXML
     public void nodePopUp() {
-        editPopUp(true);
-    }
-
-    @FXML  //TODO: make this look better
-    public void edgePopUp() {
-        editPopUp(false);
+        editPopUp();
     }
 
     /**
