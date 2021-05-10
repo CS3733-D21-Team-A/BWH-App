@@ -371,28 +371,6 @@ public class Navigation extends GenericMap {
 
     /**
      * Draws animated path
-     * This version takes two maps of string to string
-     *      * @param snode Node to start with
-     *      * @param enode Node to end at
-     *      * @param snodeCol Color of the start node
-     *      * @param enodeCol Color of the end node
-     *      * @param edgeCol Color of the edge
-     */
-
-    void drawAnimatedPath(Map<String, String> snode, Map<String, String> enode, Color snodeCol, Color enodeCol, Color edgeCol) {
-        if (snode.get("FLOOR").equals(FLOOR) && enode.get("FLOOR").equals(FLOOR)){
-            double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
-            double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
-            String startID = snode.get("NODEID");
-            double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
-            double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
-            String endID = enode.get("NODEID");
-            drawAnimatedPath(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
-        }
-    }
-
-    /**
-     * Draws animated path
      * This version takes two node objects
      * @param snode Node to start with
      * @param enode Node to end at
@@ -408,7 +386,8 @@ public class Navigation extends GenericMap {
             double endY = yScale(enode.getYcoord());
             String startID = snode.getNodeID();
             String endID = enode.getNodeID();
-            drawAnimatedPath(startX, startY, startID, endX, endY, endID, snodeCol, enodeCol, edgeCol);
+            String edgeID = getEdgeID(startID, endID);
+            drawAnimatedPath(startX, startY, startID, endX, endY, endID, edgeID, snodeCol, enodeCol, edgeCol);
         }
     }
 
@@ -418,7 +397,8 @@ public class Navigation extends GenericMap {
      * @param enodeCol Color of the end node
      * @param edgeCol Color of the edge
      */
-    private void drawAnimatedPath(double startX, double startY, String startID, double endX, double endY, String endID, Color snodeCol, Color enodeCol, Color edgeCol) {
+    private void drawAnimatedPath(double startX, double startY, String startID, double endX, double endY, String endID,
+                                  String edgeID, Color snodeCol, Color enodeCol, Color edgeCol) {
 
         Line l = new Line();
         l.getStrokeDashArray().addAll(25d, 10d);
@@ -427,6 +407,7 @@ public class Navigation extends GenericMap {
         l.setEndX(endX);
         l.setEndY(endY);
         l.setStroke(edgeCol);
+        l.setId(edgeID);
 
         final double maxOffset =
                 l.getStrokeDashArray().stream()
@@ -462,6 +443,37 @@ public class Navigation extends GenericMap {
 
         drawSingleNode(startX, startY, startID, snodeCol);
         drawSingleNode(endX, endY, endID, enodeCol);
+    }
+
+    /**
+     * Returns the ID of an edge given 2 node IDs
+     * @param snodeId start node ID
+     * @param enodeId end node ID
+     */
+    public String getEdgeID(String snodeId, String enodeId){
+        Map<String, String> result = null;
+        String edgeId;
+        try{
+            List<Map<String, String>> list1 = db.getEdgesConnectedToNode(snodeId);
+            List<Map<String, String>> list2 = db.getEdgesConnectedToNode(snodeId);
+
+            for (Map<String, String> edge: list1){
+                if (list2.contains(edge)){
+                    result = edge;
+                    break;
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        if (result.equals(null)){
+            edgeId = "";
+        }
+
+        edgeId = result.get("EDGEID");
+
+        return edgeId;
     }
 
     // draw floor that makes everything transparent
@@ -690,17 +702,6 @@ public class Navigation extends GenericMap {
         } else {
             Map<String, String> node = db.getNode(curID);
             drawSingleNode(node, Color.RED);
-//            if(dirIndex + 1 < currPathDir.get(1).size()) {
-//                String nextID = currPathDir.get(1).get(dirIndex+1);
-//                nextID = nextID.substring(0, nextID.indexOf(","));
-//                node = db.getNode(nextID);
-//                drawSingleNode(node, Color.RED);
-//            }else {
-//                node = db.getNode(curID);
-//                drawSingleNode(node, Color.RED);
-//            }
-
-
 
             if (dirIndex == currPathDir.get(1).size() - 1){
                 double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
@@ -742,7 +743,6 @@ public class Navigation extends GenericMap {
         else{
             if(dirIndex != 0) drawSingleNode(db.getNode(curNode), Color.BLUE);
         }
-
     }
 
     /**
@@ -942,6 +942,7 @@ public class Navigation extends GenericMap {
     public void stopVoice() {
         voice.stop();
     }
+
 }
 
 

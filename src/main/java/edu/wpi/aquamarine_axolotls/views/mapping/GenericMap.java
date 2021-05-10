@@ -368,6 +368,7 @@ public class GenericMap extends GenericPage {
         drawSingleNode(endX, endY, endID, enodeCol);
     }
 
+
     void drawArrow(double centerX, double centerY, String floor, double rotationAngle) {
 //        double scaledX = xScale((int)centerX);
 //        double scaledY = xScale((int)centerY);
