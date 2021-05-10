@@ -7,8 +7,8 @@ import java.util.*;
  * Class acting as an entity representing/working on a SQL table.
  */
 class Table {
-	final protected Connection connection;
-	final protected String tableName;
+	Connection connection;
+	final String tableName;
 	final private String primaryKey; //this isn't absolutely necessary, but may simplify things.
 	final private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 
@@ -265,5 +265,9 @@ class Table {
 		try (PreparedStatement smnt = connection.prepareStatement("DELETE FROM " + tableName)) {
 			smnt.executeUpdate();
 		}
+	}
+
+	public void setConnection(Connection connection) {
+		this.connection = connection;
 	}
 }

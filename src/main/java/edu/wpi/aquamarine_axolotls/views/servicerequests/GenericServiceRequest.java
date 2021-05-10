@@ -1,17 +1,18 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.*;
+
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class GenericServiceRequest extends GenericPage {
     @FXML
@@ -21,7 +22,7 @@ public class GenericServiceRequest extends GenericPage {
    // @FXML
    // JFXComboBox location; //TODO: Don't all requests need a location?
 
-    DatabaseController db;
+    DatabaseController db = DatabaseController.getInstance();
 
     Map<String,String> sharedValues = new HashMap<>();
     Map<String,String> requestValues = new HashMap<>();
@@ -79,7 +80,7 @@ public class GenericServiceRequest extends GenericPage {
             requestValues.put(field.getColumn(), field.getValue());
         }
 
-        sharedValues.put("AUTHORID", Aapp.username);
+        sharedValues.put("AUTHORID", PREFERENCES.get(USER_NAME,null));
         sharedValues.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
         sharedValues.put("FIRSTNAME", firstName.getText());
         sharedValues.put("LASTNAME", lastName.getText());
@@ -106,15 +107,6 @@ public class GenericServiceRequest extends GenericPage {
     void loadHelp() {
         popUp("Helpful information:","\n\n\n\nPlease provide your first name, last name, " +
                 "time you would like to receive the request patient's room number, and an optional message ");
-    }
-
-
-    void startUp(){ //TODO: why startUp and not initialize?
-        try {
-            db = DatabaseController.getInstance();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**

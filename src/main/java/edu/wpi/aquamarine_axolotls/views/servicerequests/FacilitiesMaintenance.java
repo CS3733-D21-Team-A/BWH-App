@@ -33,7 +33,6 @@ public class FacilitiesMaintenance extends GenericServiceRequest {
                 (a) -> !a.getText().isEmpty()
         ));
         serviceRequestType = SERVICEREQUEST.FACILITIES_MAINTENANCE;
-        startUp();
 
         locationDropdown.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1"));

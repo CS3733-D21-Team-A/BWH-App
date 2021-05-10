@@ -5,6 +5,8 @@ import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
@@ -41,6 +43,9 @@ public abstract class GenericMap extends GenericPage {
         put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
     }};
 
+
+    // valid nodes list
+    //canvas stuff
     @FXML
     ImageView mapImage;
     @FXML

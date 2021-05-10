@@ -68,7 +68,6 @@ public class ExternalTransport extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.EXTERNAL_TRANSPORT;
-        startUp();
 
 
         nodeIDS = new ArrayList<String>();

@@ -1,11 +1,9 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -14,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseControllerTest {
 	private final DatabaseController db = DatabaseController.getInstance();
 
-	DatabaseControllerTest() throws SQLException, IOException, URISyntaxException {}
+	DatabaseControllerTest() throws SQLException, IOException{}
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {
@@ -26,20 +24,10 @@ class DatabaseControllerTest {
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.TEST_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 	}
 
-	@AfterEach
-	void closeDB() {
-		try {
-			db.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			fail();
-		}
-	}
-
 	@AfterAll
 	@BeforeAll
 	static void cleanup() {
-		TestUtil.resetDB();
+		DBTestUtil.resetDB();
 	}
 
 	@Test

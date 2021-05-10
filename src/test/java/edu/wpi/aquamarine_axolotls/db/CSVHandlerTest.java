@@ -1,13 +1,11 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.TestUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +16,7 @@ public class CSVHandlerTest {
 	private InputStream nodeStream;
 	private InputStream edgeStream;
 
-	public CSVHandlerTest() throws URISyntaxException, SQLException, IOException {}
+	public CSVHandlerTest() throws SQLException, IOException {}
 
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {
@@ -39,7 +37,7 @@ public class CSVHandlerTest {
 	@AfterAll
 	@BeforeAll
 	static void cleanup() {
-		TestUtil.resetDB();
+		DBTestUtil.resetDB();
 	}
 
 

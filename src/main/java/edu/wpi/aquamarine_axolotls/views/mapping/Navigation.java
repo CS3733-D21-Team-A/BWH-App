@@ -29,7 +29,7 @@ import javafx.scene.paint.Color;
 import java.sql.SQLException;
 import java.util.*;
 
-import static edu.wpi.aquamarine_axolotls.Settings.prefs;
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
