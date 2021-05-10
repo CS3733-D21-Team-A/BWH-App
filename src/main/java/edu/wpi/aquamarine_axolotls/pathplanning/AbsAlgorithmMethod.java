@@ -445,23 +445,28 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
 
         for (int i = 1; i < path.size() - 1; i++){
-            if(path.get(i).get("NODETYPE").equals("ELEV") && path.get(i+1).get("NODETYPE").equals("ELEV")){
-                instructions.add(stepNum + ". Take the elevator to floor " + path.get(i+1).get("FLOOR") + ".");
-                nodeIDS.add(path.get(i).get("NODEID"));
+
+            Map<String, String> thisNode = path.get(i);
+            Map<String, String> nextNode = path.get(i+1);
+            Map<String, String> prevNode = path.get(i-1);
+
+            if(thisNode.get("NODETYPE").equals("ELEV") && nextNode.get("NODETYPE").equals("ELEV")){
+                instructions.add(stepNum + ". Take the elevator to floor " + nextNode.get("FLOOR") + ".");
+                nodeIDS.add(thisNode.get("NODEID"));
                 stepNum++;
-            } else if(path.get(i).get("NODETYPE").equals("STAI") && path.get(i+1).get("NODETYPE").equals("STAI")){
-                instructions.add(stepNum + ". Take the stairs to floor " + path.get(i+1).get("FLOOR") + ".");
-                nodeIDS.add(path.get(i).get("NODEID"));
+            } else if(thisNode.get("NODETYPE").equals("STAI") && nextNode.get("NODETYPE").equals("STAI")){
+                instructions.add(stepNum + ". Take the stairs to floor " + nextNode.get("FLOOR") + ".");
+                nodeIDS.add(thisNode.get("NODEID"));
                 stepNum++;
             } else {
 
-                if(!path.get(i).get("FLOOR").equals(path.get(i-1).get("FLOOR"))) {
-                    instructions.add(stepNum + ". You are now on floor " + path.get(i).get("FLOOR") + ".");
-                    nodeIDS.add(path.get(i).get("NODEID"));
+                if(!thisNode.get("FLOOR").equals(prevNode.get("FLOOR"))) {
+                    instructions.add(stepNum + ". You are now on floor " + thisNode.get("FLOOR") + ".");
+                    nodeIDS.add(thisNode.get("NODEID"));
                     stepNum++;
                 } else{
-                    double angleIn = absAngleEdge(path.get(i-1), path.get(i));
-                    double angleOut = absAngleEdge(path.get(i), path.get(i+1));
+                    double angleIn = absAngleEdge(prevNode, thisNode);
+                    double angleOut = absAngleEdge(thisNode, nextNode);
                     double turnAngle = angleOut - angleIn;
 
                     if(turnAngle <= -180.0) turnAngle += 360;
@@ -489,15 +494,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                         instructions.add(stepNum + ". Turn around.");
                         stepNum++;
                     }
-                    nodeIDS.add(path.get(i).get("NODEID"));
+                    nodeIDS.add(thisNode.get("NODEID"));
                 }
 
-                double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
+                double edgeDistancePixels = getCostTo(thisNode, nextNode);
                 double edgeDistanceFeet = edgeDistancePixels / 2.35;
 
-                instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + path.get(i+1).get("NODEID") + ".");
+                instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + nextNode.get("NODEID") + ".");
                 stepNum++;
-                nodeIDS.add(path.get(i).get("NODEID") + "_" + path.get(i+1).get("NODEID"));
+                nodeIDS.add(thisNode.get("NODEID") + "_" + nextNode.get("NODEID"));
 
             }
 
@@ -573,7 +578,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         if (turnAngle > 180.0) turnAngle -= 360.0;
 
         return (path.get(nodeIndex).get("FLOOR").equals(path.get(nodeIndex+1).get("FLOOR"))) &&
-                (Math.abs(turnAngle) < 10);
+                (Math.abs(turnAngle) <= 10);
     }
 
     public void handleCovidStatus() throws SQLException {

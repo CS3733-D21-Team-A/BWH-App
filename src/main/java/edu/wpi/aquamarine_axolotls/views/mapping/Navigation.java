@@ -251,11 +251,14 @@ public class Navigation extends GenericMap {
             String currentStart = stopList.get(i);
             String currentEnd = stopList.get(i + 1);
             List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
-            List<Map<String, String>> toRemove = new ArrayList<>();
-            for (Map<String, String> node : path){
-                if (SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(path, node)) toRemove.add(node);
+            for(int j = 0; j < 3; j++){
+                List<Map<String, String>> toRemove = new ArrayList<>();
+                for (Map<String, String> node : path) {
+                    if (SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(path, node))
+                        toRemove.add(node);
+                }
+                path.removeAll(toRemove);
             }
-            path.removeAll(toRemove);
             currentPath.addAll(path);
         }
         curPathDirections = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currentPath);
@@ -331,12 +334,12 @@ public class Navigation extends GenericMap {
         drawFloor(FLOOR);
     }
 
-    public void changeFloor3(){
-        if(drawer.isClosed()) openDrawer();
-        else{
-            closeDrawer();
-        }
-    }
+//    public void changeFloor3(){
+//        if(drawer.isClosed()) openDrawer();
+//        else{
+//            closeDrawer();
+//        }
+//    }
 
 
                                             //=== SIDE BAR METHODS ===//
