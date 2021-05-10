@@ -1,6 +1,8 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.events.JFXDrawerEvent;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -8,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -25,6 +28,10 @@ import java.util.*;
 import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.newThread;
 
 public class Navigation extends GenericMap {
+    public JFXButton drawerActionButton;
+    public ImageView drawerActionImage;
+
+
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
     List<Map<String, String>> currentPath = new ArrayList<>();
 
@@ -58,6 +65,7 @@ public class Navigation extends GenericMap {
 
         drawer.setSidePane(treeViewSideMenu);
         currentMenu = sideControllers.get(0);
+        openDrawer();
 
 
         startUp();
@@ -65,6 +73,11 @@ public class Navigation extends GenericMap {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
+        drawer.setOnDrawerClosed(event ->{
+            drawerActionButton.setLayoutX(-5);
+            drawerActionButton.setVisible(true);
+            drawer.setVisible(false);
+        });
 
         // TODO: CHANGE THIS
         covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
@@ -291,6 +304,7 @@ public class Navigation extends GenericMap {
         node.setOnMouseClicked((MouseEvent e) -> {
             if (e.getButton().equals(MouseButton.SECONDARY)) {
                 currentNodeIDContextMenu = nodeID;
+                currentNodeIDContextMenu = nodeID;
                 resetContextMenu();
                  // maybe remove?
                 if(stopList.size() == 0){
@@ -470,6 +484,8 @@ public class Navigation extends GenericMap {
     public void openDrawer(){
         mapScrollPane.setLayoutX(351);
         mapScrollPane.setPrefWidth(949);
+        drawerActionImage.setImage(new Image("/edu/wpi/aquamarine_axolotls/img/hideDrawer.png"));
+        drawerActionButton.setLayoutX(349);
         drawer.open();
         drawer.setVisible(true);
     }
@@ -477,9 +493,11 @@ public class Navigation extends GenericMap {
     public void closeDrawer(){
         mapScrollPane.setLayoutX(0);
         mapScrollPane.setPrefWidth(1300);
+        drawerActionImage.setImage(new Image("/edu/wpi/aquamarine_axolotls/img/openDrawer.png"));
+        drawerActionButton.setVisible(false);
         drawer.close();
-        drawer.setVisible(false);
     }
+
 
     protected void goToTreeView() {
         drawer.setSidePane(treeViewSideMenu);
@@ -730,6 +748,11 @@ public class Navigation extends GenericMap {
     public void updateETARegress(){
         String currentID = curPathDirections.get(1).get(currentStepNumber);
         updateETA(1, currentID);
+    }
+
+    public void drawerAction() {
+        if(drawer.isClosed()) openDrawer();
+        else closeDrawer();
     }
 
 

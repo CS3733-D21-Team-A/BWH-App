@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
@@ -34,7 +35,7 @@ public abstract class GenericMap extends GenericPage {
     static final Color lightGray = Color.web("#F0F0F0");
     static final Color darkGray = Color.web("#646464");
     static final Color yellow = Color.web("#F4BA47");
-    static Map<String, String> floors = new HashMap<String,String>() {{
+        static Map<String, String> floors = new HashMap<String,String>() {{
         put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
         put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
         put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
@@ -42,6 +43,16 @@ public abstract class GenericMap extends GenericPage {
         put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
     }};
 
+    @FXML
+    public JFXButton floorL2Button;
+    @FXML
+    public JFXButton floorL1Button;
+    @FXML
+    public JFXButton floor1Button;
+    @FXML
+    public JFXButton floor2Button;
+    @FXML
+    public JFXButton floor3Button;
     @FXML
     ImageView mapImage;
     @FXML
@@ -108,7 +119,7 @@ public abstract class GenericMap extends GenericPage {
             zoomGroup.setScaleZ(tick);
         });
 
-        drawFloor(FLOOR);
+        changeFloor1();
 
         zoomLevel = 1;
     }
@@ -118,11 +129,52 @@ public abstract class GenericMap extends GenericPage {
     /**
      * Change the active floor
      */
-    public void changeFloor3() throws SQLException { drawFloor("3"); }
-    public void changeFloor2() throws SQLException { drawFloor("2"); }
-    public void changeFloor1() throws SQLException { drawFloor("1"); }
-    public void changeFloorL1() throws SQLException { drawFloor("L1"); }
-    public void changeFloorL2() throws SQLException { drawFloor("L2"); }
+    public void changeFloor3() {
+        resetButtons();
+        floor3Button.setTextFill(Color.WHITE);
+        floor3Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("3");
+    }
+    public void changeFloor2() {
+        resetButtons();
+        floor2Button.setTextFill(Color.WHITE);
+        floor2Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("2");
+    }
+    public void changeFloor1() {
+        resetButtons();
+        floor1Button.setTextFill(Color.WHITE);
+        floor1Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("1");
+    }
+    public void changeFloorL1() {
+        resetButtons();
+        floorL1Button.setTextFill(Color.WHITE);
+        floorL1Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("L1");
+    }
+    public void changeFloorL2() {
+        resetButtons();
+        floorL2Button.setTextFill(Color.WHITE);
+        floorL2Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("L2");
+    }
+
+    public void resetButtons(){
+
+        // #f4ba47
+        // F0F0F0 gray
+        floor3Button.setStyle("-fx-background-color: #F0F0F0");
+        floor3Button.setTextFill(darkGray);
+        floor2Button.setStyle("-fx-background-color: #F0F0F0");
+        floor2Button.setTextFill(darkGray);
+        floor1Button.setStyle("-fx-background-color: #F0F0F0");
+        floor1Button.setTextFill(darkGray);
+        floorL1Button.setStyle("-fx-background-color: #F0F0F0");
+        floorL1Button.setTextFill(darkGray);
+        floorL2Button.setStyle("-fx-background-color: #F0F0F0");
+        floorL2Button.setTextFill(darkGray);
+    }
 
 
 //=== SCALING FUNCTIONS ===//
