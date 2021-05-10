@@ -53,13 +53,13 @@ public class MapEditing extends GenericMap {
     private Map<String, String> anchor1 = new HashMap<>();
     private Map<String, String> anchor2 = new HashMap<>();
 
-    MenuItem newNode = new MenuItem(("New Node Here"));
-    MenuItem alignVertical = new MenuItem(("Align Vertical"));
-    MenuItem alignHorizontal = new MenuItem(("Align Horizontal"));
-    MenuItem addAnchorPoint = new MenuItem(("Add Anchor Point"));
-    MenuItem alignSlope = new MenuItem("Align w/ Anchors 1 and 2");
-    MenuItem makeEdge = new MenuItem("Make edge between selection");
-    MenuItem deselect = new MenuItem(("Deselect Nodes"));
+    MenuItem newNode;
+    MenuItem alignVertical;
+    MenuItem alignHorizontal;
+    MenuItem addAnchorPoint;
+    MenuItem alignSlope;
+    MenuItem makeEdge;
+    MenuItem deselect;
 
 
 
@@ -122,15 +122,12 @@ public class MapEditing extends GenericMap {
             if(anchor1.isEmpty()){
                 anchor1 = selectedNode;
                 addAnchorPoint.setText("Add 2nd Anchor Point");
-                alignVertical.setVisible(true);
-                alignHorizontal.setVisible(true);
             }
             else {
-                alignSlope.setVisible(true);
                 anchor2 = selectedNode;
                 addAnchorPoint.setText("Change 2nd Anchor Point");
             }
-            drawSingleNode(selectedNode.get("NODEID"), Color.PURPLE);
+            changeNodeColorOnImage(selectedNode.get("NODEID"), Color.PURPLE);
 
         });
 
@@ -139,7 +136,8 @@ public class MapEditing extends GenericMap {
             alignHorizontal.setVisible(false);
             alignVertical.setVisible(false);
             alignSlope.setVisible(false);
-            deselect.setVisible(false);
+            makeEdge.setVisible(false);
+            addAnchorPoint.setVisible(false);
             for (Map<String, String> node: selectedNodesList){
                 nodesOnImage.get(node.get("NODEID")).setFill(darkBlue);
             }
@@ -193,13 +191,35 @@ public class MapEditing extends GenericMap {
 
         //Handler for the button that makes a new edge
         makeEdge.setOnAction((ActionEvent e) -> {
-            state = "New";
-            currentID = "";
-            edgePopUp();
+
+            Map<String, String> edge = new HashMap<>();
+
+            String startNodeID = selectedNodesList.get(0).get("NODEID");
+            String endNodeID = selectedNodesList.get(1).get("NODEID");
+            String edgeID = startNodeID + "_" + endNodeID;
+
+            edge.put("STARTNODE", startNodeID);
+            edge.put("ENDNODE", endNodeID);
+            edge.put("EDGEID", edgeID);
+
+            try {
+                if(!db.edgeExists(edge.get("EDGEID")) &&
+                        !db.edgeExists(edge.get("ENDNODE") + "_" + edge.get("STARTNODE"))){
+                    db.addEdge(edge);
+                } else {
+                    popUp("ERROR", "That edge already exists.");
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            drawSingleEdge(edgeID, Color.BLACK);
+            deselect.fire();
+
         });
 
         //Aligning and deselecting shouldn't be initially visible since they require a selection to work
-        newNode.setVisible(true);
+        newNode.setVisible(false);
         addAnchorPoint.setVisible(false);
         alignHorizontal.setVisible(false);
         alignVertical.setVisible(false);
@@ -209,18 +229,46 @@ public class MapEditing extends GenericMap {
 
         //Add everything to the context menu
         contextMenu.getItems().clear();
-        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignVertical, alignHorizontal, alignSlope, makeEdge, deselect);
+        contextMenu.getItems().addAll(newNode, addAnchorPoint, alignHorizontal, alignVertical, alignSlope, makeEdge, deselect);
 
         //Update the context menu when it's requested
         mapView.setOnContextMenuRequested(event -> {
             contextMenu.show(mapView, event.getScreenX(), event.getScreenY()); //Show the menu
             contextMenuX = event.getX(); //Update X and Y coords of contextmenu
             contextMenuY = event.getY();
+
             Map<String, String> nearestNode = null;
             try { //Get the nearest node to the context menu -- will be used in subsequent operations
                 nearestNode = getNearestNode(contextMenuX, contextMenuY);
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+
+            newNode.setVisible(true);
+
+            if (nearestNode != null) { //If there's nothing nearby, set add anchor point to be invisible
+                addAnchorPoint.setVisible(true);
+            }
+            else {
+                addAnchorPoint.setVisible(false);
+            }
+
+            if (!anchor1.isEmpty() && anchor2.isEmpty()){
+                alignHorizontal.setVisible(true);
+            } else {
+                alignHorizontal.setVisible(false);
+            }
+
+            if (!anchor1.isEmpty() && anchor2.isEmpty()){
+                alignVertical.setVisible(true);
+            } else {
+                alignVertical.setVisible(false);
+            }
+
+            if (!anchor1.isEmpty() && !anchor2.isEmpty()){
+                alignSlope.setVisible(true);
+            } else {
+                alignSlope.setVisible(false);
             }
 
             if (selectedNodesList.size() == 2){
@@ -230,18 +278,11 @@ public class MapEditing extends GenericMap {
                 makeEdge.setVisible(false);
             }
 
-            if (nearestNode == null) { //If there's nothing nearby, set add anchor point to be invisible
-                addAnchorPoint.setVisible(false);
-            }
-            else {
-                addAnchorPoint.setVisible(true);
-            }
-
-            if (selectedNodesList.isEmpty() && anchor1.isEmpty() && anchor2.isEmpty()){ //If there's nothing selected, set deselect to be invisible
-                deselect.setVisible(false);
-            }
-            else {
+            if (!selectedNodesList.isEmpty() || !anchor1.isEmpty() || !anchor2.isEmpty()){ //If there's nothing selected, set deselect to be invisible
                 deselect.setVisible(true);
+            }
+            else {
+                deselect.setVisible(false);
             }
 
 
@@ -369,13 +410,15 @@ public class MapEditing extends GenericMap {
         String anchorY = anchorPoint.get("YCOORD");
         updateNodeOnImage(anchorPoint.get("NODEID"));
         for (Map<String, String> node : nodes) {
-            node.replace("YCOORD", anchorY); // CHANGE TO NEW NODE IF NOT WORKING
+            node.replace("YCOORD", anchorY); // meh it works CHANGE TO NEW NODE IF NOT WORKING
             db.editNode(node.get("NODEID"), node); // IF THIS ISNT WORKING YOU HAVE TO CHANGE TO new node
+//            changeNodeCoordinatesOnImage(node.get("NODEID"), Integer.parseInt(node.get("XCOORD")), Integer.parseInt(anchorY));
+//            changeNodeColorOnImage(node.get("NODEID"), darkBlue);
             updateNodeOnImage(node.get("NODEID"));
         }
-        drawFloor(FLOOR);
         selectedNodesList.clear();
         anchor1.clear();
+        drawFloor(FLOOR);
     }
 
 
@@ -393,10 +436,10 @@ public class MapEditing extends GenericMap {
             db.editNode(node.get("NODEID"), node);
             updateNodeOnImage(node.get("NODEID"));
         }
-        drawFloor(FLOOR);
+
         selectedNodesList.clear();
         anchor1.clear();
-
+        drawFloor(FLOOR);
     }
 
 
@@ -430,10 +473,10 @@ public class MapEditing extends GenericMap {
             db.editNode(node.get("NODEID"), node);
             updateNodeOnImage(node.get("NODEID"));
         }
-        drawFloor(FLOOR);
         selectedNodesList.clear();
         anchor1.clear();
         anchor2.clear();
+        drawFloor(FLOOR);
     }
 
 

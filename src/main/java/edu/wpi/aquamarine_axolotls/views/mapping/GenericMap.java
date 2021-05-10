@@ -78,11 +78,7 @@ public abstract class GenericMap extends GenericPage {
      * Responsible for setting up the map
      */
     public void startUp(){
-        try {
-            db = DatabaseController.getInstance();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
+        db = DatabaseController.getInstance();
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
@@ -208,6 +204,7 @@ public abstract class GenericMap extends GenericPage {
             updatedNode.setFill(darkBlue); // could be changed
             updatedNode.toFront();
             updatedNode.setStroke(darkBlue);
+            updatedNode.setVisible(true);
             setNodeOnImage(updatedNode, nodeID);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -252,6 +249,7 @@ public abstract class GenericMap extends GenericPage {
     public void changeNodeColorOnImage(String nodeID, Color color){ // WILL BE USED IN NAVIGATION
         Circle currentNode = nodesOnImage.get(nodeID);
         currentNode.setFill(color);
+        setNodeOnImage(currentNode, nodeID);
     }
 
 
@@ -371,24 +369,20 @@ public abstract class GenericMap extends GenericPage {
                 //Otherwise, single clicks will select/deselect nodes
                 else {
                     Circle currentCircle = nodesOnImage.get(nodeID);
-                    if (currentCircle.getFill().equals(yellow)) {
-                        try {
+                    try {
+                        if (selectedNodesList.contains(db.getNode(nodeID))) {
                             selectedNodesList.remove(db.getNode(nodeID));
                             //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
                             node.setFill(darkBlue);
                             //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    } else {
-                        try {
+                        } else {
                             selectedNodesList.add(db.getNode(nodeID));
                             //contextMenu.getItems().get(1).setVisible(true);
-                            currentCircle.setFill(yellow);
+                            node.setFill(yellow);
                             //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
                         }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
                 }
             }
