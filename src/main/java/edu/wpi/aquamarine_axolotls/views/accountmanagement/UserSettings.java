@@ -43,9 +43,12 @@ public class UserSettings extends GenericPage {
     @FXML private JFXTextField verification;
     @FXML private ImageView view;
 
+    @FXML private JFXTextField hostLabel;
+    @FXML private Pane databasePane;
     @FXML
     public javafx.scene.image.ImageView tfaView;
     @FXML private Label tfaSource;
+    @FXML private JFXCheckBox databaseServer;
 
     @FXML
     private Label passwordMatchLabel;
@@ -72,8 +75,15 @@ public class UserSettings extends GenericPage {
         //databasePicker.setSelected(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null);
 
         username = PREFERENCES.get(USER_NAME,null);
-
         try{
+            System.out.println ( db.getUserByUsername(username).get ( "USERTYPE" ) );
+            if(db.getUserByUsername(username).get ( "USERTYPE" ).equals ( "Admin" )){
+                databaseServer.setVisible ( true );
+            }
+            else{
+                databaseServer.setVisible ( false );
+            }
+
             userName.setText(username);
             firstName.setText(db.getUserByUsername(username).get("FIRSTNAME"));
             lastName.setText(db.getUserByUsername(username).get("LASTNAME"));
@@ -82,6 +92,9 @@ public class UserSettings extends GenericPage {
             gender.setText(db.getUserByUsername(username).get("GENDER"));
             if(db.getUserByUsername ( username ).get ( "MFAENABLED" ).equals ( "true" )){
                 tfa.setSelected (true);
+            }
+            else{
+                tfa.setSelected(false);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -96,9 +109,7 @@ public class UserSettings extends GenericPage {
         gender.setEditable(false);
         tfa.setDisable ( true );
         stackPane.setVisible ( false );
-
-
-
+        databaseServer.setDisable ( true );
 
     }
 
@@ -111,6 +122,7 @@ public class UserSettings extends GenericPage {
         pronouns.setEditable(true);
         gender.setEditable(true);
         tfa.setDisable ( false );
+        databaseServer.setDisable ( false );
 
     }
 
@@ -123,6 +135,7 @@ public class UserSettings extends GenericPage {
         gender.setEditable(false);
         phoneNumber.setEditable ( false );
         tfa.setDisable ( true );
+        databaseServer.setDisable ( true );
 
 
         try{
@@ -260,5 +273,7 @@ public class UserSettings extends GenericPage {
         }
     }
 
-
+public void databaseCheckbox(){
+        databasePane.setVisible ( true );
+}
 }
