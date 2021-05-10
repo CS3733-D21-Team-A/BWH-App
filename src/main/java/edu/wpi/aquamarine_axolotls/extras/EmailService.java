@@ -8,6 +8,7 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
 
 import com.sendgrid.helpers.mail.objects.Personalization;
+import edu.wpi.aquamarine_axolotls.Settings;
 
 import static edu.wpi.aquamarine_axolotls.Settings.EMAIL_API_KEY;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;

@@ -46,7 +46,7 @@ public class ForgotPassword extends GenericPage {
 
             try {
                 if(db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)){
-                    //send email here!
+                    emailService.sendAccountResetEmail(email.getText(), username.getText(), "CODE"); //TODO: Create code and have page to check code
                     verfPane.setVisible ( true );
                     gridPane.setVisible ( false );
                     first.setVisible ( false );
@@ -55,14 +55,13 @@ public class ForgotPassword extends GenericPage {
 
                 }
                 else popUp ( "This account does not exist." ,"\n\n\n\n\nVerify that you have input the right username and email. ");
-            } catch (SQLException throwables) {
+            } catch (SQLException | IOException throwables) {
                 throwables.printStackTrace ( );
             }
         }
 
         public void verifyEmailConf() throws IOException {
             if(!verifyEmail.getText ().isEmpty ()){
-                emailService.sendAccountResetEmail(email.getText(), username.getText(), "1"); //TODO: resetCode
                 String emailConf = "";
                 if(verifyEmail.getText ().equals(emailConf)){
                     second.setVisible ( false );
