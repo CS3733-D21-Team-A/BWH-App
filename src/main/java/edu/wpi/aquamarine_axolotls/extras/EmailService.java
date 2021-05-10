@@ -16,8 +16,8 @@ public class EmailService {
 	private EmailService(){} //no instantiation allowed
 
 	private static final String ACCOUNT_CONFIRM_TEMPLATE = "d-ae1015ad10034e53845d03c85698f60a";
-	private static final String ACCOUNT_RESET_TEMPLATE = null; //TODO: GET THE TEMPLATE ID
-	private static final String SERVICE_REQUEST_TEMPLATE = null; //TODO: GET TEMPLATE ID
+	private static final String ACCOUNT_RESET_TEMPLATE = "d-26316387d08249688a35c351a7f0bbfc";
+	private static final String SERVICE_REQUEST_TEMPLATE = "d-ab0f5139bc124e2eb1dcfe34177f5951";
 
 	/**
 	 * Sends the provided email
