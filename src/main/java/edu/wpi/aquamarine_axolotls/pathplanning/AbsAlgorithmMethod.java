@@ -205,11 +205,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return Double, the distance between them
      */
     protected double getCostTo(Node firstnode, Node othernode){
-        double xsqre = Math.pow(othernode.getXcoord() - firstnode.getXcoord(),2);
-        double ysqre = Math.pow(othernode.getYcoord() - firstnode.getYcoord(),2);
-        double dist = Math.sqrt(xsqre+ysqre);
+        if(firstnode.getFloor().equals(othernode.getFloor())){
+            double xsqre = Math.pow(othernode.getXcoord() - firstnode.getXcoord(), 2);
+            double ysqre = Math.pow(othernode.getYcoord() - firstnode.getYcoord(), 2);
+            double dist = Math.sqrt(xsqre + ysqre);
 
-        return dist;
+            return dist;
+        } else {
+            return 110.0 * 3.75;
+        }
     }
 
     /**
@@ -219,11 +223,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return Double, the distance between them
      */
     protected double getCostTo(Map<String, String> firstnode, Map<String, String> othernode){
-        double xsqre = Math.pow(Integer.parseInt(othernode.get("XCOORD")) - Integer.parseInt(firstnode.get("XCOORD")),2);
-        double ysqre = Math.pow(Integer.parseInt(othernode.get("YCOORD")) - Integer.parseInt(firstnode.get("YCOORD")),2);
-        double dist = Math.sqrt(xsqre+ysqre);
+        if(firstnode.get("FLOOR").equals(othernode.get("FLOOR"))){
+            double xsqre = Math.pow(Integer.parseInt(othernode.get("XCOORD")) - Integer.parseInt(firstnode.get("XCOORD")), 2);
+            double ysqre = Math.pow(Integer.parseInt(othernode.get("YCOORD")) - Integer.parseInt(firstnode.get("YCOORD")), 2);
+            double dist = Math.sqrt(xsqre + ysqre);
 
-        return dist;
+            return dist;
+        } else{
+            return 110.0 * 3.75;
+        }
     }
 
     /**
@@ -340,7 +348,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
                 if(!path.get(i).getFloor().equals(path.get(i-1).getFloor())) {
                     instructions.add(stepNum + ". You are now on floor " + path.get(i).getFloor() + ".");
-                    nodeIDS.add(path.get(i).getNodeID());
+                    nodeIDS.add(path.get(i+1).getNodeID());
                     stepNum++;
                 } else{
                     double angleIn = absAngleEdge(path.get(i-1), path.get(i));

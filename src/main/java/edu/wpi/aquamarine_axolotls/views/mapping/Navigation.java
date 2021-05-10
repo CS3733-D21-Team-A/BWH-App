@@ -592,6 +592,7 @@ public class Navigation extends GenericMap {
         if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
         else {
             if(currentStepNumber == curPathDirections.get(1).size() - 1) changeNodeColorOnImage(curDirectionID, Color.RED);
+            else if (stopList.contains(curDirectionID)) changeNodeColorOnImage(curDirectionID, Color.ORANGE);
             else if(currentStepNumber != 0) changeNodeColorOnImage(curDirectionID, darkBlue);
         }
     }
@@ -652,15 +653,31 @@ public class Navigation extends GenericMap {
     }
 
 
-    public void updateETA(int number, String edgeID){
-        if (edgeID.contains("_")) {
-            String startID = edgeID.substring(0, edgeID.indexOf('_'));
-            String endID = edgeID.substring(edgeID.indexOf('_') + 1);
-            try {
-                currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(db.getNode(startID), db.getNode(endID)));
-            } catch (SQLException e) {
-                e.printStackTrace();
+    public void updateETA(int number, String edgeID) {
+        try {
+            if (edgeID.contains("_")) {
+                String startID = edgeID.substring(0, edgeID.indexOf('_'));
+                String endID = edgeID.substring(edgeID.indexOf('_') + 1);
+                try {
+                    currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(db.getNode(startID), db.getNode(endID)));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            } else if (currentStepNumber < curPathDirections.get(1).size()){
+                String nodeID = edgeID;
+                String otherID;
+                if (edgeID.equals(curPathDirections.get(1).get(currentStepNumber))) otherID = curPathDirections.get(1).get(currentStepNumber + 1);
+                else otherID = curPathDirections.get(1).get(currentStepNumber);
+                if (db.nodeExists(nodeID) && db.nodeExists(otherID)){
+                    Map<String, String> node = db.getNode(nodeID);
+                    Map<String, String> otherNode = db.getNode(otherID);
+                    if (!node.get("FLOOR").equals(otherNode.get("FLOOR"))) {
+                        currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(node, otherNode));
+                    }
+                }
             }
+        } catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
