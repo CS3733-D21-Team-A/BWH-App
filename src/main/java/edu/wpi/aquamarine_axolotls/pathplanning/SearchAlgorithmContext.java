@@ -51,7 +51,7 @@ public class SearchAlgorithmContext {
      * @return The time, in minutes, that it will take for a patient to walk along the
      *          entire path
      */
-    public double getETA(List<Node> path){
+    public double getETA(List<Map<String, String>> path){
         return context.getETA(path);
     }
 

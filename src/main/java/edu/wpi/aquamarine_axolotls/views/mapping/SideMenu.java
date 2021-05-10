@@ -78,6 +78,23 @@ public class SideMenu extends Navigation{
         navController.progress();
     }
 
+    public void setEtaLabel(double eta){
+        this.eta = eta;
+        etaLabel.setText(etaToString(eta));
+    }
+
+    private String etaToString(Double eta){
+        int minutes = eta.intValue();
+        int seconds = (int) (60 * (eta - minutes));
+        String minString = String.valueOf(minutes);
+        String secString = String.valueOf(seconds);
+        return minString + " minutes " + secString + " seconds";
+    }
+
+    public void updateETA(double number){
+        setEtaLabel(eta + number);
+    }
+
     public void addToListOfDirections(String directionText){
         ImageView arrow = new ImageView(navController.textDirectionToImage(directionText));
         arrow.setFitHeight(50.0);

@@ -39,7 +39,15 @@ public class Navigation extends GenericMap {
     JFXDrawer drawer;
     private int currentStepNumber;
     private List<List<String>> curPathDirections = new ArrayList<>();
+    double eta;
+    String currentNodeIDContextMenu;
 
+    MenuItem removeStop = new MenuItem("Remove ");
+    MenuItem addStart = new MenuItem("Add Starting Point");
+    MenuItem addEnd = new MenuItem("Make Ending Point");
+    MenuItem changeToStart = new MenuItem("Change to Start");
+    MenuItem changeToEnd = new MenuItem("Change to End");
+    MenuItem makeIntermediatePoint = new MenuItem("Make Intermediate Point");
 
     public void initialize() throws java.sql.SQLException, IOException {
 
@@ -535,6 +543,7 @@ public class Navigation extends GenericMap {
             String curDirection = curPathDirections.get(0).get(currentStepNumber);
             currentMenu.setCurArrow(textDirectionToImage(curDirection));
             currentMenu.setCurDirection(curPathDirections.get(0).get(currentStepNumber));
+            updateETARegress();
             highlightDirection();
 //            if(voiceDirection.isSelected()) {
 //                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
@@ -635,6 +644,33 @@ public class Navigation extends GenericMap {
         else return new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
 
     }
+
+
+    public void updateETA(int number, String edgeID){
+        if (edgeID.contains("_")) {
+            String startID = edgeID.substring(0, edgeID.indexOf('_'));
+            String endID = edgeID.substring(edgeID.indexOf('_') + 1);
+            try {
+                currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(db.getNode(startID), db.getNode(endID)));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void updateETAProgress(){
+        if(currentStepNumber > 0) {
+            String lastID = curPathDirections.get(1).get(currentStepNumber -1);
+            updateETA(-1, lastID);
+        }
+
+    }
+
+    public void updateETARegress(){
+        String currentID = curPathDirections.get(1).get(currentStepNumber);
+        updateETA(1, currentID);
+    }
+
 
     //
 //    @FXML private Label startLabel;
