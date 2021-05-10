@@ -17,5 +17,5 @@ public interface ISearchAlgorithmStrategy {
 
     public List<Node> getConnected(Node node);
 
-    public boolean nodeIsUnimportant(List<Node> path, Node n);
+    public boolean nodeIsUnimportant(List<Map<String, String>> path, Map<String, String> node);
 }

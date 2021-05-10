@@ -276,15 +276,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         }
 
         int stepNum = 1;
-
-
-        List<Node> modifiedPath = new ArrayList<Node>();
-        for(int i = 0; i < path.size(); i++) {
-            if(!nodeIsUnimportant(path, path.get(i))){
-                modifiedPath.add(path.get(i));
-            }
-        }
-        path = modifiedPath;
+//
+//
+//        List<Node> modifiedPath = new ArrayList<Node>();
+//        for(int i = 0; i < path.size(); i++) {
+//            if(!nodeIsUnimportant(path, path.get(i))){
+//                modifiedPath.add(path.get(i));
+//            }
+//        }
+//        path = modifiedPath;
 
 
         if(path.get(0).getNodeType().equals("ELEV") && path.get(1).getNodeType().equals("ELEV")){
@@ -377,6 +377,22 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The absolute angle, in degrees of a line connecting the two nodes.
      *          The angle will be in the range of -180 to 180.
      */
+    protected double absAngleEdge(Map<String, String> start, Map<String, String> end){
+        double deltaX = Integer.parseInt(end.get("XCOORD")) - Integer.parseInt(start.get("XCOORD"));
+        double deltaY = Integer.parseInt(end.get("YCOORD")) - Integer.parseInt(start.get("YCOORD"));
+        double radians = Math.atan2(deltaY, deltaX);
+        double degrees = radians * 180.0 / Math.PI;
+        return degrees;
+    }
+
+    /**
+     * Calculates the absolute angle, in degrees, of a line connecting two nodes with respect
+     * to the x-axis
+     * @param start The starting node
+     * @param end The ending node
+     * @return The absolute angle, in degrees of a line connecting the two nodes.
+     *          The angle will be in the range of -180 to 180.
+     */
     protected double absAngleEdge(Node start, Node end){
         double deltaX = end.getXcoord() - start.getXcoord();
         double deltaY = end.getYcoord() - start.getYcoord();
@@ -392,22 +408,22 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @param node The node in question
      * @return true if the given node is unimportant to the path's text directions
      */
-    public boolean nodeIsUnimportant(List<Node> path, Node node){
+    public boolean nodeIsUnimportant(List<Map<String, String>> path, Map<String, String> node){
 
         int nodeIndex = path.indexOf(node);
 
         if (nodeIndex == 0 || nodeIndex == path.size() - 1) return false;
 
         if(path.get(nodeIndex).equals(path.get(nodeIndex+1)) &&
-                (path.get(nodeIndex).getNodeType().equals("ELEV")
-                        || (path.get(nodeIndex).getNodeType().equals("STAI")))) return true;
+                (path.get(nodeIndex).get("NODETYPE").equals("ELEV")
+                        || (path.get(nodeIndex).get("NODETYPE").equals("STAI")))) return true;
 
-        if((node.getNodeType().equals("STAI") &&
-                (path.get(nodeIndex+1).getNodeType().equals("STAI") ||
-                        path.get(nodeIndex-1).getNodeType().equals("STAI"))) ||
-           (node.getNodeType().equals("ELEV") &&
-                   (path.get(nodeIndex+1).getNodeType().equals("ELEV") ||
-                           path.get(nodeIndex-1).getNodeType().equals("ELEV")))) return false;
+        if((node.get("NODETYPE").equals("STAI") &&
+                (path.get(nodeIndex+1).get("NODETYPE").equals("STAI") ||
+                        path.get(nodeIndex-1).get("NODETYPE").equals("STAI"))) ||
+           (node.get("NODETYPE").equals("ELEV") &&
+                   (path.get(nodeIndex+1).get("NODETYPE").equals("ELEV") ||
+                           path.get(nodeIndex-1).get("NODETYPE").equals("ELEV")))) return false;
 
         double angleIn = absAngleEdge(path.get(nodeIndex-1), path.get(nodeIndex));
         double angleOut = absAngleEdge(path.get(nodeIndex), path.get(nodeIndex+1));
@@ -416,7 +432,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         if (turnAngle <= -180.0) turnAngle += 360.0;
         if (turnAngle > 180.0) turnAngle -= 360.0;
 
-        return (path.get(nodeIndex).getFloor().equals(path.get(nodeIndex+1).getFloor())) &&
+        return (path.get(nodeIndex).get("FLOOR").equals(path.get(nodeIndex+1).get("FLOOR"))) &&
                 (Math.abs(turnAngle) < 10);
     }
 

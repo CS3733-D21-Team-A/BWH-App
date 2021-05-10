@@ -233,6 +233,11 @@ public class Navigation extends GenericMap {
             String currentStart = stopList.get(i);
             String currentEnd = stopList.get(i + 1);
             List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
+            List<Map<String, String>> toRemove = new ArrayList<>();
+            for (Map<String, String> node : path){
+                if (SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(path, node)) toRemove.add(node);
+            }
+            path.removeAll(toRemove);
             currentPath.addAll(path);
         }
         drawPath();

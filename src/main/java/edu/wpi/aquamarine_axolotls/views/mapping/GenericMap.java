@@ -374,18 +374,13 @@ public abstract class GenericMap extends GenericPage {
             Map<String, String> endNode;
 
             if (edge != null) {
-                Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
-                Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
-
-                if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){
-                    double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
-                    double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
-                    String startID = startNode.get("NODEID");
-                    double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
-                    double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
-                    String endID = endNode.get("NODEID");
-                    drawSingleEdge(startX, startY, startID, endX, endY, endID, edgeColor);
-                }
+                startNode = db.getNode(edge.get("STARTNODE"));
+                endNode = db.getNode(edge.get("ENDNODE"));
+            } else {
+                String startNodeID = edgeID.substring(0, edgeID.indexOf("_") + 1);
+                String endNodeID = edgeID.substring(edgeID.indexOf("_"));
+                startNode = db.getNode(startNodeID);
+                endNode = db.getNode(endNodeID);
             }
 
             if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){

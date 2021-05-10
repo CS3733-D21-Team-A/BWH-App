@@ -55,8 +55,8 @@ public class SearchAlgorithmContext {
         return context.getETA(path);
     }
 
-    public boolean nodeIsUnimportant(List<Node> path,Node n){
-        return context.nodeIsUnimportant(path, n);
+    public boolean nodeIsUnimportant(List<Map<String,String>> path, Map<String, String> node){
+        return context.nodeIsUnimportant(path, node);
     }
 
     /**
