@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.events.JFXDrawerEvent;
 import edu.wpi.aquamarine_axolotls.Aapp;
+import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
@@ -39,6 +40,8 @@ public class Navigation extends GenericMap {
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
+    private Thread newThread = new Thread();
+    private VoiceController voice = new VoiceController("kevin16");
 
     ArrayList<SideMenu> sideControllers = new ArrayList<>();
     SideMenu currentMenu;
@@ -55,6 +58,8 @@ public class Navigation extends GenericMap {
     MenuItem changeToStart = new MenuItem("Change to Start");
     MenuItem changeToEnd = new MenuItem("Change to End");
     MenuItem makeIntermediatePoint = new MenuItem("Make Intermediate Point");
+
+    boolean isVoiceToggled;
 
     public void initialize() throws java.sql.SQLException, IOException {
 
@@ -339,18 +344,6 @@ public class Navigation extends GenericMap {
                     else{
                         stopList.add(nodeID);
                     }
-//                    else if(stopList.size() == 1){
-//                        stopList.add(nodeID);
-//                        changeNodeColorOnImage(nodeID, Color.RED);
-//                        updateNodeSize(nodeID, 5);
-//                    }
-//                    else{
-//                        String prevID = stopList.get(stopList.size()-1);
-//                        changeNodeColorOnImage(prevID, Color.ORANGE);
-//                        updateNodeSize(prevID, 5);
-//                        changeNodeColorOnImage(nodeID, Color.RED);
-//                        updateNodeSize(nodeID, 5);
-//                    }
                     goToTreeView();
                     openDrawer();
                 }
@@ -445,7 +438,6 @@ public class Navigation extends GenericMap {
                     radius = 5;
                 }
                 drawSingleEdge(node.get("NODEID") + "_" + nextNode.get("NODEID"), Color.BLACK);
-//                drawSingleEdge(nextNode.get("NODEID") + "_" + node.get("NODEID"), Color.BLACK);
                 if ((node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) {
                     drawSingleNode(node.get("NODEID"), color);
                 }
@@ -455,9 +447,6 @@ public class Navigation extends GenericMap {
             }
         }
 
-
-        // update with each step (substract eta of singel edge
-
         if (currentPath.get(currentPath.size() - 1).get("FLOOR").equals(FLOOR)) {
             changeNodeColorOnImage(currentPath.get(currentPath.size() - 1).get("NODEID"), Color.RED);
             updateNodeSize(currentPath.get(currentPath.size() - 1).get("NODEID"), 5);
@@ -465,15 +454,6 @@ public class Navigation extends GenericMap {
         setArrowsToBeVisible();
 
     }
-
-
-//    public void changeFloor3(){
-//        if(drawer.isClosed()) openDrawer();
-//        else{
-//            closeDrawer();
-//        }
-//    }
-
 
                                             //=== SIDE BAR METHODS ===//
 
@@ -502,18 +482,21 @@ public class Navigation extends GenericMap {
     protected void goToTreeView() {
         drawer.setSidePane(treeViewSideMenu);
         currentMenu = sideControllers.get(0);
+        currentMenu.setVoiceDirection(isVoiceToggled);
         setStartAndEnd();
     }
 
     public void goToListOfDirections() {
         drawer.setSidePane(listOfDirectionsSideMenu);
         currentMenu = sideControllers.get(1);
+        currentMenu.setVoiceDirection(isVoiceToggled);
         setStartAndEnd();
     }
 
     public void goToStepByStep() {
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
+        currentMenu.setVoiceDirection(isVoiceToggled);
         setStartAndEnd();
         startDir();
     }
@@ -558,10 +541,9 @@ public class Navigation extends GenericMap {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-//        if(voiceDirection.isSelected()) {
-//            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
-//        }
+        if(isVoiceToggled) {
+            voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        }
     }
 
     /**
@@ -581,9 +563,9 @@ public class Navigation extends GenericMap {
             currentMenu.setCurArrow(textDirectionToImage(curDirection));
             currentMenu.setCurDirection(curPathDirections.get(0).get(currentStepNumber));
             highlightDirection();
-//            if(voiceDirection.isSelected()) {
-//                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
-//            }
+            if(isVoiceToggled) {
+                voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+            }
         }
     }
 
@@ -591,7 +573,7 @@ public class Navigation extends GenericMap {
      * Moves back to the previous step in the text directions
      */
     public void regress() throws SQLException,InterruptedException{
-//        voice.stop();
+        voice.stop();
         if (currentStepNumber != 0) {
             unHighlightDirection();
             currentStepNumber -= 1;
@@ -603,9 +585,9 @@ public class Navigation extends GenericMap {
             currentMenu.setCurDirection(curPathDirections.get(0).get(currentStepNumber));
             updateETARegress();
             highlightDirection();
-//            if(voiceDirection.isSelected()) {
-//                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
-//            }
+            if(isVoiceToggled) {
+                voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+            }
         }
     }
 
@@ -623,12 +605,7 @@ public class Navigation extends GenericMap {
         else {
             Map<String, String> node = db.getNode(curID);
             changeNodeColorOnImage(curID, darkBlue);
-            /*if(currentStepNumber + 1 < curPathDirections.get(1).size()){
-                String nextID = curPathDirections.get(1).get(currentStepNumber+1);
-                if (nextID.contains("_")) nextID = nextID.substring(0, nextID.indexOf("_"));
-                changeNodeColorOnImage(nextID, yellow);
-            }
-            else*/ if(currentStepNumber != 0) changeNodeColorOnImage(curID, yellow);
+            if(currentStepNumber != 0) changeNodeColorOnImage(curID, yellow);
             else changeNodeColorOnImage(curID, Color.GREEN);
             if (currentStepNumber == curPathDirections.get(1).size() - 1) drawPathArrow(node, node); // TODO : could cause issues
             else {
@@ -655,9 +632,6 @@ public class Navigation extends GenericMap {
 
 
     public void submitApiKey() {
-    }
-
-    public void toggleVoiceDirectionButton() {
     }
 
     public void clearNav() {

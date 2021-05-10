@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.jfoenix.controls.JFXToggleButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -37,6 +38,9 @@ public class SideMenu extends Navigation{
 
     Navigation navController;
 
+    @FXML
+    JFXToggleButton voiceDirection;
+
     double eta;
 
     @Override
@@ -49,7 +53,12 @@ public class SideMenu extends Navigation{
     }
 
     public void toggleVoiceDirectionButton() {
-        navController.toggleVoiceDirectionButton();
+        navController.isVoiceToggled = voiceDirection.isSelected();
+    }
+
+    public void setVoiceDirection(boolean value) {
+        navController.isVoiceToggled = value;
+        voiceDirection.setSelected(value);
     }
 
     public void goToListOfDirections() {

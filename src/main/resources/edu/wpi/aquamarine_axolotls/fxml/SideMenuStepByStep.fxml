@@ -27,7 +27,7 @@
                                <Insets right="70.0" />
                            </HBox.margin>
                        </JFXButton>
-                       <JFXToggleButton contentDisplay="RIGHT" onAction="#toggleVoiceDirectionButton" prefHeight="62.0" prefWidth="218.0" text="Voice Direction" textFill="WHITE" toggleColor="WHITE" toggleLineColor="#f4ba4f" />
+                       <JFXToggleButton fx:id="voiceDirection" contentDisplay="RIGHT" onAction="#toggleVoiceDirectionButton" prefHeight="62.0" prefWidth="218.0" text="Voice Direction" textFill="WHITE" toggleColor="WHITE" toggleLineColor="#f4ba4f" />
                    </children>
                </HBox>
                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="117.0" prefWidth="351.0" style="-fx-background-color: #003da6;">
