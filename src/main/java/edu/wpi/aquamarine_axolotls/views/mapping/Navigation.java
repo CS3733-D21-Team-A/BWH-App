@@ -15,7 +15,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import oracle.jrockit.jfr.JFR;
+import org.checkerframework.checker.units.qual.C;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
@@ -48,7 +50,6 @@ public class Navigation extends GenericMap {
 
         drawer.setSidePane(treeViewSideMenu);
         currentMenu = sideControllers.get(0);
-
 
 
         startUp();
@@ -121,6 +122,21 @@ public class Navigation extends GenericMap {
         sideControllers.get(0).treeTable.setRoot(root);
         sideControllers.get(0).treeTable.setShowRoot(false);
         sideControllers.get(0).treeTable.getColumns().add(treeTableColumn1);
+
+        sideControllers.get(0).treeTable.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                TreeItem<String> selectedFromTreeView = sideControllers.get(0).treeTable.getSelectionModel().getSelectedItem();
+                if (selectedFromTreeView.getChildren().isEmpty()) {
+                    try {
+                        stopList.add(db.getNodesByValue("LONGNAME", selectedFromTreeView.getValue()).get(0).get("NODEID"));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                    if (stopList.size() == 1) currentMenu.setStartLabel(selectedFromTreeView.getValue());
+                    else if (stopList.size() >= 2) findPath();
+                }
+            }
+        });
 
         drawFloor("1");
     }
@@ -215,7 +231,7 @@ public class Navigation extends GenericMap {
         });
 
         node.setOnMouseExited((MouseEvent e) -> {
-            if (node.getFill().equals(darkBlue)) {
+            if (!(node.getFill().equals(Color.RED) || node.getFill().equals(Color.ORANGE) || node.getFill().equals(Color.GREEN))) {
                 node.setRadius(magicNumber);
             }
         });
@@ -329,14 +345,13 @@ public class Navigation extends GenericMap {
         goToStepByStep();
     }
 
-
-
     public void openDrawer(){
         mapScrollPane.setLayoutX(351);
         mapScrollPane.setPrefWidth(949);
         drawer.open();
         drawer.setVisible(true);
     }
+
     public void closeDrawer(){
         mapScrollPane.setLayoutX(0);
         mapScrollPane.setPrefWidth(1300);

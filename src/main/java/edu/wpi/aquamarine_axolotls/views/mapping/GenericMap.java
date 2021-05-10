@@ -296,14 +296,14 @@ public abstract class GenericMap extends GenericPage {
 
     /**
      * Re-draws all the edges connected to a particular node
-     * @param nodeID
      */
     public void setArrowsToBeVisible() {
-        for(Polygon arrow : arrowsOnImage.get(floorToInt(FLOOR))){
-            arrow.setVisible(true);
-            if (!mapView.getChildren().contains(arrow)) mapView.getChildren().add(arrow);
+        if (arrowsOnImage.size() >= floorToInt(FLOOR)) {
+            for(Polygon arrow : arrowsOnImage.get(floorToInt(FLOOR))){
+                arrow.setVisible(true);
+                if (!mapView.getChildren().contains(arrow)) mapView.getChildren().add(arrow);
+            }
         }
-
     }
 
 
