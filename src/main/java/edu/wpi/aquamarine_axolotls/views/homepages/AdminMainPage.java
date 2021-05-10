@@ -9,8 +9,9 @@ public class AdminMainPage extends EmployeeMainPage {
     }
 
     @FXML
-    public void nodeP() {
-        sceneSwitch("NodeEditing");
+
+    public void nodeP(ActionEvent actionEvent) {
+        sceneSwitch("MapEditing");
     }
 
     @FXML

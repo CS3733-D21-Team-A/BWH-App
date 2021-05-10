@@ -2,13 +2,12 @@ package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import edu.wpi.aquamarine_axolotls.views.observerpattern.Observer;
+import edu.wpi.aquamarine_axolotls.views.observerpattern.Subject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
@@ -40,15 +39,18 @@ public class NewAccount extends GenericPage {
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
-        Subject subject = new Subject();
-        PasswordObserver passwordObserver = new PasswordObserver(subject, passwordMatchLabel);
-
+        Subject subject = new Subject(2);
+        Observer passwordObserver = new Observer(subject, passwordMatchLabel,
+                (a) -> a.get(0).equals(a.get(1)),
+                "The Passwords Match!", "The Passwords Do Not Match, Try Again.");
+        
+        subject.attach(passwordObserver);
         password.textProperty().addListener(observable -> {
-            subject.setNewPassword(password.getText());
+            subject.setItem(0, password.getText());
         });
 
         confirmPassword.textProperty().addListener(observable -> {
-            subject.setConfirmPassword(confirmPassword.getText());
+            subject.setItem(1, confirmPassword.getText());
         });
     }
 

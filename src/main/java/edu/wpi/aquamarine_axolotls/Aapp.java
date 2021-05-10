@@ -79,6 +79,7 @@ public class Aapp extends Application {
     try {
       Parent root = FXMLLoader.load(getClass().getResource("fxml/" + usertype + "MainPage.fxml"));
       Scene scene = new Scene(root);
+
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);
       primaryStage.show();
