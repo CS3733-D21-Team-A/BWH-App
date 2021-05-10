@@ -306,6 +306,7 @@ public class Navigation extends GenericMap {
         currentPath.clear();
         linesOnImage.clear();
         nodesOnImage.clear();
+        arrowsOnImage.clear();
         mapView.getChildren().clear();
         drawFloor(FLOOR);
     }

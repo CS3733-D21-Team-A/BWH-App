@@ -514,7 +514,7 @@ public abstract class GenericMap extends GenericPage {
 
     /**
      * Draws up and down arrows to signify floor change for a given edge
-     * @param edgeID representation of an edge in the database
+     *
      */
     void drawArrow(Map<String, String> startNode, Map<String, String> endNode) { // TODO : investigate stairs arrows not being drawn
         String startFloor = startNode.get("FLOOR");
