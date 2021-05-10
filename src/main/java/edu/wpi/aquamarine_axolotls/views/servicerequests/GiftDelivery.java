@@ -21,7 +21,7 @@ public class GiftDelivery extends GenericServiceRequest {
     private JFXComboBox giftOptions;
 
     @FXML
-    private JFXTextArea note;
+    private JFXTextArea persMessage;
 
     @FXML
     private ArrayList<String> nodeIDS;
@@ -36,7 +36,7 @@ public class GiftDelivery extends GenericServiceRequest {
         ));
         requestFieldList.add(new FieldTemplate<JFXTextArea>(
                 "NOTE",
-                note,
+                persMessage,
                 (a) -> a.getText(),
                 (a) -> !a.getText().isEmpty()
         ));
@@ -47,7 +47,7 @@ public class GiftDelivery extends GenericServiceRequest {
                 (a) -> a.getValue() != null));
         serviceRequestType = SERVICEREQUEST.GIFT_DELIVERY;
 
-        startUp();
+
         giftOptions.setItems(FXCollections
                 .observableArrayList("Hospital T-Shirt", "Teddy Bear", "Hospital Mug"));
         nodeIDS = new ArrayList<String>();

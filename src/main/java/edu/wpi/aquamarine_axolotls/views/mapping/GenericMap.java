@@ -35,7 +35,7 @@ public abstract class GenericMap extends GenericPage {
     static final Color lightGray = Color.web("#F0F0F0");
     static final Color darkGray = Color.web("#646464");
     static final Color yellow = Color.web("#F4BA47");
-        static Map<String, String> floors = new HashMap<String,String>() {{
+    static Map<String, String> floors = new HashMap<String,String>() {{
         put("L2", "edu/wpi/aquamarine_axolotls/img/lowerLevel2.png");
         put("L1", "edu/wpi/aquamarine_axolotls/img/lowerLevel1.png");
         put("1", "edu/wpi/aquamarine_axolotls/img/firstFloor.png");
@@ -80,7 +80,7 @@ public abstract class GenericMap extends GenericPage {
     double contextMenuY = 0;
     ContextMenu contextMenu = new ContextMenu();
 
-    DatabaseController db;
+    DatabaseController db = DatabaseController.getInstance();
     String state = "";
     String currentID;
     double magicNumber = (Math.PI + Math.E) / 2.0; //this is used as the radius for the nodes because Chris likes it. I don't know why
@@ -90,11 +90,6 @@ public abstract class GenericMap extends GenericPage {
      * Responsible for setting up the map
      */
     public void startUp(){
-        try {
-            db = DatabaseController.getInstance();
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
-        }
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
             if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
@@ -116,7 +111,6 @@ public abstract class GenericMap extends GenericPage {
             double tick = zoomSlider.getValue();
             zoomGroup.setScaleX(tick);
             zoomGroup.setScaleY(tick);
-            zoomGroup.setScaleZ(tick);
         });
 
         changeFloor1();
@@ -423,6 +417,7 @@ public abstract class GenericMap extends GenericPage {
 
         setEventHandler(node, nodeID);
         setNodeOnImage(node, nodeID);
+
     }
 
 
@@ -455,49 +450,6 @@ public abstract class GenericMap extends GenericPage {
             se.printStackTrace();
         }
     }
-
-
-
-//    /**
-//     * Draws a line on the map that represents an edge.
-//     * @param edgeID a key that corresponds to an edge in the database
-//     * @param edgeColor the color the edge will be drawn in
-//     */
-//    public void drawSingleEdge(String edgeID, Color edgeColor) {
-//        try {
-//            Map<String, String> edge;
-//            if(db.edgeExists(edgeID)) edge = db.getEdge(edgeID);
-//            else{
-//                edge = db.getEdge(edgeID.substring(edgeID.indexOf("_") + 1) + "_" + edgeID.substring(0, edgeID.indexOf("_")));
-//            }
-//            Map<String, String> startNode;
-//            Map<String, String> endNode;
-//
-//            if (edge != null) {
-//                startNode = db.getNode(edge.get("STARTNODE"));
-//                endNode = db.getNode(edge.get("ENDNODE"));
-//            } else {
-//                String startNodeID = edgeID.substring(0, edgeID.indexOf("_") + 1);
-//                String endNodeID = edgeID.substring(edgeID.indexOf("_"));
-//                startNode = db.getNode(startNodeID);
-//                endNode = db.getNode(endNodeID);
-//            }
-//
-//            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){
-//                double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
-//                double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
-//                String startID = startNode.get("NODEID");
-//                double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
-//                double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
-//                String endID = endNode.get("NODEID");
-//                drawSingleEdge(startX, startY, startID, endX, endY, endID, edgeColor);
-//            }
-//
-//        }
-//        catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//    }
 
     /**
      * Draws a line on the map that represents an edge.

@@ -1,33 +1,17 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
-import edu.wpi.aquamarine_axolotls.Aapp;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
-import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
+
 public class CovidSurvey extends GenericServiceRequest {
-
-
-    @FXML
-    JFXHamburger burger;
-
-    @FXML
-    JFXDrawer menuDrawer;
-
-    @FXML
-    VBox box;
-
     @FXML
     private JFXCheckBox yes1;
     @FXML
@@ -53,78 +37,12 @@ public class CovidSurvey extends GenericServiceRequest {
 
     @FXML
     public void initialize() {
-        /*
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "AREQUAR",
-                yes1,
-                (a) -> Boolean.toString(yes1.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "NAUSADIRRHEA",
-                yes2,
-                (a) -> Boolean.toString(yes2.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "SHORTBREATH",
-                yes3,
-                (a) -> Boolean.toString(yes3.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "HASCOUGH",
-                yes4,
-                (a) -> Boolean.toString(yes4.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "HASFEVER",
-                yes5,
-                (a) -> Boolean.toString(yes5.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "NEWCHILLS",
-                yes6,
-                (a) -> Boolean.toString(yes6.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "LOSSTASTESMELL",
-                yes7,
-                (a) -> Boolean.toString(yes7.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "SORETHROAT",
-                yes8,
-                (a) -> Boolean.toString(yes8.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "NASALCONGEST",
-                yes9,
-                (a) -> Boolean.toString(yes9.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "MORETIRED",
-                yes10,
-                (a) -> Boolean.toString(yes10.isSelected()),
-                (a) -> true));
-        requestFieldList.add(new FieldTemplate<JFXCheckBox>(
-                "MUSCLEACHES",
-                yes11,
-                (a) -> Boolean.toString(yes11.isSelected()),
-                (a) -> true));
-
-
-
-         */
-
-
-    startUp ();
-    }
-
-    @FXML
-    public void helpButton() {
-        popUp("CovidSurvey", "\n\n\nPlease fill out this survey to the best of your ability. ");
+    //startUp ();
     }
 
     @FXML //TODO: Submit to database
     public void submitButton() {
+        goHome();
         Map<String, String> survey = new HashMap<> (); // TODO: username is null for guests
         survey.put("AREQUAR", Boolean.toString(yes1.isSelected()));
         survey.put("NAUSEADIARRHEA", Boolean.toString(yes2.isSelected()));
@@ -138,14 +56,15 @@ public class CovidSurvey extends GenericServiceRequest {
         survey.put("MORETIRED", Boolean.toString(yes10.isSelected()));
         survey.put("MUSCLEACHES", Boolean.toString(yes11.isSelected()));
 
-        survey.put("USERNAME", Aapp.username != null ? Aapp.username : "guest"); //TODO: THIS IS A WORKAROUND CHANGE THIS PLEASE
+        String username = PREFERENCES.get(USER_NAME,null);
+
+        survey.put("USERNAME", username);
         try {
             db.addSurvey(survey);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         popUp("Submission Success!", "\n\n\nYour Covid-19 Survey has been submitted. ");
-        goHome();
     }
 
 }

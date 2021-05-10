@@ -75,7 +75,7 @@ public class FoodDelivery extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.FOOD_DELIVERY;
-        startUp();
+
         foodOptions.setItems(FXCollections
                 .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
         nodeIDS = new ArrayList<String>();

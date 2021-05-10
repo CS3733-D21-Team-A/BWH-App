@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.281" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutX="522.0" layoutY="14.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textAlignment="CENTER" textFill="WHITE">
          <font>
@@ -118,7 +118,7 @@
       </GridPane>
       <HBox alignment="CENTER" layoutY="280.0" prefHeight="42.0" prefWidth="600.0">
          <children>
-            <JFXTextField fx:id="longNameField" prefHeight="26.0" prefWidth="200.0" promptText="Long Name" style="-fx-font-size: 16; -fx-font-family: Verdana;" />
+            <JFXTextField fx:id="longNameField" prefHeight="32.0" prefWidth="320.0" promptText="Long Name" style="-fx-font-size: 16; -fx-font-family: Verdana;" />
          </children>
       </HBox>
    </children>

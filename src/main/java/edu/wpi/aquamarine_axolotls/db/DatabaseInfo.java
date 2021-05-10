@@ -50,8 +50,8 @@ final class DatabaseInfo {
 		"CREATE TABLE " + TABLES.SERVICE_REQUESTS.name() + " (" +
 			"REQUESTID VARCHAR(25) PRIMARY KEY," +
 			"STATUS VARCHAR(11) DEFAULT 'Unassigned'," +
-			"EMPLOYEEID VARCHAR(30)," +
-			"AUTHORID VARCHAR(25)," +
+			"EMPLOYEEID VARCHAR(36)," +
+			"AUTHORID VARCHAR(36)," +
 			"LOCATIONID VARCHAR(25)," +
 			"FIRSTNAME VARCHAR(30)," +
 			"LASTNAME VARCHAR(50)," +
@@ -81,7 +81,7 @@ final class DatabaseInfo {
 	 */
 	static final String FAVORITE_NODES_TABLE_SQL =
 		"CREATE TABLE " + TABLES.FAVORITE_NODES.name() + " (" +
-			"USERID VARCHAR(25)," +
+			"USERID VARCHAR(36)," +
 			"LOCATIONID VARCHAR(25)," +
 			"FAVID INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
 			"FOREIGN KEY (USERID) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON DELETE CASCADE ON UPDATE RESTRICT," +
@@ -98,18 +98,21 @@ final class DatabaseInfo {
 
 	static final String USER_TABLE_SQL =
 			"CREATE TABLE " + TABLES.USERS.name() + " (" +
-					"USERNAME VARCHAR(25) PRIMARY KEY, " +
+					"USERNAME VARCHAR(36) PRIMARY KEY," +
 					"FIRSTNAME VARCHAR(25)," +
 					"LASTNAME VARCHAR(25)," +
-					"EMAIL VARCHAR(25) NOT NULL," +
-					"CONSTRAINT emailConst UNIQUE(EMAIL)," +
-					"USERTYPE VARCHAR(25) DEFAULT 'patient'," +
+					"EMAIL VARCHAR(50) NOT NULL," +
+					"CONSTRAINT UNIQUE_EMAIL UNIQUE(EMAIL)," +
+					"USERTYPE VARCHAR(10) DEFAULT 'patient'," +
+					"TOTPSECRET VARCHAR(32)," +
+					"MFAENABLED VARCHAR(5) DEFAULT 'false'," +
 					//"USERTYPE ENUM('PATIENT', 'EMPLOYEE', "GUEST', 'ADMIN')
-					"PASSWORD VARCHAR(25) NOT NULL," +
+					"PASSWORD VARCHAR(50) NOT NULL," +
 					"PRONOUNS VARCHAR(25)," +
-					"GENDER VARCHAR(50),"+
-					"TAKENSURVEY VARCHAR(25) DEFAULT 'false'," +
-					"COVIDLIKELY VARCHAR(25)" +
+					"GENDER VARCHAR(25),"+
+					"TAKENSURVEY VARCHAR(5) DEFAULT 'false'," +
+					"COVIDLIKELY VARCHAR(5)," +
+					"ENTRYAPPROVED VARCHAR(5)" +
 					")";
 
 	// ========== ATTRIBUTES STRINGS ==========
@@ -127,7 +130,7 @@ final class DatabaseInfo {
 	 */
 	static final String COVID_SURVEY_TABLE_SQL =
 			"CREATE TABLE " + TABLES.COVID_SURVEY.name() + " (" +
-					"USERNAME VARCHAR(25) PRIMARY KEY," +
+					"USERNAME VARCHAR(36) PRIMARY KEY," +
 					"FOREIGN KEY (USERNAME) REFERENCES " + TABLES.USERS.name() + "(USERNAME) ON DELETE CASCADE ON UPDATE RESTRICT," +
 					"AREQUAR VARCHAR(25)," +
 					"NAUSEADIARRHEA VARCHAR(25)," +
@@ -321,15 +324,10 @@ final class DatabaseInfo {
 	static final String CANCELED_TEXT = "Canceled";
 
 	// ========== USERS ================
-	static final String USER_TEXT = "User";
 	static final String EMPLOYEE_TEXT = "Employee";
 	static final String ADMIN_TEXT = "Admin";
 	static final String PATIENT_TEXT = "Patient";
 	static final String GUEST_TEXT = "Guest";
-	static final String PASSWORD_TEXT = "Password";
-	static final String USERTYPE_TEXT = "Usertype";
-	static final String LASTNAME_TEXT = "Last Name";
-	static final String FIRSTNAME_TEXT = "First Name";
 
 	// ========== RESOURCES ==========
 
@@ -374,12 +372,12 @@ final class DatabaseInfo {
 	}
 
 	static {
-		TABLE_SQL = new EnumMap<>(TABLES.class);
+		TABLE_SQL = new EnumMap<>(TABLES.class); // NOTE: THE ORDER OF THESE IS IMPORTANT OR ELSE THE DATABASE CONSTRUCTION WON'T WORK
 		TABLE_SQL.put(TABLES.NODES, NODE_TABLE_SQL);
 		TABLE_SQL.put(TABLES.EDGES, EDGE_TABLE_SQL);
 		TABLE_SQL.put(TABLES.ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
-		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		TABLE_SQL.put(TABLES.USERS, USER_TABLE_SQL);
+		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		TABLE_SQL.put(TABLES.FAVORITE_NODES,FAVORITE_NODES_TABLE_SQL);
 		TABLE_SQL.put(TABLES.COVID_SURVEY, COVID_SURVEY_TABLE_SQL);
 

@@ -1,19 +1,27 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
+import javafx.util.Pair;
+import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
+import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
 /**
  * Controller class for working with the BWH database.
  */
-public class DatabaseController implements AutoCloseable {
-	final private Connection connection;
+public class DatabaseController {
+	/**
+	 * The connection to the database
+	 */
+	private Connection connection;
+
 	final private Table nodeTable;
 	final private Table edgeTable;
 	final private Table attrTable;
@@ -21,13 +29,18 @@ public class DatabaseController implements AutoCloseable {
 	final private Table serviceRequestsTable;
 	final private Table favoriteNodesTable;
 	final private Table covidSurveyTable;
-	/*
+
+	/**
 	 * Map for getting service request tables.
 	 * Key: Service Request enumeration.
 	 * Value: Table for corresponding service request type.
 	 */
 	final private Map<SERVICEREQUEST,RequestTable> requestsTables;
 
+	/**
+	 * Whether the database controller is currently using the embedded database
+	 */
+	private boolean usingEmbedded;
 
 	/**
 	 * DatabaseController constructor. Creates and populates new database if one is not found.
@@ -35,20 +48,7 @@ public class DatabaseController implements AutoCloseable {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		DriverManager.registerDriver(new EmbeddedDriver());
-
-		boolean dbExists;
-		try (Connection cTest = DriverManager.getConnection("jdbc:derby:BWH", "admin", "admin")) { //TODO: login credentials
-			dbExists = true;
-		} catch (SQLException e) {
-			dbExists = false;
-		}
-
-		connection = DriverManager.getConnection("jdbc:derby:BWH;create=true", "admin", "admin"); //TODO: login credentials
-		if (!dbExists) {
-			System.out.println("No database found. Creating new one...");
-			createDB();
-		}
+		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null).getKey();
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -58,7 +58,6 @@ public class DatabaseController implements AutoCloseable {
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
 		favoriteNodesTable = tableFactory.getTable(TABLES.FAVORITE_NODES);
 		covidSurveyTable = tableFactory.getTable(TABLES.COVID_SURVEY);
-
 
 		requestsTables = new HashMap<>();
 		for (SERVICEREQUEST table : SERVICEREQUEST.values()) {
@@ -73,8 +72,16 @@ public class DatabaseController implements AutoCloseable {
 	}
 
 	/**
+	 * Return if the database connection is closed
+	 * @return if the database connection is closed
+	 * @throws SQLException Something went wrong.
+	 */
+	private boolean connectionIsClosed() throws SQLException {
+		return connection.isClosed();
+	}
+
+	/**
 	 * Static nested class for databasecontrollerSingleton
-	 * @throws SQLException
 	 */
 	private static class DBControllerSingleton{
 		private static DatabaseController instance;
@@ -82,38 +89,94 @@ public class DatabaseController implements AutoCloseable {
 
 	/**
 	 * getinstance of dbcontroller to then use
-	 * @return instance of dbcontroller
-	 * @throws SQLException
-	 * @throws IOException
+	 * @return Instance of dbcontroller, null if an error occurred
 	 */
-	public static DatabaseController getInstance() throws SQLException, IOException {
-		if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.isClosed()){
-			DBControllerSingleton.instance = new DatabaseController();
+	public static DatabaseController getInstance() {
+		try {
+			if(DBControllerSingleton.instance == null || DBControllerSingleton.instance.connectionIsClosed()){
+				DBControllerSingleton.instance = new DatabaseController();
+			}
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+			return null;
 		}
 		return DBControllerSingleton.instance;
 	}
 
-	/** Checks to see if the Database Controller is closed
-	 *
-	 * @return True if the database is closed, otherwise false
-	 * @throws SQLException
+	/**
+	 * Updates the connections associated with the database based on the current preference setting
+	 * Note: Shuts down the previous connection
+	 * @return boolean indicating if we are using the embedded database
+	 * @throws SQLException Something went wrong.
+	 * @throws IOException Something went wrong.
 	 */
-	private boolean isClosed() throws SQLException {
-		return connection.isClosed();
-	}
+	public boolean updateConnection() throws SQLException, IOException {
+		shutdownDB();
+		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		boolean dbExists = bools.getKey();
 
+		nodeTable.setConnection(connection);
+		edgeTable.setConnection(connection);
+		attrTable.setConnection(connection);
+		userTable.setConnection(connection);
+		serviceRequestsTable.setConnection(connection);
+		favoriteNodesTable.setConnection(connection);
+		covidSurveyTable.setConnection(connection);
 
-
-	@Override
-	public void close() throws SQLException {
-		if (!connection.isClosed()) {
-			connection.close();
+		for (RequestTable table : requestsTables.values()) {
+			table.setConnection(connection);
 		}
+
+		if (!dbExists) {
+			populateDB();
+		}
+
+		return bools.getValue();
 	}
 
-	@Override
-	protected void finalize() throws SQLException {
-		this.close();
+	/**
+	 * Connects to the Derby database
+	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
+	 * Note: Creates a database if one isn't present
+	 * @param remote Whether to try and connect to the the client-server database
+	 * @return Pair whose key is if we need to construct a new database and value is whether we are using the embedded database
+	 * @throws SQLException Something went wrong.
+	 */
+	private Pair<Boolean,Boolean> connectToDB(boolean remote) throws SQLException {
+		String connectionURL = "jdbc:derby:" + (remote ? "//localhost:1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
+		this.usingEmbedded = !remote;
+
+		boolean dbExists = true;
+		if (remote) {
+			DriverManager.registerDriver(new ClientDriver());
+			try {
+				DriverManager.getConnection(connectionURL, "admin", "admin");
+			} catch (SQLNonTransientConnectionException e) {
+				if (e.getSQLState().equals("08001")) {
+					System.out.println("Unable to establish Client-Server connection. Falling back to embedded database.");
+					connectionURL = "jdbc:derby:EMBEDDED_BWH_DB";
+					usingEmbedded = true;
+				} else dbExists = false;
+			}
+			if (!usingEmbedded) System.out.println("Client-Server database connection established!");
+		}
+
+		if (usingEmbedded) {
+			DriverManager.registerDriver(new EmbeddedDriver());
+			try {
+				DriverManager.getConnection(connectionURL, "admin", "admin");
+			} catch (SQLException e) {
+				dbExists = false;
+			}
+		}
+
+		this.connection = DriverManager.getConnection(connectionURL+";create=true", "admin", "admin");
+		if (!dbExists) {
+			System.out.println("No database found. Creating new one...");
+			createDB(connection);
+		}
+
+		return new Pair<>(dbExists, usingEmbedded);
 	}
 
 	/**
@@ -121,8 +184,14 @@ public class DatabaseController implements AutoCloseable {
 	 * Note: This will shut down the connection for all currently running DatabaseControllers!
 	 * @return If shutdown was successful.
 	 */
-	public static boolean shutdownDB() {
-		try (Connection shutdown = DriverManager.getConnection("jdbc:derby:BWH;shutdown=true", "admin", "admin")) {
+	boolean shutdownDB() {
+		if (!usingEmbedded) {
+			System.out.println("Warning: Not allowed to shut down remote database. Action ignored");
+			return false;
+		}
+
+		try {
+			DriverManager.getConnection("jdbc:derby:EMBEDDED_BWH_DB;shutdown=true", "admin", "admin");
 			return false; // Shutting down a database should throw an exception. If it doesn't, something went wrong!
 		} catch (SQLException e) {
 			return true; // Shutting down a database throws an exception!
@@ -692,7 +761,7 @@ public class DatabaseController implements AutoCloseable {
 	/**
 	 * checks database for the username to make sure it does not previously exist
 	 * @param username
-	 * @return true if the username does not exist, false if it does
+	 * @return true if a user with the desired username exists
 	 * @throws SQLException
 	 */
 	public boolean checkUserExists(String username) throws SQLException
@@ -889,7 +958,7 @@ public class DatabaseController implements AutoCloseable {
 	 * Populate the tables of a new database (assumes database has been initialized but is empty)
 	 * @throws SQLException Something went wrong
 	 */
-	private void createDB() throws SQLException {
+	private void createDB(Connection connection) throws SQLException {
 		for (String SQL : DatabaseInfo.TABLE_SQL.values()) { // for each primary table
 			try (PreparedStatement smnt = connection.prepareStatement(SQL)) {
 				smnt.execute(); // create the table
