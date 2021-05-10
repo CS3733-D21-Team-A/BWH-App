@@ -139,11 +139,11 @@ public class EdgePopUp extends GenericPage{
 
     }
 
-    public void loadHelp(ActionEvent actionEvent) {
+    public void loadHelp() {
     }
 
     @FXML
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         edgeIDLabel.getScene().getWindow().hide();
     }
 

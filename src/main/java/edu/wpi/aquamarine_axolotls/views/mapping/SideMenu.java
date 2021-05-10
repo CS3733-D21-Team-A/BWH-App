@@ -37,35 +37,37 @@ public class SideMenu extends Navigation{
 
     }
 
-    public void goToStepByStep(ActionEvent actionEvent) {
-        navController.goToStepByStep(actionEvent);
+    public void goToStepByStep() {
+        navController.goToStepByStep();
     }
 
-    public void toggleVoiceDirectionButton(ActionEvent actionEvent) {
-        navController.toggleVoiceDirectionButton(actionEvent);
+    public void toggleVoiceDirectionButton() {
+        navController.toggleVoiceDirectionButton();
     }
 
-    public void goToListOfDirections(ActionEvent actionEvent) {
-        navController.goToListOfDirections(actionEvent);
+    public void goToListOfDirections() {
+        navController.goToListOfDirections();
     }
 
-    public void startPath(ActionEvent actionEvent) {
-        navController.startPath(actionEvent);
+    public void startPath() {
+        navController.startPath();
     }
 
-    public void clearNav(ActionEvent actionEvent) {
-        navController.clearNav(actionEvent);
+    public void clearNav() {
+        startLabel.setText("Start Location");
+        endLabel.setText("End Location");
+        navController.clearNav();
     }
 
     public void findPath() {
         navController.findPath();
     }
 
-    public void regress(ActionEvent actionEvent) {
+    public void regress() {
         navController.regress();
     }
 
-    public void progress(ActionEvent actionEvent) {
+    public void progress() {
         navController.progress();
     }
 
@@ -75,7 +77,7 @@ public class SideMenu extends Navigation{
     }
 
     public void setEndLabel(String endingPoint) {
-        this.startLabel.setText(endingPoint);
+        this.endLabel.setText(endingPoint);
     }
 
     public void setCurArrow(Image arrow) {
@@ -86,7 +88,7 @@ public class SideMenu extends Navigation{
         this.curDirection.setText(textDirection);
     }
 
-    public void goToTreeView(ActionEvent actionEvent) {
+    public void goToTreeView() {
         navController.goToTreeView();
     }
 }

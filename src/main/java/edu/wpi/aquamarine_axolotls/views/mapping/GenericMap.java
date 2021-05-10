@@ -225,13 +225,6 @@ public abstract class GenericMap extends GenericPage {
     }
 
 
-    public void setMultipleNodesOnImage(List<Map<String, String>> nodes, Color colorOfNodes){
-        for(Map<String, String> node : nodes){
-            node.get("NODEID"); // TODO : implement this
-        }
-    }
-
-
     /**
      * Gets the index of the circle on the map that corresponds to nodeID
      * @param nodeID a ID that links to a node in the database
@@ -249,7 +242,9 @@ public abstract class GenericMap extends GenericPage {
      */
     public void changeNodeColorOnImage(String nodeID, Color color){ // WILL BE USED IN NAVIGATION
         Circle currentNode = nodesOnImage.get(nodeID);
+        currentNode.toFront();
         currentNode.setFill(color);
+
     }
 
     /**
@@ -259,6 +254,7 @@ public abstract class GenericMap extends GenericPage {
      */
     public void updateNodeSize(String nodeID, int radius){ // WILL BE USED IN NAVIGATION
         Circle currentNode = nodesOnImage.get(nodeID);
+        currentNode.toFront();
         currentNode.setRadius(radius);
     }
 
@@ -271,6 +267,11 @@ public abstract class GenericMap extends GenericPage {
         int index = getNodeIndexOnImage(nodeID);
         nodesOnImage.remove(nodeID);
         mapView.getChildren().remove(index);
+    }
+
+    public void updateEdgeColor(String edgeID, Color color){
+        Line edge = linesOnImage.get(edgeID);
+        edge.setStroke(color);
     }
 
 
@@ -366,7 +367,12 @@ public abstract class GenericMap extends GenericPage {
      */
     public void drawSingleEdge(String edgeID, Color edgeColor) {
         try {
-            Map<String, String> edge = db.getEdge(edgeID);
+            Map<String, String> edge;
+            if(db.edgeExists(edgeID)) edge = db.getEdge(edgeID);
+            else edge = db.getEdge(edgeID.substring(edgeID.indexOf("_") + 1) + "_" + edgeID.substring(0, edgeID.indexOf("_")));
+            Map<String, String> startNode;
+            Map<String, String> endNode;
+
             if (edge != null) {
                 Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
                 Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
@@ -380,6 +386,16 @@ public abstract class GenericMap extends GenericPage {
                     String endID = endNode.get("NODEID");
                     drawSingleEdge(startX, startY, startID, endX, endY, endID, edgeColor);
                 }
+            }
+
+            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){
+                double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
+                double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
+                String startID = startNode.get("NODEID");
+                double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
+                double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
+                String endID = endNode.get("NODEID");
+                drawSingleEdge(startX, startY, startID, endX, endY, endID, edgeColor);
             }
 
         }
@@ -448,28 +464,17 @@ public abstract class GenericMap extends GenericPage {
      * Draws up and down arrows to signify floor change for a given edge
      * @param edgeID representation of an edge in the database
      */
-    void drawArrow(String edgeID) { // TODO : investigate stairs arrows not being drawn
-        try {
-            Map<String, String> edge = db.getEdge(edgeID);
-            if (edge != null) {
-                Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
-                Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
-                double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
-                double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
-                double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
-                double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
-                String startFloor = startNode.get("FLOOR");
-                String endFloor = endNode.get("FLOOR");
-                if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
-                    drawArrow(startX, startY, startFloor, endFloor, 0.0); // draw an up arrow at one node
-                    drawArrow(endX, endY, endFloor, startFloor, 0.0);     // and a down arrow at the other
-                }
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    void drawArrow(Map<String, String> startNode, Map<String, String> endNode) { // TODO : investigate stairs arrows not being drawn
+        double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
+        double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
+        double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
+        double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
+        String startFloor = startNode.get("FLOOR");
+        String endFloor = endNode.get("FLOOR");
+        if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
+            drawArrow(startX, startY, startFloor, endFloor, 0.0); // draw an up arrow at one node
+            drawArrow(endX, endY, endFloor, startFloor, 0.0);     // and a down arrow at the other
+        } // wait what how are we drawing them at the same time???
     }
 
 

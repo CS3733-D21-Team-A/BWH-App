@@ -13,10 +13,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import oracle.jrockit.jfr.JFR;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+
+import static sun.management.snmp.jvminstr.JvmThreadInstanceEntryImpl.ThreadStateMap.Byte0.newThread;
 
 public class Navigation extends GenericMap {
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
@@ -31,7 +34,8 @@ public class Navigation extends GenericMap {
     SideMenu currentMenu;
     @FXML
     JFXDrawer drawer;
-
+    private int currentStepNumber;
+    private List<List<String>> curPathDirections = new ArrayList<>();
 
 
     public void initialize() throws java.sql.SQLException, IOException {
@@ -39,14 +43,18 @@ public class Navigation extends GenericMap {
         treeViewSideMenu = setUpSideMenu("SideMenuTreeView");
         listOfDirectionsSideMenu = setUpSideMenu("SideMenuListOfDirections");
         stepByStepSideMenu = setUpSideMenu("SideMenuStepByStep");
+        drawer.setVisible(false);
+
+        drawer.setSidePane(treeViewSideMenu);
+        currentMenu = sideControllers.get(0);
+
+
 
         startUp();
         if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
             SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
         }
 
-        drawer.setSidePane(treeViewSideMenu);
-        currentMenu = sideControllers.get(0);
 
         // TODO: CHANGE THIS
         covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
@@ -113,9 +121,7 @@ public class Navigation extends GenericMap {
         sideControllers.get(0).treeTable.setShowRoot(false);
         sideControllers.get(0).treeTable.getColumns().add(treeTableColumn1);
 
-        drawer.setVisible(false);
-
-        drawNodes(darkBlue);
+        drawFloor("1");
     }
 
 
@@ -182,13 +188,6 @@ public class Navigation extends GenericMap {
         }
     }
 
-    protected void regress() {
-    }
-
-    protected void progress() {
-    }
-
-
 
 
     @Override
@@ -199,10 +198,13 @@ public class Navigation extends GenericMap {
                 if (stopList.contains(nodeID)) { //If the node you click is already in the stopList, it gets removed
                     stopList.remove(nodeID); //So you can toggle destinations
                 }
-                else stopList.add(nodeID); //Otherwise, add the node's ID to the stopList
-
-                if (stopList.size() >= 2) findPath(); //After adding the node, if the stopList is at least 2 items, we find the path
-
+                else{
+                    stopList.add(nodeID); //Otherwise, add the node's ID to the stopList
+                    goToTreeView();
+                    openDrawer();
+                }
+                setStartAndEnd();
+                if(stopList.size() >= 2) findPath();
             }
         });
 
@@ -225,8 +227,7 @@ public class Navigation extends GenericMap {
      */
     @FXML
     void findPath() {
-        drawer.setSidePane(listOfDirectionsSideMenu);
-        drawer.setVisible(true);
+        goToListOfDirections();
         currentPath.clear();
         for (int i = 0; i < stopList.size() - 1; i++) {
             String currentStart = stopList.get(i);
@@ -253,7 +254,7 @@ public class Navigation extends GenericMap {
             Map<String, String> node = currentPath.get(i);
             Map<String, String> nextNode = currentPath.get(i+1);
             if(!node.get("FLOOR").equals(nextNode.get("FLOOR"))){
-                drawArrow(node.get("NODEID") + "_" + nextNode.get("NODEID"));
+                drawArrow(node, nextNode);
             }
             else if (node.get("FLOOR").equals(FLOOR)) {
                 Color color = darkBlue;
@@ -271,7 +272,7 @@ public class Navigation extends GenericMap {
                     radius = 5;
                 }
                 drawSingleEdge(node.get("NODEID") + "_" + nextNode.get("NODEID"), Color.BLACK);
-                drawSingleEdge(nextNode.get("NODEID") + "_" + node.get("NODEID"), Color.BLACK);
+//                drawSingleEdge(nextNode.get("NODEID") + "_" + node.get("NODEID"), Color.BLACK);
                 if ((node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) {
                     drawSingleNode(node.get("NODEID"), color);
                 }
@@ -287,18 +288,13 @@ public class Navigation extends GenericMap {
 
     }
 
-    public void submitApiKey(ActionEvent actionEvent) {
+    public void submitApiKey() {
     }
 
-    public void toggleVoiceDirectionButton(ActionEvent actionEvent) {
+    public void toggleVoiceDirectionButton() {
     }
 
-
-    public void startPath(ActionEvent actionEvent) {
-        drawer.setSidePane(stepByStepSideMenu);
-    }
-
-    public void clearNav(ActionEvent actionEvent) {
+    public void clearNav() {
         stopList.clear();
         currentPath.clear();
         linesOnImage.clear();
@@ -308,34 +304,52 @@ public class Navigation extends GenericMap {
     }
 
     public void changeFloor3(){
-        if(drawer.isClosed()){
-            mapScrollPane.setLayoutX(351);
-            mapScrollPane.setPrefWidth(949);
-            drawer.open();
-            drawer.setVisible(true);
-        }
+        if(drawer.isClosed()) openDrawer();
         else{
-            mapScrollPane.setLayoutX(0);
-            mapScrollPane.setPrefWidth(1300);
-            drawer.close();
-            drawer.setVisible(false);
+            closeDrawer();
         }
     }
 
+
+
                                             //=== SIDE BAR METHODS ===//
+
+    public void startPath() {
+        goToStepByStep();
+    }
+
+
+
+    public void openDrawer(){
+        mapScrollPane.setLayoutX(351);
+        mapScrollPane.setPrefWidth(949);
+        drawer.open();
+        drawer.setVisible(true);
+    }
+    public void closeDrawer(){
+        mapScrollPane.setLayoutX(0);
+        mapScrollPane.setPrefWidth(1300);
+        drawer.close();
+        drawer.setVisible(false);
+    }
+
     protected void goToTreeView() {
         drawer.setSidePane(treeViewSideMenu);
         currentMenu = sideControllers.get(0);
+        setStartAndEnd();
     }
 
-    public void goToListOfDirections(ActionEvent actionEvent) {
+    public void goToListOfDirections() {
         drawer.setSidePane(listOfDirectionsSideMenu);
         currentMenu = sideControllers.get(1);
+        setStartAndEnd();
+
     }
 
-    public void goToStepByStep(ActionEvent actionEvent) {
+    public void goToStepByStep() {
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
+        setStartAndEnd();
     }
 
     public VBox setUpSideMenu(String name) throws IOException {
@@ -346,6 +360,176 @@ public class Navigation extends GenericMap {
         sideControllers.add(controller);
         return loader.getRoot();
     }
+
+    public void setStartAndEnd(){
+        int size = stopList.size();
+        try{
+            if(size == 1){
+                currentMenu.setStartLabel(db.getNode(stopList.get(stopList.size() - 1)).get("LONGNAME"));
+            }
+            else if(size >= 2) {
+                currentMenu.setStartLabel(db.getNode(stopList.get(0)).get("LONGNAME"));
+                currentMenu.setEndLabel(db.getNode(stopList.get(stopList.size() - 1)).get("LONGNAME"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
+                                        //==== LIST OF DIRECTIONS ====//
+
+
+    public void startDir() throws SQLException,InterruptedException{
+        currentStepNumber = 0; // was dirIndex
+        changeTextDirectionIcon(curPathDirections.get(0).get(currentStepNumber)); // change arrow
+        String nodeID = curPathDirections.get(1).get(0);
+        if(nodeID.contains("_")) nodeID = nodeID.substring(0, curPathDirections.get(1).get(0).indexOf(","));
+        drawFloor(db.getNode(nodeID).get("FLOOR"));
+        highlightDirection();
+        curDirection.setText(curPathDirections.get(0).get(currentStepNumber));
+        if(voiceDirection.isSelected()) {
+            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        }
+    }
+
+    /**
+     * Progresses to the next step in the text directions
+     */
+    public void progress() throws SQLException,InterruptedException {
+        voice.stop();
+        if (currentStepNumber < curPathDirections.get(0).size() - 1){
+            unHighlightDirection();
+            currentStepNumber += 1;
+            String curNode = curPathDirections.get(1).get(currentStepNumber);
+            String curFloor = getInstructionsFloor(curNode);
+
+            if(!curFloor.equals(FLOOR)) changeFloor(curFloor);
+
+            changeTextDirectionIcon(curPathDirections.get(0).get(currentStepNumber));
+            curDirection.setText(curPathDirections.get(0).get(currentStepNumber)); //get next direction
+            highlightDirection();
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
+        }
+    }
+
+    /**
+     * Moves back to the previous step in the text directions
+     */
+    public void regress() throws SQLException,InterruptedException{
+        voice.stop();
+        if (currentStepNumber != 0) {
+            unHighlightDirection();
+            currentStepNumber -= 1;
+            String curNode = curPathDirections.get(1).get(currentStepNumber);
+            String curFloor = getInstructionsFloor(curNode);
+            if(!curFloor.equals(FLOOR)) changeFloor(curFloor);
+            changeTextDirectionIcon(curPathDirections.get(0).get(currentStepNumber));
+            curDirection.setText(curPathDirections.get(0).get(currentStepNumber));
+            highlightDirection();
+            if(voiceDirection.isSelected()) {
+                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+            }
+        }
+    }
+
+    public void highlightDirection() throws SQLException{
+        String curID = curPathDirections.get(1).get(currentStepNumber);
+        updateEdgeColor(curID, yellow);
+
+        // draws an edge on map
+        if (curID.contains("_")) {
+            int index = curID.indexOf("_");
+            Map<String, String> start = db.getNode(curID.substring(0,index));
+            Map<String, String> end = db.getNode(curID.substring(index+1));
+
+            double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
+            double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
+            double X2 = xScale(Integer.parseInt(end.get("XCOORD")));
+            double Y2 = yScale(Integer.parseInt(end.get("YCOORD")));
+
+            double centerX = (X1 + X2) / 2.0;
+            double centerY = (Y1 + Y2) / 2.0;
+
+            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+            if(start.get("FLOOR").equals(end.get("FLOOR"))){
+                drawArrow(centerX, centerY + 1, start.get("FLOOR"), rotationAngle);
+            } else {
+                removeDirectionArrow();
+            }
+
+        } else {
+            Map<String, String> node = db.getNode(curID);
+            drawSingleNode(node, Color.RED);
+    //            if(dirIndex + 1 < currPathDir.get(1).size()) {
+    //                String nextID = currPathDir.get(1).get(dirIndex+1);
+    //                nextID = nextID.substring(0, nextID.indexOf(","));
+    //                node = db.getNode(nextID);
+    //                drawSingleNode(node, Color.RED);
+    //            }else {
+    //                node = db.getNode(curID);
+    //                drawSingleNode(node, Color.RED);
+    //            }
+
+
+
+            if (dirIndex == currPathDir.get(1).size() - 1){
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+
+                drawArrow(X1, Y1, node.get("FLOOR"), 0);
+            }
+            else {
+                String nextNodes = currPathDir.get(1).get(dirIndex + 1);
+                String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
+                Map<String, String> nextNode = db.getNode(nextNodeID);
+
+                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
+                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
+                double X2 = xScale(Integer.parseInt(nextNode.get("XCOORD")));
+                double Y2 = yScale(Integer.parseInt(nextNode.get("YCOORD")));
+                double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+                if(node.get("FLOOR").equals(nextNode.get("FLOOR"))){
+                    drawArrow(X1, Y1, node.get("FLOOR"), rotationAngle);
+                }else {
+                    removeDirectionArrow();
+                }
+            }
+        }
+}
+
+    public void unHighlightDirection() throws SQLException{
+        String curNode = currPathDir.get(1).get(dirIndex);
+        if (curNode.contains(",")){
+            int index = curNode.indexOf(",");
+            Map<String, String> start = db.getNode(curNode.substring(0,index));
+            Map<String, String> end = db.getNode(curNode.substring(index+1));
+            drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
+        }
+        else{
+            if(dirIndex != 0) drawSingleNode(db.getNode(curNode), Color.BLUE);
+        }
+
+    }
+
+    public void changeTextDirectionIcon(String direction){ //update arrow
+        Image arrowImg; //TODO: Switch case?
+        if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
+        else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
+        else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
+        else if (direction.contains("Turn around")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+        else if (direction.contains("You have arrived at your destination.")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
+        else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
+
+        arrow.setImage(arrowImg);
+    }
+
+
 
 
 
