@@ -56,6 +56,9 @@ public class GenericPage {
         myDialog.show();
     }
 
+
+
+
     @FXML
     public void goHome() {
         USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
