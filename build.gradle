@@ -59,6 +59,9 @@ dependencies {
 
             'dev.samstevens.totp:totp:1.7.1',
             'commons-net:commons-net:3.6'
+            'dev.samstevens.totp:totp:1.7.1',
+
+            'com.sendgrid:sendgrid-java:4.7.2'
     )
 
 
