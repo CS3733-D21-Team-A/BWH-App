@@ -15,17 +15,19 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.util.Pair;
 
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Security {
 	private Security(){} //NO INSTANTIATION >:(
+
+	final static private Charset CHARSET = StandardCharsets.ISO_8859_1;
 
 	final static private DatabaseController dbController = DatabaseController.getInstance();
 	final static private SecretGenerator secretGenerator = new DefaultSecretGenerator();
@@ -118,9 +120,9 @@ public class Security {
 		}
 		md.update(salt);
 
-		String saltString = new String(salt, StandardCharsets.ISO_8859_1);
+		String saltString = new String(salt, CHARSET);
 
-		String hash = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1);
+		String hash = new String(md.digest(password.getBytes(CHARSET)), CHARSET);
 
 		user.put("SALT",saltString);
 		user.put("PASSWORD",hash);
@@ -145,9 +147,9 @@ public class Security {
 		if (!dbController.checkUserExists(username)) return false;
 		Map<String,String> userMap = dbController.getUserByUsername(username);
 
-		md.update(userMap.get("SALT").getBytes(StandardCharsets.ISO_8859_1));
+		md.update(userMap.get("SALT").getBytes(CHARSET));
 
-		String hash = new String(md.digest(password.getBytes(StandardCharsets.ISO_8859_1)), StandardCharsets.ISO_8859_1);
+		String hash = new String(md.digest(password.getBytes(CHARSET)), CHARSET);
 
 		return hash.equals(userMap.get("PASSWORD"));
 	}
