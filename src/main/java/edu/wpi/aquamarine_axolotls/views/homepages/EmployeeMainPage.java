@@ -22,10 +22,10 @@ public class EmployeeMainPage extends PatientMainPage {
         sceneSwitch("EmployeeRequests");
     }
 
-    @FXML
-    public void serviceReqEP() {
-        sceneSwitch("EmployeeServiceRequestPage");
-    }
+//    @FXML
+//    public void serviceReqEP() {
+//        sceneSwitch("EmployeeServiceRequestPage");
+//    }
 
     @FXML
     public void manageP(){

@@ -18,9 +18,16 @@ public class PatientMainPage extends GuestMainPage{
 
     public void startUp() {
         userNameText.setText(PREFERENCES.get(USER_TYPE,null) + ": " + PREFERENCES.get(USER_FIRST_NAME,null));
+
+        serviceRequestPane.setOnMouseExited(mouseEvent -> {
+            if (serviceRequestPane.isVisible()) {
+                serviceRequestPane.setVisible(false);
+                serviceRequestPane.toBack();
+            }
+        });
     }
 
-    public void serviceReqP(ActionEvent actionEvent) {
+    public void serviceReqP() {
         serviceRequestPane.setVisible(true);
         serviceRequestPane.toFront();
     }
