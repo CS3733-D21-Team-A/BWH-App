@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutX="522.0" layoutY="14.0" maxHeight="-Infinity" minHeight="-Infinity" onAction="#loadHelp" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Help" textAlignment="CENTER" textFill="WHITE">
+         <font>
+            <Font name="Verdana" size="12.0" />
+         </font>
+      </JFXButton>
+      <HBox alignment="CENTER" layoutY="40.0" prefHeight="42.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="49.0" prefWidth="318.0" text="Edit Edge" textAlignment="CENTER">
+               <font>
+                  <Font name="Verdana" size="30.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <GridPane alignment="CENTER_RIGHT" layoutY="115.0" prefHeight="53.0" prefWidth="600.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="10.0" prefWidth="600.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="617.0" text="Edge ID: " textAlignment="CENTER">
+               <font>
+                  <Font name="Verdana" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="edgeIDLabel" alignment="CENTER" prefHeight="20.0" prefWidth="642.0" text="ABCDEF_GHIJKL" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Verdana" size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <GridPane layoutY="200.0" prefHeight="30.0" prefWidth="600.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.20001220703125" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="180.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="180.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+        </rowConstraints>
+         <children>
+            <JFXComboBox fx:id="startNodeDropdown" prefHeight="25.0" prefWidth="329.0" promptText="Start Node" style="-fx-font-size: 16; -fx-font-family: Verdana;" GridPane.columnIndex="1" />
+            <JFXComboBox fx:id="endNodeDropdown" prefHeight="25.0" prefWidth="355.0" promptText="End Node" style="-fx-font-size: 16; -fx-font-family: Verdana;" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+      <GridPane alignment="CENTER" layoutY="322.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="78.0" prefWidth="600.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Label fx:id="submissionStatusLabel" />
+               </children>
+            </HBox>
+            <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" onAction="#delete" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Delete Edge" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="25.0" right="25.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" onAction="#cancel" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Cancel" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="43.0" right="43.0" />
+               </GridPane.margin>
+            </JFXButton>
+            <JFXButton fx:id="confirmButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" minHeight="-Infinity" onAction="#submit" prefHeight="30.0" prefWidth="64.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Confirm" textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="3">
+               <font>
+                  <Font name="Verdana" size="12.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="43.0" right="43.0" />
+               </GridPane.margin>
+            </JFXButton>
+         </children>
+      </GridPane>
+   </children>
+</Pane>
