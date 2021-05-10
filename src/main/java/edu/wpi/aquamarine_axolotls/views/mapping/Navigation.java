@@ -153,6 +153,7 @@ public class Navigation extends GenericMap {
 
     }
 
+    //====DRAWING
     @Override
     public void drawFloor(String floor) {
         changeFloorImage(floor);
@@ -206,8 +207,6 @@ public class Navigation extends GenericMap {
         }
     }
 
-
-
     @Override
     public Circle setEventHandler(Circle node, String nodeID) {
         //When you click a node in navigation, it gets selected/de-selected
@@ -240,6 +239,8 @@ public class Navigation extends GenericMap {
     }
 
 
+    //=== PATHFINDING
+
     /**
      * Uses the current search algorithm to find a path between all the current stops, then display that path on screen
      */
@@ -262,6 +263,10 @@ public class Navigation extends GenericMap {
             currentPath.addAll(path);
         }
         curPathDirections = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currentPath);
+        for(String direction : curPathDirections.get(0)){
+            sideControllers.get(1).addToListOfDirections(direction);
+        }
+
         drawPath();
     }
 
@@ -318,21 +323,6 @@ public class Navigation extends GenericMap {
 
     }
 
-    public void submitApiKey() {
-    }
-
-    public void toggleVoiceDirectionButton() {
-    }
-
-    public void clearNav() {
-        stopList.clear();
-        currentPath.clear();
-        linesOnImage.clear();
-        nodesOnImage.clear();
-        arrowsOnImage.clear();
-        mapView.getChildren().clear();
-        drawFloor(FLOOR);
-    }
 
 //    public void changeFloor3(){
 //        if(drawer.isClosed()) openDrawer();
@@ -474,7 +464,6 @@ public class Navigation extends GenericMap {
     public void highlightDirection() throws SQLException{
         String curID = curPathDirections.get(1).get(currentStepNumber);
 
-        // draws an edge on map
         if (curID.contains("_")) {
             updateEdgeColor(curID, yellow);
             int index = curID.indexOf("_");
@@ -509,6 +498,23 @@ public class Navigation extends GenericMap {
         String curDirectionID = curPathDirections.get(1).get(currentStepNumber);
         if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
         else { if(currentStepNumber != 0) changeNodeColorOnImage(curDirectionID, darkBlue); }
+    }
+
+
+    public void submitApiKey() {
+    }
+
+    public void toggleVoiceDirectionButton() {
+    }
+
+    public void clearNav() {
+        stopList.clear();
+        currentPath.clear();
+        linesOnImage.clear();
+        nodesOnImage.clear();
+        arrowsOnImage.clear();
+        mapView.getChildren().clear();
+        drawFloor(FLOOR);
     }
 
 

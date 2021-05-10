@@ -2,10 +2,12 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.awt.*;
@@ -71,6 +73,16 @@ public class SideMenu extends Navigation{
         navController.progress();
     }
 
+    public void addToListOfDirections(String directionText){
+        ImageView arrow = new ImageView(navController.textDirectionToImage(directionText));
+        arrow.setFitHeight(50.0);
+        arrow.setFitWidth(50.0);
+        Label directionLabel = new Label(directionText);
+        directionLabel.setWrapText(true);
+        HBox directionContainer = new HBox(10, arrow, directionLabel);
+        directionContainer.setAlignment(Pos.CENTER_LEFT);
+        listOfDirections.getChildren().add(directionContainer);
+    }
 
     public void setStartLabel(String startingPoint) {
         this.startLabel.setText(startingPoint);

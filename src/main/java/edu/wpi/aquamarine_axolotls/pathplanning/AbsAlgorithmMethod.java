@@ -500,7 +500,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 double edgeDistancePixels = getCostTo(thisNode, nextNode);
                 double edgeDistanceFeet = edgeDistancePixels / 2.35;
 
-                instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + nextNode.get("NODEID") + ".");
+                instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + nextNode.get("LONGNAME") + ".");
                 stepNum++;
                 nodeIDS.add(thisNode.get("NODEID") + "_" + nextNode.get("NODEID"));
 
