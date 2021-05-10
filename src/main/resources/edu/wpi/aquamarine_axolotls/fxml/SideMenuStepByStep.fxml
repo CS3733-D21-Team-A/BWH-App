@@ -55,7 +55,7 @@
                                <Insets left="80.0" right="10.0" />
                            </HBox.margin>
                        </Label>
-                       <Label />
+                       <Label fx:id="etaLabel" />
                    </children>
                    <VBox.margin>
                        <Insets />

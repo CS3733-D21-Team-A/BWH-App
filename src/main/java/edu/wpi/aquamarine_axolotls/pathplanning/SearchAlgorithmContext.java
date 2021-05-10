@@ -55,6 +55,10 @@ public class SearchAlgorithmContext {
         return context.getETA(path);
     }
 
+    public double getETASingleEdge(Map<String, String> start, Map<String, String> end ){
+        return context.getETASingleEdge(start, end);
+    }
+
     public boolean nodeIsUnimportant(List<Map<String,String>> path, Map<String, String> node){
         return context.nodeIsUnimportant(path, node);
     }

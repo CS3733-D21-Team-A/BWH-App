@@ -123,6 +123,49 @@ public class Navigation extends GenericMap {
         sideControllers.get(0).treeTable.setShowRoot(false);
         sideControllers.get(0).treeTable.getColumns().add(treeTableColumn1);
 
+        // remove from stop list
+
+
+        removeStop.setOnAction((ActionEvent e) -> {
+            stopList.remove(currentNodeIDContextMenu);
+            setStartAndEnd();
+            openDrawer();
+            if(stopList.size() >= 2) findPath();
+        });
+
+        addStart.setOnAction((ActionEvent e) ->{
+            stopList.add(currentNodeIDContextMenu);
+            setStartAndEnd();
+            openDrawer();
+            if(stopList.size() >= 2) findPath();
+        });
+
+        addEnd.setOnAction((ActionEvent e) ->{
+            stopList.add(currentNodeIDContextMenu);
+            setStartAndEnd();
+            openDrawer();
+            if(stopList.size() >= 2) findPath();
+        });
+
+        changeToStart.setOnAction((ActionEvent e) -> {
+            stopList.set(0, currentNodeIDContextMenu);
+            setStartAndEnd();
+            openDrawer();
+            if(stopList.size() >= 2) findPath();
+        });
+
+        changeToEnd.setOnAction((ActionEvent e) -> {
+            stopList.set(stopList.size()-1, currentNodeIDContextMenu);
+            setStartAndEnd();
+            openDrawer();
+            if(stopList.size() >= 2) findPath();
+        });
+
+        // TODO : figure this out
+        makeIntermediatePoint.setOnAction((ActionEvent e) ->{
+        });
+        contextMenu.getItems().addAll(removeStop, addStart, addEnd, changeToStart, changeToEnd, makeIntermediatePoint);
+
         sideControllers.get(0).treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 TreeItem<String> selectedFromTreeView = sideControllers.get(0).treeTable.getSelectionModel().getSelectedItem();
@@ -140,6 +183,7 @@ public class Navigation extends GenericMap {
 
         drawFloor("1");
     }
+
 
 
 
@@ -207,21 +251,51 @@ public class Navigation extends GenericMap {
         }
     }
 
+    public void resetContextMenu(){
+        // TODO : set context menu to be cisible
+        removeStop.setVisible(false);
+        addStart.setVisible(false);
+        addEnd.setVisible(false);
+        changeToStart.setVisible(false);
+        changeToEnd.setVisible(false);
+        makeIntermediatePoint.setVisible(false);
+    }
+
     @Override
     public Circle setEventHandler(Circle node, String nodeID) {
         //When you click a node in navigation, it gets selected/de-selected
         node.setOnMouseClicked((MouseEvent e) -> {
             if (e.getButton().equals(MouseButton.PRIMARY)) {
-                if (stopList.contains(nodeID)) { //If the node you click is already in the stopList, it gets removed
-                    stopList.remove(nodeID); //So you can toggle destinations
+                currentNodeIDContextMenu = nodeID;
+                resetContextMenu();
+                 // maybe remove?
+                if(stopList.size() == 0){
+                    addStart.setVisible(true);
                 }
-                else{
-                    stopList.add(nodeID); //Otherwise, add the node's ID to the stopList
-                    goToTreeView();
-                    openDrawer();
+                if(stopList.size() >= 1){
+                    changeToStart.setVisible(true);
+                    addEnd.setVisible(true);
                 }
-                setStartAndEnd();
-                if(stopList.size() >= 2) findPath();
+                if(stopList.size() >= 2){
+                    changeToEnd.setVisible(true);
+                }
+                if(stopList.contains(currentNodeIDContextMenu)){
+                    removeStop.setVisible(true);
+                }
+                contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
+                //contextMenu.show();
+                // change to context menu stuff
+//                if (stopList.contains(nodeID)) { //If the node you click is already in the stopList, it gets removed
+//                    stopList.remove(nodeID); //So you can toggle destinations
+//                }
+//                else{
+//                    stopList.add(nodeID); //Otherwise, add the node's ID to the stopList
+//                    goToTreeView();
+//                    openDrawer();
+//                }
+//                setStartAndEnd();
+//                if(stopList.size() >= 2) findPath();
+//            }
             }
         });
 
@@ -266,6 +340,9 @@ public class Navigation extends GenericMap {
         for(String direction : curPathDirections.get(0)){
             sideControllers.get(1).addToListOfDirections(direction);
         }
+        eta = SearchAlgorithmContext.getSearchAlgorithmContext().getETA(currentPath);
+        sideControllers.get(1).setEtaLabel(eta); // add big eta to lod
+        sideControllers.get(2).setEtaLabel(eta); // add big eta to step by step
 
         drawPath();
     }
@@ -315,6 +392,10 @@ public class Navigation extends GenericMap {
 
             }
         }
+
+
+        // update with each step (substract eta of singel edge
+
         if (currentPath.get(currentPath.size() - 1).get("FLOOR").equals(FLOOR)) {
             changeNodeColorOnImage(currentPath.get(currentPath.size() - 1).get("NODEID"), Color.RED);
             updateNodeSize(currentPath.get(currentPath.size() - 1).get("NODEID"), 5);
@@ -429,7 +510,7 @@ public class Navigation extends GenericMap {
             String curFloor = getInstructionsFloor(curNode);
 
             if(!curFloor.equals(FLOOR)) drawFloor(curFloor);
-
+            updateETAProgress();
             String curDirection = curPathDirections.get(0).get(currentStepNumber);
             currentMenu.setCurArrow(textDirectionToImage(curDirection));
             currentMenu.setCurDirection(curPathDirections.get(0).get(currentStepNumber));

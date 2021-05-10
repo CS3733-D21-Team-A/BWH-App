@@ -174,6 +174,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return ETASingleEdge;
     }
 
+    public double getETASingleEdge(Map<String, String> start, Map<String, String> goal){
+        double walkingSpeed = 220 * 3.75; //2.5 miles/h
+        double distance = getCostTo(start,goal);
+        double ETASingleEdge;
+
+        ETASingleEdge = distance/walkingSpeed;
+        return ETASingleEdge;
+    }
+
     /**
      * Calculates the estimated time, in minutes, that it will take for a patient to
      * walk the entire length of the path
@@ -181,7 +190,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The time, in minutes, that it will take for a patient to walk along the
      *          entire path
      */
-    public double getETA(List<Node> path){
+    public double getETA(List<Map<String, String>> path){
         double ETASoFar = 0.0;
         for(int i = 0; i < path.size()-1;i++){
             ETASoFar += getETASingleEdge(path.get(i), path.get(i+1));

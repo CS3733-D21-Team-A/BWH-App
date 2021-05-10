@@ -7,8 +7,8 @@ import java.util.HashMap;
 public interface ISearchAlgorithmStrategy {
     public List<Map<String, String>> getPath(String startID, String endID);
 
-    public double getETA(List<Node> path);
-
+    public double getETA(List<Map<String, String>> path);
+    public double getETASingleEdge(Map<String, String> start, Map<String, String> end);
     public List<List<String>> getTextDirections(List<Map<String, String>> path);
     public List<List<String>> getTextDirectionsNodes(List<Node> path);
 

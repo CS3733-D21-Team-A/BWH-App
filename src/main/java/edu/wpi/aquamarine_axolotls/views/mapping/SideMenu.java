@@ -30,9 +30,14 @@ public class SideMenu extends Navigation{
     VBox listOfDirections;
 
     @FXML
+    Label etaLabel;
+
+    @FXML
     TreeTableView<String> treeTable;
 
     Navigation navController;
+
+    double eta;
 
     @Override
     public void initialize() throws SQLException, IOException {
