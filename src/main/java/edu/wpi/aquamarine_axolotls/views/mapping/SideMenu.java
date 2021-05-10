@@ -63,11 +63,11 @@ public class SideMenu extends Navigation{
         navController.findPath();
     }
 
-    public void regress() {
+    public void regress() throws SQLException, InterruptedException {
         navController.regress();
     }
 
-    public void progress() {
+    public void progress() throws SQLException, InterruptedException {
         navController.progress();
     }
 

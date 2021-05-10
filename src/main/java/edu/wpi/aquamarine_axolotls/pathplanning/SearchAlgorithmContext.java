@@ -65,7 +65,17 @@ public class SearchAlgorithmContext {
      * @return The list of steps that a user must take to navigate from the start
      *          of the path to the end
      */
-    public List<List<String>> getTextDirections(List<Node> path){
+    public List<List<String>> getTextDirections(List<Map<String, String>> path){
         return context.getTextDirections(path);
+    }
+
+    /**
+     * Creates a list of text directions instructing the user how to navigate a path
+     * @param path The path for which text directions are to be generated
+     * @return The list of steps that a user must take to navigate from the start
+     *          of the path to the end
+     */
+    public List<List<String>> getTextDirectionsNodes(List<Node> path){
+        return context.getTextDirectionsNodes(path);
     }
 }

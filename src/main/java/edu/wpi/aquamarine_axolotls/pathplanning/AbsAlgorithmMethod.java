@@ -204,6 +204,20 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
     }
 
     /**
+     * Gets the cost to go DIRECTLY to another node
+     * Note that this specifically measures the straight distance between the two, even  if they aren't neighbors
+     * @param othernode The other node to go to
+     * @return Double, the distance between them
+     */
+    protected double getCostTo(Map<String, String> firstnode, Map<String, String> othernode){
+        double xsqre = Math.pow(Integer.parseInt(othernode.get("XCOORD")) - Integer.parseInt(firstnode.get("XCOORD")),2);
+        double ysqre = Math.pow(Integer.parseInt(othernode.get("YCOORD")) - Integer.parseInt(firstnode.get("YCOORD")),2);
+        double dist = Math.sqrt(xsqre+ysqre);
+
+        return dist;
+    }
+
+    /**
      * Builds a list of nodes that show the path from the start to the end
      * Meant to be run AFTER the full search algorithm is complete
      * @param cameFrom The list of nodes listed alongside which nodes came before them in the path
@@ -256,7 +270,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The list of steps that a user must take to navigate from the start
      *          of the path to the end
      */
-    public List<List<String>> getTextDirections(List<Node> path){
+    public List<List<String>> getTextDirectionsNodes(List<Node> path){
 
         List<List<String>> returnList = new ArrayList<List<String>>();
         ArrayList<String> instructions = new ArrayList<String>();
@@ -364,6 +378,132 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         }
         instructions.add(stepNum + ". You have arrived at your destination.");
         nodeIDS.add(path.get(path.size()-1).getNodeID());
+        returnList.add(instructions);
+        returnList.add(nodeIDS);
+        return returnList;
+    }
+
+
+    /**
+     * Creates a list of text directions instructing the user how to navigate a path
+     * @param path The path for which text directions are to be generated
+     * @return The list of steps that a user must take to navigate from the start
+     *          of the path to the end
+     */
+    public List<List<String>> getTextDirections(List<Map<String, String>> path){
+
+        List<List<String>> returnList = new ArrayList<List<String>>();
+        ArrayList<String> instructions = new ArrayList<String>();
+        ArrayList<String> nodeIDS = new ArrayList<String>();
+
+        if(path.size() == 0){
+            returnList.add(instructions);
+            returnList.add(nodeIDS);
+            return returnList;
+        }
+        if(path.size() == 1) {
+            instructions.add("1. You have arrived at your destination");
+            nodeIDS.add(path.get(0).get("NODEID")); // TODO : could error because path could be mt??
+            returnList.add(instructions);
+            returnList.add(nodeIDS);
+            return returnList;
+        }
+
+        int stepNum = 1;
+//
+//
+//        List<Node> modifiedPath = new ArrayList<Node>();
+//        for(int i = 0; i < path.size(); i++) {
+//            if(!nodeIsUnimportant(path, path.get(i))){
+//                modifiedPath.add(path.get(i));
+//            }
+//        }
+//        path = modifiedPath;
+
+
+        String firstNodeID = path.get(0).get("NODEID");
+        String firstNodeType = path.get(0).get("NODETYPE");
+        String secondNodeID = path.get(1).get("NODEID");
+        String secondNodeType = path.get(1).get("NODETYPE");
+        String secondNodeFloor = path.get(1).get("FLOOR");
+
+        if(firstNodeType.equals("ELEV") && secondNodeType.equals("ELEV")){
+            instructions.add(stepNum + ". Take the elevator to floor " + secondNodeFloor + ".");
+            nodeIDS.add(firstNodeID);
+            stepNum++;
+        } else if(firstNodeType.equals("STAI") && secondNodeType.equals("STAI")){
+            instructions.add(stepNum + ". Take the stairs to floor " + secondNodeFloor + ".");
+            nodeIDS.add(firstNodeID);
+            stepNum++;
+        } else {
+            double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
+            double firstEdgeDistanceFeet = firstEdgeDistancePixels / 2.35;
+            instructions.add(stepNum + ". Walk " + (int) firstEdgeDistanceFeet + " feet towards " + path.get(1).get("LONGNAME") + ".");
+            nodeIDS.add(firstNodeID + "_" + secondNodeID);
+            stepNum++;
+        }
+
+
+        for (int i = 1; i < path.size() - 1; i++){
+            if(path.get(i).get("NODETYPE").equals("ELEV") && path.get(i+1).get("NODETYPE").equals("ELEV")){
+                instructions.add(stepNum + ". Take the elevator to floor " + path.get(i+1).get("FLOOR") + ".");
+                nodeIDS.add(path.get(i).get("NODEID"));
+                stepNum++;
+            } else if(path.get(i).get("NODETYPE").equals("STAI") && path.get(i+1).get("NODETYPE").equals("STAI")){
+                instructions.add(stepNum + ". Take the stairs to floor " + path.get(i+1).get("FLOOR") + ".");
+                nodeIDS.add(path.get(i).get("NODEID"));
+                stepNum++;
+            } else {
+
+                if(!path.get(i).get("FLOOR").equals(path.get(i-1).get("FLOOR"))) {
+                    instructions.add(stepNum + ". You are now on floor " + path.get(i).get("FLOOR") + ".");
+                    nodeIDS.add(path.get(i).get("NODEID"));
+                    stepNum++;
+                } else{
+                    double angleIn = absAngleEdge(path.get(i-1), path.get(i));
+                    double angleOut = absAngleEdge(path.get(i), path.get(i+1));
+                    double turnAngle = angleOut - angleIn;
+
+                    if(turnAngle <= -180.0) turnAngle += 360;
+                    if(turnAngle > 180.0) turnAngle -= 360;
+
+                    if(turnAngle > 10 && turnAngle < 60){
+                        instructions.add(stepNum + ". Make a slight right turn.");
+                        stepNum++;
+                    } else if (turnAngle >= 60 && turnAngle < 120){
+                        instructions.add(stepNum + ". Make a right turn.");
+                        stepNum++;
+                    } else if (turnAngle >= 120 && turnAngle < 178){
+                        instructions.add(stepNum + ". Make an extreme right turn.");
+                        stepNum++;
+                    } else if (turnAngle < -10 && turnAngle > -60){
+                        instructions.add(stepNum + ". Make a slight left turn.");
+                        stepNum++;
+                    } else if (turnAngle <= -60 && turnAngle > -120){
+                        instructions.add(stepNum + ". Make a left turn.");
+                        stepNum++;
+                    } else if (turnAngle <= -120 && turnAngle > -178){
+                        instructions.add(stepNum + ". Make an extreme left turn.");
+                        stepNum++;
+                    } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
+                        instructions.add(stepNum + ". Turn around.");
+                        stepNum++;
+                    }
+                    nodeIDS.add(path.get(i).get("NODEID"));
+                }
+
+                double edgeDistancePixels = getCostTo(path.get(i), path.get(i+1));
+                double edgeDistanceFeet = edgeDistancePixels / 2.35;
+
+                instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + path.get(i+1).get("NODEID") + ".");
+                stepNum++;
+                nodeIDS.add(path.get(i).get("NODEID") + "_" + path.get(i+1).get("NODEID"));
+
+            }
+
+        }
+        instructions.add(stepNum + ". You have arrived at your destination.");
+        nodeIDS.add(path.get(path.size()-1).get("NODEID"));
         returnList.add(instructions);
         returnList.add(nodeIDS);
         return returnList;

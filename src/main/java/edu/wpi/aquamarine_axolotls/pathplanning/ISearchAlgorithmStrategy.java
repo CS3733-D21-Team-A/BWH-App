@@ -9,7 +9,8 @@ public interface ISearchAlgorithmStrategy {
 
     public double getETA(List<Node> path);
 
-    public List<List<String>> getTextDirections(List<Node> path);
+    public List<List<String>> getTextDirections(List<Map<String, String>> path);
+    public List<List<String>> getTextDirectionsNodes(List<Node> path);
 
     public Node getNode(String id);
 

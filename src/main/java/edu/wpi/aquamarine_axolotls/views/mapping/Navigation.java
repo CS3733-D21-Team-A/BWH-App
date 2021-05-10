@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -142,6 +143,7 @@ public class Navigation extends GenericMap {
         if(currentPath.size() > 0){
             drawNodes(Color.web("#003da6", .4));
             drawPath();
+            drawArrows();
         }
         else{
             drawNodes(darkBlue);
@@ -237,9 +239,9 @@ public class Navigation extends GenericMap {
             for (Map<String, String> node : path){
                 if (SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(path, node)) toRemove.add(node);
             }
-            path.removeAll(toRemove);
             currentPath.addAll(path);
         }
+        curPathDirections = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currentPath);
         drawPath();
     }
 
@@ -316,7 +318,6 @@ public class Navigation extends GenericMap {
     }
 
 
-
                                             //=== SIDE BAR METHODS ===//
 
     public void startPath() {
@@ -348,13 +349,13 @@ public class Navigation extends GenericMap {
         drawer.setSidePane(listOfDirectionsSideMenu);
         currentMenu = sideControllers.get(1);
         setStartAndEnd();
-
     }
 
     public void goToStepByStep() {
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
         setStartAndEnd();
+        startDir();
     }
 
     public VBox setUpSideMenu(String name) throws IOException {
@@ -383,40 +384,45 @@ public class Navigation extends GenericMap {
     }
 
                                         //==== LIST OF DIRECTIONS ====//
-
-
-    public void startDir() throws SQLException,InterruptedException{
+    public void startDir() {
         currentStepNumber = 0; // was dirIndex
-        changeTextDirectionIcon(curPathDirections.get(0).get(currentStepNumber)); // change arrow
+        String curDirection = curPathDirections.get(0).get(currentStepNumber);
+        currentMenu.setCurArrow(textDirectionToImage(curDirection));
+        currentMenu.setCurDirection(curDirection);
         String nodeID = curPathDirections.get(1).get(0);
-        if(nodeID.contains("_")) nodeID = nodeID.substring(0, curPathDirections.get(1).get(0).indexOf(","));
-        drawFloor(db.getNode(nodeID).get("FLOOR"));
-        highlightDirection();
-        curDirection.setText(curPathDirections.get(0).get(currentStepNumber));
-        if(voiceDirection.isSelected()) {
-            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+        if(nodeID.contains("_")) nodeID = nodeID.substring(0, nodeID.indexOf("_"));
+        try {
+            drawFloor(db.getNode(nodeID).get("FLOOR"));
+            highlightDirection();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
+//        if(voiceDirection.isSelected()) {
+//            voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+//        }
     }
 
     /**
      * Progresses to the next step in the text directions
      */
     public void progress() throws SQLException,InterruptedException {
-        voice.stop();
+//        voice.stop();
         if (currentStepNumber < curPathDirections.get(0).size() - 1){
             unHighlightDirection();
             currentStepNumber += 1;
             String curNode = curPathDirections.get(1).get(currentStepNumber);
             String curFloor = getInstructionsFloor(curNode);
 
-            if(!curFloor.equals(FLOOR)) changeFloor(curFloor);
+            if(!curFloor.equals(FLOOR)) drawFloor(curFloor);
 
-            changeTextDirectionIcon(curPathDirections.get(0).get(currentStepNumber));
-            curDirection.setText(curPathDirections.get(0).get(currentStepNumber)); //get next direction
+            String curDirection = curPathDirections.get(0).get(currentStepNumber);
+            currentMenu.setCurArrow(textDirectionToImage(curDirection));
+            currentMenu.setCurDirection(curPathDirections.get(0).get(currentStepNumber));
             highlightDirection();
-            if(voiceDirection.isSelected()) {
-                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
-            }
+//            if(voiceDirection.isSelected()) {
+//                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+//            }
         }
     }
 
@@ -424,114 +430,99 @@ public class Navigation extends GenericMap {
      * Moves back to the previous step in the text directions
      */
     public void regress() throws SQLException,InterruptedException{
-        voice.stop();
+//        voice.stop();
         if (currentStepNumber != 0) {
             unHighlightDirection();
             currentStepNumber -= 1;
             String curNode = curPathDirections.get(1).get(currentStepNumber);
             String curFloor = getInstructionsFloor(curNode);
-            if(!curFloor.equals(FLOOR)) changeFloor(curFloor);
-            changeTextDirectionIcon(curPathDirections.get(0).get(currentStepNumber));
-            curDirection.setText(curPathDirections.get(0).get(currentStepNumber));
+            if(!curFloor.equals(FLOOR)) drawFloor(curFloor);
+            String curDirection = curPathDirections.get(0).get(currentStepNumber);
+            currentMenu.setCurArrow(textDirectionToImage(curDirection));
+            currentMenu.setCurDirection(curPathDirections.get(0).get(currentStepNumber));
             highlightDirection();
-            if(voiceDirection.isSelected()) {
-                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
-            }
+//            if(voiceDirection.isSelected()) {
+//                voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
+//            }
         }
     }
 
     public void highlightDirection() throws SQLException{
         String curID = curPathDirections.get(1).get(currentStepNumber);
-        updateEdgeColor(curID, yellow);
 
         // draws an edge on map
         if (curID.contains("_")) {
+            updateEdgeColor(curID, yellow);
             int index = curID.indexOf("_");
             Map<String, String> start = db.getNode(curID.substring(0,index));
             Map<String, String> end = db.getNode(curID.substring(index+1));
+            drawPathArrow(start, end);
 
-            double X1 = xScale(Integer.parseInt(start.get("XCOORD")));
-            double Y1 = yScale(Integer.parseInt(start.get("YCOORD")));
-            double X2 = xScale(Integer.parseInt(end.get("XCOORD")));
-            double Y2 = yScale(Integer.parseInt(end.get("YCOORD")));
-
-            double centerX = (X1 + X2) / 2.0;
-            double centerY = (Y1 + Y2) / 2.0;
-
-            double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
-
-            if(start.get("FLOOR").equals(end.get("FLOOR"))){
-                drawArrow(centerX, centerY + 1, start.get("FLOOR"), rotationAngle);
-            } else {
-                removeDirectionArrow();
-            }
-
-        } else {
+        }
+        else {
             Map<String, String> node = db.getNode(curID);
-            drawSingleNode(node, Color.RED);
-    //            if(dirIndex + 1 < currPathDir.get(1).size()) {
-    //                String nextID = currPathDir.get(1).get(dirIndex+1);
-    //                nextID = nextID.substring(0, nextID.indexOf(","));
-    //                node = db.getNode(nextID);
-    //                drawSingleNode(node, Color.RED);
-    //            }else {
-    //                node = db.getNode(curID);
-    //                drawSingleNode(node, Color.RED);
-    //            }
-
-
-
-            if (dirIndex == currPathDir.get(1).size() - 1){
-                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
-                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
-
-                drawArrow(X1, Y1, node.get("FLOOR"), 0);
+            changeNodeColorOnImage(curID, darkBlue);
+            if(currentStepNumber + 1 < curPathDirections.get(1).size()){
+                String nextID = curPathDirections.get(1).get(currentStepNumber+1);
+                nextID = nextID.substring(0, nextID.indexOf("_"));
+                changeNodeColorOnImage(nextID, yellow);
             }
+            else changeNodeColorOnImage(curID, yellow);
+            if (currentStepNumber == curPathDirections.get(1).size() - 1) drawPathArrow(node, node); // TODO : could cause issues
             else {
-                String nextNodes = currPathDir.get(1).get(dirIndex + 1);
-                String nextNodeID = nextNodes.substring(nextNodes.indexOf(",")+1);
+                String nextNodes = curPathDirections.get(1).get(currentStepNumber + 1);
+                String nextNodeID = nextNodes.substring(nextNodes.indexOf("_")+1);
                 Map<String, String> nextNode = db.getNode(nextNodeID);
-
-                double X1 = xScale(Integer.parseInt(node.get("XCOORD")));
-                double Y1 = yScale(Integer.parseInt(node.get("YCOORD")));
-                double X2 = xScale(Integer.parseInt(nextNode.get("XCOORD")));
-                double Y2 = yScale(Integer.parseInt(nextNode.get("YCOORD")));
-                double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
-
                 if(node.get("FLOOR").equals(nextNode.get("FLOOR"))){
-                    drawArrow(X1, Y1, node.get("FLOOR"), rotationAngle);
-                }else {
-                    removeDirectionArrow();
+                    drawPathArrow(node, nextNode);
                 }
+
             }
         }
-}
-
-    public void unHighlightDirection() throws SQLException{
-        String curNode = currPathDir.get(1).get(dirIndex);
-        if (curNode.contains(",")){
-            int index = curNode.indexOf(",");
-            Map<String, String> start = db.getNode(curNode.substring(0,index));
-            Map<String, String> end = db.getNode(curNode.substring(index+1));
-            drawTwoNodesWithEdge(start, end, Color.BLUE, Color.BLUE, Color.BLACK );
-        }
-        else{
-            if(dirIndex != 0) drawSingleNode(db.getNode(curNode), Color.BLUE);
-        }
-
     }
 
-    public void changeTextDirectionIcon(String direction){ //update arrow
-        Image arrowImg; //TODO: Switch case?
-        if (direction.contains("left")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
-        else if (direction.contains("right")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
-        else if (direction.contains("elevator")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
-        else if (direction.contains("stairs")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
-        else if (direction.contains("Turn around")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
-        else if (direction.contains("You have arrived at your destination.")) arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
-        else arrowImg = new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
+    public void unHighlightDirection() throws SQLException{
+        String curDirectionID = curPathDirections.get(1).get(currentStepNumber);
+        if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
+        else { if(currentStepNumber != 0) changeNodeColorOnImage(curDirectionID, darkBlue); }
+    }
 
-        arrow.setImage(arrowImg);
+
+    /**
+     * Extracts the floor from the provided node or nodes corresponding to a text direction.
+     * @param nodeInstruction The node or nodes passed in are of the form NODEID or NODEID,NODEID where the second represents the
+     * action of traveling between two nodes.
+     * @return A floor that corresponds to the map
+     */
+    private String getInstructionsFloor(String nodeInstruction){
+        String curFloor = null;
+        if (nodeInstruction.contains("_")) {
+            int index = nodeInstruction.indexOf("_");
+            try {
+                curFloor = db.getNode(nodeInstruction.substring(0, index)).get("FLOOR");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            try {
+                curFloor = db.getNode(nodeInstruction).get("FLOOR");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return curFloor;
+    }
+
+    public Image textDirectionToImage(String direction){ //update arrow
+        if (direction.contains("left")) return new Image("/edu/wpi/aquamarine_axolotls/img/leftArrow.png");
+        else if (direction.contains("right")) return new Image("/edu/wpi/aquamarine_axolotls/img/rightArrow.png");
+        else if (direction.contains("elevator")) return new Image("/edu/wpi/aquamarine_axolotls/img/elevator.png");
+        else if (direction.contains("stairs")) return new Image("/edu/wpi/aquamarine_axolotls/img/stairs.png");
+        else if (direction.contains("Turn around")) return new Image("/edu/wpi/aquamarine_axolotls/img/turn around.png");
+        else if (direction.contains("You have arrived at your destination.")) return new Image("/edu/wpi/aquamarine_axolotls/img/arrived.png");
+        else return new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
+
     }
 
 
