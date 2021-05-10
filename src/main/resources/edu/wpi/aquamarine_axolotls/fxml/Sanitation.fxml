@@ -23,9 +23,9 @@
         <Pane prefHeight="900.0" prefWidth="556.0" BorderPane.alignment="CENTER">
             <children>
                 <Circle fill="#1f93ff00" layoutX="363.0" layoutY="149.0" radius="79.0" smooth="false" stroke="#003da6" strokeType="INSIDE" strokeWidth="5.0" />
-                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="To ensure proper prioritization of cleaning, be sure to include details regarding biohazards, the location of the mess, and any other descriptions deemed appropriate for the service required." textAlignment="RIGHT" wrapText="true">
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="45.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="421.0" text="To ensure proper prioritization of cleaning, be sure to include details regarding biohazards, the location of the mess, and any other descriptions deemed appropriate for the service required." textAlignment="RIGHT" wrapText="true">
                     <font>
-                        <Font name="Verdana" size="20.0" />
+                        <Font name="Verdana" size="18.0" />
                     </font>
                     <padding>
                         <Insets left="20.0" right="20.0" />
@@ -84,7 +84,7 @@
                             </GridPane.margin></JFXComboBox>
                     </children>
                 </GridPane>
-                <JFXTextArea fx:id="description" layoutX="100.0" layoutY="488.0" prefHeight="88.0" prefWidth="554.0" promptText="Description" style="-fx-font-family: Verdana; -fx-font-size: 20;">
+                <JFXTextArea fx:id="description" layoutX="100.0" layoutY="509.0" prefHeight="88.0" prefWidth="554.0" promptText="Description" style="-fx-font-family: Verdana; -fx-font-size: 20;">
                     <padding>
                         <Insets top="40.0" />
                     </padding>

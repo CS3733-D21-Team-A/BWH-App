@@ -40,7 +40,7 @@
                 </Label>
                 <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="321.0" layoutY="110.0">
                     <image>
-                        <Image url="@../img/ServiceReq%20Icons/floralDeliveryB.png" />
+                        <Image url="@../img/ServiceReq Icons/floralDeliveryB.png" />
                     </image>
                 </ImageView>
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
@@ -103,7 +103,7 @@
                     </children>
                 </GridPane>
 
-                <JFXTextArea fx:id="persMessage" layoutX="83.0" layoutY="612.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
+                <JFXTextArea fx:id="persMessage" layoutX="88.0" layoutY="612.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
                     <font>
                         <Font name="Verdana" size="20.0" />
                     </font>

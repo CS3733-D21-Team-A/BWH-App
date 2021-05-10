@@ -28,16 +28,16 @@
         <Pane prefHeight="795.0" prefWidth="800.0" BorderPane.alignment="CENTER">
             <children>
                 <Rectangle fill="#003da6" height="65.0" layoutX="-3.0" layoutY="-12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
-                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goHome" prefHeight="43.0" prefWidth="46.0" text=" ">
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
                     <graphic>
                         <ImageView fitHeight="40.0" fitWidth="42.0">
                             <image>
-                                <Image url="@../img/ServiceReq Icons/homeButton.png" />
+                                <Image url="@../../../../../../../../BWH-App2/src/main/resources/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
                             </image>
                         </ImageView>
                     </graphic>
                 </JFXButton>
-            <Text layoutX="174.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." wrappingWidth="479.6227722167969">
+            <Text layoutX="174.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." wrappingWidth="479.6227722167969">
                <font>
                   <Font name="Verdana" size="33.0" />
                </font>

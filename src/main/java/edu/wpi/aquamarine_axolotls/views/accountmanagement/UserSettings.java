@@ -48,7 +48,6 @@ public class UserSettings extends GenericPage {
     @FXML
     public javafx.scene.image.ImageView tfaView;
     @FXML private Label tfaSource;
-    @FXML private JFXCheckBox databaseServer;
 
     @FXML
     private Label passwordMatchLabel;
@@ -78,10 +77,10 @@ public class UserSettings extends GenericPage {
         try{
             System.out.println ( db.getUserByUsername(username).get ( "USERTYPE" ) );
             if(db.getUserByUsername(username).get ( "USERTYPE" ).equals ( "Admin" )){
-                databaseServer.setVisible ( true );
+                databasePicker.setVisible ( true );
             }
             else{
-                databaseServer.setVisible ( false );
+                databasePicker.setVisible ( false );
             }
 
             userName.setText(username);
@@ -109,7 +108,7 @@ public class UserSettings extends GenericPage {
         gender.setEditable(false);
         tfa.setDisable ( true );
         stackPane.setVisible ( false );
-        databaseServer.setDisable ( true );
+        databasePicker.setDisable ( true );
 
     }
 
@@ -122,7 +121,7 @@ public class UserSettings extends GenericPage {
         pronouns.setEditable(true);
         gender.setEditable(true);
         tfa.setDisable ( false );
-        databaseServer.setDisable ( false );
+        databasePicker.setDisable ( false );
 
     }
 
@@ -135,7 +134,7 @@ public class UserSettings extends GenericPage {
         gender.setEditable(false);
         phoneNumber.setEditable ( false );
         tfa.setDisable ( true );
-        databaseServer.setDisable ( true );
+        databasePicker.setDisable ( true );
 
 
         try{
