@@ -8,6 +8,7 @@ import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 import java.sql.SQLException;
@@ -20,8 +21,8 @@ public class ForgotPassword extends GenericPage {
         @FXML private JFXTextField tfa;
         @FXML private JFXButton next;
         @FXML private GridPane gridPane;
-        @FXML private GridPane newPassPane;
-        @FXML private GridPane verfPane;
+        @FXML private Pane newPassPane;
+        @FXML private Pane verfPane;
         @FXML private JFXButton first;
         @FXML private JFXButton second;
         @FXML private JFXButton finalSubmit;
