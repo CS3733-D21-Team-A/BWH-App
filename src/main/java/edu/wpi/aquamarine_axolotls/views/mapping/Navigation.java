@@ -143,7 +143,7 @@ public class Navigation extends GenericMap {
         if(currentPath.size() > 0){
             drawNodes(Color.web("#003da6", .4));
             drawPath();
-            drawArrows();
+            setArrowsToBeVisible();
         }
         else{
             drawNodes(darkBlue);
@@ -239,6 +239,7 @@ public class Navigation extends GenericMap {
             for (Map<String, String> node : path){
                 if (SearchAlgorithmContext.getSearchAlgorithmContext().nodeIsUnimportant(path, node)) toRemove.add(node);
             }
+            path.removeAll(toRemove);
             currentPath.addAll(path);
         }
         curPathDirections = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currentPath);
@@ -251,12 +252,14 @@ public class Navigation extends GenericMap {
     void drawPath(){
         linesOnImage.clear();
         nodesOnImage.clear();
+
         mapView.getChildren().clear();
         try {
-            drawNodesNoHallWalk(darkBlue);
+            drawNodesNoHallWalk(Color.web("#003da6", .4));
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        currentPath.get(0).get("FLOOR");
         for(int i = 0; i < currentPath.size() - 1; i++){
             Map<String, String> node = currentPath.get(i);
             Map<String, String> nextNode = currentPath.get(i+1);
@@ -292,6 +295,7 @@ public class Navigation extends GenericMap {
             changeNodeColorOnImage(currentPath.get(currentPath.size() - 1).get("NODEID"), Color.RED);
             updateNodeSize(currentPath.get(currentPath.size() - 1).get("NODEID"), 5);
         }
+        setArrowsToBeVisible();
 
     }
 
@@ -388,6 +392,7 @@ public class Navigation extends GenericMap {
     public void startDir() {
         currentStepNumber = 0; // was dirIndex
         String curDirection = curPathDirections.get(0).get(currentStepNumber);
+        setArrowsToBeVisible();
         currentMenu.setCurArrow(textDirectionToImage(curDirection));
         currentMenu.setCurDirection(curDirection);
         String nodeID = curPathDirections.get(1).get(0);
@@ -525,10 +530,6 @@ public class Navigation extends GenericMap {
         else return new Image("/edu/wpi/aquamarine_axolotls/img/straight.png");
 
     }
-
-
-
-
 
     //
 //    @FXML private Label startLabel;

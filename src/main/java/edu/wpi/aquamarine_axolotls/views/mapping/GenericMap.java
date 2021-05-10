@@ -58,6 +58,7 @@ public abstract class GenericMap extends GenericPage {
     Map<String, Circle> nodesOnImage = new HashMap<>();
     Map<String, Line> linesOnImage = new HashMap<>();
     ArrayList<ArrayList<Polygon>> arrowsOnImage = new ArrayList<>();
+
     Polygon currentPathArrow;
 
     List<Map<String, String>> selectedNodesList = new ArrayList<>();
@@ -293,6 +294,18 @@ public abstract class GenericMap extends GenericPage {
         }
     }
 
+    /**
+     * Re-draws all the edges connected to a particular node
+     * @param nodeID
+     */
+    public void setArrowsToBeVisible() {
+        for(Polygon arrow : arrowsOnImage.get(floorToInt(FLOOR))){
+            arrow.setVisible(true);
+            mapView.getChildren().add(arrow);
+        }
+
+    }
+
 
     /**
      * Pop up that happens when user clicks a node
@@ -509,7 +522,7 @@ public abstract class GenericMap extends GenericPage {
     public String intToFloor(int floor){
         if(floor == 0) return "L2";
         if(floor == 1) return "L1";
-        else return String.valueOf(floor);
+        else return String.valueOf(floor- 1) ;
     }
 
     /**
@@ -564,9 +577,10 @@ public abstract class GenericMap extends GenericPage {
 
         // make the polygon
         Polygon arrow = new Polygon();
-        arrow = new Polygon();
         arrow.setFill(color);
         arrow.setStroke(color);
+//        if(startFloor == floorToInt(FLOOR)) arrow.setVisible(true);
+//        else
         arrow.setVisible(false);
         arrow.toFront();
 
@@ -583,8 +597,11 @@ public abstract class GenericMap extends GenericPage {
         arrow.getPoints().addAll(points);
         arrow.setRotate(rotationAngle);
 
+        if(arrowsOnImage.size() - 1 < startFloor){
+            for(int i = 0; i < 5; i++) arrowsOnImage.add(new ArrayList<Polygon>());
+        }
         arrowsOnImage.get(startFloor).add(arrow);
-        mapView.getChildren().add(arrow);
+//        mapView.getChildren().add(arrow);
 
         arrow.setOnMousePressed((MouseEvent e) ->{
             drawFloor(intToFloor(endFloor));
