@@ -301,7 +301,7 @@ public abstract class GenericMap extends GenericPage {
     public void setArrowsToBeVisible() {
         for(Polygon arrow : arrowsOnImage.get(floorToInt(FLOOR))){
             arrow.setVisible(true);
-            mapView.getChildren().add(arrow);
+            if (!mapView.getChildren().contains(arrow)) mapView.getChildren().add(arrow);
         }
 
     }
@@ -605,6 +605,19 @@ public abstract class GenericMap extends GenericPage {
 
         arrow.setOnMousePressed((MouseEvent e) ->{
             drawFloor(intToFloor(endFloor));
+        });
+
+        // Hover over edge to make it thicker
+        arrow.setOnMouseEntered((MouseEvent e) ->{
+            arrow.setScaleX(2.0);
+            arrow.setScaleY(2.0);
+            arrow.toFront();
+        });
+
+        //Moving mouse off edge will make it stop highlighting
+        arrow.setOnMouseExited((MouseEvent e) ->{
+            arrow.setScaleX(1.0);
+            arrow.setScaleY(1.0);
         });
 
 //        if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor)){ // TODO : add code for
