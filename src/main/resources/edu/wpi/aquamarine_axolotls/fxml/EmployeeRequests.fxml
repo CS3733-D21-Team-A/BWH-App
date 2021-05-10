@@ -170,23 +170,6 @@
    <center>
       <JFXTabPane fx:id="tabs" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" rotateGraphic="true" side="LEFT" tabClosingPolicy="ALL_TABS" BorderPane.alignment="TOP_LEFT">
          <tabs>
-            <Tab fx:id="serviceRequests" onSelectionChanged="#showSRBox" text="Service Request">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="750.0" prefWidth="1400.0">
-                           <columns>
-                              <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Assigned" />
-                              <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Assignee" />
-                              <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Status" />
-                              <TableColumn fx:id="serviceRequestColumn" prefWidth="182.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Service Name" />
-                              <TableColumn fx:id="locationColumn" prefWidth="118.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Location" />
-                           </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
             <Tab fx:id="covidSurveys" onSelectionChanged="#showCovidBox" text="COVID Surveys">
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">

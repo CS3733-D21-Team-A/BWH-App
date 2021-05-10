@@ -13,19 +13,18 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Line;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
-    @FXML private TableView<Request> srTable;
+   // @FXML private TableView<Request> srTable;
     @FXML private TableColumn<Request, String> assignedColumn;
     @FXML private TableColumn<Request, String> assigneeColumn;
     @FXML private TableColumn<Request, String> statusColumn;
@@ -60,9 +59,23 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     @FXML private JFXTabPane tabs;
     @FXML private Tab covidSurveys;
 
-
     DatabaseController db;
 
+    private static final Map<String, Integer> serviceRequestIndex;
+
+    static {
+        serviceRequestIndex = new HashMap<>();
+        serviceRequestIndex.put("Floral Delivery", 1);
+        serviceRequestIndex.put("Food Delivery", 2);
+        serviceRequestIndex.put("Gift Delivery", 3);
+        serviceRequestIndex.put("Language Interpreter", 4);
+        serviceRequestIndex.put("Facilities Maintenance", 5);
+        serviceRequestIndex.put("Laundry Services", 6);
+        serviceRequestIndex.put("Sanitation", 7);
+        serviceRequestIndex.put("External Transport", 8);
+        serviceRequestIndex.put("Internal Transport", 9);
+        serviceRequestIndex.put("Medicine Delivery", 10);
+    }
 
     @FXML
     public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
@@ -70,6 +83,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             db = DatabaseController.getInstance();
 
             ObservableList<String> names;
+            createTabs();
 
             USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
 
@@ -114,11 +128,13 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.DONE),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.CANCELED)));
-            assignedColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assigned"));
-            assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
-            statusColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("status"));
-            serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("serviceRequest"));
-            locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
+
+
+//            assignedColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assigned"));
+//            assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
+//            statusColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("status"));
+//            serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("serviceRequest"));
+//            locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
 
             // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
@@ -154,9 +170,11 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 case ADMIN:
                 case EMPLOYEE:
                     serviceRequests = db.getServiceRequests();
-                    srTable.getItems().clear();
+                    //srTable.getItems().clear();
                     for (Map<String, String> req : serviceRequests) {
-                        srTable.getItems().add(new Request(req));
+                        int index = serviceRequestIndex.get(req.get("REQUESTTYPE"));
+                        TableView curTable = (TableView) ((AnchorPane) tabs.getTabs().get(index).getContent()).getChildren();
+                        curTable.getItems().add(new Request(req));
                     }
 
                     covSurveys = db.getSurveys();
@@ -164,12 +182,12 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     for (Map<String, String> survey : covSurveys) {
                         covidSurveyTable.getItems().add(new CovidSurvey(survey));
                     }
-                case PATIENT:
-                    serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
-                    srTable.getItems().clear();
-                    for (Map<String, String> req : serviceRequests) {
-                        srTable.getItems().add(new Request(req));
-                    }
+//                case PATIENT:
+//                    serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
+//                    srTable.getItems().clear();
+//                    for (Map<String, String> req : serviceRequests) {
+//                        srTable.getItems().add(new Request(req));
+//                    }
             }
         } catch(SQLException e){
             e.printStackTrace();
@@ -182,6 +200,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     public void assign(){
         try {
             if(assignD.getSelectionModel() == null) return;
+
             int index = srTable.getSelectionModel().getFocusedIndex();
             if(index == -1) return;
             db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
@@ -236,6 +255,36 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         covidVbox.setVisible(false);
         srVbox.toFront();
     }
+
+    public void createTabs(){
+        for (Map.Entry entry : serviceRequestIndex.entrySet()){
+            String s = (String) entry.getKey();
+
+            TableView table = new TableView();
+            table.setId(s);
+
+            TableColumn assignedColumn = new TableColumn();
+            TableColumn assigneeColumn = new TableColumn();
+            TableColumn statusColumn = new TableColumn();
+            TableColumn locationColumn = new TableColumn();
+
+            table.getColumns().addAll(assignedColumn, assigneeColumn, statusColumn, locationColumn);
+
+            assignedColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assigned"));
+            assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
+            statusColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("status"));
+            locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
+
+            Tab tab = new Tab(s, table);
+            tab.setId(s+"Tab");
+
+            tabs.getTabs().add(tab);
+        }
+    }
+
+
+    //"External Transport","Facilities Maintenance", "Gift Delivery",
+    //                    "Internal Transportation", "Language Interpreter", "Medicine Delivery", "Sanitation"
 
     public class Request { //This needs to be public for things to work :(
 

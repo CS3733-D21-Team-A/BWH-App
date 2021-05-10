@@ -51,7 +51,6 @@
                     <Insets left="680.0" />
                 </HBox.margin>
             </JFXButton>
-
         </HBox>
     </top>
     <center>
