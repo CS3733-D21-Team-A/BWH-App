@@ -32,7 +32,7 @@
                     <graphic>
                         <ImageView fitHeight="40.0" fitWidth="42.0">
                             <image>
-                                <Image url="@../../../../../../../../BWH-App2/src/main/resources/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
+                                <Image url="@../img/image.png.jpg" />
                             </image>
                         </ImageView>
                     </graphic>

@@ -37,17 +37,14 @@ public class LogIn extends GenericPage {
 	@FXML private Label tfaSource;
 	@FXML private JFXTextField verification;
 
-	String user;
-public void initialize() {
-	user = PREFERENCES.get ( USER_NAME ,null );
-}
-
 	private DatabaseController db = DatabaseController.getInstance();
+
 
 
 	public void confirmUser() throws SQLException {
 		String CUusername = username.getText();
 		String CUpassword = password.getText();
+
 
 		if (username.getText().isEmpty() || password.getText().isEmpty()) {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have not filled in both the username and password fields");
@@ -66,10 +63,12 @@ public void initialize() {
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
 		}
-		String tfaEnable = db.getUserByUsername ( user ).get ( "MFAENABLED" );
-		System.out.println ( tfaEnable );
+		String tfaEnable = db.getUserByUsername ( CUusername ).get ( "MFAENABLED" );
 		if(tfaEnable.equals ( "true")){
-			tfaSelected();
+			tfaPane.setVisible ( true );
+			verfIncorrect.setVisible ( false );
+
+
 		}
 		else{
 			goHome();
@@ -78,36 +77,15 @@ public void initialize() {
 	}
 
 
-
-
-	public void tfaSelected(){
-		tfaPane.setVisible ( true );
-		verfIncorrect.setVisible ( false );
-			try {
-				Pair<String, byte[]> TOTPinformation = Security.enableTOTP ( user );
-				readByteArray ( TOTPinformation.getValue ( ) );
-				tfaSource.setText ( "Secret: \n" + TOTPinformation.getKey ( ) );
-
-			} catch (QrGenerationException | SQLException | IOException e) {
-				e.printStackTrace ( );
-			}
-
-	}
-
-
-	public void readByteArray(byte[]  pair) throws IOException {
-		Image img = new Image(new ByteArrayInputStream (pair));
-		tfaView.setImage  ( img );
-	}
-
-
 	public void tfasubmit_button() throws SQLException {
-		boolean verificationSuccess = Security.verifyTOTP(user,verification.getText ( ) );
+		boolean verificationSuccess = Security.verifyTOTP(username.getText(),verification.getText ( ) );
 		if(verificationSuccess){
 			popUp ( "Two Factor Authentication Success" ,"\n\n\n\n\n\n You have successfully completed Two-Factor Authentication" );
+			goHome();
 		}
 		else{
 			verfIncorrect.setVisible ( true );
+
 		}
 	}
 
@@ -123,5 +101,6 @@ public void initialize() {
 	public void createNewAccount() {
 		sceneSwitch("CreateNewAccount");
 	}
+
 }
 

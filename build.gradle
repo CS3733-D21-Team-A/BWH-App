@@ -58,7 +58,7 @@ dependencies {
             'org.jvoicexml:freetts:1.2.3-SNAPSHOT',
 
             'dev.samstevens.totp:totp:1.7.1',
-            'commons-net:commons-net:3.6',
+            'commons-net:commons-net:3.8.0',
             'dev.samstevens.totp:totp:1.7.1',
 
             'com.sendgrid:sendgrid-java:4.7.2'

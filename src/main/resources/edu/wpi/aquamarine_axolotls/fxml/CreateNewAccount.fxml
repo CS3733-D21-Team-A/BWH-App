@@ -130,9 +130,9 @@
                 </GridPane>
                 <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="42.0">
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
                             <image>
-                                <Image url="@../../../../../../../../BWH-App2/src/main/resources/edu/wpi/aquamarine_axolotls/img/back icon.jpg" />
+                                <Image url="@../img/image.png" />
                             </image>
                         </ImageView>
                     </graphic>

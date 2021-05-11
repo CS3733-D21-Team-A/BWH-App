@@ -33,7 +33,7 @@ public class ForgotPassword extends GenericPage {
 
 
     private final DatabaseController db = DatabaseController.getInstance();
-    private EmailService emailService = new EmailService();
+    private final EmailService emailService = new EmailService();
 
         public void userCheck()  {
             String usrname = username.getText();
@@ -61,7 +61,6 @@ public class ForgotPassword extends GenericPage {
 
         public void verifyEmailConf(){
             if(!verifyEmail.getText ().isEmpty ()){
-
                 String emailConf = "";
                 if(verifyEmail.getText ().equals(emailConf)){
                     second.setVisible ( false );

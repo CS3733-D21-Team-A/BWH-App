@@ -132,6 +132,7 @@ public class NewAccount extends GenericPage {
         user.put ( "EMAIL" ,emailAddress.getText ( ) );
         user.put ( "USERTYPE" ,"Patient" );
         user.put ( "PASSWORD" ,password.getText ( ) );
+
         db.addUser ( user );
 
         if ( tfa.isSelected ( ) ) {
@@ -142,6 +143,7 @@ public class NewAccount extends GenericPage {
         else {
             popUp ( "Account Success" ,"\n\n\n\n\n\nThe account you submitted was successfully created." );
             sceneSwitch ( "LogIn" );
+
         }
     }
 
@@ -188,6 +190,8 @@ public class NewAccount extends GenericPage {
         } catch (SQLException throwables) {
             throwables.printStackTrace ( );
         }
+
+
         submitButton.setVisible ( true );
     }
 }
