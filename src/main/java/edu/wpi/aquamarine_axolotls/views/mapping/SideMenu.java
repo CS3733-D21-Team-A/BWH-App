@@ -359,6 +359,7 @@ public class SideMenu extends GenericPage {
     }
 
     public void clearAll(){
+        if(eta != 0) eta = 0;
         if(curArrow != null) curArrow.setImage(navController.textDirectionToImage(""));
         if(curDirection != null) curDirection.setText("");
         if(startLabel != null) startLabel.setText("Start Location");

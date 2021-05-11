@@ -53,8 +53,8 @@ public class Navigation extends GenericMap {
     SideMenu currentMenu;
     @FXML
     JFXDrawer drawer;
-    private int currentStepNumber;
-    private int currentStepNumberGmaps;
+    private int currentStepNumber = 0;
+    private int currentStepNumberGmaps = 0;
     private List<List<String>> curPathDirections = new ArrayList<>();
     double eta;
     String currentNodeIDContextMenu;
@@ -517,6 +517,7 @@ public class Navigation extends GenericMap {
     }
 
     public void goToStepByStep() {
+        currentStepNumber = 0;
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
         setStartAndEnd();
@@ -524,14 +525,19 @@ public class Navigation extends GenericMap {
     }
 
     public void goToGmapsListOfDirections() {
+        voice.stop();
         drawer.setSidePane(gmapsListOfDirections);
         sideControllers.get(3).setUpGmaps();
         currentMenu = sideControllers.get(3);
     }
 
     public void goToGmapsStepByStep() {
+        currentStepNumberGmaps = 0;
         drawer.setSidePane(gmapsStepByStep);
         currentMenu = sideControllers.get(4);
+        if(isVoiceToggled) {
+            voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(0)), newThread);
+        }
         currentMenu.setCurDirection(gmapsDir.get(0));
         currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(0)));
     }
@@ -633,7 +639,8 @@ public class Navigation extends GenericMap {
         sideControllers.forEach((a) -> {
             if (a != currentMenu) a.toggleVoiceSlider();
         });
-        if(isVoiceToggled && currentPath.size() > 0) voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        if(isVoiceToggled && currentPath.size() > 0 && sideControllers.indexOf(currentMenu) == 2) voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        else if(isVoiceToggled && sideControllers.indexOf(currentMenu) == 4 && gmapsDir.size() > 0) voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(currentStepNumberGmaps)), newThread);
     }
 
     public void highlightDirection() throws SQLException{
