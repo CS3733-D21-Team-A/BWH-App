@@ -63,18 +63,6 @@ final class DatabaseInfo {
 			//TODO: Constraint to replace ENUM('Floral Delivery', 'External Transport', 'Gift Delivery', 'Food Delivery', 'Language Interpreter', 'Internal Transport', 'Medicine Delivery', 'Laundry', 'Sanitation', 'Religious Requests', 'Security') for REQUESTTYPE
 		")";
 
-	/**
-	 * SQL for building the ATTRIBUTES table.
-	 */
-	static final String ATTRIBUTES_TABLE_SQL =
-		"CREATE TABLE " + TABLES.ATTRIBUTES.name() + " (" +
-			"ATTRID INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY," +
-			"NODEID VARCHAR(25) CONSTRAINT FK_NODEID REFERENCES " + TABLES.NODES.name() + "(NODEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
-			"EDGEID VARCHAR(51) CONSTRAINT FK_EDGEID REFERENCES " + TABLES.EDGES.name() + "(EDGEID) ON DELETE CASCADE ON UPDATE RESTRICT," +
-			"ATTRIBUTE VARCHAR(30)" +
-				//ATTRIBUTE ENUM('NOT_NAVIGABLE', 'HANDICAPPED_ACCESSIBLE', 'COVID_SAFE')
-		")"; //TODO: ENUM CONSTRAINT FOR ATTRIBUTE?
-
 	// ========== FAVORITE_NODES TABLE ================= //
 	/**
 	 * SQL table for the FAVORITE_NODES
@@ -115,13 +103,6 @@ final class DatabaseInfo {
 					"COVIDLIKELY VARCHAR(5)," +
 					"ENTRYAPPROVED VARCHAR(5)" +
 					")";
-
-	// ========== ATTRIBUTES STRINGS ==========
-
-
-	static final String NOT_NAVIGABLE_TEXT = "Not Navigable";
-	static final String HANDICAPPED_ACCESSIBLE_TEXT = "Handicapped Accessible";
-	static final String COVID_SAFE_TEXT = "COVID Safe";
 
 
 	// ========= COVID SURVEY ==============
@@ -376,7 +357,6 @@ final class DatabaseInfo {
 		TABLE_SQL = new EnumMap<>(TABLES.class); // NOTE: THE ORDER OF THESE IS IMPORTANT OR ELSE THE DATABASE CONSTRUCTION WON'T WORK
 		TABLE_SQL.put(TABLES.NODES, NODE_TABLE_SQL);
 		TABLE_SQL.put(TABLES.EDGES, EDGE_TABLE_SQL);
-		TABLE_SQL.put(TABLES.ATTRIBUTES, ATTRIBUTES_TABLE_SQL);
 		TABLE_SQL.put(TABLES.USERS, USER_TABLE_SQL);
 		TABLE_SQL.put(TABLES.SERVICE_REQUESTS, SERVICE_REQUESTS_TABLE_SQL);
 		TABLE_SQL.put(TABLES.FAVORITE_NODES,FAVORITE_NODES_TABLE_SQL);

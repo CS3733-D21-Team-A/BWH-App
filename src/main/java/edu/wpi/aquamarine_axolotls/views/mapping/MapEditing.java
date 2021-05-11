@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
@@ -36,6 +37,8 @@ public class MapEditing extends GenericMap {
     public RadioMenuItem mergeCSVButton;
     @FXML
     public RadioMenuItem exportButton;
+    @FXML
+    public Pane helpPane;
 
     ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
     CSVHandler csvHandler;
@@ -56,6 +59,7 @@ public class MapEditing extends GenericMap {
     @FXML
     public void initialize() throws SQLException, IOException {
         startUp();
+        helpPane.setVisible(false);
 
     //====SET UP SEARCH ALGORITHM SELECTION====//
 
@@ -653,4 +657,13 @@ public class MapEditing extends GenericMap {
             sq.printStackTrace();
         }
     }
+
+    public void helpButton(){
+        helpPane.setVisible(true);
+    }
+
+    public void cancelHelp(){
+        helpPane.setVisible ( false );
+    }
+
 }

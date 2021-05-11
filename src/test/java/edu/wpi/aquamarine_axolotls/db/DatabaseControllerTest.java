@@ -12,8 +12,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class DatabaseControllerTest {
 	private final DatabaseController db = DatabaseController.getInstance();
 
-	DatabaseControllerTest() throws SQLException, IOException{}
-
 	@BeforeEach
 	void resetDB() throws IOException, SQLException {
 		db.emptyEdgeTable();
@@ -50,7 +48,7 @@ class DatabaseControllerTest {
 		}
 	}
 
-	@Test
+	/*@Test //deprecated
 	void nodeColumnValidNames() {
 		Set<String> colName = db.getNodeColumns().keySet();
 		assertTrue(colName.contains("NODEID"));
@@ -74,7 +72,7 @@ class DatabaseControllerTest {
 		assertTrue(colName.get("NODETYPE"));
 		assertTrue(colName.get("LONGNAME"));
 		assertTrue(colName.get("SHORTNAME"));
-	}
+	}*/
 
 	@Test
 	void addNode() {
@@ -236,7 +234,7 @@ class DatabaseControllerTest {
 	}
 
 
-	@Test
+	/*@Test //deprecated
 	void edgeColumnValidNames() {
 		Set<String> colName = db.getEdgeColumns().keySet();
 		assertTrue(colName.contains("EDGEID"));
@@ -250,7 +248,7 @@ class DatabaseControllerTest {
 		assertTrue(colName.get("EDGEID")); // String
 		assertTrue(colName.get("STARTNODE")); // not String
 		assertTrue(colName.get("ENDNODE"));
-	}
+	}*/
 
 	@Test
 	void edgeExists() {
@@ -333,7 +331,7 @@ class DatabaseControllerTest {
 		}
 	}
 
-	@Test
+	/*@Test //deprecated
 	void editEdge() {
 		try {
 			Map<String,String> before = db.getEdge("aWALK004GG_aEXIT00201");
@@ -395,7 +393,7 @@ class DatabaseControllerTest {
 			e.printStackTrace();
 			fail();
 		}
-	}
+	}*/
 
 	@Test
 	void getEdge() {
@@ -479,7 +477,7 @@ class DatabaseControllerTest {
 		}
 	}
 
-	@Test
+	/*@Test //deprecated
 	void editEdgeChangeStart() {
 		Map<String,String> newEdge = new HashMap<>();
 		newEdge.put("STARTNODE", "aWALK001GG");
@@ -498,7 +496,7 @@ class DatabaseControllerTest {
 			e.printStackTrace();
 			fail();
 		}
-	}
+	}*/
 
 	@Test
 	void deleteEdgeExists() {

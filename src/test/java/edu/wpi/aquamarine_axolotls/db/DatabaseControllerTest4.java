@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.db;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -80,11 +81,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 
@@ -94,11 +98,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user2);
 
@@ -108,11 +115,14 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
             user3.put("COVIDLIKELY",null);
+            user3.put("ENTRYAPPROVED",null);
+            user3.put("TOTPSECRET",null);
+            user3.put("MFAENABLED","false");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
 
             db.addUser(user3);
 
@@ -135,11 +145,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
             assertThrows(SQLException.class, () -> {
@@ -162,11 +175,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "BananasTho");
@@ -174,9 +190,12 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "CJ");
             user2.put("EMAIL", "Sean@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "YourPassword");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user1);
             assertThrows(SQLException.class, () -> {
@@ -198,11 +217,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
             user1.replace("LASTNAME", "DeMaio");
@@ -225,11 +247,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
             user1.replace("LASTNAME", "DeMaio");
@@ -254,11 +279,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
@@ -281,11 +309,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
             assertEquals(user1, db.getUserByUsername("Seansta18"));
@@ -299,7 +330,7 @@ public class DatabaseControllerTest4 {
     //Emily
 
     // Testing List<Map<String, String>> getUsers() throws SQLException
-    @Test
+    /*@Test //deprecated
     public void testGetUsers(){
         try{
             List<Map<String,String>> testBoi = new ArrayList<>();
@@ -309,11 +340,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
             testBoi.add(user1);
@@ -324,11 +358,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user2);
             testBoi.add(user2);
@@ -339,11 +376,14 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
             user3.put("COVIDLIKELY",null);
+            user3.put("ENTRYAPPROVED",null);
+            user3.put("TOTPSECRET",null);
+            user3.put("MFAENABLED","false");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
 
             db.addUser(user3);
             testBoi.add(user3);
@@ -353,7 +393,7 @@ public class DatabaseControllerTest4 {
             e.printStackTrace();
             fail();
         }
-    }
+    }*/
 
     // Testing public boolean checkUserExists(String username)
     @Test
@@ -365,11 +405,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 
@@ -379,11 +422,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
 
             db.addUser(user2);
 
@@ -393,15 +439,18 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
             user3.put("COVIDLIKELY",null);
+            user3.put("ENTRYAPPROVED",null);
+            user3.put("TOTPSECRET",null);
+            user3.put("MFAENABLED","false");
 
             db.addUser(user3);
 
-            assertTrue(db.checkUserExists("Alexa123"));
+            assertTrue(db.checkUserExistsByUsername("Alexa123"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -417,11 +466,14 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+            user1.put("ENTRYAPPROVED",null);
+            user1.put("TOTPSECRET",null);
+            user1.put("MFAENABLED","false");
 
             db.addUser(user1);
 
@@ -431,11 +483,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
 
             db.addUser(user2);
 
@@ -445,15 +500,18 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
             user3.put("COVIDLIKELY",null);
+            user3.put("ENTRYAPPROVED",null);
+            user3.put("TOTPSECRET",null);
+            user3.put("MFAENABLED","false");
 
             db.addUser(user3);
 
-            assertFalse(db.checkUserExists("Bumblebee"));
+            assertFalse(db.checkUserExistsByUsername("Bumblebee"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -461,7 +519,7 @@ public class DatabaseControllerTest4 {
     }
 
     // Testing checkUserMatchesPass();
-    @Test
+    /*@Test //Functionality deprecated
     public void testCheckUserMatchesPass(){
         try{
             Map<String, String> user1 = new HashMap<String, String>();
@@ -470,7 +528,7 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
@@ -484,7 +542,7 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
@@ -498,7 +556,7 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
@@ -522,11 +580,12 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 
@@ -536,11 +595,12 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+
+            Security.addHashedPassword(user2, "fhdjkl");
 
             db.addUser(user2);
 
@@ -550,11 +610,12 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
             user3.put("COVIDLIKELY",null);
+
+            Security.addHashedPassword(user3, "gjdfaskol");
 
             db.addUser(user3);
 
@@ -574,11 +635,12 @@ public class DatabaseControllerTest4 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
             user1.put("PRONOUNS","They/Them");
             user1.put("GENDER","Non-Binary");
             user1.put("TAKENSURVEY","NO");
             user1.put("COVIDLIKELY",null);
+
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 
@@ -588,11 +650,12 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "PasswordIsMyPassword");
             user2.put("PRONOUNS","They/Them");
             user2.put("GENDER","Non-Binary");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user2);
 
@@ -602,12 +665,11 @@ public class DatabaseControllerTest4 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
             user3.put("PRONOUNS","They/Them");
             user3.put("GENDER","Non-Binary");
             user3.put("TAKENSURVEY","NO");
             user3.put("COVIDLIKELY",null);
-
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
 
             db.addUser(user3);
 
@@ -616,7 +678,7 @@ public class DatabaseControllerTest4 {
             e.printStackTrace();
             fail();
         }
-    }
+    }*/
 
 
     //Sean
@@ -631,11 +693,15 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+
+            Security.addHashedPassword(user, "fjdasklgjlskf");
 
             db.addUser(user);
 
@@ -647,11 +713,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user2);
 
@@ -674,11 +743,14 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
 
             assertEquals(null, db.getUserByUsername("Seansta18"));
 
@@ -692,11 +764,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             assertEquals(null, db.getUserByUsername("EKelley"));
             db.addUser(user2);
@@ -708,7 +783,7 @@ public class DatabaseControllerTest4 {
         }
     }
 
-    @Test
+    /*@Test
     public void testGetUserByEmail()
     {
         try{
@@ -718,15 +793,18 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
 
             db.addUser(user);
 
-            assertEquals(user, db.getUserByEmail("Sean@gmail.com"));
+            assertTrue(user, db.checkUserExistsByEmail("Sean@gmail.com"));
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -734,16 +812,19 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "She/Her");
             user2.put("GENDER", "Female");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user2);
 
-            assertEquals(user, db.getUserByEmail("Sean@gmail.com"));
-            assertEquals(user2, db.getUserByEmail("emily@gmail.com"));
+            assertEquals(user, db.checkUserExistsByEmail("Sean@gmail.com"));
+            assertEquals(user2, db.checkUserExistsByEmail("emily@gmail.com"));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -761,17 +842,20 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Female");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
 
 
             db.addUser(user);
 
-            assertEquals(user, db.getUserByEmail("Sean@gmail.com"));
-            assertEquals(null, db.getUserByEmail("seansta@gmail.com"));
+            assertEquals(user, db.checkUserExistsByEmail("Sean@gmail.com"));
+            assertEquals(null, db.checkUserExistsByEmail("seansta@gmail.com"));
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -779,15 +863,18 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Her");
             user2.put("GENDER", "Male");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
-            assertEquals(null, db.getUserByEmail("emily@gmail.com"));
+            assertEquals(null, db.checkUserExistsByEmail("emily@gmail.com"));
             db.addUser(user2);
-            assertEquals(user2, db.getUserByEmail("emily@gmail.com"));
+            assertEquals(user2, db.checkUserExistsByEmail("emily@gmail.com"));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -805,11 +892,14 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "Yes");
             user.put("GENDER", "Yes");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
 
             db.addUser(user);
 
@@ -834,11 +924,14 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "Xe/Xers");
             user.put("GENDER", "Nonbinary");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -846,11 +939,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "Kelley");
             user2.put("EMAIL", "emily@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "ILoveSoftEng");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
 
             db.addUser(user);
             db.addUser(user2);
@@ -867,7 +963,7 @@ public class DatabaseControllerTest4 {
             e.printStackTrace();
             fail();
         }
-    }
+    }*/
 
 
     //Test getServiceRequestsByAuthor
@@ -881,11 +977,14 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
             db.addUser(user);
 
             Map<String, String> user2 = new HashMap<String, String>();
@@ -894,11 +993,14 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "H");
             user2.put("EMAIL", "John@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "Chris");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
             user2.put("TAKENSURVEY","NO");
             user2.put("COVIDLIKELY",null);
+            user2.put("ENTRYAPPROVED",null);
+            user2.put("TOTPSECRET",null);
+            user2.put("MFAENABLED","false");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
             db.addUser(user2);
 
             Map<String, String> sharedValues1 = new HashMap<String, String>();
@@ -988,11 +1090,14 @@ public class DatabaseControllerTest4 {
             user.put("LASTNAME", "McMillan");
             user.put("EMAIL", "Sean@gmail.com");
             user.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user.put("PASSWORD", "PasswordIsMyPassword");
             user.put("PRONOUNS", "He/Him");
             user.put("GENDER", "Male");
             user.put("TAKENSURVEY","NO");
             user.put("COVIDLIKELY",null);
+            user.put("ENTRYAPPROVED",null);
+            user.put("TOTPSECRET",null);
+            user.put("MFAENABLED","false");
+            Security.addHashedPassword(user, "fjdasklgjlskf");
             db.addUser(user);
 
             Map<String, String> user2 = new HashMap<String, String>();
@@ -1001,10 +1106,10 @@ public class DatabaseControllerTest4 {
             user2.put("LASTNAME", "H");
             user2.put("EMAIL", "John@gmail.com");
             user2.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user2.put("PASSWORD", "Chris");
             user2.put("PRONOUNS", "He/Him");
             user2.put("GENDER", "Male");
             user2.put("TAKENSURVEY","NO");
+            Security.addHashedPassword(user2, "fjdasklgjlskf");
             db.addUser(user2);
 
             Map<String, String> sharedValues1 = new HashMap<String, String>();

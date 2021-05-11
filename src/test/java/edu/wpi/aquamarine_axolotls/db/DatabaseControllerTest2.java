@@ -19,7 +19,7 @@ class DatabaseControllerTest2 {
 
 	@Test
 	void dbCreation() {
-		File dir = new File("./EMBEDDED_BWH_DB");
+		File dir = new File("./derby/EMBEDDED_BWH_DB");
 		if (dir.exists()) {
 			assertTrue(FileUtil.removeDirectory(dir));
 		}

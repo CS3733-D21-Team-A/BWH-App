@@ -12,6 +12,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.MapEditing">
    <top>
@@ -34,6 +37,11 @@
                  </items>
              </MenuButton>
              <JFXComboBox fx:id="algoSelectBox" focusColor="#7d9ac700" layoutX="160.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="37.0" prefWidth="332.0" promptText="  Navigation Algorithm" stylesheets="@../CSS/JFXComboBox.css" unFocusColor="#7d9ac700" />
+            <JFXButton layoutX="1159.0" layoutY="24.0" onAction="#helpButton" prefHeight="35.0" prefWidth="105.0" style="-fx-background-color: #7D99C9; -fx-text-fill: #F0F0F0;" text="Help">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </JFXButton>
          </children>
       </Pane>
    </top>
@@ -60,4 +68,80 @@
            </children>
        </Group>
    </center>
+   <left>
+      <Pane fx:id="helpPane" prefHeight="825.0" prefWidth="0.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="774.0" layoutX="259.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="753.0" />
+            <JFXButton layoutX="270.0" layoutY="20.0" onAction="#cancelHelp" prefHeight="41.0" prefWidth="49.0" text=" ">
+               <graphic>
+                  <ImageView fx:id="ca" fitHeight="37.0" fitWidth="42.0" onDragDetected="#cancelHelp" x="200.0" y="200.0">
+                     <image>
+                        <Image url="@../img/Blue_X.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+            <Text layoutX="575.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Help " wrappingWidth="102.2200927734375">
+               <font>
+                  <Font name="Verdana" size="45.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="119.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-To select and deselect a node, click on the node in the map editor." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="218.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-To move a node, double click the node and hold. " wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="184.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-To edit a node, double click on that node quickly." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="559.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-From the “File” drop down located in the top bar, you have the ability to import and overwrite a CSV, import and merge a CSV, or export the current CSV." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="471.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Select your preferred navigation algorithm by clicking on the Navigation Algorithm located on the top tool bar." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="353.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-To align nodes, first select multiple nodes, then right click on node and set it as anchor point via the context menu, then access the context menu again to align." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="288.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-To add a new node, right click on an empty space and click create new node." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="254.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-For the context menu to appear, right click." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="656.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Click and drag on the map to pan." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="690.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Scroll up and down using your mouse to move up and down." wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="375.0" layoutY="759.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-Shift scroll on your mouse, to move left and right" wrappingWidth="491.6882019042969">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+         </children>
+      </Pane>
+   </left>
 </BorderPane>

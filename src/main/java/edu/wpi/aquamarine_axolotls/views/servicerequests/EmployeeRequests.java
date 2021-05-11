@@ -85,8 +85,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                         break;
                     case ADMIN:
                         names = FXCollections.observableArrayList();
-                        List<Map<String, String>> users = db.getUsers();
-                        for (Map<String, String> user : users) {
+                        for (Map<String, String> user : db.getEmployees()) {
                             if (user.get("USERTYPE").equals("Employee")) {
                                 names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
                             }
