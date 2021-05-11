@@ -33,6 +33,17 @@ public class VoiceController {
         }
     }
 
+    public String getTextOptimizationGmaps(String textToOptimize){
+        String[] parts = textToOptimize.split("\\)");
+
+        if(textToOptimize.contains("You have arrived at your destination")){
+            return parts[1];
+        }
+        else{
+            return "Please" + parts[1];
+        }
+    }
+
     public void say(String thingsToSay,Thread aThread) {
         this.voice = VoiceManager.getInstance().getVoice(this.name);
         this.voice.setRate(117.0f);
