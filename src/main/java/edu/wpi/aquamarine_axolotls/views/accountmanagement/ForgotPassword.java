@@ -66,7 +66,7 @@ public class ForgotPassword extends GenericPage {
 		label.setText("Please enter the verification code sent to your email");
 
 		try {
-			if (db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
+			if (db.checkUserExistsByUsername(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
 				otp = Security.generateOneTimeSecurityCode();
 				EmailService.sendAccountResetEmail(email.getText(), username.getText(), otp);
 			}

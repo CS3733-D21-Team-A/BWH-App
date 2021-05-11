@@ -11,14 +11,12 @@ import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Observer;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Subject;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
-import javax.swing.text.html.ImageView;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -95,16 +93,14 @@ public class NewAccount extends GenericPage {
 			return;
 		}
 
-		if (db.checkUserExists(userName.getText())) {
+		if (db.checkUserExistsByUsername(userName.getText())) {
 			popUp("Account Creation Failed", "\n\n\n\n\n\nUsername already exists.");
 			return;
 		}
 
-		for (Map<String, String> usr : db.getUsers()) {
-			if (usr.get("EMAIL").equals(email)) {
-				popUp("Account Creation Failed", "\n\n\n\n\n\nUser with this email already exists.");
-				return;
-			}
+		if (db.checkUserExistsByEmail(email)) {
+			popUp("Account Creation Failed", "\n\n\n\n\n\nUser with this email already exists.");
+			return;
 		}
 		Map<String, String> user = new HashMap<>();
 		user.put("USERNAME", userName.getText());

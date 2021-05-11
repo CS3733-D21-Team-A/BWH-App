@@ -7,7 +7,6 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -251,7 +250,7 @@ public class UserSettings extends GenericPage {
 
 		String instanceID = PREFERENCES.get(INSTANCE_ID, null);
 		try {
-			if (!db.checkUserExists(instanceID)) {
+			if (!db.checkUserExistsByUsername(instanceID)) {
 				Map<String, String> instanceUser = new HashMap<>();
 				instanceUser.put("USERTYPE", DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
 				instanceUser.put("USERNAME", instanceID);
