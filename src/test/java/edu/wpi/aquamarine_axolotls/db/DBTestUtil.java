@@ -15,7 +15,7 @@ public class DBTestUtil {
 	public static void resetDB() {
 		PREFERENCES.remove(DATABASE_HOSTNAME);
 
-		File dir = new File("./EMBEDDED_BWH_DB");
+		File dir = new File("./derby/EMBEDDED_BWH_DB");
 		if (dir.exists()) {
 			try {
 				DatabaseController db = DatabaseController.getInstance();

@@ -2,7 +2,6 @@ package edu.wpi.aquamarine_axolotls.db;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.EnumHashBiMap;
-import edu.wpi.aquamarine_axolotls.db.enums.ATTRIBUTE;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
@@ -25,11 +24,6 @@ public final class DatabaseUtil {
 	 * BiMap for associating STATUS enum with corresponding string representations.
 	 */
 	public final static BiMap<STATUS,String> STATUS_NAMES;
-
-	/**
-	 * BiMap for associating ATTRIBUTE enum with corresponding string representations.
-	 */
-	public final static BiMap<ATTRIBUTE,String> ATTRIBUTE_NAMES;
 
 	/**
 	 * BiMap for associating USERTYPE enum with corresponding string representations.
@@ -58,11 +52,6 @@ public final class DatabaseUtil {
 		STATUS_NAMES.put(STATUS.IN_PROGRESS,IN_PROGRESS_TEXT);
 		STATUS_NAMES.put(STATUS.DONE,DONE_TEXT);
 		STATUS_NAMES.put(STATUS.CANCELED,CANCELED_TEXT);
-
-		ATTRIBUTE_NAMES = EnumHashBiMap.create(ATTRIBUTE.class);
-		ATTRIBUTE_NAMES.put(ATTRIBUTE.NOT_NAVIGABLE,NOT_NAVIGABLE_TEXT);
-		ATTRIBUTE_NAMES.put(ATTRIBUTE.HANDICAPPED_ACCESSIBLE,HANDICAPPED_ACCESSIBLE_TEXT);
-		ATTRIBUTE_NAMES.put(ATTRIBUTE.COVID_SAFE,COVID_SAFE_TEXT);
 
 		USER_TYPE_NAMES = EnumHashBiMap.create(USERTYPE.class);
 		USER_TYPE_NAMES.put(USERTYPE.EMPLOYEE,EMPLOYEE_TEXT);

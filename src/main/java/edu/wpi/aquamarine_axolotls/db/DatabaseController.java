@@ -25,7 +25,6 @@ public class DatabaseController {
 
 	final private Table nodeTable;
 	final private Table edgeTable;
-	final private Table attrTable;
 	final private Table userTable;
 	final private Table serviceRequestsTable;
 	final private Table favoriteNodesTable;
@@ -54,7 +53,6 @@ public class DatabaseController {
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
 		edgeTable = tableFactory.getTable(TABLES.EDGES);
-		attrTable = tableFactory.getTable(TABLES.ATTRIBUTES);
 		userTable = tableFactory.getTable(TABLES.USERS);
 		serviceRequestsTable = tableFactory.getTable(TABLES.SERVICE_REQUESTS);
 		favoriteNodesTable = tableFactory.getTable(TABLES.FAVORITE_NODES);
@@ -118,7 +116,6 @@ public class DatabaseController {
 
 		nodeTable.setConnection(connection);
 		edgeTable.setConnection(connection);
-		attrTable.setConnection(connection);
 		userTable.setConnection(connection);
 		serviceRequestsTable.setConnection(connection);
 		favoriteNodesTable.setConnection(connection);
@@ -524,119 +521,6 @@ public class DatabaseController {
 	}
 
 
-	// ===== NODE / EDGE ATTRIBUTES =====
-
-	/**
-	 * Get the name of the primary key of the node or edge table.
-	 * @param isNode Boolean indicating whether you want the NODES table or EDGES table primary key
-	 * @return Column of primary key for desired table.
-	 */
-	private String idColumn(boolean isNode) {
-		return isNode ? "NODEID" : "EDGEID"; //TODO: Make this pull from Table objects.
-	}
-
-	/**
-	 * Remove an attribute from the provided entry.
-	 * @param id ID of node or edge to remove attribute from.
-	 * @param attribute Attribute to remove.
-	 * @param isNode Boolean indicating whether attempting to remove an attribute of a node or an edge.
-	 * @throws SQLException Something went wrong.
-	 */
-	public void deleteAttribute(String id, ATTRIBUTE attribute, boolean isNode) throws SQLException {
-		Map<String,List<String>> filters = new HashMap<>();
-		filters.put(idColumn(isNode), Collections.singletonList(id));
-		filters.put("ATTRIBUTE", Collections.singletonList(ATTRIBUTE_NAMES.get(attribute)));
-
-		for (Map<String, String> entry : attrTable.getEntriesByValues(filters)){
-			attrTable.deleteEntry(entry.get("ATTRID"));
-		}
-	}
-
-	/**
-	 * Add an attribute to the provided entry.
-	 * @param id ID of node or edge to add attribute to.
-	 * @param attribute Attribute to add.
-	 * @param isNode Boolean indicating whether attempting to add an attribute to a node or an edge.
-	 * @return Boolean indicating if the addition was successful (false if the node already has the attribute)
-	 * @throws SQLException Something went wrong.
-	 */
-	public boolean addAttribute(String id, ATTRIBUTE attribute, boolean isNode) throws SQLException {
-		Map<String,String> values = new HashMap<>();
-		values.put(idColumn(isNode), id);
-		values.put("ATTRIBUTE", ATTRIBUTE_NAMES.get(attribute));
-
-		if(!(hasAttribute(id, attribute, isNode))){
-			attrTable.addEntry(values);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Removes all attributes from the provided entry.
-	 * @param id ID of node or edge to clear attributes from.
-	 * @param isNode Boolean indicating whether attempting to remove attributes of a node or an edge.
-	 * @throws SQLException Something went wrong.
-	 */
-	public void clearAttributes(String id, boolean isNode) throws SQLException {
-		List<Map<String,String>> entries = attrTable.getEntriesByValue(idColumn(isNode), id);
-		for (Map<String,String> entry : entries) {
-			attrTable.deleteEntry(entry.get("ATTRID"));
-		}
-	}
-
-	/**
-	 * Get all the attributes of the provided entry.
-	 * @param id ID of node or edge to get attributes for.
-	 * @param isNode Boolean indicating whether you're getting a node or an edge.
-	 * @return List of attributes the entry has.
-	 * @throws SQLException Something went wrong.
-	 */
-	public List<ATTRIBUTE> getAttributes(String id, boolean isNode) throws SQLException {
-		List<ATTRIBUTE> attributes = new ArrayList<>();
-		for (Map<String,String> attr : attrTable.getEntriesByValue(idColumn(isNode), id)) {
-			attributes.add(ATTRIBUTE_NAMES.inverse().get(attr.get("ATTRIBUTE")));
-		}
-
-		return attributes;
-	}
-
-	/**
-	 * Check whether or not the desired entry has a certain attribute.
-	 * @param id ID of node or edge to check.
-	 * @param attribute Attribute to check for.
-	 * @param isNode Boolean indicating whether attempting to look for a node or an edge.
-	 * @return Boolean indicating if the desired entry has the specified attribute.
-	 * @throws SQLException Something went wrong.
-	 */
-	public boolean hasAttribute(String id, ATTRIBUTE attribute, boolean isNode) throws SQLException {
-		Map<String,List<String>> filters = new HashMap<>();
-		filters.put(idColumn(isNode), Collections.singletonList(id));
-		filters.put("ATTRIBUTE", Collections.singletonList(ATTRIBUTE_NAMES.get(attribute)));
-
-		return attrTable.getEntriesByValues(filters).size() > 0;
-	}
-
-	/**
-	 * Get all nodes or edges with the desired attribute.
-	 * @param attribute Attribute to filter by.
-	 * @param isNode Boolean indicating whether attempting to look for nodes or edges.
-	 * @return List of IDs corresponding to the associated entries in the NODES or EDGES table.
-	 * @throws SQLException Something went wrong.
-	 */
-	public List<String> getByAttribute(ATTRIBUTE attribute, boolean isNode) throws SQLException {
-		Map<String,List<String>> filters = new HashMap<>();
-		filters.put(idColumn(!isNode), Collections.singletonList(null));
-		filters.put("ATTRIBUTE", Collections.singletonList(ATTRIBUTE_NAMES.get(attribute)));
-
-		List<String> ids = new ArrayList<>();
-		for (Map<String,String> entry : attrTable.getEntriesByValues(filters)) {
-			ids.add(entry.get(idColumn(isNode)));
-		}
-
-		return ids;
-	}
-
 	// ===== USERS ==========
 
 	/**
@@ -699,55 +583,6 @@ public class DatabaseController {
 		return userTable.getEntries();
 	}
 
-	// Emily
-	/**
-	 * checking if a username and password match associated user account
-	 * @param username
-	 * @return true if the username and password match, false if they don't match or the user doesn't exist
-	 * @throws SQLException
-	 */
-	public boolean checkUserMatchesPass(String username, String password) throws SQLException
-	{
-		if(checkUserExists(username)) {
-			String dbPass = userTable.getEntry(username).get("PASSWORD");
-			return password.equals(dbPass);
-		}
-		else{
-			return false;
-		}
-	}
-
-	// Emily
-	/**
-	 * Method to change the pronouns of a user to the inputted value
-	 * @param username a string for the user key in db
-	 * @param newPronouns a string for new pronoun choice for user
-	 */
-	public void changePronouns(String username, String newPronouns){
-		try {
-			Map<String, String> tempBoi = getUserByUsername(username);
-			tempBoi.put("PROUNOUNS",newPronouns);
-			editUser(username, tempBoi);
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
-	}
-
-	// Emily
-	/**
-	 * Method to change the gender identity of a user to the inputted value
-	 * @param username a string for the user key in db
-	 * @param genderIdentity a string for new gender identity for user
-	 */
-	public void changeGender(String username, String genderIdentity){
-		try {
-			Map<String, String> tempBoi = getUserByUsername(username);
-			tempBoi.put("GENDER",genderIdentity);
-			editUser(username, tempBoi);
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
-	}
 
 	/** Checks to see if a user has taken the COVID survey
 	 *
