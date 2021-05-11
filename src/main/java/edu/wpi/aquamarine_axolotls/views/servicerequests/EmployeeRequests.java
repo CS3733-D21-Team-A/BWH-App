@@ -61,7 +61,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     }
 
     @FXML
-    public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
+    public void initialize() {
         try {
             db = DatabaseController.getInstance();
 
@@ -73,7 +73,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 switch (usertype) {
                     case PATIENT: // only display their service requests
                         tabs.getTabs().remove(covidSurveys);
-                        covidSurveyTable.setEditable(false);
                         break;
                     case ADMIN:
                         names = FXCollections.observableArrayList();
@@ -96,9 +95,9 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             }
 
             //COVID Status
-            ObservableList<String> covidStat = FXCollections.observableArrayList();
-            covidStat.add("true");
-            covidStat.add("false");
+            ObservableList<String> covidStatAndEntry = FXCollections.observableArrayList();
+            covidStatAndEntry.add("true");
+            covidStatAndEntry.add("false");
 
             //Service Request Status
             ObservableList<String> stats = FXCollections.observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
@@ -110,7 +109,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
             covidLikelyColumn.setCellValueFactory(cellData -> cellData.getValue().isCovidLikelyProp());
-           // entryApprovedColumn.setCellValueFactory(cellData -> cellData.getValue().approvedEntryProp());
+            entryApprovedColumn.setCellValueFactory(cellData -> cellData.getValue().entryApprovedProp());
             feverColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("fever"));
             coughColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("cough"));
             shortnessOfBreathColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("shortnessOfBreath"));
@@ -123,7 +122,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             soreThroatColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("soreThroat"));
             nauseaDiarrheaColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("nauseaDiarrhea"));
 
-            covidLikelyColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStat));
+            covidLikelyColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
             covidLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
                 @Override
                 public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
@@ -136,6 +135,25 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                         covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
 
                         db.editUser(covidSurveyTable.getItems().get(index).username, isCovidLikely);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            });
+
+            entryApprovedColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
+            entryApprovedColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
+                @Override
+                public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
+                    try {
+                        int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+
+                        Map<String, String> entryApproved = new HashMap<>();
+                        entryApproved.put("ENTRYAPPROVED", event.getNewValue());
+
+                        covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
+
+                        db.editUser(covidSurveyTable.getItems().get(index).username, entryApproved);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -159,7 +177,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     serviceRequests = db.getServiceRequests();
                     for (Map<String, String> req : serviceRequests) {
                         int index = serviceRequestIndex.indexOf(req.get("REQUESTTYPE"))+1;          // adds one to take into account of the COVID tab
-                        TableView table = (TableView) (((ScrollPane)(tabs.getTabs().get(index).getContent())).getContent());
+                        TableView table = (TableView) ((tabs.getTabs().get(index).getContent()));
                         table.getItems().add(new Request(req));
                     }
 
@@ -172,7 +190,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
                     for (Map<String, String> req : serviceRequests) {
                         int index = serviceRequestIndex.indexOf(req.get("REQUESTTYPE"))+1;          // adds one to take into account of the COVID tab
-                        TableView table = (TableView) (((ScrollPane)(tabs.getTabs().get(index).getContent())).getContent());
+                        TableView table = (TableView) ((tabs.getTabs().get(index).getContent()));
                         table.getItems().add(new Request(req));
                     }
             }
@@ -239,13 +257,25 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 }
             });
 
-            table.setEditable(true);
+            USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
+
+            if (usertype != null) {
+                switch (usertype) {
+                    case PATIENT: // only display their service requests
+                        table.setEditable(false);
+                        break;
+                    case ADMIN:
+                        table.setEditable(true);
+                        break;
+                    case EMPLOYEE:
+                        table.setEditable(true);
+                        break;
+                }
+            }
 
             // TODO: style all the text in each of the columns to "style=-fx-font-size: 20; -fx-font-family: Verdana;");
 
-            ScrollPane scrollP = new ScrollPane(table);
-            scrollP.setPrefSize(992.0, 766.0);
-            Tab tab = new Tab(s, scrollP);
+            Tab tab = new Tab(s, table);
             // Image tabImg = new Image(); TODO: set tab images
             // tab.setGraphic(tabImg);
 
@@ -457,6 +487,17 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.isCovidLikelyProp().set(isCovidLikely);
         }
 
+        public String getEntryApproved() {
+            return entryApproved.get();
+        }
+
+        public StringProperty entryApprovedProp() {
+            return entryApproved;
+        }
+
+        public void setEntryApproved(String entryApproved) {
+            this.entryApprovedProp().set(entryApproved);
+        }
     }
 
 }
