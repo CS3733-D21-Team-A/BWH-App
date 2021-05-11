@@ -391,7 +391,7 @@ public class MapEditing extends GenericMap {
         myDialog.initModality(Modality.APPLICATION_MODAL);
         myDialog.centerOnScreen();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + "Node" + "PopUp" + ".fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/NodePopUp.fxml"));
 
             NodePopUp controller = new NodePopUp(this);
             loader.setController(controller);

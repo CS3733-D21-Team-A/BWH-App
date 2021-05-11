@@ -54,26 +54,22 @@ public class ForgotPassword extends GenericPage {
 	public void userCheck() {
 		String usrname = username.getText();
 		String eml = email.getText();
-		if (usrname.isEmpty() || eml.isEmpty()) {
-			popUp("Error", "\n\n\n\nYour password was not updated");
-			return;
-		}
 
 		try {
 			if (db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
 				String code = (int) (Math.random() * 1000000) + "";
 				System.out.println(code);
 				EmailService.sendAccountResetEmail(email.getText(), username.getText(), code);
-				verfPane.setVisible(true);
-				gridPane.setVisible(false);
-				first.setVisible(false);
-				second.setVisible(true);
-				label.setText("Please enter the verification code sent to your email");
-
 			}
 		} catch (SQLException | IOException throwables) {
 			throwables.printStackTrace();
 		}
+
+		verfPane.setVisible(true);
+		gridPane.setVisible(false);
+		first.setVisible(false);
+		second.setVisible(true);
+		label.setText("Please enter the verification code sent to your email");
 	}
 
 	public void verifyEmailConf() {
