@@ -17,7 +17,7 @@
    <top>
       <Pane prefHeight="75.0" prefWidth="1300.0" style="-fx-border-radius: 10; -fx-background-color: #003da6; -fx-opacity: .95;" BorderPane.alignment="CENTER">
          <children>
-            <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="65.0" text=" ">
+            <JFXButton alignment="CENTER" onAction="#goHome" contentDisplay="CENTER" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="65.0" text=" ">
                <graphic>
                   <ImageView fitHeight="33.5" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                      <image>
