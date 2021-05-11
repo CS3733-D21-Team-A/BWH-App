@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
+import static edu.wpi.aquamarine_axolotls.Settings.DATABASE_HOSTNAME;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
@@ -49,7 +49,7 @@ public class DatabaseController {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null)).getKey();
+		boolean dbExists = connectToDB(PREFERENCES.get(DATABASE_HOSTNAME, null)).getKey();
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -113,7 +113,7 @@ public class DatabaseController {
 	 */
 	public boolean updateConnection() throws SQLException, IOException {
 		shutdownDB();
-		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null));
+		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(DATABASE_HOSTNAME, null));
 		boolean dbExists = bools.getKey();
 
 		nodeTable.setConnection(connection);
