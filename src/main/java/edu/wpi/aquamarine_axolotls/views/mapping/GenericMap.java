@@ -582,7 +582,7 @@ public abstract class GenericMap extends GenericPage {
     public void drawRobotArrow(double centerX, double centerY, String Floor, double rotationAngle){
         int startFloorInt = floorToInt(Floor);
         int endFloorInt = floorToInt(Floor);
-        drawArrow(centerX, centerY, startFloorInt, endFloorInt, Color.BLUE, 180);
+        drawArrow(centerX, centerY, startFloorInt, endFloorInt-1, Color.BLUE, rotationAngle);
     }
 
     /**
@@ -641,14 +641,15 @@ public abstract class GenericMap extends GenericPage {
             arrow.setScaleY(1.0);
         });
 
-//        if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor)){ // TODO : add code for
+//        if (startFloor == endFloor) { // TODO : add code for
 //            directionArrow.getPoints().removeAll();
 //            directionArrow.getPoints().addAll(points);
-//            directionArrow.setScaleX(5.0/7.0);
-//            directionArrow.setScaleY(5.0/7.0);
+//            directionArrow.setScaleX(5.0 / 7.0);
+//            directionArrow.setScaleY(5.0 / 7.0);
 //            directionArrow.setRotate(rotationAngle);
 //            directionArrow.setVisible(true);
 //            mapView.getChildren().add(directionArrow);
+//        }
     }
 
 

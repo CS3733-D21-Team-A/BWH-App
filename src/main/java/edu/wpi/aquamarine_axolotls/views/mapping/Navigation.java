@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -489,9 +490,9 @@ public class Navigation extends GenericMap {
             voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
         }
         String sendPacket = getROSDirection();
-//        if(robotConnection){
-//            Aapp.clientSender.send(sendPacket);
-//        }
+        if(robotConnection){
+            Aapp.clientSender.send(sendPacket);
+        }
     }
 
     /**
@@ -734,8 +735,6 @@ public class Navigation extends GenericMap {
                                         progress();
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
                                     }
                                 });
                                 Thread.sleep(2500);
@@ -745,8 +744,6 @@ public class Navigation extends GenericMap {
                                         progress();
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
                                     }
                                 });
                                 robotDirectionNum ++;
@@ -770,6 +767,7 @@ public class Navigation extends GenericMap {
                 try{
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientReceiver.getMassage();
+                        System.out.println(message);
                         Double[] robotCoordinate = getROSCoordinate(message);
                         if (robotCoordinate != null  && FLOOR.equals("L1")){
                             Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
@@ -812,8 +810,6 @@ public class Navigation extends GenericMap {
                                         progress();
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
                                     }
                                 });
                                 Thread.sleep(2500);
@@ -823,8 +819,6 @@ public class Navigation extends GenericMap {
                                         progress();
                                     } catch (SQLException throwables) {
                                         throwables.printStackTrace();
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
                                     }
                                 });
                                 robotDirectionNum ++;
