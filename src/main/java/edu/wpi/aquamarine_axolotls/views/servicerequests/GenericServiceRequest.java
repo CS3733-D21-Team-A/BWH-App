@@ -7,6 +7,7 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -30,8 +31,9 @@ public class GenericServiceRequest extends GenericPage {
     Map<String,String> sharedValues = new HashMap<>();
     Map<String,String> requestValues = new HashMap<>();
     SERVICEREQUEST serviceRequestType = null;
-
-
+    public void setLists() {
+        location.setItems(FXCollections.observableArrayList("75 Lobby Information Desk", "Connors Center Security Desk Floor 1"));
+    }
 
     class FieldTemplate<T> {
         private String column;
