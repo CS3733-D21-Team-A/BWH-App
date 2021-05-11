@@ -44,22 +44,16 @@ public class SideMenu extends GenericPage {
 
     double eta;
 
-    @Override
-    public void initialize() throws SQLException, IOException {
-
-    }
-
     public void goToStepByStep() {
         navController.goToStepByStep();
     }
 
     public void toggleVoiceDirectionButton() {
-        navController.isVoiceToggled = voiceDirection.isSelected();
+        navController.toggleVoice();
     }
 
-    public void setVoiceDirection(boolean value) {
-        navController.isVoiceToggled = value;
-        voiceDirection.setSelected(value);
+    public void toggleVoiceSlider() {
+        voiceDirection.setSelected(!voiceDirection.isSelected());
     }
 
     public void goToListOfDirections() {
