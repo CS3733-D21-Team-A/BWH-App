@@ -663,6 +663,8 @@ public class Navigation extends GenericMap {
                         currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(node, otherNode));
                     }
                 }
+            } else{
+                currentMenu.updateETA(-eta);
             }
         } catch (SQLException e){
             e.printStackTrace();
