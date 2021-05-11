@@ -1,5 +1,8 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsStep;
+import com.google.maps.model.Duration;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.events.JFXDrawerEvent;
@@ -27,7 +30,6 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
-import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
     public JFXButton drawerActionButton;
@@ -41,6 +43,9 @@ public class Navigation extends GenericMap {
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
+    VBox gmapsListOfDirections;
+    VBox gmapsStepByStep;
+    List<String> gmapsDir = new ArrayList<String>();
     private Thread newThread = new Thread();
     private VoiceController voice = new VoiceController("kevin16");
 
@@ -49,6 +54,7 @@ public class Navigation extends GenericMap {
     @FXML
     JFXDrawer drawer;
     private int currentStepNumber;
+    private int currentStepNumberGmaps;
     private List<List<String>> curPathDirections = new ArrayList<>();
     double eta;
     String currentNodeIDContextMenu;
@@ -69,6 +75,8 @@ public class Navigation extends GenericMap {
         treeViewSideMenu = setUpSideMenu("SideMenuTreeView");
         listOfDirectionsSideMenu = setUpSideMenu("SideMenuListOfDirections");
         stepByStepSideMenu = setUpSideMenu("SideMenuStepByStep");
+        gmapsListOfDirections = setUpSideMenu("SideMenuListOfDirectionsGMAPS");
+        gmapsStepByStep = setUpSideMenu("SideMenuStepByStepGMAPS");
         drawer.setVisible(false);
 
         drawer.setSidePane(treeViewSideMenu);
@@ -407,6 +415,71 @@ public class Navigation extends GenericMap {
 
     }
 
+
+    //==== GMAPS ====//
+
+    public void clearGmaps(){
+        sideControllers.get(3).clearAll();
+        sideControllers.get(4).clearAll();
+    }
+
+    public void setGmapsListOfDirections(DirectionsLeg directionsLeg){
+        sideControllers.get(3).updateETA(directionsLeg.duration.inSeconds/60);
+        sideControllers.get(4).updateETA(directionsLeg.duration.inSeconds/60);
+        sideControllers.get(4).setStartLabel(sideControllers.get(3).getStartLocationGmap());
+        sideControllers.get(4).setEndLabel(sideControllers.get(3).getEndLocationGmap());
+        DirectionsStep[] steps = directionsLeg.steps;
+        for(int i = 0; i < steps.length; i++){
+            String s = steps[i].htmlInstructions;
+            String newString = String.valueOf(i+1) + ") " + parseHtmlDir(s);
+
+            if (newString.contains("Destination")){
+                String[] str = newString.split("Destination", 2);
+                str[1] = String.valueOf(i+1) + ") Destination" + str[1];
+
+                for (int j = 0; j < 2; j++){
+                    gmapsDir.add(str[j]);
+                    sideControllers.get(3).addToListOfDirections(str[j]);
+                }
+                return;
+            }
+
+            gmapsDir.add(newString);
+            sideControllers.get(3).addToListOfDirections(newString);
+        }
+
+    }
+
+    public String parseHtmlDir(String direction){
+        String parsed = direction.replaceAll("\\<.*?\\>", "");
+        return parsed;
+    }
+
+    public void regressGmaps() {
+        voice.stop();
+        if (currentStepNumberGmaps != 0){
+            currentStepNumberGmaps -= 1;
+            currentMenu.setCurDirection(gmapsDir.get(currentStepNumberGmaps));
+            currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(currentStepNumberGmaps)));
+            if(isVoiceToggled) {
+                voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(currentStepNumberGmaps)), newThread);
+            }
+        }
+    }
+
+    public void progressGmaps() {
+        voice.stop();
+        if (currentStepNumberGmaps < gmapsDir.size()-1){
+            currentStepNumberGmaps += 1;
+            currentMenu.setCurDirection(gmapsDir.get(currentStepNumberGmaps));
+            currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(currentStepNumberGmaps)));
+            if(isVoiceToggled) {
+                voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(currentStepNumberGmaps)), newThread);
+            }
+        }
+    }
+
+
                                             //=== SIDE BAR METHODS ===//
 
     public void startPath() {
@@ -449,6 +522,20 @@ public class Navigation extends GenericMap {
         setStartAndEnd();
         startDir();
     }
+
+    public void goToGmapsListOfDirections() {
+        drawer.setSidePane(gmapsListOfDirections);
+        sideControllers.get(3).setUpGmaps();
+        currentMenu = sideControllers.get(3);
+    }
+
+    public void goToGmapsStepByStep() {
+        drawer.setSidePane(gmapsStepByStep);
+        currentMenu = sideControllers.get(4);
+        currentMenu.setCurDirection(gmapsDir.get(0));
+        currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(0)));
+    }
+
 
     public VBox setUpSideMenu(String name) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + name +  ".fxml"));
@@ -593,6 +680,10 @@ public class Navigation extends GenericMap {
     }
 
     public void clearNav() {
+        sideControllers.get(0).clearAll();
+        sideControllers.get(1).clearAll();
+        sideControllers.get(2).clearAll();
+        gmapsDir.clear();
         stopList.clear();
         currentPath.clear();
         linesOnImage.clear();
@@ -688,6 +779,7 @@ public class Navigation extends GenericMap {
         if(drawer.isClosed()) openDrawer();
         else closeDrawer();
     }
+
 
 }
 

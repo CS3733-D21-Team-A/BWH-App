@@ -1,11 +1,14 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.google.maps.model.DirectionsLeg;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXToggleButton;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.event.ActionEvent;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -18,14 +21,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
-import java.awt.*;
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
+import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class SideMenu extends GenericPage {
 
@@ -33,6 +35,9 @@ public class SideMenu extends GenericPage {
     public ImageView curArrow;
     @FXML
     public Label curDirection;
+
+    @FXML
+    public JFXButton gmapsStartButton;
 
     @FXML
     Label startLabel;
@@ -44,6 +49,13 @@ public class SideMenu extends GenericPage {
 
     @FXML
     Label etaLabel;
+
+    @FXML
+    JFXComboBox<String> endLocationGmaps;
+
+    @FXML
+    JFXTextField startLocationGmaps;
+
 
     @FXML
     TreeTableView<String> treeTable;
@@ -73,6 +85,10 @@ public class SideMenu extends GenericPage {
 
     public void goToListOfDirections() {
         navController.goToListOfDirections();
+    }
+
+    public void goToGmapsListOfDirections() {
+        navController.goToGmapsListOfDirections();
     }
 
     public void startPath() {
@@ -123,6 +139,48 @@ public class SideMenu extends GenericPage {
         }
 
     }
+
+    public void setUpGmaps(){
+        endLocationGmaps.setItems(FXCollections
+                .observableArrayList("Emergency Room", "Valet", "Parking Spot"));
+    }
+
+    /**
+     *  starting the path for external
+     */
+    public void findPathExt() {
+        String startLocation = startLocationGmaps.getText();
+        String destination = endLocationGmaps.getSelectionModel().getSelectedItem();
+        if(startLocation.equals("") || destination.equals("")) return;
+
+        try{
+            switch(destination){
+                case "Emergency Room":
+                    navController.setGmapsListOfDirections(navigateToER(startLocation));
+                    break;
+                case "Parking Spot":
+                    navController.setGmapsListOfDirections(navigateToClosestParking(startLocation));
+                    break;
+                case "Valet":
+                    navController.setGmapsListOfDirections(navigateToClosestValet(startLocation));
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     *  starting the path for external
+     */
+    public void startPathExt() {
+        if(!navController.gmapsDir.isEmpty()) navController.goToGmapsStepByStep();
+    }
+
+    public void setGmapsStepByStep(DirectionsLeg directionsLeg){
+
+    }
+
 
     public void setUpTree(){
         TreeItem<String> park = new TreeItem<>("Parking Spots");
@@ -218,6 +276,14 @@ public class SideMenu extends GenericPage {
         navController.progress();
     }
 
+    public void regressGmaps() throws SQLException, InterruptedException {
+        navController.regressGmaps();
+    }
+
+    public void progressGmaps() throws SQLException, InterruptedException {
+        navController.progressGmaps();
+    }
+
     public void setEtaLabel(double eta){
         this.eta = eta;
         etaLabel.setText(etaToString(eta));
@@ -277,6 +343,34 @@ public class SideMenu extends GenericPage {
     public void setEndLabel(String endingPoint) {
         this.endLabel.setText(endingPoint);
     }
+
+
+    public String getEndLocationGmap(){
+        return endLocationGmaps.getSelectionModel().getSelectedItem();
+    }
+
+    public String getStartLocationGmap(){
+        return startLocationGmaps.getText();
+    }
+
+    public void cancelGmaps(){
+        navController.clearGmaps();
+        navController.goToTreeView();
+    }
+
+    public void clearAll(){
+        if(curArrow != null) curArrow.setImage(navController.textDirectionToImage(""));
+        if(curDirection != null) curDirection.setText("");
+        if(startLabel != null) startLabel.setText("Start Location");
+        if(endLabel != null) endLabel.setText("End Location");
+        if(listOfDirections != null) listOfDirections.getChildren().clear();
+        if(etaLabel != null) etaLabel.setText("");
+        if(endLocationGmaps != null) endLocationGmaps.getSelectionModel().clearSelection();
+        if(startLocationGmaps != null) startLocationGmaps.clear();
+        if(!navController.gmapsDir.isEmpty()) navController.gmapsDir.clear();
+    }
+
+
 
     public void setCurArrow(Image arrow) {
         this.curArrow.setImage(arrow);
