@@ -33,7 +33,7 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="239.0" text="View Employee Requests" textFill="#003da6" wrapText="true">
+                        <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="239.0" text="View Service Requests" textFill="#003da6" wrapText="true">
                            <font>
                               <Font name="Verdana" size="18.0" />
                            </font>
@@ -47,18 +47,6 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <JFXButton onAction="#requestP" prefHeight="64.0" prefWidth="194.0" text="View Covid Surveys" textFill="#003da6" wrapText="true" GridPane.rowIndex="1">
-                     <font>
-                        <Font name="Verdana" size="18.0" />
-                     </font>
-                     <graphic>
-                        <ImageView fitHeight="36.0" fitWidth="36.0">
-                           <image>
-                              <Image url="@../img/covid.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
-                  </JFXButton>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                      <children>
                         <JFXButton onAction="#nodeP" prefHeight="64.0" prefWidth="165.0" text="Map Editing" textFill="#003da6">
