@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -89,7 +90,9 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
         user.put("LASTNAME", lastName.getText());
         user.put("EMAIL", emailAddress.getText());
         user.put("USERTYPE", userType.getSelectionModel().getSelectedItem().toString());
-        user.put("PASSWORD", password.getText());
+
+        Security.addHashedPassword(user, password.getText());
+
         db.addUser(user);
 
         popUp ( "Account Success", "\n\n\n\n\nAdmin, the account you submitted was successfully created." );

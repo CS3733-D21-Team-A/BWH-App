@@ -2,18 +2,14 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -22,7 +18,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +65,7 @@ public abstract class GenericMap extends GenericPage {
     double contextMenuY = 0;
     ContextMenu contextMenu = new ContextMenu();
 
-    DatabaseController db;
+    DatabaseController db = DatabaseController.getInstance();
     String state = "";
     String currentID;
     double magicNumber = (Math.PI + Math.E) / 2.0; //this is used as the radius for the nodes because Chris likes it. I don't know why
@@ -79,11 +74,9 @@ public abstract class GenericMap extends GenericPage {
      * Responsible for setting up the map
      */
     public void startUp(){
-        db = DatabaseController.getInstance();
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
-            else mapScrollPane.pannableProperty().set(false);
+            mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY);
         });
 
         Group contentGroup = new Group();
@@ -113,11 +106,11 @@ public abstract class GenericMap extends GenericPage {
     /**
      * Change the active floor
      */
-    public void changeFloor3() throws SQLException { drawFloor("3"); }
-    public void changeFloor2() throws SQLException { drawFloor("2"); }
-    public void changeFloor1() throws SQLException { drawFloor("1"); }
-    public void changeFloorL1() throws SQLException { drawFloor("L1"); }
-    public void changeFloorL2() throws SQLException { drawFloor("L2"); }
+    public void changeFloor3() { drawFloor("3"); }
+    public void changeFloor2() { drawFloor("2"); }
+    public void changeFloor1() { drawFloor("1"); }
+    public void changeFloorL1() { drawFloor("L1"); }
+    public void changeFloorL2() { drawFloor("L2"); }
 
 
 //=== SCALING FUNCTIONS ===//

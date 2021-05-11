@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import javafx.util.Pair;
 import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
@@ -981,41 +982,41 @@ public class DatabaseController {
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 
-		userTable.addEntry(new HashMap<String,String>() {{
+
+		Map<String,String> adminAccount = new HashMap<String,String>() {{
 			put("USERNAME", "admin");
 			put("FIRSTNAME", "admin");
 			put("LASTNAME", "admin");
 			put("EMAIL", "admin@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.ADMIN));
-			put("PASSWORD", "admin");
-		}});
+		}};
+		Security.addHashedPassword(adminAccount,"admin");
 
-		userTable.addEntry(new HashMap<String,String>() {{
-			put("USERNAME", "patient");
-			put("FIRSTNAME", "patient");
-			put("LASTNAME", "patient");
-			put("EMAIL", "patient@wpi.edu");
-			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
-			put("PASSWORD", "patient");
-		}});
+		userTable.addEntry(adminAccount);
 
-		userTable.addEntry(new HashMap<String,String>() {{
+
+		Map<String,String> employeeAccount = new HashMap<String,String>() {{
 			put("USERNAME", "employee");
 			put("FIRSTNAME", "employee");
 			put("LASTNAME", "employee");
 			put("EMAIL", "employee@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
-			put("PASSWORD", "employee");
-		}});
+		}};
+		Security.addHashedPassword(employeeAccount,"employee");
 
-		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
-			put("USERNAME", "guest");
-			put("FIRSTNAME", "guest");
-			put("LASTNAME", "guest");
-			put("EMAIL", "guest@wpi.edu");
-			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
-			put("PASSWORD", "guest");
-		}});
+		userTable.addEntry(employeeAccount);
+
+
+		Map<String,String> patientAccount = new HashMap<String,String>() {{
+			put("USERNAME", "patient");
+			put("FIRSTNAME", "patient");
+			put("LASTNAME", "patient");
+			put("EMAIL", "patient@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
+		}};
+		Security.addHashedPassword(patientAccount,"patient");
+
+		userTable.addEntry(patientAccount);
 	}
 
 }
