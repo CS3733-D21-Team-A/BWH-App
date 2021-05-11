@@ -38,6 +38,11 @@
                 </Label>
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="584.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
             <VBox layoutX="208.0" layoutY="659.0" prefHeight="200.0" prefWidth="255.0" />
+            <ImageView fitHeight="134.0" fitWidth="143.0" layoutX="292.0" layoutY="87.0">
+               <image>
+                  <Image url="@../img/virusB.png" />
+               </image>
+            </ImageView>
             </children>
         </Pane>
     </right>
