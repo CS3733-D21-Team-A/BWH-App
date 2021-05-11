@@ -28,10 +28,10 @@ public class Security {
 
 	final static private Charset CHARSET = StandardCharsets.ISO_8859_1;
 
-	final static private DatabaseController dbController = DatabaseController.getInstance();
-	final static private SecretGenerator secretGenerator = new DefaultSecretGenerator();
+	final static private DatabaseController DB_CONTROLLER = DatabaseController.getInstance();
 
-	final static private CodeVerifier codeVerifier = new DefaultCodeVerifier(new DefaultCodeGenerator(), new SystemTimeProvider());
+	final static private SecretGenerator SECRET_GENERATOR = new DefaultSecretGenerator();
+	final static private CodeVerifier CODE_VERIFIER = new DefaultCodeVerifier(new DefaultCodeGenerator(), new SystemTimeProvider());
 
 
 	/**
@@ -41,8 +41,8 @@ public class Security {
 	 * @throws SQLException Something went wrong.
 	 */
 	public static Pair<String,byte[]> enableTOTP(String username) throws SQLException, QrGenerationException {
-		String secret = secretGenerator.generate();
-		dbController.editUser(username, new HashMap<String,String>() {{
+		String secret = SECRET_GENERATOR.generate();
+		DB_CONTROLLER.editUser(username, new HashMap<String,String>() {{
 			put("TOTPSECRET",secret);
 			put("MFAENABLED","true");
 		}});
@@ -57,7 +57,7 @@ public class Security {
 	 * @throws SQLException Something went wrong.
 	 */
 	public static boolean verifyTOTP(String username, String passcode) throws SQLException {
-		return codeVerifier.isValidCode(dbController.getUserByUsername(username).get("TOTPSECRET"), passcode);
+		return CODE_VERIFIER.isValidCode(DB_CONTROLLER.getUserByUsername(username).get("TOTPSECRET"), passcode);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class Security {
 	 * @throws SQLException Something went wrong.
 	 */
 	public static void disableTOTP(String username) throws SQLException {
-		dbController.editUser(username, new HashMap<String,String>() {{
+		DB_CONTROLLER.editUser(username, new HashMap<String,String>() {{
 			put("TOTPSECRET","");
 			put("MFAENABLED","false");
 		}});
@@ -132,8 +132,8 @@ public class Security {
 			System.out.println("SOMETHING WENT WRONG THIS SHOULD NEVER HAPPEN");
 		}
 
-		if (!dbController.checkUserExists(username)) return false;
-		Map<String,String> userMap = dbController.getUserByUsername(username);
+		if (!DB_CONTROLLER.checkUserExists(username)) return false;
+		Map<String,String> userMap = DB_CONTROLLER.getUserByUsername(username);
 
 		md.update(userMap.get("SALT").getBytes(CHARSET));
 
