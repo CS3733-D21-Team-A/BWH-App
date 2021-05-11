@@ -3,20 +3,26 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
 import com.google.maps.model.Duration;
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsStep;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.events.JFXDrawerEvent;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
-import edu.wpi.aquamarine_axolotls.pathplanning.*;
+import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
+import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
+import javafx.animation.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -24,11 +30,16 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import oracle.jrockit.jfr.JFR;
 import org.checkerframework.checker.units.qual.C;
+import javafx.scene.shape.Line;
+import com.google.maps.model.Duration;
+
 
 import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
@@ -98,7 +109,6 @@ public class Navigation extends GenericMap {
             drawer.setVisible(false);
         });
 
-        // TODO: CHANGE THI
 
 
         currentMenu.setUpTree();
@@ -471,7 +481,7 @@ public class Navigation extends GenericMap {
     /**
      * Draws the current path onto the map
      */
-    void drawPath(){
+    void drawPath() {
         linesOnImage.clear();
         nodesOnImage.clear();
         arrowsOnImage.clear();
@@ -586,6 +596,82 @@ public class Navigation extends GenericMap {
     }
 
 
+
+    /**
+     * Draws animated path
+     * @param startID ID of starting node
+     * @param endID ID of ending node
+     * @param edgeCol Color of the edge
+     */
+    public void drawAnimatedPath(String startID, String endID, Color edgeCol) {
+        Map<String, String> snode;
+        Map<String, String> enode;
+
+        try{
+            snode = db.getNode(startID);
+            enode = db.getNode(endID);
+            String edgeID = startID + "_" + endID;
+
+            double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
+            double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
+            double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
+
+            Line l = new Line();
+            l.getStrokeDashArray().addAll(25d, 10d);
+            l.setStartX(startX);
+            l.setStartY(startY);
+            l.setEndX(endX);
+            l.setEndY(endY);
+            l.setStroke(edgeCol);
+            l.setStrokeWidth(magicNumber);
+            l.setId(edgeID);
+
+            if(linesOnImage.containsKey(edgeID)){
+                Line key = linesOnImage.get(edgeID);
+                mapView.getChildren().set(mapView.getChildren().indexOf(key), l);
+                linesOnImage.get(edgeID).setStroke(yellow);
+            }
+            else mapView.getChildren().add(l);
+
+            linesOnImage.put(edgeID, l);
+
+            final double maxOffset =
+                    l.getStrokeDashArray().stream()
+                            .reduce(
+                                    0d,
+                                    (a, b) -> a + b
+                            );
+
+            Timeline timeline = new Timeline(
+                    new KeyFrame(
+
+                            javafx.util.Duration.ZERO,
+                            new KeyValue(
+                                    l.strokeDashOffsetProperty(),
+                                    0,
+                                    Interpolator.LINEAR
+                            )
+                    ),
+                    new KeyFrame(
+                            javafx.util.Duration.seconds(2),
+                            new KeyValue(
+                                    l.strokeDashOffsetProperty(),
+                                    maxOffset,
+                                    Interpolator.LINEAR
+                            )
+                    )
+            );
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.setRate(-1.0);
+            timeline.play();
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
                                             //=== SIDE BAR METHODS ===//
 
     public void startPath() {
@@ -666,6 +752,7 @@ public class Navigation extends GenericMap {
     }
 
     public void setStartAndEnd(){
+        int size = stopList.size();
         try{
             if(startAndStop[0].equals("")) currentMenu.setStartLabel("Start Location");
             else currentMenu.setStartLabel(db.getNode(startAndStop[0]).get("LONGNAME"));
@@ -700,9 +787,8 @@ public class Navigation extends GenericMap {
     /**
      * Progresses to the next step in the text directions
      */
-    public void progress() throws SQLException,InterruptedException {
+    public void progress() throws SQLException {
         voice.stop();
-
         if (currentStepNumber < curPathDirections.get(0).size() - 1){
             unHighlightDirection();
             currentStepNumber += 1;
@@ -724,7 +810,7 @@ public class Navigation extends GenericMap {
     /**
      * Moves back to the previous step in the text directions
      */
-    public void regress() throws SQLException,InterruptedException{
+    public void regress() throws SQLException {
         voice.stop();
         if (currentStepNumber != 0) {
             unHighlightDirection();
@@ -815,8 +901,8 @@ public class Navigation extends GenericMap {
         startAndStop[0] = "";
         startAndStop[1] = "";
         currentPath.clear();
-        //linesOnImage.clear();
-        //nodesOnImage.clear();
+        linesOnImage.clear();
+        nodesOnImage.clear();
         arrowsOnImage.clear();
         mapView.getChildren().clear();
         drawFloor(FLOOR);

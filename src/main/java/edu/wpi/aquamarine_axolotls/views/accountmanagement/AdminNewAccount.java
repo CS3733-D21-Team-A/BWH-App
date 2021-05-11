@@ -9,7 +9,6 @@ import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -51,7 +50,6 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
     }
     @FXML
     public void submit_button() throws SQLException {
-        String email = emailAddress.getText();
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -67,21 +65,21 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
             return;
         }
 
+        String email = emailAddress.getText();
+
         if (!password.getText().equals(confirmPassword.getText())) {
             popUp("Account Creation Failed", "\n\n\n\n\n\nThe two passwords do not match, Try again.");
             return;
         }
 
-        if (db.checkUserExists(userName.getText())) {
+        if (db.checkUserExistsByUsername(userName.getText())) {
             popUp("Account Creation Failed", "\n\n\n\n\n\nUsername already exists.");
             return;
         }
 
-        for (Map<String, String> usr : db.getUsers()) {
-            if (usr.get("EMAIL").equals(email)) {
-                popUp("Account Creation Failed", "\n\n\n\n\n\nUser with this email already exists.");
-                return;
-            }
+        if (db.checkUserExistsByEmail(email)) {
+            popUp("Account Creation Failed", "\n\n\n\n\n\nUser with this email already exists.");
+            return;
         }
 
         Map<String, String> user = new HashMap<String, String>();

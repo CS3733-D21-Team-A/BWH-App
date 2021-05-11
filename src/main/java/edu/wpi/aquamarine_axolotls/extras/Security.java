@@ -132,7 +132,7 @@ public class Security {
 			System.out.println("SOMETHING WENT WRONG THIS SHOULD NEVER HAPPEN");
 		}
 
-		if (!DB_CONTROLLER.checkUserExists(username)) return false;
+		if (!DB_CONTROLLER.checkUserExistsByUsername(username)) return false;
 		Map<String,String> userMap = DB_CONTROLLER.getUserByUsername(username);
 
 		md.update(userMap.get("SALT").getBytes(CHARSET));
