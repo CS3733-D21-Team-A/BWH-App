@@ -12,9 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -60,6 +63,19 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         serviceRequestIndex.add("Internal Transport");
         serviceRequestIndex.add("Medicine Delivery");
     }
+
+    static Map<String, String> icons = new HashMap<String,String>() {{
+        put("Floral Delivery", "edu/wpi/aquamarine_axolotls/img/floralDeliveryB.png");
+        put("Food Delivery", "edu/wpi/aquamarine_axolotls/img/foodDeliveryB.png");
+        put("Gift Delivery", "edu/wpi/aquamarine_axolotls/img/giftDeliveryB.png");
+        put("Language Interpreter", "edu/wpi/aquamarine_axolotls/img/languageInterpreterB.png");
+        put("Facilities Maintenance", "edu/wpi/aquamarine_axolotls/img/maintenanceB.png");
+        put("Laundry Services", "edu/wpi/aquamarine_axolotls/img/laundryServicesB.png");
+        put("Sanitation", "edu/wpi/aquamarine_axolotls/img/sanitationB.png");
+        put("External Transport", "edu/wpi/aquamarine_axolotls/img/externalTransportB.png");
+        put("Internal Transport", "edu/wpi/aquamarine_axolotls/img/internalTransport.png");
+        put("Medicine Delivery", "edu/wpi/aquamarine_axolotls/img/medicineDeliveryB.png");
+    }};
 
     @FXML
     public void initialize() {
@@ -280,8 +296,11 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             // TODO: style all the text in each of the columns to "style=-fx-font-size: 20; -fx-font-family: Verdana;");
 
             Tab tab = new Tab(s, table);
-            // Image tabImg = new Image(); TODO: set tab images
-            // tab.setGraphic(tabImg);
+            Image img = new Image(icons.get(s));
+            ImageView tabImg = new ImageView(img);
+            tabImg.setFitWidth(40.0);
+            tabImg.setPreserveRatio(true);
+            tab.setGraphic(tabImg);
 
             tabs.getTabs().add(tab);
         }

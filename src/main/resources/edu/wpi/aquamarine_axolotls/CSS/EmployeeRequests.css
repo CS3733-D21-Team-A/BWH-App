@@ -1,0 +1,52 @@
+.root{
+    CHART_COLOR_YELLOW: #F4BA4F;
+    CHART_COLOR_LIGHT_GRAY: #f0f0f0;
+    CHART_COLOR_BLUE: #003DA6;
+    CHART_COLOR_LIGHT_BLUE:#7D99C9;
+}
+.jfx-tab-pane .headers-region {
+    -fx-background-color: CHART_COLOR_LIGHT_GRAY;
+}
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: CHART_COLOR_LIGHT_GRAY;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: CHART_COLOR_YELLOW;
+}
+
+.jfx-tab-pane .control-buttons-tab .tab-down-button{
+    -fx-background-color: CHART_COLOR_BLUE;
+}
+
+.tab *.tab-label{
+    -fx-rotate: 90;
+    -fx-text-fill: CHART_COLOR_BLUE;
+}
+
+.tab {
+    -fx-pref-width: 200;
+    -fx-pref-height: 256;
+    -fx-wrap-text: true;
+    -fx-margin: 0 0 -125 0;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: CHART_COLOR_YELLOW;
+}
+
+.table-view .column-header-background{
+    -fx-background-color: CHART_COLOR_YELLOW;
+}
+
+.table-view .column-header{
+    -fx-background-color: CHART_COLOR_YELLOW;
+    -fx-pref-width: 150;
+    -fx-pref-height: 40;
+}
+
+.table-view .column-header .label{
+    -fx-font-size: 20;
+    -fx-font-family: Verdana;
+    -fx-padding: 0 10 0 10;
+}
