@@ -8,7 +8,7 @@ public class EmployeeMainPage extends PatientMainPage {
     @FXML StackPane managePane;
 
     public void initialize() {
-        startUp();
+        super.initialize();
         managePane.setOnMouseExited(mouseEvent -> {
             if (managePane.isVisible()) {
                 managePane.setVisible(false);
