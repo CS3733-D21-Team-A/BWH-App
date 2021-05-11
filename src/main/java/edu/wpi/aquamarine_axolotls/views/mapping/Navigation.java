@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
+import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
 import javafx.animation.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
@@ -358,7 +359,7 @@ public class Navigation extends GenericMap {
     /**
      * Draws the current path onto the map
      */
-    void drawPath(){
+    void drawPath() {
         linesOnImage.clear();
         nodesOnImage.clear();
         arrowsOnImage.clear();
@@ -369,147 +370,34 @@ public class Navigation extends GenericMap {
             throwables.printStackTrace();
         }
 //        currentPath.get(0).get("FLOOR");
-        for(int i = 0; i < currentPath.size() - 1; i++){
+        for (int i = 0; i < currentPath.size() - 1; i++) {
             Map<String, String> node = currentPath.get(i);
-            Map<String, String> nextNode = currentPath.get(i+1);
-            if(!node.get("FLOOR").equals(nextNode.get("FLOOR"))){
+            Map<String, String> nextNode = currentPath.get(i + 1);
+            if (!node.get("FLOOR").equals(nextNode.get("FLOOR"))) {
                 drawArrow(node, nextNode);
-            }
-            else if (node.get("FLOOR").equals(FLOOR)) {
+            } else if (node.get("FLOOR").equals(FLOOR)) {
                 Color color = darkBlue;
                 int radius = 3;
-                if(i == 0){
+                if (i == 0) {
                     color = Color.GREEN;
                     radius = 5;
-                }
-                else if(i == currentPath.size() - 1){
+                } else if (i == currentPath.size() - 1) {
                     color = Color.RED;
                     radius = 5;
-                }
-                else if(stopList.contains(node.get("NODEID"))){
+                } else if (stopList.contains(node.get("NODEID"))) {
                     color = Color.ORANGE;
                     radius = 5;
                 }
-                drawSingleEdge(node.get("NODEID"), nextNode.get("NODEID"), Color.BLACK);
+                //drawSingleEdge(node.get("NODEID"), nextNode.get("NODEID"), Color.BLACK);
+                drawAnimatedPath(node.get("NODEID"), nextNode.get("NODEID"), Color.BLACK);
                 if ((node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) {
                     drawSingleNode(node.get("NODEID"), color);
-                }
-                else changeNodeColorOnImage(node.get("NODEID"), color);
+                } else changeNodeColorOnImage(node.get("NODEID"), color);
                 updateNodeSize(node.get("NODEID"), radius);
 
-        }
-    }
-
-    /**
-     * Draws animated path
-     * This version takes two node objects
-     * @param snode Node to start with
-     * @param enode Node to end at
-     * @param snodeCol Color of the start node
-     * @param enodeCol Color of the end node
-     * @param edgeCol Color of the edge
-     */
-    void drawAnimatedPath(Node snode, Node enode, Color snodeCol, Color enodeCol, Color edgeCol) {
-        if (snode.getFloor().equals(FLOOR) && enode.getFloor().equals(FLOOR)){
-            double startX = xScale(snode.getXcoord());
-            double startY = yScale(snode.getYcoord());
-            double endX = xScale(enode.getXcoord());
-            double endY = yScale(enode.getYcoord());
-            String startID = snode.getNodeID();
-            String endID = enode.getNodeID();
-            String edgeID = getEdgeID(startID, endID);
-            drawAnimatedPath(startX, startY, startID, endX, endY, endID, edgeID, snodeCol, enodeCol, edgeCol);
-        }
-    }
-
-    /**
-     * Draws animated path
-     * @param snodeCol Color of the start node
-     * @param enodeCol Color of the end node
-     * @param edgeCol Color of the edge
-     */
-    private void drawAnimatedPath(double startX, double startY, String startID, double endX, double endY, String endID,
-                                  String edgeID, Color snodeCol, Color enodeCol, Color edgeCol) {
-
-        Line l = new Line();
-        l.getStrokeDashArray().addAll(25d, 10d);
-        l.setStartX(startX);
-        l.setStartY(startY);
-        l.setEndX(endX);
-        l.setEndY(endY);
-        l.setStroke(edgeCol);
-        l.setId(edgeID);
-
-        final double maxOffset =
-                l.getStrokeDashArray().stream()
-                        .reduce(
-                                0d,
-                                (a, b) -> a + b
-                        );
-
-        Timeline timeline = new Timeline(
-                new KeyFrame(
-
-                        javafx.util.Duration.ZERO,
-                        new KeyValue(
-                                l.strokeDashOffsetProperty(),
-                                0,
-                                Interpolator.LINEAR
-                        )
-                ),
-                new KeyFrame(
-                        javafx.util.Duration.seconds(2),
-                        new KeyValue(
-                                l.strokeDashOffsetProperty(),
-                                maxOffset,
-                                Interpolator.LINEAR
-                        )
-                )
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.setRate(-1.0);
-        timeline.play();
-
-        mapView.getChildren().add(l);
-
-        drawSingleNode(startX, startY, startID, snodeCol);
-        drawSingleNode(endX, endY, endID, enodeCol);
-    }
-
-    /**
-     * Returns the ID of an edge given 2 node IDs
-     * @param snodeId start node ID
-     * @param enodeId end node ID
-     */
-    public String getEdgeID(String snodeId, String enodeId){
-        Map<String, String> result = null;
-        String edgeId;
-        try{
-            List<Map<String, String>> list1 = db.getEdgesConnectedToNode(snodeId);
-            List<Map<String, String>> list2 = db.getEdgesConnectedToNode(snodeId);
-
-            for (Map<String, String> edge: list1){
-                if (list2.contains(edge)){
-                    result = edge;
-                    break;
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        if (result.equals(null)){
-            edgeId = "";
-        }
-
-        edgeId = result.get("EDGEID");
-
-        return edgeId;
-    }
-
-    // draw floor that makes everything transparent
             }
         }
+        // draw floor that makes everything transparent
 
         if (currentPath.get(currentPath.size() - 1).get("FLOOR").equals(FLOOR)) {
             changeNodeColorOnImage(currentPath.get(currentPath.size() - 1).get("NODEID"), Color.RED);
@@ -517,6 +405,80 @@ public class Navigation extends GenericMap {
         }
         setArrowsToBeVisible();
 
+    }
+
+
+    /**
+     * Draws animated path
+     * @param edgeCol Color of the edge
+     */
+    public void drawAnimatedPath(String startID, String endID, Color edgeCol) {
+        Map<String, String> snode;
+        Map<String, String> enode;
+
+        try{
+            snode = db.getNode(startID);
+            enode = db.getNode(endID);
+            String edgeID = startID + "_" + endID;
+
+            double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
+            double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
+            double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
+
+            Line l = new Line();
+            l.getStrokeDashArray().addAll(25d, 10d);
+            l.setStartX(startX);
+            l.setStartY(startY);
+            l.setEndX(endX);
+            l.setEndY(endY);
+            l.setStroke(edgeCol);
+            l.setStrokeWidth(magicNumber);
+            l.setId(edgeID);
+
+            if(linesOnImage.containsKey(edgeID)){
+                Line key = linesOnImage.get(edgeID);
+                mapView.getChildren().set(mapView.getChildren().indexOf(key), l);
+                linesOnImage.get(edgeID).setStroke(yellow);
+            }
+            else mapView.getChildren().add(l);
+
+            linesOnImage.put(edgeID, l);
+
+            final double maxOffset =
+                    l.getStrokeDashArray().stream()
+                            .reduce(
+                                    0d,
+                                    (a, b) -> a + b
+                            );
+
+            Timeline timeline = new Timeline(
+                    new KeyFrame(
+
+                            javafx.util.Duration.ZERO,
+                            new KeyValue(
+                                    l.strokeDashOffsetProperty(),
+                                    0,
+                                    Interpolator.LINEAR
+                            )
+                    ),
+                    new KeyFrame(
+                            javafx.util.Duration.seconds(2),
+                            new KeyValue(
+                                    l.strokeDashOffsetProperty(),
+                                    maxOffset,
+                                    Interpolator.LINEAR
+                            )
+                    )
+            );
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.setRate(-1.0);
+            timeline.play();
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
                                             //=== SIDE BAR METHODS ===//
