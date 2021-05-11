@@ -436,14 +436,19 @@ public abstract class GenericMap extends GenericPage {
             Map<String, String> startNode = db.getNode(startNodeID);
             Map<String, String> endNode = db.getNode(endNodeID);
 
-            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){
+            if ((startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR))){
                 double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
                 double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
                 double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
                 double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
                 drawSingleEdge(startX, startY, startNodeID, endX, endY, endNodeID, edgeColor);
+            } else if (selectedEdgesList.contains(db.getEdge(startNodeID + "_" + endNodeID))){
+                double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
+                double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
+                double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
+                double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
+                drawSingleEdge(startX, startY, startNodeID, endX, endY, endNodeID, yellow);
             }
-
         }
         catch (SQLException se) {
             se.printStackTrace();
@@ -652,6 +657,32 @@ public abstract class GenericMap extends GenericPage {
 //        }
     }
 
+    public void drawPathArrow(double xCoord, double yCoord, double rotationAngle){
+        Polygon arrow = new Polygon();
+        arrow = new Polygon();
+        arrow.setFill(darkBlue);
+        arrow.setStroke(darkBlue);
+        arrow.setVisible(false);
+        arrow.toFront();
+
+
+        Double points[] = new Double[6];
+        points[0] = xCoord;
+        points[2] = xCoord + 7 * Math.sqrt(2.0) / 2.0;
+        points[4] = xCoord - 7 * Math.sqrt(2.0) / 2.0;
+
+        points[1] = yCoord - 7;
+        points[3] = yCoord + 7 * Math.sqrt(2.0) / 2.0;
+        points[5] = yCoord + 7 * Math.sqrt(2.0) / 2.0;
+
+        arrow.getPoints().addAll(points);
+        arrow.setRotate(rotationAngle);
+
+        currentPathArrow = arrow;
+        mapView.getChildren().add(currentPathArrow);
+
+    }
+
 
     public void drawPathArrow(Map<String, String> startNode, Map<String, String> endNode){
         int index = mapView.getChildren().indexOf(currentPathArrow);
@@ -666,29 +697,7 @@ public abstract class GenericMap extends GenericPage {
 
         double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
 
-        Polygon arrow = new Polygon();
-        arrow = new Polygon();
-        arrow.setFill(darkBlue);
-        arrow.setStroke(darkBlue);
-        arrow.setVisible(false);
-        arrow.toFront();
-
-
-        Double points[] = new Double[6];
-        points[0] = centerX;
-        points[2] = centerX + 7 * Math.sqrt(2.0) / 2.0;
-        points[4] = centerX - 7 * Math.sqrt(2.0) / 2.0;
-
-        points[1] = centerY - 7;
-        points[3] = centerY + 7 * Math.sqrt(2.0) / 2.0;
-        points[5] = centerY + 7 * Math.sqrt(2.0) / 2.0;
-
-        arrow.getPoints().addAll(points);
-        arrow.setRotate(rotationAngle);
-
-        currentPathArrow = arrow;
-        mapView.getChildren().add(currentPathArrow);
-
+        drawPathArrow(centerX, centerY, rotationAngle);
     }
 
 

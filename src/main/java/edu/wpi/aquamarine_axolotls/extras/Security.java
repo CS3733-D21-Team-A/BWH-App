@@ -57,7 +57,7 @@ public class Security {
 	 * @throws SQLException Something went wrong.
 	 */
 	public static boolean verifyTOTP(String username, String passcode) throws SQLException {
-		return CODE_VERIFIER.isValidCode(DB_CONTROLLER.getUserByUsername(username).get("TOTPSECRET"), passcode);
+		return CODE_VERIFIER.isValidCode(DB_CONTROLLER.getUserByUsername(username).get("TOTPSECRET"), passcode.replaceAll("\\s",""));
 	}
 
 	/**

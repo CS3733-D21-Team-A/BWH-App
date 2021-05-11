@@ -562,7 +562,7 @@ public class DatabaseController {
 	 * @throws SQLException
 	 */
 	public boolean checkUserExistsByUsername(String username) throws SQLException {
-		return !(userTable.getEntry(username) == null);
+		return userTable.getEntry(username) != null;
 	}
 
 	// Emily
@@ -586,7 +586,7 @@ public class DatabaseController {
 	 * @throws SQLException something went wrong.
 	 */
 	public boolean checkUserExistsByEmail(String email) throws SQLException {
-		return userTable.getEntriesByValue("EMAIL", email) != null;
+		return userTable.getEntriesByValue("EMAIL", email).size() > 0;
 	}
 
 	// ======= COVID SURVEY ==========

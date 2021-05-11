@@ -1,4 +1,4 @@
-package edu.wpi.aquamarine_axolotls.views.homepages;
+package edu.wpi.aquamarine_axolotls.views.accountmanagement;
 
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
@@ -20,8 +20,8 @@ public class ApiPopupController {
 
 	@FXML
 	public void submitKeys() {
-		PREFERENCES.put(GOOGLE_MAPS_API_KEY,gmapsField.getText());
-		PREFERENCES.put(EMAIL_API_KEY,sendGridField.getText());
+		PREFERENCES.put(GOOGLE_MAPS_API_KEY,gmapsField.getText().trim());
+		PREFERENCES.put(EMAIL_API_KEY,sendGridField.getText().trim());
 		((Stage) gmapsField.getScene().getWindow()).close();
 	}
 }

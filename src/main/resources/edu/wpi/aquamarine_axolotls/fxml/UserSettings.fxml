@@ -67,7 +67,7 @@
                   </JFXTextField>
                </children>
             </Pane>
-            <JFXButton cancelButton="true" layoutX="35.0" layoutY="233.0" onAction="#forgotPasswordP" prefHeight="79.0" prefWidth="281.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Forgot Password" textFill="WHITE">
+            <JFXButton cancelButton="true" layoutX="35.0" layoutY="233.0" onAction="#forgotPasswordP" prefHeight="79.0" prefWidth="281.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Reset Password" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="25.0" />
                </font>
@@ -255,7 +255,7 @@
                        <Font name="Verdana" size="20.0" />
                    </font>
                </JFXButton>
-               <JFXButton layoutX="366.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#cancel2fa" prefHeight="61.0" prefWidth="150.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Cancel" textFill="#7d99c9">
+               <JFXButton layoutX="366.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#cancel2fa" prefHeight="61.0" prefWidth="150.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Cancel" textFill="#003da6">
                    <font>
                        <Font name="Verdana" size="20.0" />
                    </font>

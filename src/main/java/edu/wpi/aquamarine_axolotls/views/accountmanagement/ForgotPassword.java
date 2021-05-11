@@ -130,5 +130,13 @@ public class ForgotPassword extends GenericPage {
 		newPassPane.setVisible ( true );
 		label.setText ( "Please enter your new password" );
 	}
+
+	public void cancelVerf(){
+		verfPane.setVisible(false);
+		gridPane.setVisible(true);
+		first.setVisible(true);
+		second.setVisible(false);
+
+	}
 }
 
