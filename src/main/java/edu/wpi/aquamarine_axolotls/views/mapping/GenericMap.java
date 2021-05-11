@@ -69,7 +69,7 @@ public abstract class GenericMap extends GenericPage {
     double contextMenuY = 0;
     ContextMenu contextMenu = new ContextMenu();
 
-    DatabaseController db = DatabaseController.getInstance();;
+    DatabaseController db = DatabaseController.getInstance();
     String state = "";
     String currentID;
     double magicNumber = (Math.PI + Math.E) / 2.0; //this is used as the radius for the nodes because Chris likes it. I don't know why
