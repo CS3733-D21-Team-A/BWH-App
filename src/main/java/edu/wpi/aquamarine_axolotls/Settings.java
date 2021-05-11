@@ -5,7 +5,7 @@ import java.util.prefs.*;
 public class Settings {
 	private Settings(){} //NO INSTANTIATION >:(
 
-	public final static Preferences PREFERENCES = Preferences.userNodeForPackage(Settings.class);
+	final public static Preferences PREFERENCES = Preferences.userNodeForPackage(Settings.class);
 
 	final public static String GOOGLE_MAPS_API_KEY = "Google Maps API Key";
 	final public static String DATABASE_HOSTNAME = "Database Hostname";
