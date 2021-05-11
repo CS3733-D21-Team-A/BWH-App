@@ -148,6 +148,28 @@ public abstract class GenericMap extends GenericPage {
         drawFloor("L2");
     }
 
+
+    public void changeFloor(String floor){
+        switch(floor){
+            case "L2":
+                changeFloorL2();
+                break;
+            case "L1":
+                changeFloorL1();
+                break;
+            case "1":
+                changeFloor1();
+                break;
+            case "2":
+                changeFloor2();
+                break;
+            case "3":
+                changeFloor3();
+                break;
+        }
+
+    }
+
     public void resetButtons(){
 
         // #f4ba47
