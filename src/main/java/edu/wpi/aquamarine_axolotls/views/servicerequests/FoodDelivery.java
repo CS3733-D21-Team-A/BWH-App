@@ -92,10 +92,13 @@ public class FoodDelivery extends GenericServiceRequest {
         );
     }
 
+    // new method for getting the submit information regarding the location id into submit
     @FXML
     void submitFood() throws SQLException, IOException{
-        sharedValues.put("LOCATIONID", roomNumber.getAccessibleText()); // TODO: change around location
-        submit();
+        String errorVals = "";
+        if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", roomNumber.getSelectionModel().getSelectedItem().toString());
+        submit(errorVals);
     }
 }
 

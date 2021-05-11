@@ -60,15 +60,15 @@ public class GenericServiceRequest extends GenericPage {
 
 
     @FXML
-    void submit() throws SQLException, IOException {
+    void submit(String errorValues) throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         for(FieldTemplate field : requestFieldList){
             if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
         }
 
-//        if(!location.hasProperties()) errorMessage.append("\n  -" + "LOCATION");
-        if(!firstName.hasProperties()) errorMessage.append("\n  -" + "FIRSTNAME");
-        if(!lastName.hasProperties()) errorMessage.append("\n  -" + "LASTNAME");
+        errorMessage.append(errorValues);
+        if(firstName.getText().isEmpty()) errorMessage.append("\n  -" + "FIRSTNAME");
+        if(lastName.getText().isEmpty()) errorMessage.append("\n  -" + "LASTNAME");
 
         if(errorMessage.length() != 0){
             errorFields(errorMessage.toString());
