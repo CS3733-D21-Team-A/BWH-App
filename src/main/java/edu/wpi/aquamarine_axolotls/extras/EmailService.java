@@ -19,6 +19,7 @@ public class EmailService {
 	private static final String ACCOUNT_CONFIRM_TEMPLATE = "d-ae1015ad10034e53845d03c85698f60a";
 	private static final String ACCOUNT_RESET_TEMPLATE = "d-73eda03e75b843fca186dd142c4a7611";
 	private static final String SERVICE_REQUEST_TEMPLATE = "d-4ba0ff1157d945d48834039618450d01";
+	private static final String PASSWORD_CHANGE_TEMPLATE = "d-380e185b50fb40039e334ce2de533e20";
 
 
 	/**
@@ -76,6 +77,7 @@ public class EmailService {
 		mail.addPersonalization(personalization);
 
 		send(mail);
+		System.out.println("Email has been sent");
 	}
 
 	/**
@@ -103,6 +105,27 @@ public class EmailService {
 		personalization.addTo(new Email(email));
 		personalization.addDynamicTemplateData("username", username);
 		personalization.addDynamicTemplateData("details", details.toString());
+
+		mail.addPersonalization(personalization);
+
+		send(mail);
+	}
+
+	/**
+	 * Sends a password change confirmation email to the provided user
+	 * @param email address to send email to
+	 * @param username username of account associated with email
+	 * @param firstName of user associated with account
+	 */
+	public static void sendPasswordChangeConfirmation(String email, String username, String firstName) throws IOException {
+		Mail mail = new Mail();
+		mail.setFrom(new Email("groupasofteng@gmail.com"));
+		mail.setTemplateId(PASSWORD_CHANGE_TEMPLATE);
+
+		Personalization personalization = new Personalization();
+		personalization.addTo(new Email(email));
+		personalization.addDynamicTemplateData("first_name", firstName);
+		personalization.addDynamicTemplateData("username", username);
 
 		mail.addPersonalization(personalization);
 
