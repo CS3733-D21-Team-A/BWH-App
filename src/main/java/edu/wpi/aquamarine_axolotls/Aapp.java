@@ -8,6 +8,7 @@ import java.util.prefs.BackingStoreException;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -42,7 +43,7 @@ public class Aapp extends Application {
 
     instanceUser.put("USERNAME",instanceID);
     instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
-    instanceUser.put("PASSWORD",instanceID); //this should never be used, but it's a thing
+    Security.addHashedPassword(instanceUser,instanceID); //account login should never be used, but it's a thing
 
     PREFERENCES.put(INSTANCE_ID,instanceID);
     db.addUser(instanceUser);
@@ -70,7 +71,7 @@ public class Aapp extends Application {
       instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
       instanceUser.put("USERNAME",instanceID);
       instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
-      instanceUser.put("PASSWORD",instanceID); //this should never be used, but it's a thing
+      Security.addHashedPassword(instanceUser,instanceID); //account login should never be used, but it's a thing
 
       db.addUser(instanceUser);
     }
@@ -79,6 +80,7 @@ public class Aapp extends Application {
     try {
       Parent root = FXMLLoader.load(getClass().getResource("fxml/" + usertype + "MainPage.fxml"));
       Scene scene = new Scene(root);
+
       primaryStage.setScene(scene);
       primaryStage.setResizable(false);
       primaryStage.show();

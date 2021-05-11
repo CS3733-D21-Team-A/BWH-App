@@ -103,20 +103,20 @@
                     </padding></JFXTimePicker>
 
                 <Rectangle fill="#003da6" height="65.0" layoutX="-3.0" layoutY="-12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
-                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goHome" prefHeight="43.0" prefWidth="46.0" text=" ">
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="42.0">
-                            <image>
-                                <Image url="@../img/ServiceReq Icons/homeButton.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
+                        <image>
+                            <Image url="@../img/image.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
                 </JFXButton>
             </children>
         </Pane>
     </left>
    <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
               <font>
                   <Font name="Verdana" size="30.0" />
               </font>

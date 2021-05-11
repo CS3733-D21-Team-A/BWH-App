@@ -48,7 +48,7 @@ public class Directions {
 	 * @throws ApiException Something went wrong.
 	 */
 	private static DirectionsLeg getDirections(String from, String to) throws IOException, InterruptedException, ApiException {
-		String apiKey = PREFERENCES.get(API_KEY,null);
+		String apiKey = PREFERENCES.get(GOOGLE_MAPS_API_KEY,null);
 		GeoApiContext context = new GeoApiContext.Builder().apiKey(apiKey).build();
 		DirectionsApiRequest request = DirectionsApi.getDirections(context, from, to);
 

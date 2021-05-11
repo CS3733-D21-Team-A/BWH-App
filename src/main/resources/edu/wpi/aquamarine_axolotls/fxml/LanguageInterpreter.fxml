@@ -51,8 +51,8 @@
                 <GridPane alignment="CENTER" layoutX="57.0" layoutY="100.0" maxHeight="807.0" maxWidth="1612.0" minHeight="200.0" prefHeight="550.0" prefWidth="667.0">
                     <columnConstraints>
                         <ColumnConstraints />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="400.0" />
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="300.0" minWidth="200.0" prefWidth="200.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="339.1426086425781" minWidth="10.0" prefWidth="339.1426086425781" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="300.0" minWidth="200.0" prefWidth="260.8573913574219" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="100.0" minHeight="0.0" prefHeight="100.0" vgrow="SOMETIMES" />
@@ -79,8 +79,8 @@
                         </JFXTextField>
                     </children>
                 </GridPane>
-                <JFXComboBox fx:id="languageSelect" layoutX="226.0" layoutY="504.0" prefHeight="50.0" prefWidth="300.0" promptText="Language" style="-fx-font-size: 20; -fx-font-family: Verdana;" />
-                <JFXTextArea fx:id="preferences" layoutX="90.0" layoutY="577.0" prefHeight="71.0" prefWidth="582.0" promptText="Please list any special requests or preferences. ">
+                <JFXComboBox fx:id="languageSelect" layoutX="226.0" layoutY="520.0" prefHeight="50.0" prefWidth="300.0" promptText="Language" style="-fx-font-size: 20; -fx-font-family: Verdana;" />
+                <JFXTextArea fx:id="preferences" layoutX="90.0" layoutY="620.0" prefHeight="120.0" prefWidth="582.0" promptText="Please list any special requests or preferences. ">
                     <font>
                         <Font name="Verdana" size="20.0" />
                     </font>
@@ -90,11 +90,11 @@
                 </JFXTextArea>
 
                 <Rectangle fill="#003da6" height="65.0" layoutX="-3.0" layoutY="-12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
-                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goHome" prefHeight="43.0" prefWidth="46.0" text=" ">
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="42.0">
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
                             <image>
-                                <Image url="@../img/ServiceReq Icons/homeButton.png" />
+                                <Image url="@../img/image.png" />
                             </image>
                         </ImageView>
                     </graphic>
@@ -103,7 +103,7 @@
         </Pane>
     </left>
    <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
               <font>
                   <Font name="Verdana" size="30.0" />
               </font>

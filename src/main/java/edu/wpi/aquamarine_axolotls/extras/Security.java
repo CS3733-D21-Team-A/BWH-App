@@ -15,31 +15,28 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.util.Pair;
 
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Security {
 	private Security(){} //NO INSTANTIATION >:(
 
+	final static private Charset CHARSET = StandardCharsets.ISO_8859_1;
+
 	final static private DatabaseController dbController = DatabaseController.getInstance();
 	final static private SecretGenerator secretGenerator = new DefaultSecretGenerator();
-	final static private CodeVerifier codeVerifier;
 
-	static {
-		TimeProvider tp;
-
-		try {
-			tp = new NtpTimeProvider("pool.ntp.org");
-		} catch (UnknownHostException e) {
-			System.out.println("Unable to establish connection with pool.ntp.org, reverting to system time for 2FA");
-			tp = new SystemTimeProvider();
-		}
-		codeVerifier = new DefaultCodeVerifier(new DefaultCodeGenerator(), tp);
-	}
+	final static private CodeVerifier codeVerifier = new DefaultCodeVerifier(new DefaultCodeGenerator(), new SystemTimeProvider());
 
 
 	/**
-	 * Enables TOTP 2FA for the provided user
+	 * Enables TOTP 2FA for the provided user (Assumes provided user is already in the database)
 	 * @return User's TOTP secret and a QR code for it
 	 * @param username Username of user to enable TOTP 2FA for
 	 * @throws SQLException Something went wrong.
@@ -91,5 +88,58 @@ public class Security {
 			put("TOTPSECRET","");
 			put("MFAENABLED","false");
 		}});
+	}
+
+	/**
+	 * Adds salt and hash for provided password into the provided user map
+	 * @param user map to add salt and hash into
+	 * @param password password to hash
+	 */
+	public static void addHashedPassword(Map<String,String> user, String password) {
+		SecureRandom random = new SecureRandom();
+		byte[] salt = new byte[16];
+		random.nextBytes(salt);
+
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			System.out.println("SOMETHING WENT WRONG THIS SHOULD NEVER HAPPEN");
+		}
+		md.update(salt);
+
+		String saltString = new String(salt, CHARSET);
+
+		String hash = new String(md.digest(password.getBytes(CHARSET)), CHARSET);
+
+		user.put("SALT",saltString);
+		user.put("PASSWORD",hash);
+	}
+
+	/**
+	 * Verify if the provided username and password combination exists for account validation
+	 * @param username account username
+	 * @param password account password
+	 * @return credentials were valid
+	 * @throws SQLException Something went wrong.
+	 */
+	public static boolean secureVerifyAccount(String username, String password) throws SQLException {
+		MessageDigest md = null;
+		try {
+			md = MessageDigest.getInstance("SHA-512");
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			System.out.println("SOMETHING WENT WRONG THIS SHOULD NEVER HAPPEN");
+		}
+
+		if (!dbController.checkUserExists(username)) return false;
+		Map<String,String> userMap = dbController.getUserByUsername(username);
+
+		md.update(userMap.get("SALT").getBytes(CHARSET));
+
+		String hash = new String(md.digest(password.getBytes(CHARSET)), CHARSET);
+
+		return hash.equals(userMap.get("PASSWORD"));
 	}
 }

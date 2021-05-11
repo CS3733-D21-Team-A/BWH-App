@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import javafx.util.Pair;
 import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
@@ -48,7 +49,7 @@ public class DatabaseController {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null).getKey();
+		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null)).getKey();
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -112,7 +113,7 @@ public class DatabaseController {
 	 */
 	public boolean updateConnection() throws SQLException, IOException {
 		shutdownDB();
-		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null));
 		boolean dbExists = bools.getKey();
 
 		nodeTable.setConnection(connection);
@@ -138,12 +139,13 @@ public class DatabaseController {
 	 * Connects to the Derby database
 	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
 	 * Note: Creates a database if one isn't present
-	 * @param remote Whether to try and connect to the the client-server database
+	 * @param hostname hostname of server to conenct to. null if connecting to embedded database
 	 * @return Pair whose key is if we need to construct a new database and value is whether we are using the embedded database
 	 * @throws SQLException Something went wrong.
 	 */
-	private Pair<Boolean,Boolean> connectToDB(boolean remote) throws SQLException {
-		String connectionURL = "jdbc:derby:" + (remote ? "//localhost:1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
+	private Pair<Boolean,Boolean> connectToDB(String hostname) throws SQLException {
+		boolean remote = hostname != null;
+		String connectionURL = "jdbc:derby:" + (remote ? "//"+hostname+":1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
 		this.usingEmbedded = !remote;
 
 		boolean dbExists = true;
@@ -981,41 +983,41 @@ public class DatabaseController {
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 
-		userTable.addEntry(new HashMap<String,String>() {{
+
+		Map<String,String> adminAccount = new HashMap<String,String>() {{
 			put("USERNAME", "admin");
 			put("FIRSTNAME", "admin");
 			put("LASTNAME", "admin");
 			put("EMAIL", "admin@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.ADMIN));
-			put("PASSWORD", "admin");
-		}});
+		}};
+		Security.addHashedPassword(adminAccount,"admin");
 
-		userTable.addEntry(new HashMap<String,String>() {{
-			put("USERNAME", "patient");
-			put("FIRSTNAME", "patient");
-			put("LASTNAME", "patient");
-			put("EMAIL", "patient@wpi.edu");
-			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
-			put("PASSWORD", "patient");
-		}});
+		userTable.addEntry(adminAccount);
 
-		userTable.addEntry(new HashMap<String,String>() {{
+
+		Map<String,String> employeeAccount = new HashMap<String,String>() {{
 			put("USERNAME", "employee");
 			put("FIRSTNAME", "employee");
 			put("LASTNAME", "employee");
 			put("EMAIL", "employee@wpi.edu");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
-			put("PASSWORD", "employee");
-		}});
+		}};
+		Security.addHashedPassword(employeeAccount,"employee");
 
-		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
-			put("USERNAME", "guest");
-			put("FIRSTNAME", "guest");
-			put("LASTNAME", "guest");
-			put("EMAIL", "guest@wpi.edu");
-			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
-			put("PASSWORD", "guest");
-		}});
+		userTable.addEntry(employeeAccount);
+
+
+		Map<String,String> patientAccount = new HashMap<String,String>() {{
+			put("USERNAME", "patient");
+			put("FIRSTNAME", "patient");
+			put("LASTNAME", "patient");
+			put("EMAIL", "patient@wpi.edu");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
+		}};
+		Security.addHashedPassword(patientAccount,"patient");
+
+		userTable.addEntry(patientAccount);
 	}
 
 }
