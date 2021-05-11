@@ -34,11 +34,12 @@ public class LogIn extends GenericPage {
 	private Pane tfaPane;
 	@FXML
 	public javafx.scene.image.ImageView tfaView;
-	@FXML private Label tfaSource;
-	@FXML private JFXTextField verification;
+	@FXML
+	private Label tfaSource;
+	@FXML
+	private JFXTextField verification;
 
 	private DatabaseController db = DatabaseController.getInstance();
-
 
 
 	public void confirmUser() throws SQLException {
@@ -50,27 +51,24 @@ public class LogIn extends GenericPage {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have not filled in both the username and password fields");
 			return;
 		}
-		if (!Security.secureVerifyAccount(CUusername,CUpassword)) {
+		if (!Security.secureVerifyAccount(CUusername, CUpassword)) {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
 				+ "or the account does not exist");
 			return;
 		}
-		try {
-			Map<String, String> usr = db.getUserByUsername(CUusername);
-			PREFERENCES.put(USER_TYPE,usr.get("USERTYPE"));
-			PREFERENCES.put(USER_NAME,usr.get("USERNAME"));
-			PREFERENCES.put(USER_FIRST_NAME,usr.get("FIRSTNAME"));
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
-		String tfaEnable = db.getUserByUsername ( CUusername ).get ( "MFAENABLED" );
-		if(tfaEnable.equals ( "true")){
-			tfaPane.setVisible ( true );
-			verfIncorrect.setVisible ( false );
-
-
-		}
-		else{
+		String tfaEnable = db.getUserByUsername(CUusername).get("MFAENABLED");
+		if (tfaEnable.equals("true")) {
+			tfaPane.setVisible(true);
+			verfIncorrect.setVisible(false);
+		} else {
+			try {
+				Map<String, String> usr = db.getUserByUsername(CUusername);
+				PREFERENCES.put(USER_TYPE, usr.get("USERTYPE"));
+				PREFERENCES.put(USER_NAME, usr.get("USERNAME"));
+				PREFERENCES.put(USER_FIRST_NAME, usr.get("FIRSTNAME"));
+			} catch (SQLException throwables) {
+				throwables.printStackTrace();
+			}
 			goHome();
 		}
 
@@ -78,19 +76,26 @@ public class LogIn extends GenericPage {
 
 
 	public void tfasubmit_button() throws SQLException {
-		boolean verificationSuccess = Security.verifyTOTP(username.getText(),verification.getText ( ) );
-		if(verificationSuccess){
-			popUp ( "Two Factor Authentication Success" ,"\n\n\n\n\n\n You have successfully completed Two-Factor Authentication" );
+		boolean verificationSuccess = Security.verifyTOTP(username.getText(), verification.getText());
+		if (verificationSuccess) {
+			popUp("Two Factor Authentication Success", "\n\n\n\n\n\n You have successfully completed Two-Factor Authentication");
+			try {
+				Map<String, String> usr = db.getUserByUsername(username.getText());
+				PREFERENCES.put(USER_TYPE, usr.get("USERTYPE"));
+				PREFERENCES.put(USER_NAME, usr.get("USERNAME"));
+				PREFERENCES.put(USER_FIRST_NAME, usr.get("FIRSTNAME"));
+			} catch (SQLException throwables) {
+				throwables.printStackTrace();
+			}
 			goHome();
-		}
-		else{
-			verfIncorrect.setVisible ( true );
+		} else {
+			verfIncorrect.setVisible(true);
 
 		}
 	}
 
-	public void cancel2fa(){
-		tfaPane.setVisible ( false );
+	public void cancel2fa() {
+		tfaPane.setVisible(false);
 	}
 
 
