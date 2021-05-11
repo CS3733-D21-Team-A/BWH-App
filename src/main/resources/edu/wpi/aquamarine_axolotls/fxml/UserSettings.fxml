@@ -236,7 +236,10 @@
                        <Font name="Verdana" size="30.0" />
                    </font>
                </Text>
-               <JFXTextField fx:id="verification" layoutX="396.0" layoutY="475.0" prefHeight="60.0" prefWidth="312.0" />
+               <JFXTextField fx:id="verification" layoutX="396.0" layoutY="475.0" prefHeight="60.0" prefWidth="312.0">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font></JFXTextField>
                <JFXButton fx:id="submitButton" layoutX="560.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#tfasubmit_button" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6">
                    <font>
                        <Font name="Verdana" size="20.0" />

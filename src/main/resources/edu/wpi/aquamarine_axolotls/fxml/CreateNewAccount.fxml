@@ -88,7 +88,7 @@
                                 </JFXTextField>
                                 <JFXTextField fx:id="pronouns" prefHeight="27.0" prefWidth="175.0" promptText="Pronouns">
                                     <font>
-                                        <Font size="30.0" />
+                                        <Font name="Verdana" size="30.0" />
                                     </font>
                                     <HBox.margin>
                                         <Insets top="20.0" />
