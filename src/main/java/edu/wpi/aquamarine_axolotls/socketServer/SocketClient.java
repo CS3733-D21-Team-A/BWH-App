@@ -21,7 +21,7 @@ public class SocketClient {
     public String getMassage() throws IOException {
         int len;
         StringBuilder sb = new StringBuilder();
-        byte[] bytes = new byte[1024];  //接收数据的缓存，决定了一次传输数据的上限
+        byte[] bytes = new byte[1024];
 //        while ((len = in.read(bytes)) == 1023) {
 //            sb.append(new String(bytes, 0, len, StandardCharsets.UTF_8));
 //        }

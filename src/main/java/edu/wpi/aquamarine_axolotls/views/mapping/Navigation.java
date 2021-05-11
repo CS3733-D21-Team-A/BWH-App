@@ -1,18 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
-import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.DirectionsStep;
-import com.google.maps.model.Duration;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXToggleButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
-import edu.wpi.aquamarine_axolotls.Aapp;
-import edu.wpi.aquamarine_axolotls.Settings;
-import edu.wpi.aquamarine_axolotls.pathplanning.*;
-import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.socketServer.*;
 import javafx.application.Platform;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.events.JFXDrawerEvent;
@@ -76,6 +64,8 @@ public class Navigation extends GenericMap {
     MenuItem makeIntermediatePoint = new MenuItem("Make Intermediate Point");
 
     boolean isVoiceToggled;
+    boolean robotConnection;
+    int robotDirectionNum = 0;
 
     public void initialize() throws java.sql.SQLException, IOException {
 
@@ -422,7 +412,7 @@ public class Navigation extends GenericMap {
 
                                             //=== SIDE BAR METHODS ===//
 
-    public void startPath() {
+    public void startPath() throws IOException {
         goToStepByStep();
     }
 
@@ -456,7 +446,7 @@ public class Navigation extends GenericMap {
         setStartAndEnd();
     }
 
-    public void goToStepByStep() {
+    public void goToStepByStep() throws IOException {
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
         setStartAndEnd();
@@ -489,8 +479,9 @@ public class Navigation extends GenericMap {
     }
 
                                         //==== LIST OF DIRECTIONS ====//
-    public void startDir() {
+    public void startDir() throws IOException {
         currentStepNumber = 0; // was dirIndex
+        robotDirectionNum = 0;
         String curDirection = curPathDirections.get(0).get(currentStepNumber);
         setArrowsToBeVisible();
         currentMenu.setCurArrow(textDirectionToImage(curDirection));
@@ -507,9 +498,9 @@ public class Navigation extends GenericMap {
             voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
         }
         String sendPacket = getROSDirection();
-        if(robotConnection.isSelected()){
-            Aapp.clientSender.send(sendPacket);
-        }
+//        if(robotConnection){
+//            Aapp.clientSender.send(sendPacket);
+//        }
     }
 
     /**
@@ -706,22 +697,20 @@ public class Navigation extends GenericMap {
         else closeDrawer();
     }
 
-    @FXML
-    public void stopVoice() {
-        voice.stop();
-    }
 
     private String getROSDirection(){
         String coordinateList = "";
-        for (Node n: currPath) {
-            coordinateList += n.getXcoord() + "," + n.getYcoord() + ";";
+        for (Map<String,String> n: currentPath) {
+            coordinateList += n.get("XCOORD") + "," + n.get("YCOORD") + ";";
         }
+        System.out.println(coordinateList);
         return coordinateList;
     }
 
     @FXML
-    public void toggleRobotConnectionButton() throws IOException, InterruptedException {
-        if (robotConnection.isSelected() && !Aapp.serverRunning){
+    public void toggleRobot() throws IOException, InterruptedException {
+        robotConnection = !robotConnection;
+        if (robotConnection && !Aapp.serverRunning){
             String host = "192.168.1.118";
             Aapp.clientSender = new SocketClient(host,7777);
             Aapp.clientReceiver = new SocketClient(host,5555);
@@ -793,7 +782,7 @@ public class Navigation extends GenericMap {
                         String message = Aapp.clientReceiver.getMassage();
                         Double[] robotCoordinate = getROSCoordinate(message);
                         if (robotCoordinate != null  && FLOOR.equals("L1")){
-                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                            Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
                         }
                     }
                 } catch (Exception e){
@@ -804,14 +793,14 @@ public class Navigation extends GenericMap {
             Aapp.serverRunning = true;
             System.out.println("server running");
         }
-        else if(robotConnection.isSelected() && Aapp.serverRunning){
+        else if(robotConnection && Aapp.serverRunning){
             Aapp.clientThreadReceiver = new Thread(() -> {
                 try{
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientReceiver.getMassage();
                         Double[] robotCoordinate = getROSCoordinate(message);
                         if (robotCoordinate != null && FLOOR.equals("L1")){
-                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                            Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
                         }
                     }
                 } catch (Exception e){
@@ -861,7 +850,7 @@ public class Navigation extends GenericMap {
             });
             Aapp.clientInfoThreadReceiver.start();
         }
-        else if(!robotConnection.isSelected() && Aapp.serverRunning){
+        else if(!robotConnection && Aapp.serverRunning){
             Aapp.clientThreadReceiver.stop();
             //Aapp.clientInfoThreadReceiver.stop();
             removeDirectionArrow();

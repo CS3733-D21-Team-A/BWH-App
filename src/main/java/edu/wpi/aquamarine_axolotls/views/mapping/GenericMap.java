@@ -579,6 +579,12 @@ public abstract class GenericMap extends GenericPage {
         drawArrow(centerX, centerY, startFloor, endFloor, Color.RED, 180);
     }
 
+    public void drawRobotArrow(double centerX, double centerY, String Floor, double rotationAngle){
+        int startFloorInt = floorToInt(Floor);
+        int endFloorInt = floorToInt(Floor);
+        drawArrow(centerX, centerY, startFloorInt, endFloorInt, Color.BLUE, 180);
+    }
+
     /**
      * Draws up and down arrows to signify floor change for a given edge (two nodes)
      * This is a private method that takes coordinates and floors derived from the Node or Map passed to the public
