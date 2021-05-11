@@ -511,6 +511,13 @@ public class Navigation extends GenericMap {
     }
 
     public void goToListOfDirections() {
+        if(currentMenu.equals(sideControllers.get(2))) {
+            try {
+                unHighlightDirection();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
         drawer.setSidePane(listOfDirectionsSideMenu);
         currentMenu = sideControllers.get(1);
         setStartAndEnd();
