@@ -160,5 +160,6 @@ gradle-app.setting
 /EMBEDDED_BWH_DB/
 /SERVER_BWH_DB/
 
-/derby/*
+!/derby/
 !/derby/*.jar
+/derby/*

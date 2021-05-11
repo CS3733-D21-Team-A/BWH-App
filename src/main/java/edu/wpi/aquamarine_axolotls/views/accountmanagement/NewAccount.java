@@ -9,8 +9,6 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import edu.wpi.aquamarine_axolotls.views.observerpattern.Observer;
-import edu.wpi.aquamarine_axolotls.views.observerpattern.Subject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -19,7 +17,6 @@ import javafx.util.Pair;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,9 +45,6 @@ public class NewAccount extends GenericPage {
 	private Label tfaSource;
 
 	@FXML
-	private Label passwordMatchLabel; //TODO: ADD THIS BACK TO FXML FILE
-
-	@FXML
 	private Label verfIncorrect;
 	@FXML
 	private Pane tfaPane;
@@ -60,23 +54,6 @@ public class NewAccount extends GenericPage {
 	private JFXCheckBox tfa;
 
 	private DatabaseController db = DatabaseController.getInstance();
-
-	@FXML
-	public void initialize() throws SQLException, IOException, URISyntaxException {
-		Subject subject = new Subject(2);
-		Observer passwordObserver = new Observer(subject, passwordMatchLabel,
-			(a) -> a.get(0).equals(a.get(1)),
-			"The Passwords Match!", "The Passwords Do Not Match, Try Again.");
-
-		subject.attach(passwordObserver);
-		password.textProperty().addListener(observable -> {
-			subject.setItem(0, password.getText());
-		});
-
-		confirmPassword.textProperty().addListener(observable -> {
-			subject.setItem(1, confirmPassword.getText());
-		});
-	}
 
 	@FXML
 	public void submit_button() throws SQLException, IOException {
