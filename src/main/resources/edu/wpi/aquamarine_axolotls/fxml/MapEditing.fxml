@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.mapping.MapEditing">
+   <top>
+      <Pane prefHeight="75.0" prefWidth="1300.0" style="-fx-border-radius: 10; -fx-background-color: #003da6; -fx-opacity: .95;" BorderPane.alignment="CENTER">
+         <children>
+            <JFXButton alignment="CENTER" contentDisplay="CENTER" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="55.0" prefWidth="65.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="33.5" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/yellowIcons/homeYellow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </JFXButton>
+             <MenuButton contentDisplay="TEXT_ONLY" graphicTextGap="0.0" layoutX="65.0" layoutY="25.0" mnemonicParsing="false" prefHeight="25.66" prefWidth="85.0" stylesheets="@../CSS/MenuButton.css" text="File" textFill="#f0f0f0">
+                 <items>
+                     <RadioMenuItem fx:id="newCSVButton" mnemonicParsing="false" onAction="#newCSV" text="Import and Overwrite" />
+                     <RadioMenuItem fx:id="mergeCSVButton" mnemonicParsing="false" onAction="#mergeCSV" text="Import and Merge" />
+                     <RadioMenuItem fx:id="exportButton" mnemonicParsing="false" onAction="#exportCSV" text="Export" />
+                 </items>
+             </MenuButton>
+             <JFXComboBox fx:id="algoSelectBox" focusColor="#7d9ac700" layoutX="160.0" layoutY="25.0" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#selectAlgorithm" prefHeight="37.0" prefWidth="332.0" promptText="  Navigation Algorithm" stylesheets="@../CSS/JFXComboBox.css" unFocusColor="#7d9ac700" />
+         </children>
+      </Pane>
+   </top>
+   <center>
+       <Group BorderPane.alignment="CENTER">
+           <children>
+               <Group>
+                   <children>
+                       <ImageView fx:id="mapImage" fitHeight="814.0" fitWidth="1300.0" pickOnBounds="true" preserveRatio="true" />
+                       <ScrollPane fx:id="mapScrollPane" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="827.0" prefWidth="1302.0" />
+                       <Pane fx:id="mapView" onMouseClicked="#hideContextMenu" prefHeight="824.0" prefWidth="1300.0" />
+                  <Slider fx:id="zoomSlider" blockIncrement="1.0" layoutX="1250.0" layoutY="625.0" majorTickUnit="1.0" max="3.0" min="1.0" minorTickCount="0" orientation="VERTICAL" showTickMarks="true" value="1.0" />
+                  <VBox layoutX="1241.0" layoutY="85.0">
+                     <children>
+                        <JFXButton fx:id="floor3Button" onAction="#changeFloor3" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="3" />
+                        <JFXButton fx:id="floor2Button" onAction="#changeFloor2" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="2" />
+                        <JFXButton fx:id="floor1Button" onAction="#changeFloor1" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="1" />
+                        <JFXButton fx:id="floorL1Button" onAction="#changeFloorL1" stylesheets="@../CSS/JFXButton.css" text="L1" />
+                        <JFXButton fx:id="floorL2Button" onAction="#changeFloorL2" stylesheets="@../CSS/JFXButton.css" text="L2" />
+                     </children>
+                  </VBox>
+                   </children>
+               </Group>
+           </children>
+       </Group>
+   </center>
+</BorderPane>

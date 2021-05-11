@@ -23,6 +23,7 @@
     <right>
         <Pane prefHeight="900.0" prefWidth="556.0" BorderPane.alignment="CENTER">
             <children>
+                <Circle fill="#1f93ff00" layoutX="363.0" layoutY="149.0" radius="79.0" smooth="false" stroke="#003da6" strokeType="INSIDE" strokeWidth="5.0" />
                 <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="For best results, please select a delivery time and date at least 12 hours from the time you fill out the form. Be sure to add a special message to the delivery for a personalized touch." textAlignment="RIGHT" wrapText="true">
                     <font>
                         <Font name="Verdana" size="18.0" />
@@ -36,20 +37,19 @@
                         <Font name="Verdana Bold" size="70.0" />
                     </font>
                 </Label>
-                <ImageView fitHeight="126.0" fitWidth="82.0" layoutX="320.0" layoutY="105.0">
+                <ImageView fitHeight="126.0" fitWidth="90.0" layoutX="319.0" layoutY="103.0">
                     <image>
-                        <Image url="@../img/ServiceReq%20Icons/giftDeliveryb.png" />
+                        <Image url="@../img/ServiceReq Icons/giftDeliveryb.png" />
                     </image>
                 </ImageView>
                 <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
-                <Circle fill="#1f93ff00" layoutX="363.0" layoutY="149.0" radius="79.0" smooth="false" stroke="#003da6" strokeType="INSIDE" strokeWidth="5.0" />
             </children>
         </Pane>
     </right>
     <left>
         <Pane prefHeight="839.0" prefWidth="800.0" BorderPane.alignment="CENTER">
             <children>
-                <GridPane alignment="CENTER" layoutX="97.0" layoutY="97.0" maxHeight="807.0" maxWidth="1612.0" minHeight="200.0" prefHeight="560.0" prefWidth="635.0">
+                <GridPane alignment="CENTER" layoutX="97.0" layoutY="69.0" maxHeight="807.0" maxWidth="1612.0" minHeight="200.0" prefHeight="560.0" prefWidth="635.0">
                     <columnConstraints>
                         <ColumnConstraints />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="400.0" />
@@ -82,10 +82,10 @@
                         </JFXDatePicker>
                     </children>
                 </GridPane>
-                <JFXComboBox fx:id="giftOptions" layoutX="260.0" layoutY="512.0" prefHeight="50.0" prefWidth="250.0" promptText="Gift Options" style="-fx-font-size: 20; -fx-font-family: Verdana;">
+                <JFXComboBox fx:id="giftOptions" layoutX="260.0" layoutY="497.0" prefHeight="50.0" prefWidth="250.0" promptText="Gift Options" style="-fx-font-size: 20; -fx-font-family: Verdana;">
                 </JFXComboBox>
 
-                <JFXTextArea fx:id="persMessage" layoutX="100.0" layoutY="592.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
+                <JFXTextArea fx:id="persMessage" layoutX="112.0" layoutY="600.0" prefHeight="86.0" prefWidth="582.0" promptText="Please type a personalized message. ">
                     <font>
                         <Font name="Verdana" size="20.0" />
                     </font>
@@ -94,20 +94,20 @@
                     </padding>
                 </JFXTextArea>
                 <Rectangle fill="#003da6" height="65.0" layoutX="-3.0" layoutY="-12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
-                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goHome" prefHeight="43.0" prefWidth="46.0" text=" ">
-                    <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="42.0">
-                            <image>
-                                <Image url="@../img/ServiceReq Icons/homeButton.png" />
-                            </image>
-                        </ImageView>
-                    </graphic>
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
+               <graphic>
+                  <ImageView fitHeight="30.0" fitWidth="20.0">
+                     <image>
+                        <Image url="@../img/image.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                 </JFXButton>
             </children>
         </Pane>
     </left>
    <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
               <font>
                   <Font name="Verdana" size="30.0" />
               </font>

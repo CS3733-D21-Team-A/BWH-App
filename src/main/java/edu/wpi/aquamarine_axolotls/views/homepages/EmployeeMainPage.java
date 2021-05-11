@@ -1,12 +1,20 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
 import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
 
 
 public class EmployeeMainPage extends PatientMainPage {
+    @FXML StackPane managePane;
 
     public void initialize() {
-        startUp();
+        super.initialize();
+        managePane.setOnMouseExited(mouseEvent -> {
+            if (managePane.isVisible()) {
+                managePane.setVisible(false);
+                managePane.toBack();
+            }
+        });
     }
 
     @FXML
@@ -14,8 +22,20 @@ public class EmployeeMainPage extends PatientMainPage {
         sceneSwitch("EmployeeRequests");
     }
 
+//    @FXML
+//    public void serviceReqEP() {
+//        sceneSwitch("EmployeeServiceRequestPage");
+//    }
+
     @FXML
-    public void serviceReqEP() {
-        sceneSwitch("EmployeeServiceRequestPage");
+    public void manageP(){
+        managePane.setVisible(true);
+        managePane.toFront();
+
+        if (serviceRequestPane.isVisible()){
+            serviceRequestPane.setVisible(false);
+            serviceRequestPane.toBack();
+        }
+
     }
 }

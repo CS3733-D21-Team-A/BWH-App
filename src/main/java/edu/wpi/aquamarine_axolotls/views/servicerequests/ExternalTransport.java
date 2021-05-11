@@ -2,6 +2,7 @@ package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
 import com.jfoenix.controls.*;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 

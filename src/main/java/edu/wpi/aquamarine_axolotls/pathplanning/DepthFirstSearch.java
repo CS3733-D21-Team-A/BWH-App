@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
         super(nodeList, edgeList);
     }
 
-    public List<Node> getPathImpl(String startLongName, String endLongName){
+    public List<Map<String, String>> getPathImpl(String startLongName, String endLongName){
 
         List<Node> visited = new ArrayList<>();
 
@@ -40,26 +41,33 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
             result = depthFirstRecursive(startID, endID, visited);
             //If the result ends up as null, that means there was no path, so that will be the final output
             if (result == null) {
-                System.out.println("Couldn't find a path between those nodes");
                 return null;
             }
         }
 
         //IF we got a valid path, we'll initialize the final list of results from the IDs of the nodes on the path
         List<String> resultStrings = new ArrayList<>();
-        for (int j = 0; j < result.size(); j++) {
-            resultStrings.add(result.get(j).getNodeID());
+        for (Node node : result) {
+            resultStrings.add(node.getNodeID());
         }
 
-        //Print out path
-        System.out.println("Successfully found a path from node " + startID + " to node " + endID + "!");
-        System.out.println("Final path: ");
-        for (int i = 0; i < resultStrings.size(); i++) {
-            System.out.println(resultStrings.get(i));
+        List<Map<String, String>> nodeMapList = new ArrayList<Map<String, String>>();
+
+        for (Node node: result){
+            Map<String, String> nodeMap = new HashMap<String, String>();
+            nodeMap.put("NODEID", node.getNodeID());
+            nodeMap.put("XCOORD", String.valueOf(node.getXcoord()));
+            nodeMap.put("YCOORD", String.valueOf(node.getYcoord()));
+            nodeMap.put("NODETYPE", node.getNodeType());
+            nodeMap.put("BUILDING", node.getBuilding());
+            nodeMap.put("LONGNAME", node.getLongName());
+            nodeMap.put("SHORTNAME", node.getShortName());
+            nodeMap.put("FLOOR", node.getFloor());
+            nodeMapList.add(nodeMap);
         }
 
-        //Return the list of ids of the nodes on the path
-        return result;
+        return nodeMapList;
+
     }
 
     /**
@@ -71,7 +79,6 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
     public List<Node> depthFirstRecursive(String startID, String endID, List<Node> visited) {
         //If either start or end are null, indicate that they're invalid
         if (getNode(startID) == null || getNode(endID) == null) {
-            System.out.println("Invalid start or end ID");
             return null;
         }
 

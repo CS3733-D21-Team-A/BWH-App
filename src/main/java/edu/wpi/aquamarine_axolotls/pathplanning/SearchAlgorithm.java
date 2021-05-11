@@ -256,7 +256,6 @@ public class SearchAlgorithm{
         }
 
         //If we go through all the nodes and don't find the one we were looking for, return null
-        System.out.println("Couldn't find that node");
         return null;
     }
 
@@ -273,7 +272,6 @@ public class SearchAlgorithm{
             }
         }
         //If we go through all the nodes and don't find the one we were looking for, return null
-        System.out.println("Couldn't find that node");
         return null;
     }
 
@@ -308,7 +306,6 @@ public class SearchAlgorithm{
                 connectedNode.add(getNode(startNodeName));
             }
         }
-        System.out.println("getConnected complete");
         //Return all connected nodes
         return connectedNode;
     }
@@ -391,7 +388,6 @@ public class SearchAlgorithm{
                 }
             }
         }
-        System.out.println("pathfound:" + cameFrom);
         //Build the actual path that we can return
         List<Node> foundPath = buildPath(cameFrom, goal);
         //Check if the created path is valid and return if it is
@@ -439,14 +435,11 @@ public class SearchAlgorithm{
         //Get the start and end nodes in the path
         Node pathStart = path.get(0);
         Node pathGoal = path.get(path.size()-1);
-        System.out.println("pathStart: " + pathStart);
-        System.out.println("pathGoal: " + pathGoal);
 
         //Determine whether the start and end nodes in the given path are the same as the start and end nodes we pass in
         boolean startNodeisEqual = pathStart.getNodeID().equals(start.getNodeID());
         boolean goalNodeisEqual = pathGoal.getNodeID().equals(goal.getNodeID());
 
-        System.out.println("pathiscorrect: " + (startNodeisEqual && goalNodeisEqual));
         return startNodeisEqual && goalNodeisEqual;
     }
 

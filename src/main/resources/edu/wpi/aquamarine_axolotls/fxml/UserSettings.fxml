@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -12,36 +13,67 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.UserSettings">
    <bottom>
         <Pane prefHeight="752.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
             <children>
-                <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="30.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="84.0" prefWidth="392.0" text="Settings" textAlignment="RIGHT" textFill="#003da6" wrapText="true">
+                <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="30.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="84.0" prefWidth="392.0" text="Settings" textAlignment="RIGHT" textFill="#003da6" wrapText="true">
                     <font>
                         <Font name="Verdana Bold" size="70.0" />
                     </font>
                 </Label>
-            <JFXButton defaultButton="true" layoutX="39.0" layoutY="123.0" onAction="#aboutP" prefHeight="79.0" prefWidth="262.0" text="About" textFill="#003da6">
+            <JFXButton defaultButton="true" layoutX="35.0" layoutY="167.0" onAction="#aboutP" prefHeight="79.0" prefWidth="262.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="About" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="40.0" />
                </font>
             </JFXButton>
-            <JFXButton cancelButton="true" layoutX="35.0" layoutY="211.0" onAction="#creditsP" prefHeight="79.0" prefWidth="262.0" text="Credit" textFill="#003da6">
+            <JFXButton cancelButton="true" layoutX="35.0" layoutY="268.0" onAction="#creditsP" prefHeight="79.0" prefWidth="262.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Credit" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="40.0" />
                </font>
             </JFXButton>
+            <JFXButton layoutX="35.0" layoutY="413.0" onAction="#apiEdit" pickOnBounds="false" prefHeight="64.0" prefWidth="203.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Edit API Keys" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXButton>
+            <JFXCheckBox fx:id="databasePicker" checkedColor="#f4ba47" layoutX="45.0" layoutY="502.0" onAction="#databaseCheckbox" prefHeight="45.0" prefWidth="368.0" text="Use Client-Server Database" unCheckedColor="#003da6">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXCheckBox>
+            <JFXButton fx:id="reloadDbButton" layoutX="35.0" layoutY="557.0" onAction="#reloadDB" pickOnBounds="false" prefHeight="64.0" prefWidth="331.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Reload Database Connection" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXButton>
+            <Pane fx:id="databasePane" layoutX="28.0" layoutY="628.0" prefHeight="115.0" prefWidth="431.0">
+               <children>
+                  <Text layoutX="9.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Server Database Hostname:" textAlignment="CENTER" wrappingWidth="362.9222412109375">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </Text>
+                  <JFXTextField fx:id="hostLabel" layoutX="14.0" layoutY="44.0" prefHeight="43.0" prefWidth="283.0" text="Localhost">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXTextField>
+               </children>
+            </Pane>
             </children>
         </Pane>
    </bottom>
    <right>
-        <Pane prefHeight="83.0" prefWidth="765.0" BorderPane.alignment="CENTER">
+        <Pane prefHeight="563.0" prefWidth="765.0" BorderPane.alignment="CENTER">
             <children>
-                <JFXButton maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goBack" prefHeight="72.0" prefWidth="80.0" text=" " />
-                <GridPane layoutX="152.0" layoutY="111.0" prefHeight="656.0" prefWidth="620.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <GridPane fx:id="gridPane" layoutX="152.0" layoutY="105.0" prefHeight="708.0" prefWidth="605.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="577.0" minWidth="10.0" prefWidth="233.0" />
                     </columnConstraints>
@@ -58,6 +90,7 @@
                         <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <JFXTextField fx:id="firstName" editable="false" maxWidth="400.0" prefHeight="35.0" prefWidth="347.0" GridPane.rowIndex="1">
@@ -168,6 +201,11 @@
                         <Insets top="30.0" />
                      </GridPane.margin>
                   </Label>
+                  <JFXCheckBox fx:id="tfa" checkedColor="#f4ba47" onAction="#tfaSelected" text="Two-Factor Authentication" unCheckedColor="#003da6" GridPane.rowIndex="12">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXCheckBox>
                     </children>
                 </GridPane>
             <JFXButton layoutX="121.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="254.0" minWidth="235.0" mnemonicParsing="false" onAction="#saveEdits" prefHeight="58.0" prefWidth="254.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Save Account" textFill="WHITE">
@@ -175,32 +213,78 @@
                   <Font name="Verdana" size="30.0" />
                </font>
             </JFXButton>
+                <JFXButton layoutX="438.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="235.0" minWidth="235.0" mnemonicParsing="false" onAction="#editAccount" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Edit Account" textFill="WHITE">
+                    <font>
+                        <Font name="Verdana" size="30.0" />
+                    </font>
+                </JFXButton>
+                <StackPane fx:id="stackPane" layoutX="-100.0" layoutY="300.0" prefHeight="225.0" prefWidth="407.0" />
             </children>
         </Pane>
    </right>
-   <top>
-
-                <Rectangle fill="#003da6" height="65.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" BorderPane.alignment="CENTER" />
-   </top>
-   <left>
-          <JFXButton onAction="#goHome" prefHeight="43.0" prefWidth="46.0" text=" " BorderPane.alignment="CENTER">
-              <graphic>
-                  <ImageView fitHeight="40.0" fitWidth="42.0">
-                      <image>
-                          <Image url="@../img/ServiceReq Icons/homeButton.png" />
-                      </image>
-                  </ImageView>
-              </graphic>
-          </JFXButton>
-   </left>
-   <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="235.0" minWidth="235.0" mnemonicParsing="false" onAction="#editAccount" prefHeight="58.0" prefWidth="235.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Edit Account" textFill="WHITE" BorderPane.alignment="CENTER">
-              <font>
-                  <Font name="Verdana" size="30.0" />
-              </font>
+<center>
+       <Pane fx:id="tfaPane" layoutX="150.0" layoutY="150.0" maxHeight="0.0" maxWidth="0.0" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" style="-fx-background-color: white; visibility: false;">
+           <children>
+               <Text layoutX="32.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Two Factor Authentication Confirmation" textAlignment="CENTER" wrappingWidth="649.619384765625">
+                   <font>
+                       <Font name="Verdana" size="35.0" />
+                   </font>
+               </Text>
+               <ImageView fx:id="tfaView" fitHeight="291.0" fitWidth="324.0" layoutX="32.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
+                   <image>
+                       <Image url="@../img/Blue_X.png" />
+                   </image>
+               </ImageView>
+               <Line endX="-100.0" endY="-222.65560913085938" layoutX="472.0" layoutY="405.0" startX="-100.0" startY="135.1085205078125" stroke="#7d99c9" strokeWidth="3.0" />
+               <Text layoutX="386.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please scan the QR code with your choice of two-factor authentication app and enter the authentication code below: " wrappingWidth="326.78265380859375">
+                   <font>
+                       <Font name="Verdana" size="30.0" />
+                   </font>
+               </Text>
+               <JFXTextField fx:id="verification" layoutX="396.0" layoutY="475.0" prefHeight="60.0" prefWidth="312.0">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font></JFXTextField>
+               <JFXButton fx:id="submitButton" layoutX="560.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#tfasubmit_button" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6">
+                   <font>
+                       <Font name="Verdana" size="20.0" />
+                   </font>
+               </JFXButton>
+               <JFXButton layoutX="366.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#cancel2fa" prefHeight="61.0" prefWidth="150.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Cancel" textFill="#7d99c9">
+                   <font>
+                       <Font name="Verdana" size="20.0" />
+                   </font>
+               </JFXButton>
+               <Label fx:id="tfaSource" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="407.0" text="Secret: " wrapText="true">
+                   <font>
+                       <Font name="Verdana" size="10.0" />
+                   </font>
+               </Label>
+               <Label fx:id="verfIncorrect" layoutX="56.0" layoutY="630.0" prefHeight="58.0" prefWidth="621.0" style="visibility: false;" text="The verification code that you entered was incorrect. Please try again." wrapText="true">
+                   <font>
+                       <Font name="Verdana" size="15.0" />
+                   </font>
+               </Label>
+           </children>
          <BorderPane.margin>
-            <Insets left="1700.0" />
+            <Insets left="200.0" top="60.0" />
          </BorderPane.margin>
-          </JFXButton>
-   </center>
+       </Pane>
+</center>
+   <top>
+      <Pane prefHeight="67.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
+         <children>
+      <Rectangle fill="#003da6" height="65.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
+                <JFXButton onAction="#goBack" prefHeight="61.0" prefWidth="82.0" text=" ">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
+                            <image>
+                                <Image url="@../img/image.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+         </children>
+      </Pane>
+   </top>
 </BorderPane>

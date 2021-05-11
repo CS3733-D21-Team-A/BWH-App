@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.*;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import javafx.util.Pair;
 import org.apache.derby.jdbc.ClientDriver;
 import org.apache.derby.jdbc.EmbeddedDriver;
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
-import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
+import static edu.wpi.aquamarine_axolotls.Settings.DATABASE_HOSTNAME;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static edu.wpi.aquamarine_axolotls.db.DatabaseUtil.*;
 
@@ -48,7 +49,7 @@ public class DatabaseController {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null).getKey();
+		boolean dbExists = connectToDB(PREFERENCES.get(DATABASE_HOSTNAME, null)).getKey();
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -112,7 +113,7 @@ public class DatabaseController {
 	 */
 	public boolean updateConnection() throws SQLException, IOException {
 		shutdownDB();
-		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(DATABASE_HOSTNAME, null));
 		boolean dbExists = bools.getKey();
 
 		nodeTable.setConnection(connection);
@@ -138,12 +139,13 @@ public class DatabaseController {
 	 * Connects to the Derby database
 	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
 	 * Note: Creates a database if one isn't present
-	 * @param remote Whether to try and connect to the the client-server database
+	 * @param hostname hostname of server to conenct to. null if connecting to embedded database
 	 * @return Pair whose key is if we need to construct a new database and value is whether we are using the embedded database
 	 * @throws SQLException Something went wrong.
 	 */
-	private Pair<Boolean,Boolean> connectToDB(boolean remote) throws SQLException {
-		String connectionURL = "jdbc:derby:" + (remote ? "//localhost:1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
+	private Pair<Boolean,Boolean> connectToDB(String hostname) throws SQLException {
+		boolean remote = hostname != null;
+		String connectionURL = "jdbc:derby:" + (remote ? "//"+hostname+":1527/SERVER_BWH_DB" : "derby/EMBEDDED_BWH_DB");
 		this.usingEmbedded = !remote;
 
 		boolean dbExists = true;
@@ -154,7 +156,7 @@ public class DatabaseController {
 			} catch (SQLNonTransientConnectionException e) {
 				if (e.getSQLState().equals("08001")) {
 					System.out.println("Unable to establish Client-Server connection. Falling back to embedded database.");
-					connectionURL = "jdbc:derby:EMBEDDED_BWH_DB";
+					connectionURL = "jdbc:derby:derby/EMBEDDED_BWH_DB";
 					usingEmbedded = true;
 				} else dbExists = false;
 			}
@@ -186,12 +188,12 @@ public class DatabaseController {
 	 */
 	boolean shutdownDB() {
 		if (!usingEmbedded) {
-			System.out.println("Warning: Not allowed to shut down remote database. Action ignored");
+			//System.out.println("Warning: Not allowed to shut down remote database. Action ignored");
 			return false;
 		}
 
 		try {
-			DriverManager.getConnection("jdbc:derby:EMBEDDED_BWH_DB;shutdown=true", "admin", "admin");
+			DriverManager.getConnection("jdbc:derby:derby/EMBEDDED_BWH_DB;shutdown=true", "admin", "admin");
 			return false; // Shutting down a database should throw an exception. If it doesn't, something went wrong!
 		} catch (SQLException e) {
 			return true; // Shutting down a database throws an exception!
@@ -567,7 +569,6 @@ public class DatabaseController {
 			attrTable.addEntry(values);
 			return true;
 		}
-		System.out.println("Entry already has attribute!");
 		return false;
 	}
 
@@ -981,41 +982,41 @@ public class DatabaseController {
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_NODE_RESOURCE_PATH), TABLES.NODES, true);
 		csvHandler.importCSV(DatabaseInfo.resourceAsStream(DatabaseInfo.DEFAULT_EDGE_RESOURCE_PATH), TABLES.EDGES, true);
 
-		userTable.addEntry(new HashMap<String,String>() {{
+
+		Map<String,String> adminAccount = new HashMap<String,String>() {{
 			put("USERNAME", "admin");
 			put("FIRSTNAME", "admin");
 			put("LASTNAME", "admin");
-			put("EMAIL", "admin@wpi.edu");
+			put("EMAIL", "admin");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.ADMIN));
-			put("PASSWORD", "admin");
-		}});
+		}};
+		Security.addHashedPassword(adminAccount,"admin");
 
-		userTable.addEntry(new HashMap<String,String>() {{
-			put("USERNAME", "patient");
-			put("FIRSTNAME", "patient");
-			put("LASTNAME", "patient");
-			put("EMAIL", "patient@wpi.edu");
-			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
-			put("PASSWORD", "patient");
-		}});
+		userTable.addEntry(adminAccount);
 
-		userTable.addEntry(new HashMap<String,String>() {{
+
+		Map<String,String> employeeAccount = new HashMap<String,String>() {{
 			put("USERNAME", "employee");
 			put("FIRSTNAME", "employee");
 			put("LASTNAME", "employee");
-			put("EMAIL", "employee@wpi.edu");
+			put("EMAIL", "employee");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
-			put("PASSWORD", "employee");
-		}});
+		}};
+		Security.addHashedPassword(employeeAccount,"employee");
 
-		userTable.addEntry(new HashMap<String,String>() {{ //TODO: GET RID OF THIS, THIS IS A TEMPORARY WORKAROUND
-			put("USERNAME", "guest");
-			put("FIRSTNAME", "guest");
-			put("LASTNAME", "guest");
-			put("EMAIL", "guest@wpi.edu");
-			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.GUEST));
-			put("PASSWORD", "guest");
-		}});
+		userTable.addEntry(employeeAccount);
+
+
+		Map<String,String> patientAccount = new HashMap<String,String>() {{
+			put("USERNAME", "patient");
+			put("FIRSTNAME", "patient");
+			put("LASTNAME", "patient");
+			put("EMAIL", "patient");
+			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
+		}};
+		Security.addHashedPassword(patientAccount,"patient");
+
+		userTable.addEntry(patientAccount);
 	}
 
 }
