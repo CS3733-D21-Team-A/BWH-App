@@ -56,11 +56,11 @@
                   <Slider fx:id="zoomSlider" blockIncrement="1.0" layoutX="1250.0" layoutY="625.0" majorTickUnit="1.0" max="3.0" min="1.0" minorTickCount="0" orientation="VERTICAL" showTickMarks="true" value="1.0" />
                   <VBox layoutX="1241.0" layoutY="85.0">
                      <children>
-                        <JFXButton onAction="#changeFloor3" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="3" />
-                        <JFXButton onAction="#changeFloor2" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="2" />
-                        <JFXButton onAction="#changeFloor1" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="1" />
-                        <JFXButton onAction="#changeFloorL1" stylesheets="@../CSS/JFXButton.css" text="L1" />
-                        <JFXButton onAction="#changeFloorL2" stylesheets="@../CSS/JFXButton.css" text="L2" />
+                        <JFXButton fx:id="floor3Button" onAction="#changeFloor3" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="3" />
+                        <JFXButton fx:id="floor2Button" onAction="#changeFloor2" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="2" />
+                        <JFXButton fx:id="floor1Button" onAction="#changeFloor1" prefWidth="46.0" stylesheets="@../CSS/JFXButton.css" text="1" />
+                        <JFXButton fx:id="floorL1Button" onAction="#changeFloorL1" stylesheets="@../CSS/JFXButton.css" text="L1" />
+                        <JFXButton fx:id="floorL2Button" onAction="#changeFloorL2" stylesheets="@../CSS/JFXButton.css" text="L2" />
                      </children>
                   </VBox>
                    </children>
