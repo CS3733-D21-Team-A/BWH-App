@@ -270,9 +270,11 @@ public abstract class GenericMap extends GenericPage {
      * @param edgeID a ID that links to a edge in the database
      */
     public void removeEdgeOnImage(String edgeID){
-        int index = getEdgeIndexOnImage(edgeID);
-        linesOnImage.remove(edgeID);
-        mapView.getChildren().remove(index);
+        if (mapView.getChildren().contains(linesOnImage.get(edgeID))){
+            int index = getEdgeIndexOnImage(edgeID);
+            linesOnImage.remove(edgeID);
+            mapView.getChildren().remove(index);
+        }
     }
 
     /**
@@ -411,8 +413,12 @@ public abstract class GenericMap extends GenericPage {
      * @throws SQLException
      */
     public void drawEdges(Color colorOfNodes) throws SQLException {
-        for (Map<String, String> edge : db.getEdges())
+        for (Map<String, String> edge : db.getEdges()) {
             drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+        }
+        for (Map<String, String> edge: selectedEdgesList){
+            drawSingleEdge(edge.get("EDGEID"), yellow);
+        }
     }
 
 
@@ -427,7 +433,7 @@ public abstract class GenericMap extends GenericPage {
             Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
             Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
 
-            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){
+            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR) || selectedEdgesList.contains(edge)){
                 double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
                 double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
                 String startID = startNode.get("NODEID");
@@ -473,6 +479,10 @@ public abstract class GenericMap extends GenericPage {
                 if (selectedEdgesList.contains(db.getEdge(edgeID))) {
                     selectedEdgesList.remove(db.getEdge(edgeID));
                     edge.setStroke(Color.BLACK);
+                    linesOnImage.get(edgeID).setStroke(Color.BLACK);
+                    if (!db.getNode(db.getEdge(edgeID).get("STARTNODE")).get("FLOOR").equals(FLOOR)) {
+                        removeEdgeOnImage(edgeID);
+                    }
                 } else {
                     selectedEdgesList.add(db.getEdge(edgeID));
                     edge.setStroke(yellow);
