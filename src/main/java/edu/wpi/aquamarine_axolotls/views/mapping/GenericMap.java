@@ -422,6 +422,8 @@ public abstract class GenericMap extends GenericPage {
 
     public abstract Circle setEventHandler(Circle node, String nodeID);
 
+    public abstract void setUpEdgeEventHandler(Line edge, String edgeID);
+
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -496,36 +498,7 @@ public abstract class GenericMap extends GenericPage {
 
         String edgeID = startID + "_" + endID;
 
-        //Opening the popup menu
-        edge.setOnMouseClicked((MouseEvent e) ->{
-
-            try {
-                if (selectedEdgesList.contains(db.getEdge(edgeID))) {
-                    selectedEdgesList.remove(db.getEdge(edgeID));
-                    edge.setStroke(Color.BLACK);
-                    linesOnImage.get(edgeID).setStroke(Color.BLACK);
-                    if (!db.getNode(db.getEdge(edgeID).get("STARTNODE")).get("FLOOR").equals(FLOOR)) {
-                        removeEdgeOnImage(edgeID);
-                    }
-                } else {
-                    selectedEdgesList.add(db.getEdge(edgeID));
-                    edge.setStroke(yellow);
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-
-        // Hover over edge to make it thicker
-        edge.setOnMouseEntered((MouseEvent e) ->{
-            edge.setStrokeWidth(5);
-            edge.toBack();
-        });
-
-        //Moving mouse off edge will make it stop highlighting
-        edge.setOnMouseExited((MouseEvent e) ->{
-            edge.setStrokeWidth(magicNumber);
-        });
+        setUpEdgeEventHandler(edge, edgeID);
 
         if(linesOnImage.containsKey(edgeID)){
             Line key = linesOnImage.get(edgeID);

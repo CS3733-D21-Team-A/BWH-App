@@ -21,6 +21,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import oracle.jrockit.jfr.JFR;
 import org.checkerframework.checker.units.qual.C;
 
@@ -40,7 +41,8 @@ public class Navigation extends GenericMap {
     String[] startAndStop = new String[]{"", ""};
     List<Map<String, String>> currentPath = new ArrayList<>();
 
-    String covidLikely = "false";
+    String covidLikely;
+
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
@@ -96,8 +98,7 @@ public class Navigation extends GenericMap {
             drawer.setVisible(false);
         });
 
-        // TODO: CHANGE THIS
-        covidLikely = db.getUserByUsername(PREFERENCES.get(USER_NAME,null)).get("COVIDLIKELY");
+        // TODO: CHANGE THI
 
 
         currentMenu.setUpTree();
@@ -211,7 +212,7 @@ public class Navigation extends GenericMap {
                         }
                         else if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
                                 && !startAndStop[1].equals(nodeID) && !startAndStop[0].equals(nodeID)
-                                && !stopList.contains(nodeID)){
+                                && !stopList.contains(nodeID) && !currentPath.contains(db.getNode(nodeID))){
                             changeFloor(db.getNode(nodeID).get("FLOOR"));
                             addStop(nodeID);
                         }
@@ -297,6 +298,7 @@ public class Navigation extends GenericMap {
     }
 
     public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
+        covidLikely = db.getUserByUsername(PREFERENCES.get(USER_NAME,null)).get("COVIDLIKELY");
         for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
             if(
                    !(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))
@@ -371,11 +373,15 @@ public class Navigation extends GenericMap {
                     contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
                 }
                 else{
-                    if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
-                            && !startAndStop[1].equals(currentNodeIDContextMenu) && !startAndStop[0].equals(currentNodeIDContextMenu)
-                            && !stopList.contains(currentNodeIDContextMenu)){
-                        addStop.setVisible(true);
-                        contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
+                    try {
+                        if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
+                                && !startAndStop[1].equals(currentNodeIDContextMenu) && !startAndStop[0].equals(currentNodeIDContextMenu)
+                                && !stopList.contains(currentNodeIDContextMenu) && !currentPath.contains(db.getNode(currentNodeIDContextMenu))){
+                            addStop.setVisible(true);
+                            contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
                 }
 
@@ -392,7 +398,7 @@ public class Navigation extends GenericMap {
                     }
                     else if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
                             && !startAndStop[1].equals(nodeID) && !startAndStop[0].equals(nodeID)
-                            && !stopList.contains(nodeID)){
+                            && !stopList.contains(nodeID) && !currentPath.contains(db.getNode(nodeID))){
                         changeFloor(db.getNode(nodeID).get("FLOOR"));
                         addStop(nodeID);
                     }
@@ -413,6 +419,11 @@ public class Navigation extends GenericMap {
         });
 
         return node;
+    }
+
+    @Override
+    public void setUpEdgeEventHandler(Line edge, String edgeID) {
+
     }
 
 

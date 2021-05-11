@@ -224,8 +224,8 @@ public class SideMenu extends GenericPage {
                             conf.getChildren().add(new TreeItem<>(longName));
                             break;
                         case "EXIT":
-    //                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
-                            //                      if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
+                            if (navController.covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+                            if (navController.covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
                             exit.getChildren().add(new TreeItem<>(longName));
                             break;
                         case "RETL":
