@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -27,8 +26,6 @@ public class ForgotPassword extends GenericPage {
 	private JFXPasswordField password;
 	@FXML
 	private JFXPasswordField confirmPassword;
-	@FXML
-	private JFXTextField tfa;
 	@FXML
 	private JFXButton next;
 	@FXML
@@ -48,49 +45,51 @@ public class ForgotPassword extends GenericPage {
 	@FXML
 	private Label label;
 
-
+	private String otp;
 	private final DatabaseController db = DatabaseController.getInstance();
+
+
+	public void initialize() {
+		verfPane.setVisible(false);
+		newPassPane.setVisible(false);
+	}
+
 
 	public void userCheck() {
 		String usrname = username.getText();
 		String eml = email.getText();
-
-		try {
-			if (db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
-				String code = (int) (Math.random() * 1000000) + "";
-				System.out.println(code);
-				EmailService.sendAccountResetEmail(email.getText(), username.getText(), code);
-			}
-		} catch (SQLException | IOException throwables) {
-			throwables.printStackTrace();
-		}
 
 		verfPane.setVisible(true);
 		gridPane.setVisible(false);
 		first.setVisible(false);
 		second.setVisible(true);
 		label.setText("Please enter the verification code sent to your email");
+
+		try {
+			if (db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
+				otp = Security.generateOneTimeSecurityCode();
+				EmailService.sendAccountResetEmail(email.getText(), username.getText(), otp);
+			}
+		} catch (SQLException | IOException throwables) {
+			throwables.printStackTrace();
+		}
 	}
 
 	public void verifyEmailConf() {
-		if (!verifyEmail.getText().isEmpty()) {
-			String emailConf = "";
-			if (verifyEmail.getText().equals(emailConf)) {
-				second.setVisible(false);
-				finalSubmit.setVisible(true);
-				newPassPane.setVisible(true);
-				label.setText("Please enter your new password");
-			} else {
-				popUp("Invalid Request", "The email verification code that you entered was not correct. Please try again");
-			}
+		if (verifyEmail.getText().equals(otp)) {
+			verfPane.setVisible(false);
+			second.setVisible(false);
+			finalSubmit.setVisible(true);
+			newPassPane.setVisible(true);
+			label.setText("Please enter your new password");
 		} else {
-			popUp("Invalid Request", "Please try again");
+			popUp("Invalid Request", "The email verification code that you entered was not correct. Please try again");
 		}
 	}
 
 	public void finalSubmit() throws SQLException {
-		if (password.getText().isEmpty() || confirmPassword.getText().isEmpty()) {
-			if (password.equals(confirmPassword)) {
+		if (!(password.getText().isEmpty() && confirmPassword.getText().isEmpty())) {
+			if (password.getText().equals(confirmPassword.getText())) {
 				Map<String, String> updated = new HashMap<>();
 				Security.addHashedPassword(updated, password.getText());
 				db.editUser(username.getText(), updated);
@@ -101,7 +100,7 @@ public class ForgotPassword extends GenericPage {
 				popUp("Invalid Request", "The two passwords did not match. Please try again");
 			}
 		} else {
-			popUp("Invalid Request", "Please try again");
+			popUp("Invalid Request", "Password fields must be filled");
 		}
 	}
 

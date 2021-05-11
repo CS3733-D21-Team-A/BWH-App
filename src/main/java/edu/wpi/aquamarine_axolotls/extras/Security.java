@@ -8,19 +8,18 @@ import dev.samstevens.totp.qr.QrData;
 import dev.samstevens.totp.qr.ZxingPngQrGenerator;
 import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
-import dev.samstevens.totp.time.NtpTimeProvider;
 import dev.samstevens.totp.time.SystemTimeProvider;
-import dev.samstevens.totp.time.TimeProvider;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.util.Pair;
 
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -141,5 +140,17 @@ public class Security {
 		String hash = new String(md.digest(password.getBytes(CHARSET)), CHARSET);
 
 		return hash.equals(userMap.get("PASSWORD"));
+	}
+
+	/**
+	 * Generates a single-use verification code
+	 * @return a single-use verification code
+	 */
+	public static String generateOneTimeSecurityCode() { //credit: https://stackoverflow.com/questions/46261055/how-to-generate-a-securerandom-string-of-length-n-in-java
+		SecureRandom random = new SecureRandom();
+		byte[] bytes = new byte[16];
+		random.nextBytes(bytes);
+		Encoder encoder = Base64.getUrlEncoder().withoutPadding();
+		return encoder.encodeToString(bytes);
 	}
 }
