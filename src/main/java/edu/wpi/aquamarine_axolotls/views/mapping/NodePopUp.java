@@ -173,6 +173,8 @@ public class NodePopUp extends GenericPage {
     public void cancel() {
         clear();
         submissionStatusLabel.getScene().getWindow().hide();
+        mapController.selectedNodesList.remove(nodeIDTextField.getText());
+        mapController.changeNodeColorOnImage(nodeIDTextField.getText(), GenericMap.darkBlue);
     }
 
 

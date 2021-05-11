@@ -460,7 +460,7 @@ public class MapEditing extends GenericMap {
                 //System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2) {
                     if(e.isStillSincePress()){
-                        node.setFill(yellow);
+//                        node.setFill(yellow);
                         System.out.println("Successfully clicked node");
                         currentID = nodeID;
                         state = "Edit";
