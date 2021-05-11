@@ -32,7 +32,6 @@ public class ForgotPassword extends GenericPage {
         @FXML private Label label;
 
 
-
     private final DatabaseController db = DatabaseController.getInstance();
     private EmailService emailService = new EmailService();
 
@@ -46,7 +45,8 @@ public class ForgotPassword extends GenericPage {
 
             try {
                 if(db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)){
-                    emailService.sendAccountResetEmail(email.getText(), username.getText(), "CODE"); //TODO: Create code and have page to check code
+                    String code = (int)(Math.random() * 1000000) + "";
+                    emailService.sendAccountResetEmail(email.getText(), username.getText(), code);
                     verfPane.setVisible ( true );
                     gridPane.setVisible ( false );
                     first.setVisible ( false );
