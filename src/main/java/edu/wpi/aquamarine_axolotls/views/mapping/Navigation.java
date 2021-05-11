@@ -44,11 +44,6 @@ public class Navigation extends GenericMap {
     }
 
     @Override
-    public void edgePopUp() {
-
-    }
-
-    @Override
     public void drawFloor(String floor) {
 
     }

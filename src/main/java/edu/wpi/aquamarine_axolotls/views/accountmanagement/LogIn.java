@@ -50,7 +50,7 @@ public class LogIn extends GenericPage {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have not filled in both the username and password fields");
 			return;
 		}
-		if (!db.checkUserMatchesPass(CUusername, CUpassword)) {
+		if (!Security.secureVerifyAccount(CUusername,CUpassword)) {
 			popUp("Submission Failed!", "\n\n\n\n\n\nYou have entered either an incorrect username and password combination"
 				+ "or the account does not exist");
 			return;

@@ -2,18 +2,14 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -22,7 +18,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +57,7 @@ public abstract class GenericMap extends GenericPage {
     Map<String, Circle> nodesOnImage = new HashMap<>();
     Map<String, Line> linesOnImage = new HashMap<>();
     List<Map<String, String>> selectedNodesList = new ArrayList<>();
+    List<Map<String, String>> selectedEdgesList = new ArrayList<>();
     String FLOOR = "1";
     Group zoomGroup;
     int zoomLevel;
@@ -69,7 +65,7 @@ public abstract class GenericMap extends GenericPage {
     double contextMenuY = 0;
     ContextMenu contextMenu = new ContextMenu();
 
-    DatabaseController db;
+    DatabaseController db = DatabaseController.getInstance();
     String state = "";
     String currentID;
     double magicNumber = (Math.PI + Math.E) / 2.0; //this is used as the radius for the nodes because Chris likes it. I don't know why
@@ -78,11 +74,9 @@ public abstract class GenericMap extends GenericPage {
      * Responsible for setting up the map
      */
     public void startUp(){
-        db = DatabaseController.getInstance();
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
-            else mapScrollPane.pannableProperty().set(false);
+            mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY);
         });
 
         Group contentGroup = new Group();
@@ -112,11 +106,11 @@ public abstract class GenericMap extends GenericPage {
     /**
      * Change the active floor
      */
-    public void changeFloor3() throws SQLException { drawFloor("3"); }
-    public void changeFloor2() throws SQLException { drawFloor("2"); }
-    public void changeFloor1() throws SQLException { drawFloor("1"); }
-    public void changeFloorL1() throws SQLException { drawFloor("L1"); }
-    public void changeFloorL2() throws SQLException { drawFloor("L2"); }
+    public void changeFloor3() { drawFloor("3"); }
+    public void changeFloor2() { drawFloor("2"); }
+    public void changeFloor1() { drawFloor("1"); }
+    public void changeFloorL1() { drawFloor("L1"); }
+    public void changeFloorL2() { drawFloor("L2"); }
 
 
 //=== SCALING FUNCTIONS ===//
@@ -204,6 +198,7 @@ public abstract class GenericMap extends GenericPage {
             updatedNode.setFill(darkBlue); // could be changed
             updatedNode.toFront();
             updatedNode.setStroke(darkBlue);
+            updatedNode.setVisible(true);
             setNodeOnImage(updatedNode, nodeID);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -239,6 +234,14 @@ public abstract class GenericMap extends GenericPage {
         return mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
     }
 
+    /**
+     * Gets the index of the line on the map that corresponds to edgeID
+     * @param edgeID a ID that links to an edge in the database
+     * @return
+     */
+    public int getEdgeIndexOnImage(String edgeID){
+        return mapView.getChildren().indexOf(linesOnImage.get(edgeID));
+    }
 
     /**
      * Changes the color of the circle representing the nodeID on the map
@@ -248,6 +251,7 @@ public abstract class GenericMap extends GenericPage {
     public void changeNodeColorOnImage(String nodeID, Color color){ // WILL BE USED IN NAVIGATION
         Circle currentNode = nodesOnImage.get(nodeID);
         currentNode.setFill(color);
+        setNodeOnImage(currentNode, nodeID);
     }
 
 
@@ -261,6 +265,15 @@ public abstract class GenericMap extends GenericPage {
         mapView.getChildren().remove(index);
     }
 
+    /**
+     * Removes a given edgeID from the map
+     * @param edgeID a ID that links to a edge in the database
+     */
+    public void removeEdgeOnImage(String edgeID){
+        int index = getEdgeIndexOnImage(edgeID);
+        linesOnImage.remove(edgeID);
+        mapView.getChildren().remove(index);
+    }
 
     /**
      * Re-draws all the edges connected to a particular node
@@ -282,12 +295,6 @@ public abstract class GenericMap extends GenericPage {
      * Pop up that happens when user clicks a node
      */
     public abstract void nodePopUp();
-
-
-    /**
-     * Pop up that happens when user clicks an edge
-     */
-    public abstract void edgePopUp();
 
 
 //=== DRAW FUNCTIONS ===//
@@ -366,25 +373,19 @@ public abstract class GenericMap extends GenericPage {
                 }
                 //Otherwise, single clicks will select/deselect nodes
                 else {
-                    Circle currentCircle = nodesOnImage.get(nodeID);
-                    if (currentCircle.getFill().equals(yellow)) {
-                        try {
+                    try {
+                        if (selectedNodesList.contains(db.getNode(nodeID))) {
                             selectedNodesList.remove(db.getNode(nodeID));
-                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
                             node.setFill(darkBlue);
-                            //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    } else {
-                        try {
+                            if(!db.getNode(nodeID).get("FLOOR").equals(FLOOR)){
+                                removeNodeOnImage(nodeID);
+                            }
+                        } else {
                             selectedNodesList.add(db.getNode(nodeID));
-                            //contextMenu.getItems().get(1).setVisible(true);
-                            currentCircle.setFill(yellow);
-                            //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
+                            node.setFill(yellow);
                         }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
                     }
                 }
             }
@@ -463,13 +464,29 @@ public abstract class GenericMap extends GenericPage {
         edge.setStrokeWidth(magicNumber);
         edge.setFill(edgeCol);
 
+        String edgeID = startID + "_" + endID;
+
         //Opening the popup menu
         edge.setOnMouseClicked((MouseEvent e) ->{
-            if(e.getClickCount() == 2){
-                state = "Edit";
-                currentID = startID+"_"+endID;
-                edgePopUp();
+
+            try {
+                if (selectedEdgesList.contains(db.getEdge(edgeID))) {
+                    selectedEdgesList.remove(db.getEdge(edgeID));
+                    edge.setStroke(Color.BLACK);
+                } else {
+                    selectedEdgesList.add(db.getEdge(edgeID));
+                    edge.setStroke(yellow);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
+
+//
+//            if(e.getClickCount() == 2){
+//                state = "Edit";
+//                currentID = startID+"_"+endID;
+//                edgePopUp();
+//            }
         });
 
         // Hover over edge to make it thicker
@@ -483,7 +500,6 @@ public abstract class GenericMap extends GenericPage {
             edge.setStrokeWidth(magicNumber);
         });
 
-        String edgeID = startID + "_" + endID;
         if(linesOnImage.containsKey(edgeID)){
             Line key = linesOnImage.get(edgeID);
             mapView.getChildren().set(mapView.getChildren().indexOf(key), edge);
