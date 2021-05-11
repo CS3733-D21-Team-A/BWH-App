@@ -37,6 +37,7 @@ public class Navigation extends GenericMap {
 
 
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
+    String[] startAndStop = new String[]{"", ""};
     List<Map<String, String>> currentPath = new ArrayList<>();
 
     String covidLikely = "false";
@@ -60,8 +61,8 @@ public class Navigation extends GenericMap {
     String currentNodeIDContextMenu;
 
     MenuItem removeStop = new MenuItem("Remove ");
-    MenuItem addStart = new MenuItem("Add Starting Point");
-    MenuItem addEnd = new MenuItem("Make Ending Point");
+    MenuItem addStart = new MenuItem("Set to Start Location");
+    MenuItem addEnd = new MenuItem("Set to End Location");
     MenuItem addFav = new MenuItem("Add Favorite");
     MenuItem deleteFav = new MenuItem("Delete Favorite");
     MenuItem changeToStart = new MenuItem("Change to Start");
@@ -101,10 +102,44 @@ public class Navigation extends GenericMap {
 
         currentMenu.setUpTree();
 
+        mapView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(event.getButton() != MouseButton.SECONDARY) contextMenu.hide();
+        });
+
 
         removeStop.setOnAction((ActionEvent e) -> {
-            stopList.remove(currentNodeIDContextMenu);
-            changeNodeColorOnImage(currentNodeIDContextMenu, Color.web("#003da6", .4));
+            if(startAndStop[0].equals(currentNodeIDContextMenu)){
+                if(stopList.isEmpty()){
+                    startAndStop[0] = "";
+                    currentPath.clear();
+                    sideControllers.get(1).clearAll();
+                    sideControllers.get(2).clearAll();
+                    drawFloor(FLOOR);
+                }
+                else{
+                    startAndStop[0] = stopList.get(0);
+                    changeNodeColorOnImage(startAndStop[0], Color.GREEN);
+                    stopList.remove(0);
+                }
+            }
+            else if(startAndStop[1].equals(currentNodeIDContextMenu)){
+                if(stopList.isEmpty()){
+                    startAndStop[1] = "";
+                    currentPath.clear();
+                    sideControllers.get(1).clearAll();
+                    sideControllers.get(2).clearAll();
+                    drawFloor(FLOOR);
+                }
+                else{
+                    startAndStop[1] = stopList.get(stopList.size()-1);
+                    changeNodeColorOnImage(startAndStop[stopList.size()-1], Color.RED);
+                    stopList.remove(stopList.size()-1);
+                }
+            }
+            else stopList.remove(currentNodeIDContextMenu);
+            double opacity = 1;
+            if(currentPath.size() > 0) opacity = .4;
+            changeNodeColorOnImage(currentNodeIDContextMenu, Color.web("#003da6", opacity));
             updateNodeSize(currentNodeIDContextMenu, 3);
             setStartAndEnd();
             openDrawer();
@@ -114,43 +149,47 @@ public class Navigation extends GenericMap {
         addStart.setOnAction((ActionEvent e) ->{
             changeNodeColorOnImage(currentNodeIDContextMenu, Color.GREEN);
             updateNodeSize(currentNodeIDContextMenu, 5);
-            stopList.add(currentNodeIDContextMenu);
+            startAndStop[0] = currentNodeIDContextMenu;
             setStartAndEnd();
             openDrawer();
-            if(stopList.size() >= 2) findPath();
+            if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
         });
 
         addEnd.setOnAction((ActionEvent e) ->{
             changeNodeColorOnImage(currentNodeIDContextMenu, Color.RED);
             updateNodeSize(currentNodeIDContextMenu, 5);
-            stopList.add(currentNodeIDContextMenu);
+            startAndStop[1] = currentNodeIDContextMenu;
             setStartAndEnd();
             openDrawer();
-            if(stopList.size() >= 2) findPath();
+            if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
         });
 
         changeToStart.setOnAction((ActionEvent e) -> {
-            String prevID = stopList.get(0);
-            changeNodeColorOnImage(prevID, Color.web("#003da6", .4));
-            updateNodeSize(prevID, 3);
-            stopList.set(0, currentNodeIDContextMenu);
+            if(stopList.contains(currentNodeIDContextMenu)) stopList.remove(currentNodeIDContextMenu);
+            double opacity = 1;
+            if(currentPath.size() > 0) opacity = .4;
+            changeNodeColorOnImage(startAndStop[0], Color.web("#003da6", opacity));
+            updateNodeSize(startAndStop[0], 3);
+            startAndStop[0] = currentNodeIDContextMenu;
             changeNodeColorOnImage(currentNodeIDContextMenu, Color.GREEN);
             updateNodeSize(currentNodeIDContextMenu, 5);
             setStartAndEnd();
             openDrawer();
-            if(stopList.size() >= 2) findPath();
+            if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
         });
 
         changeToEnd.setOnAction((ActionEvent e) -> {
-            String prevID = stopList.get(stopList.size()-1);
-            changeNodeColorOnImage(prevID, Color.web("#003da6", .4));
-            updateNodeSize(prevID, 3);
-            stopList.set(stopList.size()-1, currentNodeIDContextMenu);
+            if(stopList.contains(currentNodeIDContextMenu)) stopList.remove(currentNodeIDContextMenu);
+            double opacity = 1;
+            if(currentPath.size() > 0) opacity = .4;
+            changeNodeColorOnImage(startAndStop[1], Color.web("#003da6", opacity));
+            updateNodeSize(startAndStop[1], 3);
+            startAndStop[1] = currentNodeIDContextMenu;
             changeNodeColorOnImage(currentNodeIDContextMenu, Color.RED);
             updateNodeSize(currentNodeIDContextMenu, 5);
             setStartAndEnd();
             openDrawer();
-            if(stopList.size() >= 2) findPath();
+            if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
         });
 
         addFav.setOnAction((ActionEvent e) ->{
@@ -169,7 +208,7 @@ public class Navigation extends GenericMap {
         sideControllers.get(0).treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 TreeItem<String> selectedFromTreeView = sideControllers.get(0).treeTable.getSelectionModel().getSelectedItem();
-                if (selectedFromTreeView.getChildren().isEmpty()) {
+                if (selectedFromTreeView.getChildren().isEmpty()) { // TODO : fix
                     try {
                         stopList.add(db.getNodesByValue("LONGNAME", selectedFromTreeView.getValue()).get(0).get("NODEID"));
                     } catch (SQLException throwables) {
@@ -196,6 +235,15 @@ public class Navigation extends GenericMap {
         }
         else{
             drawNodes(darkBlue);
+            if(!startAndStop[0].equals("")){
+                changeNodeColorOnImage(startAndStop[0], Color.GREEN);
+                updateNodeSize(startAndStop[0], 5);
+            }
+            if(!startAndStop[1].equals("")){
+                changeNodeColorOnImage(startAndStop[1], Color.RED);
+                updateNodeSize(startAndStop[1], 5);
+
+            }
         }
     }
 
@@ -259,8 +307,7 @@ public class Navigation extends GenericMap {
                 currentNodeIDContextMenu = nodeID;
                 resetContextMenu();
                  // maybe remove?
-                if(stopList.size() == 0){
-                    addStart.setVisible(true);
+                if(currentPath.size() == 0){
                     try {
                         if(!PREFERENCES.get(USER_TYPE, null).equals("Guest")) {
                             if(db.getFavoriteNodeByUserAndName(PREFERENCES.get(USER_NAME, null), db.getNode(currentNodeIDContextMenu).get("LONGNAME")) != null){
@@ -273,14 +320,11 @@ public class Navigation extends GenericMap {
                         throwables.printStackTrace();
                     }
                 }
-                if(stopList.size() >= 1){
-                    changeToStart.setVisible(true);
-                    addEnd.setVisible(true);
-                }
-                if(stopList.size() >= 2){
-                    changeToEnd.setVisible(true);
-                }
-                if(stopList.contains(currentNodeIDContextMenu)){
+                if(startAndStop[0].equals("") && !startAndStop[1].equals(currentNodeIDContextMenu)) addStart.setVisible(true);
+                else if(!startAndStop[0].equals(currentNodeIDContextMenu) && !startAndStop[1].equals(currentNodeIDContextMenu)) changeToStart.setVisible(true);
+                if(startAndStop[1].equals("") && !startAndStop[0].equals(currentNodeIDContextMenu)) addEnd.setVisible(true);
+                else if(!startAndStop[1].equals(currentNodeIDContextMenu) && !startAndStop[0].equals(currentNodeIDContextMenu)) changeToEnd.setVisible(true);
+                if(startAndStop[1].equals(currentNodeIDContextMenu) || startAndStop[0].equals(currentNodeIDContextMenu) || stopList.contains(currentNodeIDContextMenu)){
                     removeStop.setVisible(true);
                 }
 
@@ -334,9 +378,13 @@ public class Navigation extends GenericMap {
     void findPath() {
         goToListOfDirections();
         currentPath.clear();
-        for (int i = 0; i < stopList.size() - 1; i++) {
-            String currentStart = stopList.get(i);
-            String currentEnd = stopList.get(i + 1);
+        List<String> allStops = new ArrayList<>();
+        allStops.add(0, startAndStop[0]);
+        allStops.addAll(stopList);
+        allStops.add(startAndStop[1]);
+        for (int i = 0; i < allStops.size() - 1; i++) {
+            String currentStart = allStops.get(i);
+            String currentEnd = allStops.get(i + 1);
             List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
             for(int j = 0; j < 3; j++){
                 List<Map<String, String>> toRemove = new ArrayList<>();
@@ -393,7 +441,7 @@ public class Navigation extends GenericMap {
                     color = Color.RED;
                     radius = 5;
                 }
-                else if(stopList.contains(node.get("NODEID"))){
+                else if(currentPath.contains(node.get("NODEID"))){
                     color = Color.ORANGE;
                     radius = 5;
                 }
@@ -560,15 +608,11 @@ public class Navigation extends GenericMap {
     }
 
     public void setStartAndEnd(){
-        int size = stopList.size();
         try{
-            if(size == 1){
-                currentMenu.setStartLabel(db.getNode(stopList.get(stopList.size() - 1)).get("LONGNAME"));
-            }
-            else if(size >= 2) {
-                currentMenu.setStartLabel(db.getNode(stopList.get(0)).get("LONGNAME"));
-                currentMenu.setEndLabel(db.getNode(stopList.get(stopList.size() - 1)).get("LONGNAME"));
-            }
+            if(startAndStop[0].equals("")) currentMenu.setStartLabel("Start Location");
+            else currentMenu.setStartLabel(db.getNode(startAndStop[0]).get("LONGNAME"));
+            if(startAndStop[1].equals("")) currentMenu.setEndLabel("End Location");
+            else currentMenu.setEndLabel(db.getNode(startAndStop[1]).get("LONGNAME"));
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -699,6 +743,8 @@ public class Navigation extends GenericMap {
         sideControllers.get(2).clearAll();
         gmapsDir.clear();
         stopList.clear();
+        startAndStop[0] = "";
+        startAndStop[1] = "";
         currentPath.clear();
         linesOnImage.clear();
         nodesOnImage.clear();

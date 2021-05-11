@@ -619,7 +619,23 @@ public abstract class GenericMap extends GenericPage {
 //        mapView.getChildren().add(arrow);
 
         arrow.setOnMousePressed((MouseEvent e) ->{
-            drawFloor(intToFloor(endFloor));
+            switch(endFloor){
+                case 0:
+                    changeFloorL2();
+                    break;
+                case 1:
+                    changeFloorL1();
+                    break;
+                case 2:
+                    changeFloor1();
+                    break;
+                case 3:
+                    changeFloor2();
+                    break;
+                case 4:
+                    changeFloor3();
+                    break;
+            }
         });
 
         // Hover over edge to make it thicker
