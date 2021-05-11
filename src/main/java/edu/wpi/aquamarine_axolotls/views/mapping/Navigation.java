@@ -2,32 +2,29 @@ package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.events.JFXDrawerEvent;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
-import edu.wpi.aquamarine_axolotls.pathplanning.*;
-import javafx.beans.property.ReadOnlyStringWrapper;
+import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
+import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TreeItem;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import oracle.jrockit.jfr.JFR;
-import org.checkerframework.checker.units.qual.C;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
-import static edu.wpi.aquamarine_axolotls.extras.Directions.*;
 
 public class Navigation extends GenericMap {
     public JFXButton drawerActionButton;
@@ -41,8 +38,8 @@ public class Navigation extends GenericMap {
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
-    private Thread newThread = new Thread();
-    private VoiceController voice = new VoiceController("kevin16");
+    final private Thread newThread = new Thread();
+    final private VoiceController voice = new VoiceController("kevin16");
 
     ArrayList<SideMenu> sideControllers = new ArrayList<>();
     SideMenu currentMenu;
@@ -145,13 +142,9 @@ public class Navigation extends GenericMap {
             if(stopList.size() >= 2) findPath();
         });
 
-        addFav.setOnAction((ActionEvent e) ->{
-            sideControllers.get(0).addToFavorites(currentNodeIDContextMenu);
-        });
+        addFav.setOnAction((ActionEvent e) -> sideControllers.get(0).addToFavorites(currentNodeIDContextMenu));
 
-        deleteFav.setOnAction((ActionEvent e)->{
-            sideControllers.get(0).deleteFromFavorites(currentNodeIDContextMenu);
-        });
+        deleteFav.setOnAction((ActionEvent e)-> sideControllers.get(0).deleteFromFavorites(currentNodeIDContextMenu));
 
         // TODO : figure this out
         makeIntermediatePoint.setOnAction((ActionEvent e) ->{
@@ -303,9 +296,7 @@ public class Navigation extends GenericMap {
             }
         });
 
-        node.setOnMouseEntered((MouseEvent e) -> {
-            node.setRadius(5);
-        });
+        node.setOnMouseEntered((MouseEvent e) -> node.setRadius(5));
 
         node.setOnMouseExited((MouseEvent e) -> {
             if (!(node.getFill().equals(Color.RED) || node.getFill().equals(Color.ORANGE) || node.getFill().equals(Color.GREEN))) {
@@ -463,7 +454,7 @@ public class Navigation extends GenericMap {
         int size = stopList.size();
         try{
             if(size == 1){
-                currentMenu.setStartLabel(db.getNode(stopList.get(stopList.size() - 1)).get("LONGNAME"));
+                currentMenu.setStartLabel(db.getNode(stopList.get(0)).get("LONGNAME"));
             }
             else if(size >= 2) {
                 currentMenu.setStartLabel(db.getNode(stopList.get(0)).get("LONGNAME"));
@@ -498,7 +489,7 @@ public class Navigation extends GenericMap {
     /**
      * Progresses to the next step in the text directions
      */
-    public void progress() throws SQLException,InterruptedException {
+    public void progress() throws SQLException {
         voice.stop();
         if (currentStepNumber < curPathDirections.get(0).size() - 1){
             unHighlightDirection();
@@ -521,7 +512,7 @@ public class Navigation extends GenericMap {
     /**
      * Moves back to the previous step in the text directions
      */
-    public void regress() throws SQLException,InterruptedException{
+    public void regress() throws SQLException {
         voice.stop();
         if (currentStepNumber != 0) {
             unHighlightDirection();
@@ -578,7 +569,7 @@ public class Navigation extends GenericMap {
         }
     }
 
-    public void unHighlightDirection() throws SQLException{
+    public void unHighlightDirection() {
         String curDirectionID = curPathDirections.get(1).get(currentStepNumber);
         if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
         else {
@@ -652,12 +643,11 @@ public class Navigation extends GenericMap {
                     e.printStackTrace();
                 }
             } else if (currentStepNumber < curPathDirections.get(1).size()){
-                String nodeID = edgeID;
                 String otherID;
                 if (edgeID.equals(curPathDirections.get(1).get(currentStepNumber))) otherID = curPathDirections.get(1).get(currentStepNumber + 1);
                 else otherID = curPathDirections.get(1).get(currentStepNumber);
-                if (db.nodeExists(nodeID) && db.nodeExists(otherID)){
-                    Map<String, String> node = db.getNode(nodeID);
+                if (db.nodeExists(edgeID) && db.nodeExists(otherID)){
+                    Map<String, String> node = db.getNode(edgeID);
                     Map<String, String> otherNode = db.getNode(otherID);
                     if (!node.get("FLOOR").equals(otherNode.get("FLOOR"))) {
                         currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(node, otherNode));
