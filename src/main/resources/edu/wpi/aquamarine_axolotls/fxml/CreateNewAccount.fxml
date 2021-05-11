@@ -50,9 +50,10 @@
             <children>
 
                 <Rectangle fill="#003da6" height="65.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
-                <GridPane layoutX="122.0" layoutY="79.0" prefHeight="768.0" prefWidth="711.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <GridPane layoutX="122.0" layoutY="79.0" prefHeight="768.0" prefWidth="794.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="577.0" minWidth="10.0" prefWidth="233.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="577.0" minWidth="10.0" prefWidth="233.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints maxHeight="90.0" minHeight="60.0" prefHeight="100.0" vgrow="SOMETIMES" />
@@ -126,6 +127,36 @@
                         <Font name="Verdana" size="29.0" />
                      </font>
                   </JFXCheckBox>
+                  <Text fill="#c64d48" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#c64d48" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#c64d48" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#c64d48" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#c64d48" strokeType="OUTSIDE" strokeWidth="0.0" text="*" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#c64d48" strokeType="OUTSIDE" strokeWidth="0.0" text="*" wrappingWidth="6.8231048583984375" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                  </Text>
                     </children>
                 </GridPane>
                 <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
@@ -182,7 +213,7 @@
         </Pane>
     </left>
     <center>
-        <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit_button" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+        <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit_button" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
             <font>
                 <Font name="Verdana" size="30.0" />
             </font>

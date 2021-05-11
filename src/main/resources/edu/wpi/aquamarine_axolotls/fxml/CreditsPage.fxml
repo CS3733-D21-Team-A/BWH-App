@@ -37,7 +37,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-            <Text layoutX="59.0" layoutY="175.0" lineSpacing="15.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An API, or application programming interface, defines the interactions between multiple software components. The text to speech API was used to provide optional read-aloud directions for the navigation element of the application. The Google Maps API was implemented to allow the user to.The ROS API was integrated to demonstrate the potential for navigating robots around the hospital and deliver items or clean messes. The SendMail API was added to the program to _________.  The TOTP API was a two factor authentication system that was incorporated into SendMail to allow for a new user’s identity to be confirmed." wrappingWidth="669.1815795898438">
+            <Text layoutX="73.0" layoutY="339.0" lineSpacing="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An API, or application programming interface, defines the interactions between multiple software components. The APIs used in this application are: FreeTTS, Google Maps API,  ROS API, SendMail API, TOTP API." wrappingWidth="669.1815795898438">
                <font>
                   <Font name="Verdana" size="25.0" />
                </font>
