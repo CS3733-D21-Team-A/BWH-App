@@ -3,6 +3,7 @@ package edu.wpi.aquamarine_axolotls.views.servicerequests;
 import com.jfoenix.controls.JFXTabPane;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.*;
+import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
@@ -12,7 +13,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -23,7 +23,8 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
-import static edu.wpi.aquamarine_axolotls.db.enums.USERTYPE.PATIENT;
+import static edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST.*;
+import static edu.wpi.aquamarine_axolotls.db.enums.USERTYPE.*;
 
 public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
@@ -77,6 +78,9 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         put("Medicine Delivery", "edu/wpi/aquamarine_axolotls/img/medicineDeliveryB.png");
     }};
 
+    /**
+     * Initializes the page for each user type
+     */
     @FXML
     public void initialize() {
         try {
@@ -142,18 +146,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             covidLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
                 @Override
                 public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
-                    try {
-                        int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
-
-                        Map<String, String> isCovidLikely = new HashMap<>();
-                        isCovidLikely.put("COVIDLIKELY", event.getNewValue());
-
-                        covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
-
-                        db.editUser(covidSurveyTable.getItems().get(index).username, isCovidLikely);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                    updateCovidTable("COVIDLIKELY", event);
                 }
             });
 
@@ -161,29 +154,21 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             entryApprovedColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
                 @Override
                 public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
-                    try {
-                        int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
-
-                        Map<String, String> entryApproved = new HashMap<>();
-                        entryApproved.put("ENTRYAPPROVED", event.getNewValue());
-
-                        covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
-
-                        db.editUser(covidSurveyTable.getItems().get(index).username, entryApproved);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                    updateCovidTable("ENTRYAPPROVED", event);
                 }
             });
 
-            refresh();
+            populateTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void refresh(){
+    /**
+     * Populates the corresponding tables with requests and surveys
+     */
+    public void populateTable(){
         List<Map<String, String>> serviceRequests = null;
         List<Map<String, String>> covSurveys = null;
         try {
@@ -215,6 +200,11 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         }
     }
 
+    /**
+     * Creates tabs and tables for each service request type
+     * @param names List of employee names to assign a service request to
+     * @param stats List of statuses for each service request
+     */
     public void createTabs(ObservableList names, ObservableList stats){
         USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
 
@@ -284,15 +274,11 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                         table.setEditable(false);
                         break;
                     case ADMIN:
-                        table.setEditable(true);
-                        break;
                     case EMPLOYEE:
                         table.setEditable(true);
                         break;
                 }
             }
-
-            // TODO: style all the text in each of the columns to "style=-fx-font-size: 20; -fx-font-family: Verdana;");
 
             Tab tab = new Tab(s, table);
             Image img = new Image(icons.get(s));
@@ -305,6 +291,29 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         }
     }
 
+    /**
+     * Updates the DB and the table when a change is made in COVID Table
+     * @param colName Column name in DB
+     * @param event the onEditCommit event
+     */
+    public void updateCovidTable(String colName, TableColumn.CellEditEvent<CovidSurvey, String> event){
+        try {
+            int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+
+            Map<String, String> edits = new HashMap<>();
+            edits.put(colName, event.getNewValue());
+
+            covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
+
+            db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    /**
+     * Represents each service request in the tables
+     */
     public class Request { //This needs to be public for things to work :(
 
         private StringProperty assigned;
@@ -364,6 +373,9 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         }
     }
 
+    /**
+     * Represents each COVID Survey taken in the COVID Table
+     */
     public class CovidSurvey { //This needs to be public for things to work :(
         private String username;
         private String fever;

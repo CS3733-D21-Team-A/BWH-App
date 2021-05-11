@@ -27,8 +27,6 @@
 .tab {
     -fx-pref-width: 200;
     -fx-pref-height: 256;
-    -fx-wrap-text: true;
-    -fx-margin: 0 0 -125 0;
 }
 
 .table-view .column-header-background .filler {
