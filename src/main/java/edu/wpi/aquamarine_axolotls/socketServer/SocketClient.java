@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.socketServer;
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.util.Scanner;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,7 +36,4 @@ public class SocketClient {
         out.write(massage.getBytes(StandardCharsets.UTF_8));
     }
 
-    public void close() throws IOException {
-        client.close();
-    }
 }

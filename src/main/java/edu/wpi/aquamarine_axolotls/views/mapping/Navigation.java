@@ -63,7 +63,6 @@ public class Navigation extends GenericMap {
 
     boolean isVoiceToggled;
     boolean robotConnection;
-    int robotDirectionNum = 0;
 
     public void initialize() throws java.sql.SQLException, IOException {
 
@@ -473,7 +472,6 @@ public class Navigation extends GenericMap {
                                         //==== LIST OF DIRECTIONS ====//
     public void startDir() throws IOException {
         currentStepNumber = 0; // was dirIndex
-        robotDirectionNum = 0;
         String curDirection = curPathDirections.get(0).get(currentStepNumber);
         setArrowsToBeVisible();
         currentMenu.setCurArrow(textDirectionToImage(curDirection));
@@ -698,7 +696,6 @@ public class Navigation extends GenericMap {
         return coordinateList;
     }
 
-    @FXML
     public void toggleRobot() throws IOException, InterruptedException {
         robotConnection = !robotConnection;
         if (robotConnection && !Aapp.serverRunning){
@@ -725,9 +722,8 @@ public class Navigation extends GenericMap {
                 try{
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientInfoReceiver.getMassage();
-                        System.out.println("robotDirectionNum: " + robotDirectionNum);
+                        System.out.println("in first info thread");
                         if(message.contains("progress to the")){
-                            if(robotDirectionNum>0){
                                 System.out.println(message);
                                 Platform.runLater(() -> {
                                     try {
@@ -746,12 +742,10 @@ public class Navigation extends GenericMap {
                                         throwables.printStackTrace();
                                     }
                                 });
-                                robotDirectionNum ++;
                             }
-                            else if(robotDirectionNum == 0){
-                                robotDirectionNum ++;
-                            }
-                        }
+//                            else if(robotDirectionNum == 0){
+//                                robotDirectionNum ++;
+//                        }
                         else if(message.contains("faraway")){
                             System.out.println(message);
                             Platform.runLater(() ->popUp("Turtlebot Info", "Your robot is waiting, Please catch up! "));
@@ -767,7 +761,6 @@ public class Navigation extends GenericMap {
                 try{
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientReceiver.getMassage();
-                        System.out.println(message);
                         Double[] robotCoordinate = getROSCoordinate(message);
                         if (robotCoordinate != null  && FLOOR.equals("L1")){
                             Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
@@ -782,10 +775,12 @@ public class Navigation extends GenericMap {
             System.out.println("server running");
         }
         else if(robotConnection && Aapp.serverRunning){
+            Aapp.clientSender.send("resume nav");
             Aapp.clientThreadReceiver = new Thread(() -> {
                 try{
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientReceiver.getMassage();
+                        System.out.println(message);
                         Double[] robotCoordinate = getROSCoordinate(message);
                         if (robotCoordinate != null && FLOOR.equals("L1")){
                             Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
@@ -801,7 +796,7 @@ public class Navigation extends GenericMap {
                 try{
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientInfoReceiver.getMassage();
-                        System.out.println("robotDirectionNum: " + robotDirectionNum);
+                        System.out.println("in restarted info thread");
                         if(message.contains("progress to the")){
                                 System.out.println(message);
                                 Platform.runLater(() -> {
@@ -821,7 +816,6 @@ public class Navigation extends GenericMap {
                                         throwables.printStackTrace();
                                     }
                                 });
-                                robotDirectionNum ++;
                         }
                         else if(message.contains("faraway")){
                             System.out.println(message);
@@ -835,7 +829,7 @@ public class Navigation extends GenericMap {
             Aapp.clientInfoThreadReceiver.start();
         }
         else if(!robotConnection && Aapp.serverRunning){
-            Aapp.clientThreadReceiver.stop();
+            Aapp.clientThreadReceiver.suspend();
             //Aapp.clientInfoThreadReceiver.stop();
             removeDirectionArrow();
             Aapp.clientSender.send("cancel nav");
