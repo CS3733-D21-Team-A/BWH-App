@@ -38,7 +38,7 @@ class Table {
 
 	/**
 	 * get the columns of of this table.
-	 * @return a dictionaary whose keys are the names of the columns and value.
+	 * @return a map whose keys are the names of the columns and value.
 	 * Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
 	Map<String,Boolean> getColumns() {

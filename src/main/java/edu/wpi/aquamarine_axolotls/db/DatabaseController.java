@@ -9,6 +9,7 @@ import org.apache.derby.jdbc.EmbeddedDriver;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static edu.wpi.aquamarine_axolotls.Settings.DATABASE_HOSTNAME;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
@@ -480,10 +481,11 @@ public class DatabaseController {
 	 * Gets the columns from the service request table named requestType
 	 *
 	 * @param requestType the name of a service request table
-	 * @return a list of columns
+	 * @return a map whose keys are the names of the columns and value.
+	 * 	Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
-	public Map<String, Boolean> getServiceRequestColumns(SERVICEREQUEST requestType) {
-		return requestsTables.get(requestType).getColumns();
+	public List<String> getServiceRequestColumns(SERVICEREQUEST requestType) {
+		return new ArrayList<>(requestsTables.get(requestType).getColumns().keySet());
 	}
 
 
