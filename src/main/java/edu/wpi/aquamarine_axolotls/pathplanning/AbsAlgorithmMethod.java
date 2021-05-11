@@ -101,7 +101,6 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         }
 
         //If we go through all the nodes and don't find the one we were looking for, return null
-        System.out.println("Couldn't find that node");
         return null;
     }
 
@@ -119,7 +118,6 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             }
         }
         //If we go through all the nodes and don't find the one we were looking for, return null
-        System.out.println("Couldn't find that node");
         return null;
     }
 
@@ -153,7 +151,6 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
                 connectedNode.add(getNode(startNodeName));
             }
         }
-        System.out.println("getConnected complete");
         //Return all connected nodes
         return connectedNode;
     }
@@ -175,6 +172,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         return ETASingleEdge;
     }
 
+    public double getETASingleEdge(Map<String, String> start, Map<String, String> goal){
+        double walkingSpeed = 220 * 3.75; //2.5 miles/h
+        double distance = getCostTo(start,goal);
+        double ETASingleEdge;
+
+        ETASingleEdge = distance/walkingSpeed;
+        return ETASingleEdge;
+    }
+
     /**
      * Calculates the estimated time, in minutes, that it will take for a patient to
      * walk the entire length of the path
@@ -182,7 +188,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The time, in minutes, that it will take for a patient to walk along the
      *          entire path
      */
-    public double getETA(List<Node> path){
+    public double getETA(List<Map<String, String>> path){
         double ETASoFar = 0.0;
         for(int i = 0; i < path.size()-1;i++){
             ETASoFar += getETASingleEdge(path.get(i), path.get(i+1));
@@ -197,11 +203,33 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return Double, the distance between them
      */
     protected double getCostTo(Node firstnode, Node othernode){
-        double xsqre = Math.pow(othernode.getXcoord() - firstnode.getXcoord(),2);
-        double ysqre = Math.pow(othernode.getYcoord() - firstnode.getYcoord(),2);
-        double dist = Math.sqrt(xsqre+ysqre);
+        if(firstnode.getFloor().equals(othernode.getFloor())){
+            double xsqre = Math.pow(othernode.getXcoord() - firstnode.getXcoord(), 2);
+            double ysqre = Math.pow(othernode.getYcoord() - firstnode.getYcoord(), 2);
+            double dist = Math.sqrt(xsqre + ysqre);
 
-        return dist;
+            return dist;
+        } else {
+            return 110.0 * 3.75;
+        }
+    }
+
+    /**
+     * Gets the cost to go DIRECTLY to another node
+     * Note that this specifically measures the straight distance between the two, even  if they aren't neighbors
+     * @param othernode The other node to go to
+     * @return Double, the distance between them
+     */
+    protected double getCostTo(Map<String, String> firstnode, Map<String, String> othernode){
+        if(firstnode.get("FLOOR").equals(othernode.get("FLOOR"))){
+            double xsqre = Math.pow(Integer.parseInt(othernode.get("XCOORD")) - Integer.parseInt(firstnode.get("XCOORD")), 2);
+            double ysqre = Math.pow(Integer.parseInt(othernode.get("YCOORD")) - Integer.parseInt(firstnode.get("YCOORD")), 2);
+            double dist = Math.sqrt(xsqre + ysqre);
+
+            return dist;
+        } else{
+            return 110.0 * 3.75;
+        }
     }
 
     /**
@@ -240,14 +268,11 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         //Get the start and end nodes in the path
         Node pathStart = path.get(0);
         Node pathGoal = path.get(path.size() - 1);
-        System.out.println("pathStart: " + pathStart);
-        System.out.println("pathGoal: " + pathGoal);
 
         //Determine whether the start and end nodes in the given path are the same as the start and end nodes we pass in
         boolean startNodeisEqual = pathStart.getNodeID().equals(start.getNodeID());
         boolean goalNodeisEqual = pathGoal.getNodeID().equals(goal.getNodeID());
 
-        System.out.println("pathiscorrect: " + (startNodeisEqual && goalNodeisEqual));
         return startNodeisEqual && goalNodeisEqual;
     }
 
@@ -257,7 +282,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @return The list of steps that a user must take to navigate from the start
      *          of the path to the end
      */
-    public List<List<String>> getTextDirections(List<Node> path){
+    public List<List<String>> getTextDirectionsNodes(List<Node> path){
 
         List<List<String>> returnList = new ArrayList<List<String>>();
         ArrayList<String> instructions = new ArrayList<String>();
@@ -277,15 +302,15 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         }
 
         int stepNum = 1;
-
-
-        List<Node> modifiedPath = new ArrayList<Node>();
-        for(int i = 0; i < path.size(); i++) {
-            if(!nodeIsUnimportant(path, path.get(i))){
-                modifiedPath.add(path.get(i));
-            }
-        }
-        path = modifiedPath;
+//
+//
+//        List<Node> modifiedPath = new ArrayList<Node>();
+//        for(int i = 0; i < path.size(); i++) {
+//            if(!nodeIsUnimportant(path, path.get(i))){
+//                modifiedPath.add(path.get(i));
+//            }
+//        }
+//        path = modifiedPath;
 
 
         if(path.get(0).getNodeType().equals("ELEV") && path.get(1).getNodeType().equals("ELEV")){
@@ -293,32 +318,32 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             nodeIDS.add(path.get(0).getNodeID());
             stepNum++;
         } else if(path.get(0).getNodeType().equals("STAI") && path.get(1).getNodeType().equals("STAI")){
-            instructions.add(stepNum + ". Take the stairs to floor " + path.get(1).getFloor() + ".");
+            instructions.add(stepNum + ". Take the stairs to Floor " + path.get(1).getFloor() + ".");
             nodeIDS.add(path.get(0).getNodeID());
             stepNum++;
         } else {
             double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
             double firstEdgeDistanceFeet = firstEdgeDistancePixels / 2.35;
             instructions.add(stepNum + ". Walk " + (int) firstEdgeDistanceFeet + " feet towards " + path.get(1).getLongName() + ".");
-            nodeIDS.add(path.get(0).getNodeID() + "," + path.get(1).getNodeID());
+            nodeIDS.add(path.get(0).getNodeID() + "_" + path.get(1).getNodeID());
             stepNum++;
         }
 
 
         for (int i = 1; i < path.size() - 1; i++){
             if(path.get(i).getNodeType().equals("ELEV") && path.get(i+1).getNodeType().equals("ELEV")){
-                instructions.add(stepNum + ". Take the elevator to floor " + path.get(i+1).getFloor() + ".");
+                instructions.add(stepNum + ". Take the elevator to Floor " + path.get(i+1).getFloor() + ".");
                 nodeIDS.add(path.get(i).getNodeID());
                 stepNum++;
             } else if(path.get(i).getNodeType().equals("STAI") && path.get(i+1).getNodeType().equals("STAI")){
-                instructions.add(stepNum + ". Take the stairs to floor " + path.get(i+1).getFloor() + ".");
+                instructions.add(stepNum + ". Take the stairs to Floor " + path.get(i+1).getFloor() + ".");
                 nodeIDS.add(path.get(i).getNodeID());
                 stepNum++;
             } else {
 
                 if(!path.get(i).getFloor().equals(path.get(i-1).getFloor())) {
-                    instructions.add(stepNum + ". You are now on floor " + path.get(i).getFloor() + ".");
-                    nodeIDS.add(path.get(i).getNodeID());
+                    instructions.add(stepNum + ". You are now on Floor " + path.get(i).getFloor() + ".");
+                    nodeIDS.add(path.get(i+1).getNodeID());
                     stepNum++;
                 } else{
                     double angleIn = absAngleEdge(path.get(i-1), path.get(i));
@@ -358,7 +383,7 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
                 instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + path.get(i+1).getLongName() + ".");
                 stepNum++;
-                nodeIDS.add(path.get(i).getNodeID() + "," + path.get(i+1).getNodeID());
+                nodeIDS.add(path.get(i).getNodeID() + "_" + path.get(i+1).getNodeID());
 
             }
 
@@ -368,6 +393,153 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         returnList.add(instructions);
         returnList.add(nodeIDS);
         return returnList;
+    }
+
+
+    /**
+     * Creates a list of text directions instructing the user how to navigate a path
+     * @param path The path for which text directions are to be generated
+     * @return The list of steps that a user must take to navigate from the start
+     *          of the path to the end
+     */
+    public List<List<String>> getTextDirections(List<Map<String, String>> path){
+
+        List<List<String>> returnList = new ArrayList<List<String>>();
+        ArrayList<String> instructions = new ArrayList<String>();
+        ArrayList<String> nodeIDS = new ArrayList<String>();
+
+        if(path.size() == 0){
+            returnList.add(instructions);
+            returnList.add(nodeIDS);
+            return returnList;
+        }
+        if(path.size() == 1) {
+            instructions.add("1. You have arrived at your destination");
+            nodeIDS.add(path.get(0).get("NODEID")); // TODO : could error because path could be mt??
+            returnList.add(instructions);
+            returnList.add(nodeIDS);
+            return returnList;
+        }
+
+        int stepNum = 1;
+//
+//
+//        List<Node> modifiedPath = new ArrayList<Node>();
+//        for(int i = 0; i < path.size(); i++) {
+//            if(!nodeIsUnimportant(path, path.get(i))){
+//                modifiedPath.add(path.get(i));
+//            }
+//        }
+//        path = modifiedPath;
+
+
+        String firstNodeID = path.get(0).get("NODEID");
+        String firstNodeType = path.get(0).get("NODETYPE");
+        String secondNodeID = path.get(1).get("NODEID");
+        String secondNodeType = path.get(1).get("NODETYPE");
+        String secondNodeFloor = path.get(1).get("FLOOR");
+
+        if(firstNodeType.equals("ELEV") && secondNodeType.equals("ELEV")){
+            instructions.add(stepNum + ". Take the elevator to Floor " + secondNodeFloor + ".");
+            nodeIDS.add(firstNodeID);
+            stepNum++;
+        } else if(firstNodeType.equals("STAI") && secondNodeType.equals("STAI")){
+            instructions.add(stepNum + ". Take the stairs to Floor " + secondNodeFloor + ".");
+            nodeIDS.add(firstNodeID);
+            stepNum++;
+        } else {
+            double firstEdgeDistancePixels = getCostTo(path.get(0), path.get(1));
+            double firstEdgeDistanceFeet = firstEdgeDistancePixels / 2.35;
+            instructions.add(stepNum + ". Walk " + (int) firstEdgeDistanceFeet + " feet towards " + path.get(1).get("LONGNAME") + ".");
+            nodeIDS.add(firstNodeID + "_" + secondNodeID);
+            stepNum++;
+        }
+
+
+        for (int i = 1; i < path.size() - 1; i++){
+
+            Map<String, String> thisNode = path.get(i);
+            Map<String, String> nextNode = path.get(i+1);
+            Map<String, String> prevNode = path.get(i-1);
+
+            if(thisNode.get("NODETYPE").equals("ELEV") && nextNode.get("NODETYPE").equals("ELEV")){
+                instructions.add(stepNum + ". Take the elevator to Floor " + nextNode.get("FLOOR") + ".");
+                nodeIDS.add(thisNode.get("NODEID"));
+                stepNum++;
+            } else if(thisNode.get("NODETYPE").equals("STAI") && nextNode.get("NODETYPE").equals("STAI")){
+                instructions.add(stepNum + ". Take the stairs to Floor " + nextNode.get("FLOOR") + ".");
+                nodeIDS.add(thisNode.get("NODEID"));
+                stepNum++;
+            } else {
+
+                if(!thisNode.get("FLOOR").equals(prevNode.get("FLOOR"))) {
+                    instructions.add(stepNum + ". You are now on Floor " + thisNode.get("FLOOR") + ".");
+                    nodeIDS.add(thisNode.get("NODEID"));
+                    stepNum++;
+                } else{
+                    double angleIn = absAngleEdge(prevNode, thisNode);
+                    double angleOut = absAngleEdge(thisNode, nextNode);
+                    double turnAngle = angleOut - angleIn;
+
+                    if(turnAngle <= -180.0) turnAngle += 360;
+                    if(turnAngle > 180.0) turnAngle -= 360;
+
+                    if(turnAngle > 10 && turnAngle < 60){
+                        instructions.add(stepNum + ". Make a slight right turn.");
+                        stepNum++;
+                    } else if (turnAngle >= 60 && turnAngle < 120){
+                        instructions.add(stepNum + ". Make a right turn.");
+                        stepNum++;
+                    } else if (turnAngle >= 120 && turnAngle < 178){
+                        instructions.add(stepNum + ". Make an extreme right turn.");
+                        stepNum++;
+                    } else if (turnAngle < -10 && turnAngle > -60){
+                        instructions.add(stepNum + ". Make a slight left turn.");
+                        stepNum++;
+                    } else if (turnAngle <= -60 && turnAngle > -120){
+                        instructions.add(stepNum + ". Make a left turn.");
+                        stepNum++;
+                    } else if (turnAngle <= -120 && turnAngle > -178){
+                        instructions.add(stepNum + ". Make an extreme left turn.");
+                        stepNum++;
+                    } else if (turnAngle <= -178.0 || turnAngle >= 178.0){
+                        instructions.add(stepNum + ". Turn around.");
+                        stepNum++;
+                    }
+                    nodeIDS.add(thisNode.get("NODEID"));
+                }
+
+                double edgeDistancePixels = getCostTo(thisNode, nextNode);
+                double edgeDistanceFeet = edgeDistancePixels / 2.35;
+
+                instructions.add(stepNum + ". Walk " + (int) edgeDistanceFeet + " feet towards " + nextNode.get("LONGNAME") + ".");
+                stepNum++;
+                nodeIDS.add(thisNode.get("NODEID") + "_" + nextNode.get("NODEID"));
+
+            }
+
+        }
+        instructions.add(stepNum + ". You have arrived at your destination.");
+        nodeIDS.add(path.get(path.size()-1).get("NODEID"));
+        returnList.add(instructions);
+        returnList.add(nodeIDS);
+        return returnList;
+    }
+
+    /**
+     * Calculates the absolute angle, in degrees, of a line connecting two nodes with respect
+     * to the x-axis
+     * @param start The starting node
+     * @param end The ending node
+     * @return The absolute angle, in degrees of a line connecting the two nodes.
+     *          The angle will be in the range of -180 to 180.
+     */
+    protected double absAngleEdge(Map<String, String> start, Map<String, String> end){
+        double deltaX = Integer.parseInt(end.get("XCOORD")) - Integer.parseInt(start.get("XCOORD"));
+        double deltaY = Integer.parseInt(end.get("YCOORD")) - Integer.parseInt(start.get("YCOORD"));
+        double radians = Math.atan2(deltaY, deltaX);
+        double degrees = radians * 180.0 / Math.PI;
+        return degrees;
     }
 
     /**
@@ -393,22 +565,22 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
      * @param node The node in question
      * @return true if the given node is unimportant to the path's text directions
      */
-    public boolean nodeIsUnimportant(List<Node> path, Node node){
+    public boolean nodeIsUnimportant(List<Map<String, String>> path, Map<String, String> node){
 
         int nodeIndex = path.indexOf(node);
 
         if (nodeIndex == 0 || nodeIndex == path.size() - 1) return false;
 
         if(path.get(nodeIndex).equals(path.get(nodeIndex+1)) &&
-                (path.get(nodeIndex).getNodeType().equals("ELEV")
-                        || (path.get(nodeIndex).getNodeType().equals("STAI")))) return true;
+                (path.get(nodeIndex).get("NODETYPE").equals("ELEV")
+                        || (path.get(nodeIndex).get("NODETYPE").equals("STAI")))) return true;
 
-        if((node.getNodeType().equals("STAI") &&
-                (path.get(nodeIndex+1).getNodeType().equals("STAI") ||
-                        path.get(nodeIndex-1).getNodeType().equals("STAI"))) ||
-           (node.getNodeType().equals("ELEV") &&
-                   (path.get(nodeIndex+1).getNodeType().equals("ELEV") ||
-                           path.get(nodeIndex-1).getNodeType().equals("ELEV")))) return false;
+        if((node.get("NODETYPE").equals("STAI") &&
+                (path.get(nodeIndex+1).get("NODETYPE").equals("STAI") ||
+                        path.get(nodeIndex-1).get("NODETYPE").equals("STAI"))) ||
+           (node.get("NODETYPE").equals("ELEV") &&
+                   (path.get(nodeIndex+1).get("NODETYPE").equals("ELEV") ||
+                           path.get(nodeIndex-1).get("NODETYPE").equals("ELEV")))) return false;
 
         double angleIn = absAngleEdge(path.get(nodeIndex-1), path.get(nodeIndex));
         double angleOut = absAngleEdge(path.get(nodeIndex), path.get(nodeIndex+1));
@@ -417,8 +589,8 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         if (turnAngle <= -180.0) turnAngle += 360.0;
         if (turnAngle > 180.0) turnAngle -= 360.0;
 
-        return (path.get(nodeIndex).getFloor().equals(path.get(nodeIndex+1).getFloor())) &&
-                (Math.abs(turnAngle) < 10);
+        return (path.get(nodeIndex).get("FLOOR").equals(path.get(nodeIndex+1).get("FLOOR"))) &&
+                (Math.abs(turnAngle) <= 10);
     }
 
     public void handleCovidStatus() throws SQLException {
@@ -428,25 +600,28 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         Node francis = new Node(dbControl.getNode("FEXIT00201"));
         Node emergency = new Node(dbControl.getNode("FEXIT00301"));
 
-        nodes.remove(covidLikely.equals("true") ? francis : emergency);
+        if (covidLikely != null) {
+            nodes.remove(covidLikely.equals("true") ? francis : emergency);
 
-        Node toAdd = covidLikely.equals("true") ? emergency : francis;
-        if(!nodes.contains(toAdd)) nodes.add(toAdd);
+            Node toAdd = covidLikely.equals("true") ? emergency : francis;
+            if(!nodes.contains(toAdd)) nodes.add(toAdd);
 
-        List<Edge> francisEdges = dbControl.getEdgesConnectedToNode("FEXIT00201").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
-        List<Edge> emergencyEdges = dbControl.getEdgesConnectedToNode("FEXIT00301").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
+            List<Edge> francisEdges = dbControl.getEdgesConnectedToNode("FEXIT00201").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
+            List<Edge> emergencyEdges = dbControl.getEdgesConnectedToNode("FEXIT00301").stream().map((edge) -> new Edge(edge)).collect(Collectors.toList());
 
-        edges.removeAll(covidLikely.equals("true") ? francisEdges : emergencyEdges);
+            edges.removeAll(covidLikely.equals("true") ? francisEdges : emergencyEdges);
 
-        for (Edge edge : covidLikely.equals("true") ? emergencyEdges : francisEdges) {
-            if (!edges.contains(edge)) edges.add(edge);
+            for (Edge edge : covidLikely.equals("true") ? emergencyEdges : francisEdges) {
+                if (!edges.contains(edge)) edges.add(edge);
+            }
         }
+
+
     }
 
-    abstract List<Node> getPathImpl(String startLongName, String endLongName);
+    abstract List<Map<String, String>> getPathImpl(String startLongName, String endLongName);
 
-    public List<Node> getPath(String startLongName, String endLongName) {
-        System.out.println("GETTING PATH");
+    public List<Map<String, String>> getPath(String startLongName, String endLongName) {
         try {
             handleCovidStatus();
         } catch (SQLException e) {

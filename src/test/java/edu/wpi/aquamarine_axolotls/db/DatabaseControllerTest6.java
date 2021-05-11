@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -46,7 +47,7 @@ public class DatabaseControllerTest6 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             db.addUser(user3);
             String generatedFAVID = db.addFavoriteNodeToUser("Alexa123", "aPARK001GG", "Favorite Bathroom");
             assertEquals(db.getFAVID("Alexa123", "Favorite Bathroom"),generatedFAVID);
@@ -66,7 +67,7 @@ public class DatabaseControllerTest6 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             db.addUser(user3);
 
             String generatedFAVID = db.addFavoriteNodeToUser("Alexa123", "aPARK001GG", "Favorite Bathroom");
@@ -97,7 +98,7 @@ public class DatabaseControllerTest6 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             db.addUser(user3);
 
             String generatedFAVID = db.addFavoriteNodeToUser("Alexa123", "aPARK001GG", "Favorite Bathroom");
@@ -137,7 +138,7 @@ public class DatabaseControllerTest6 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             db.addUser(user3);
 
             Map<String, String> user1 = new HashMap<String, String>();
@@ -146,7 +147,7 @@ public class DatabaseControllerTest6 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 
@@ -207,7 +208,7 @@ public class DatabaseControllerTest6 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             db.addUser(user3);
 
             Map<String, String> user1 = new HashMap<String, String>();
@@ -216,7 +217,7 @@ public class DatabaseControllerTest6 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 
@@ -277,7 +278,7 @@ public class DatabaseControllerTest6 {
             user3.put("LASTNAME", "Freglette");
             user3.put("EMAIL", "alexa@gmail.com");
             user3.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user3.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user3, "fjdasklgjlskf");
             db.addUser(user3);
 
             Map<String, String> user1 = new HashMap<String, String>();
@@ -286,7 +287,7 @@ public class DatabaseControllerTest6 {
             user1.put("LASTNAME", "McMillan");
             user1.put("EMAIL", "Sean@gmail.com");
             user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-            user1.put("PASSWORD", "PasswordIsMyPassword");
+            Security.addHashedPassword(user1, "fjdasklgjlskf");
 
             db.addUser(user1);
 

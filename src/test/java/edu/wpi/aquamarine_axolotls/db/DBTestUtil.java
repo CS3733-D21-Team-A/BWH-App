@@ -6,16 +6,16 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import static edu.wpi.aquamarine_axolotls.Settings.USE_CLIENT_SERVER_DATABASE;
+import static edu.wpi.aquamarine_axolotls.Settings.DATABASE_HOSTNAME;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class DBTestUtil {
 	public static void resetDB() {
-		PREFERENCES.remove(USE_CLIENT_SERVER_DATABASE);
+		PREFERENCES.remove(DATABASE_HOSTNAME);
 
-		File dir = new File("./EMBEDDED_BWH_DB");
+		File dir = new File("./derby/EMBEDDED_BWH_DB");
 		if (dir.exists()) {
 			try {
 				DatabaseController db = DatabaseController.getInstance();

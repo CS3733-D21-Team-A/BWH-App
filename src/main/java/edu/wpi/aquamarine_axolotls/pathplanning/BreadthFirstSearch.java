@@ -24,7 +24,7 @@ public class BreadthFirstSearch extends AbsAlgorithmMethod {
      * @param endID The ID of the node to go to
      * @return
      */
-    public List<Node> getPathImpl(String startID, String endID) {
+    public List<Map<String, String>> getPathImpl(String startID, String endID) {
         Node start = getNode(startID);
         Node end = getNode(endID);
         LinkedList<Node> queue = new LinkedList<>(); //queue for tracking the next nodes to visit
@@ -61,6 +61,21 @@ public class BreadthFirstSearch extends AbsAlgorithmMethod {
             path = buildPath(cameFrom, end);
         }
 
-        return path;
+        List<Map<String, String>> nodeMapList = new ArrayList<Map<String, String>>();
+
+        for (Node node: path){
+            Map<String, String> nodeMap = new HashMap<String, String>();
+            nodeMap.put("NODEID", node.getNodeID());
+            nodeMap.put("XCOORD", String.valueOf(node.getXcoord()));
+            nodeMap.put("YCOORD", String.valueOf(node.getYcoord()));
+            nodeMap.put("NODETYPE", node.getNodeType());
+            nodeMap.put("BUILDING", node.getBuilding());
+            nodeMap.put("LONGNAME", node.getLongName());
+            nodeMap.put("SHORTNAME", node.getShortName());
+            nodeMap.put("FLOOR", node.getFloor());
+            nodeMapList.add(nodeMap);
+        }
+
+        return nodeMapList;
     }
 }

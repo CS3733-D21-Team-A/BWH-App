@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.db;
 
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -30,8 +31,8 @@ public class DatabaseControllerTest5 {
         user1.put("LASTNAME", "McMillan");
         user1.put("EMAIL", "Sean@gmail.com");
         user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-        user1.put("PASSWORD", "PasswordIsMyPassword");
         user1.put("TAKENSURVEY", "NO");
+        Security.addHashedPassword(user1,"aPassword");
 
         db.addUser(user1);
 

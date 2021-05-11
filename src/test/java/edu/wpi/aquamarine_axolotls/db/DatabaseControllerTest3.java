@@ -1,10 +1,9 @@
 package edu.wpi.aquamarine_axolotls.db;
 
-import edu.wpi.aquamarine_axolotls.db.enums.ATTRIBUTE;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import edu.wpi.aquamarine_axolotls.db.enums.STATUS;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
-import org.apache.derby.shared.common.error.DerbySQLIntegrityConstraintViolationException;
+import edu.wpi.aquamarine_axolotls.extras.Security;
 import org.junit.jupiter.api.*;
 
 import java.io.IOException;
@@ -19,9 +18,6 @@ public class DatabaseControllerTest3 {
 
     private final DatabaseController db = DatabaseController.getInstance();
 
-    public DatabaseControllerTest3() throws SQLException, IOException {
-    }
-
     @BeforeEach
     void resetDB() throws IOException, SQLException {
         db.emptyEdgeTable();
@@ -35,7 +31,7 @@ public class DatabaseControllerTest3 {
         user1.put("LASTNAME", "McMillan");
         user1.put("EMAIL", "Sean@gmail.com");
         user1.put("USERTYPE", DatabaseInfo.EMPLOYEE_TEXT);
-        user1.put("PASSWORD", "PasswordIsMyPassword");
+        Security.addHashedPassword(user1,"aPassword");
 
         db.addUser(user1);
 
@@ -978,6 +974,7 @@ public class DatabaseControllerTest3 {
 
     // has attribute
 
+    /* //ATTRIBUTES FUNCTIONALITY DEPRECATED DUE TO BEING UNUSED
     @Test
     public void testHasAttributeNodeFalse(){
         try {
@@ -1640,5 +1637,5 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetEdgesNoIDsError() throws SQLException {
         assertThrows(SQLException.class, () -> db.getEdges(new ArrayList<>()));
-    }
+    }*/
 }

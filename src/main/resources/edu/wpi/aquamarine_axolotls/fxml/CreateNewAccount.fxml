@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -15,6 +17,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.accountmanagement.NewAccount">
     <right>
@@ -47,7 +50,7 @@
             <children>
 
                 <Rectangle fill="#003da6" height="65.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
-                <GridPane layoutX="114.0" layoutY="111.0" prefHeight="755.0" prefWidth="635.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <GridPane layoutX="122.0" layoutY="79.0" prefHeight="768.0" prefWidth="711.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="577.0" minWidth="10.0" prefWidth="233.0" />
                     </columnConstraints>
@@ -60,6 +63,7 @@
                         <RowConstraints maxHeight="90.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="90.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="90.0" minHeight="60.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="90.0" minHeight="60.0" prefHeight="100.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
                         <JFXTextField fx:id="firstName" maxWidth="400.0" prefHeight="35.0" prefWidth="347.0" promptText="First Name">
@@ -84,7 +88,7 @@
                                 </JFXTextField>
                                 <JFXTextField fx:id="pronouns" prefHeight="27.0" prefWidth="175.0" promptText="Pronouns">
                                     <font>
-                                        <Font size="30.0" />
+                                        <Font name="Verdana" size="30.0" />
                                     </font>
                                     <HBox.margin>
                                         <Insets top="20.0" />
@@ -94,41 +98,98 @@
                         </HBox>
                         <JFXTextField fx:id="userName" maxWidth="400.0" prefHeight="25.0" prefWidth="250.0" promptText="Username" GridPane.rowIndex="3">
                             <font>
-                                <Font size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXTextField>
-                        <JFXTextField fx:id="email" maxWidth="400.0" prefHeight="25.0" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
+                        <JFXTextField fx:id="emailAddress" maxWidth="400.0" prefHeight="25.0" prefWidth="250.0" promptText="Email" GridPane.rowIndex="4">
                             <font>
-                                <Font size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
                         </JFXTextField>
                         <JFXTextField fx:id="phoneNumber" maxWidth="400.0" promptText="Phone Number" GridPane.rowIndex="5">
                             <font>
-                                <Font size="30.0" />
+                                <Font name="Verdana" size="29.0" />
                             </font>
                         </JFXTextField>
-                        <JFXTextField maxWidth="400.0" promptText="Password" GridPane.rowIndex="6">
+                        <JFXPasswordField fx:id="password" maxWidth="400.0" promptText="Password" GridPane.rowIndex="6">
                             <font>
-                                <Font size="30.0" />
+                                <Font name="Verdana" size="29.0" />
                             </font>
-                        </JFXTextField>
-                        <JFXTextField maxWidth="400.0" promptText="Confirm Password" GridPane.rowIndex="7">
+                        </JFXPasswordField>
+                        <JFXPasswordField fx:id="confirmPassword" maxWidth="400.0" promptText="Confirm Password" GridPane.rowIndex="7">
                             <font>
-                                <Font size="30.0" />
+                                <Font name="Verdana" size="30.0" />
                             </font>
-                        </JFXTextField>
+                        </JFXPasswordField>
+                  <JFXCheckBox fx:id="tfa" checkedColor="#f4ba47" text="Two-Factor Authentication" unCheckedColor="#003da6" GridPane.rowIndex="8">
+                     <font>
+                        <Font name="Verdana" size="29.0" />
+                     </font>
+                  </JFXCheckBox>
                     </children>
                 </GridPane>
-                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goHome" prefHeight="43.0" prefWidth="46.0" text=" ">
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
                     <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="42.0">
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
                             <image>
-                                <Image url="@../img/ServiceReq Icons/homeButton.png" />
+                                <Image url="@../img/image.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </JFXButton>
+            <Pane fx:id="tfaPane" layoutX="73.0" layoutY="90.0" prefHeight="677.0" prefWidth="729.0" style="-fx-background-color: white; visibility: false;">
+               <children>
+                  <Text layoutX="32.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Two Factor Authentication Confirmation" textAlignment="CENTER" wrappingWidth="649.619384765625">
+                     <font>
+                        <Font name="Verdana" size="35.0" />
+                     </font>
+                  </Text>
+                  <ImageView fx:id="tfaView" fitHeight="291.0" fitWidth="324.0" layoutX="32.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../img/Blue_X.png" />
+                     </image>
+                  </ImageView>
+                  <Line endX="-100.0" endY="-222.65560913085938" layoutX="472.0" layoutY="405.0" startX="-100.0" startY="135.1085205078125" stroke="#7d99c9" strokeWidth="3.0" />
+                  <Text layoutX="386.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please scan the QR code with your choice of two-factor authentication app and enter the authentication code below: " wrappingWidth="326.78265380859375">
+                     <font>
+                        <Font name="Verdana" size="30.0" />
+                     </font>
+                  </Text>
+                  <JFXTextField fx:id="verification" layoutX="396.0" layoutY="475.0" prefHeight="60.0" prefWidth="312.0" />
+                  <JFXButton layoutX="560.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#tfasubmit_button" prefHeight="61.0" prefWidth="200.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton layoutX="366.0" layoutY="580.0" maxHeight="-Infinity" maxWidth="150.0" minWidth="150.0" mnemonicParsing="false" onAction="#cancel2fa" prefHeight="61.0" prefWidth="150.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Cancel" textFill="#7d99c9">
+                     <font>
+                        <Font name="Verdana" size="20.0" />
+                     </font>
+                  </JFXButton>
+                  <Label fx:id="tfaSource" layoutX="20.0" layoutY="497.0" prefHeight="25.0" prefWidth="407.0" text="Secret: " wrapText="true">
+                     <font>
+                        <Font name="Verdana" size="10.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="verfIncorrect" layoutX="56.0" layoutY="630.0" prefHeight="58.0" prefWidth="621.0" style="visibility: false;" text="The verification code that you entered was incorrect. Please try again." wrapText="true">
+                     <font>
+                        <Font name="Verdana" size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
             </children>
         </Pane>
     </left>
+    <center>
+        <JFXButton fx:id="submitButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit_button" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#7d99c9" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Verdana" size="30.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets left="600.0" top="600.0" />
+            </BorderPane.margin>
+        </JFXButton>
+    </center>
+
 </BorderPane>
