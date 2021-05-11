@@ -32,12 +32,12 @@
                     <graphic>
                         <ImageView fitHeight="40.0" fitWidth="42.0">
                             <image>
-                                <Image url="@../img/image.png.jpg" />
+                                <Image url="@../img/image.png" />
                             </image>
                         </ImageView>
                     </graphic>
                 </JFXButton>
-            <Text layoutX="174.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." wrappingWidth="479.6227722167969">
+            <Text layoutX="174.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The text to speech API was used to provide optional read-aloud directions for the navigation element of the application. The Google Maps API was implemented to allow the user to.The ROS API was integrated to demonstrate the potential for navigating robots around the hospital and deliver items or clean messes. The SendMail API was added to the program to _________.  he TOTP APi was a two factor authentication system that was incorporated into SendMail to allow for a new user’s identity to be confirmed. The Brigham Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." wrappingWidth="479.6227722167969">
                <font>
                   <Font name="Verdana" size="33.0" />
                </font>
