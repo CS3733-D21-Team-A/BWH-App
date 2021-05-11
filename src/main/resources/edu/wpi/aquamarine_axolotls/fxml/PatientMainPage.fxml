@@ -172,7 +172,7 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                             <children>
-                                <JFXButton onAction="#serviceReqP" prefHeight="64.0" prefWidth="254.0" text="View Service Requests" textFill="#003da6" wrapText="true">
+                                <JFXButton onAction="#viewReqP" prefHeight="64.0" prefWidth="254.0" text="View Service Requests" textFill="#003da6" wrapText="true">
                                     <font>
                                         <Font name="Verdana" size="18.0" />
                                     </font>
