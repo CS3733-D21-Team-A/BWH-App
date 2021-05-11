@@ -36,7 +36,8 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     @FXML private TableColumn<CovidSurvey, String> lossOfTasteSmellColumn;
     @FXML private TableColumn<CovidSurvey, String> chillsColumn;
     @FXML private TableColumn<CovidSurvey, String> quarantineColumn;
-    @FXML private TableColumn<CovidSurvey, String> COVIDLikelyColumn;
+    @FXML private TableColumn<CovidSurvey, String> covidLikelyColumn;
+    @FXML private TableColumn<CovidSurvey, String> entryApprovedColumn;
 
     @FXML private JFXTabPane tabs;
     @FXML private Tab covidSurveys;
@@ -44,7 +45,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     DatabaseController db;
 
     private static final List<String> serviceRequestIndex;
-    private TableView curTable;
 
     static {
         serviceRequestIndex = new ArrayList<String>();
@@ -109,7 +109,8 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
             // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
-            COVIDLikelyColumn.setCellValueFactory(cellData -> cellData.getValue().isCovidLikelyProp());
+            covidLikelyColumn.setCellValueFactory(cellData -> cellData.getValue().isCovidLikelyProp());
+           // entryApprovedColumn.setCellValueFactory(cellData -> cellData.getValue().approvedEntryProp());
             feverColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("fever"));
             coughColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("cough"));
             shortnessOfBreathColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("shortnessOfBreath"));
@@ -122,8 +123,8 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             soreThroatColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("soreThroat"));
             nauseaDiarrheaColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("nauseaDiarrhea"));
 
-            COVIDLikelyColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStat));
-            COVIDLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
+            covidLikelyColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStat));
+            covidLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
                 @Override
                 public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
                     try {
@@ -181,10 +182,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     }
 
     public void createTabs(ObservableList names, ObservableList stats){
-        tabs.getSelectionModel().selectedItemProperty().addListener((ov, oldTab, newTab) ->{
-            curTable = (TableView) ((ScrollPane) newTab.getContent()).getContent();
-        });
-
         for (String serReqType : serviceRequestIndex){
             String s = serReqType;
 
@@ -329,6 +326,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         private String chills;
         private String quarantine;
         private StringProperty isCovidLikely;
+        private StringProperty entryApproved;
 
         public CovidSurvey(Map<String, String> survey) {
             this.username = survey.get("USERNAME");
@@ -345,6 +343,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.chills = survey.get("NEWCHILLS");
             try {
                 this.isCovidLikely = new SimpleStringProperty(db.getUserByUsername(survey.get("USERNAME")).get("COVIDLIKELY"));
+                this.entryApproved = new SimpleStringProperty(db.getUserByUsername(survey.get("USERNAME")).get("ENTRYAPPROVED"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
