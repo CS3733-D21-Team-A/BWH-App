@@ -86,7 +86,7 @@ public class Navigation extends GenericMap {
         });
 
         // TODO: CHANGE THIS
-        covidLikely = db.getUserByUsername(Aapp.username != null ? Aapp.username : "guest").get("COVIDLIKELY");
+        covidLikely = db.getUserByUsername(PREFERENCES.get(USER_NAME,null)).get("COVIDLIKELY");
 
         TreeItem<String> park = new TreeItem<>("Parking Spots");
         TreeItem<String> rest = new TreeItem<>("Restrooms");
@@ -223,8 +223,8 @@ public class Navigation extends GenericMap {
                 }
             }
         });
-
-        drawFloor("1");
+//
+//        drawFloor("1");
     }
 
 
@@ -276,7 +276,7 @@ public class Navigation extends GenericMap {
 
     public void drawFavorites(){
         try {
-            for(Map<String, String> fav : db.getFavoriteNodesForUser(Aapp.username)){
+            for(Map<String, String> fav : db.getFavoriteNodesForUser(PREFERENCES.get(USER_NAME,null))){
                 Map<String, String> node = db.getNode(fav.get("LOCATIONID"));
                 if(node.get("FLOOR").equals(FLOOR)){
                     String color;

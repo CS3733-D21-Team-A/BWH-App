@@ -1,6 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.jfoenix.controls.JFXToggleButton;
+import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -15,7 +16,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
-public class SideMenu extends Navigation{
+public class SideMenu extends GenericPage {
 
     @FXML
     public ImageView curArrow;
