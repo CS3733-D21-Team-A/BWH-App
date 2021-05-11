@@ -32,6 +32,8 @@ public class Aapp extends Application {
   public static SocketClient clientSender = null;
   public static Thread clientThreadReceiver = new Thread();
   public static SocketClient clientReceiver = null;
+  public static Thread clientInfoThreadReceiver = new Thread();
+  public static SocketClient clientInfoReceiver = null;
 
   @Override
   public void init() {
