@@ -31,19 +31,8 @@ public class Security {
 
 	final static private DatabaseController dbController = DatabaseController.getInstance();
 	final static private SecretGenerator secretGenerator = new DefaultSecretGenerator();
-	final static private CodeVerifier codeVerifier;
 
-	static {
-		TimeProvider tp;
-
-		try {
-			tp = new NtpTimeProvider("pool.ntp.org");
-		} catch (UnknownHostException e) {
-			System.out.println("Unable to establish connection with pool.ntp.org, reverting to system time for 2FA");
-			tp = new SystemTimeProvider();
-		}
-		codeVerifier = new DefaultCodeVerifier(new DefaultCodeGenerator(), tp);
-	}
+	final static private CodeVerifier codeVerifier = new DefaultCodeVerifier(new DefaultCodeGenerator(), new SystemTimeProvider());
 
 
 	/**

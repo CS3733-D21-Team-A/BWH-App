@@ -43,19 +43,19 @@
                   <Font name="Verdana" size="20.0" />
                </font>
             </JFXCheckBox>
-            <Pane fx:id="databasePane" layoutX="28.0" layoutY="521.0" prefHeight="188.0" prefWidth="431.0" style="visibility: false;">
+            <JFXButton fx:id="reloadDbButton" layoutX="35.0" layoutY="513.0" onAction="#reloadDB" pickOnBounds="false" prefHeight="64.0" prefWidth="331.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Reload Database Connection" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXButton>
+            <Pane fx:id="databasePane" layoutX="28.0" layoutY="594.0" prefHeight="115.0" prefWidth="431.0">
                <children>
-                  <JFXButton layoutX="19.0" layoutY="12.0" pickOnBounds="false" prefHeight="64.0" prefWidth="375.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Reload Database Connection" textFill="WHITE" visible="false">
-                     <font>
-                        <Font name="Verdana" size="20.0" />
-                     </font>
-                  </JFXButton>
-                  <Text layoutX="9.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Server Database Hostname:" textAlignment="CENTER" wrappingWidth="362.9222412109375">
+                  <Text layoutX="9.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Server Database Hostname:" textAlignment="CENTER" wrappingWidth="362.9222412109375">
                      <font>
                         <Font name="Verdana" size="20.0" />
                      </font>
                   </Text>
-                  <JFXTextField fx:id="hostLabel" layoutX="18.0" layoutY="132.0" prefHeight="43.0" prefWidth="283.0" text="Local Host">
+                  <JFXTextField fx:id="hostLabel" layoutX="14.0" layoutY="44.0" prefHeight="43.0" prefWidth="283.0" text="Localhost">
                      <font>
                         <Font name="Verdana" size="20.0" />
                      </font>

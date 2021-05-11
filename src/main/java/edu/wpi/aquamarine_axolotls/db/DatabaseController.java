@@ -49,7 +49,7 @@ public class DatabaseController {
 	 * @throws IOException Something went wrong.
 	 */
 	private DatabaseController() throws SQLException, IOException {
-		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null).getKey();
+		boolean dbExists = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null)).getKey();
 
 		TableFactory tableFactory = new TableFactory(connection);
 		nodeTable = tableFactory.getTable(TABLES.NODES);
@@ -113,7 +113,7 @@ public class DatabaseController {
 	 */
 	public boolean updateConnection() throws SQLException, IOException {
 		shutdownDB();
-		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null);
+		Pair<Boolean,Boolean> bools = connectToDB(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null));
 		boolean dbExists = bools.getKey();
 
 		nodeTable.setConnection(connection);
@@ -139,12 +139,13 @@ public class DatabaseController {
 	 * Connects to the Derby database
 	 * Note: This will fall back to the embedded database if unable to connect to the client-server database
 	 * Note: Creates a database if one isn't present
-	 * @param remote Whether to try and connect to the the client-server database
+	 * @param hostname hostname of server to conenct to. null if connecting to embedded database
 	 * @return Pair whose key is if we need to construct a new database and value is whether we are using the embedded database
 	 * @throws SQLException Something went wrong.
 	 */
-	private Pair<Boolean,Boolean> connectToDB(boolean remote) throws SQLException {
-		String connectionURL = "jdbc:derby:" + (remote ? "//localhost:1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
+	private Pair<Boolean,Boolean> connectToDB(String hostname) throws SQLException {
+		boolean remote = hostname != null;
+		String connectionURL = "jdbc:derby:" + (remote ? "//"+hostname+":1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
 		this.usingEmbedded = !remote;
 
 		boolean dbExists = true;
