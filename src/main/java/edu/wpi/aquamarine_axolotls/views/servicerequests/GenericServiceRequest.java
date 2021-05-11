@@ -4,9 +4,11 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.*;
@@ -23,6 +25,7 @@ public class GenericServiceRequest extends GenericPage {
    // JFXComboBox location; //TODO: Don't all requests need a location?
 
     DatabaseController db = DatabaseController.getInstance();
+    EmailService emailService = new EmailService();
 
     Map<String,String> sharedValues = new HashMap<>();
     Map<String,String> requestValues = new HashMap<>();
@@ -66,7 +69,7 @@ public class GenericServiceRequest extends GenericPage {
         shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));*/
 
     @FXML
-    void submit() throws SQLException {
+    void submit() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         for(FieldTemplate field : requestFieldList){
             if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
@@ -94,6 +97,10 @@ public class GenericServiceRequest extends GenericPage {
         System.out.println(db.getServiceRequest(serviceRequestType, requestID).toString());
 
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
+        String username = PREFERENCES.get(USER_NAME,null);
+        String email = db.getUserByUsername(username).get("EMAIL");
+
+        emailService.sendServiceRequestConfirmation(email, username, requestValues);
         sceneSwitch("DefaultServicePage");
     }
 

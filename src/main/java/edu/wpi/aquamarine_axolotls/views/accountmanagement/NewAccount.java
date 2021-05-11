@@ -9,6 +9,7 @@ import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Observer;
@@ -71,12 +72,14 @@ public class NewAccount extends GenericPage {
     private JFXCheckBox tfa;
 
     private DatabaseController db;
+    private EmailService emailService;
 
     private Security security;
 
     @FXML
     public void initialize() throws SQLException, IOException, URISyntaxException {
         db = DatabaseController.getInstance();
+        emailService = new EmailService();
         Subject subject = new Subject(2);
         Observer passwordObserver = new Observer(subject, passwordMatchLabel,
                 (a) -> a.get(0).equals(a.get(1)),
@@ -93,7 +96,7 @@ public class NewAccount extends GenericPage {
     }
 
     @FXML
-    public void submit_button(ActionEvent actionEvent) throws SQLException {
+    public void submit_button(ActionEvent actionEvent) throws SQLException, IOException {
         String email = emailAddress.getText();
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
@@ -145,6 +148,7 @@ public class NewAccount extends GenericPage {
             sceneSwitch ( "LogIn" );
 
         }
+        emailService.sendAccountCreationEmail(email, userName.getText(), firstName.getText());
     }
 
     public void tfaSelected(){

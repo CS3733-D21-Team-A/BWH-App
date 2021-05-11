@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public class ForgotPassword extends GenericPage {
@@ -31,7 +32,6 @@ public class ForgotPassword extends GenericPage {
         @FXML private Label label;
 
 
-
     private final DatabaseController db = DatabaseController.getInstance();
     private final EmailService emailService = new EmailService();
 
@@ -45,7 +45,8 @@ public class ForgotPassword extends GenericPage {
 
             try {
                 if(db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)){
-                    //send email here!
+                    String code = (int)(Math.random() * 1000000) + "";
+                    emailService.sendAccountResetEmail(email.getText(), username.getText(), code);
                     verfPane.setVisible ( true );
                     gridPane.setVisible ( false );
                     first.setVisible ( false );
@@ -54,12 +55,12 @@ public class ForgotPassword extends GenericPage {
 
                 }
                 else popUp ( "This account does not exist." ,"\n\n\n\n\nVerify that you have input the right username and email. ");
-            } catch (SQLException throwables) {
+            } catch (SQLException | IOException throwables) {
                 throwables.printStackTrace ( );
             }
         }
 
-        public void verifyEmailConf(){
+        public void verifyEmailConf() throws IOException {
             if(!verifyEmail.getText ().isEmpty ()){
                 String emailConf = "";
                 if(verifyEmail.getText ().equals(emailConf)){
