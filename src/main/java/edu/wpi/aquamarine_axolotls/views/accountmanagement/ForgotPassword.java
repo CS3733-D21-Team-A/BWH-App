@@ -62,6 +62,7 @@ public class ForgotPassword extends GenericPage {
 		try {
 			if (db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
 				String code = (int) (Math.random() * 1000000) + "";
+				System.out.println(code);
 				EmailService.sendAccountResetEmail(email.getText(), username.getText(), code);
 				verfPane.setVisible(true);
 				gridPane.setVisible(false);
@@ -91,7 +92,7 @@ public class ForgotPassword extends GenericPage {
 		}
 	}
 
-	public void finalSubmit() {
+	public void finalSubmit() throws SQLException {
 		if (password.getText().isEmpty() || confirmPassword.getText().isEmpty()) {
 			if (password.equals(confirmPassword)) {
 				Map<String, String> updated = new HashMap<>();

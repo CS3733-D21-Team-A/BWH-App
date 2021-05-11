@@ -5,32 +5,21 @@ import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import dev.samstevens.totp.exceptions.QrGenerationException;
-import dev.samstevens.totp.secret.DefaultSecretGenerator;
-import dev.samstevens.totp.secret.SecretGenerator;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.extras.EmailService;
-import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Observer;
 import edu.wpi.aquamarine_axolotls.views.observerpattern.Subject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.util.Pair;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
 import javax.swing.text.html.ImageView;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
@@ -56,14 +45,12 @@ public class NewAccount extends GenericPage {
 
 	@FXML
 	private JFXTextField verification;
-	@FXML
-	private ImageView view;
 
 	@FXML
 	private Label tfaSource;
 
 	@FXML
-	private Label passwordMatchLabel;
+	private Label passwordMatchLabel; //TODO: ADD THIS BACK TO FXML FILE
 
 	@FXML
 	private Label verfIncorrect;
@@ -74,15 +61,10 @@ public class NewAccount extends GenericPage {
 	@FXML
 	private JFXCheckBox tfa;
 
-	private DatabaseController db;
-	private EmailService emailService;
-
-	private Security security;
+	private DatabaseController db = DatabaseController.getInstance();
 
 	@FXML
 	public void initialize() throws SQLException, IOException, URISyntaxException {
-		db = DatabaseController.getInstance();
-		emailService = new EmailService();
 		Subject subject = new Subject(2);
 		Observer passwordObserver = new Observer(subject, passwordMatchLabel,
 			(a) -> a.get(0).equals(a.get(1)),
@@ -99,16 +81,9 @@ public class NewAccount extends GenericPage {
 	}
 
 	@FXML
-	public void submit_button(ActionEvent actionEvent) throws SQLException, IOException {
+	public void submit_button() throws SQLException, IOException {
 		String email = emailAddress.getText();
-		// maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
-/*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
-        Pattern pat = Pattern.compile(emailRegex);
-        if (!email.matches(pat.pattern())){
-            popUp("Failed Submission.", "\n\n\n\n\n\nInvalid email.");
-
-        }*/
 		if (firstName.getText().isEmpty() || lastName.getText().isEmpty() ||
 			emailAddress.getText().isEmpty() || userName.getText().isEmpty()) {
 			popUp("Failed Submission.", "\n\n\n\n\nPlease fill out all fields listed.");
@@ -131,7 +106,7 @@ public class NewAccount extends GenericPage {
 				return;
 			}
 		}
-		Map<String, String> user = new HashMap<String, String>();
+		Map<String, String> user = new HashMap<>();
 		user.put("USERNAME", userName.getText());
 		user.put("FIRSTNAME", firstName.getText());
 		user.put("LASTNAME", lastName.getText());
@@ -141,16 +116,14 @@ public class NewAccount extends GenericPage {
 		Security.addHashedPassword(user, password.getText());
 
 		db.addUser(user);
-		popUp("Account Success", "\n\n\n\n\n\nThe account you submitted was successfully created.");
 
 		if (tfa.isSelected()) {
 			tfaSelected();
 		} else {
 			popUp("Account Success", "\n\n\n\n\n\nThe account you submitted was successfully created.");
 			sceneSwitch("LogIn");
-
 		}
-		emailService.sendAccountCreationEmail(email, userName.getText(), firstName.getText());
+		EmailService.sendAccountCreationEmail(email, userName.getText(), firstName.getText());
 	}
 
 	public void tfaSelected() {
