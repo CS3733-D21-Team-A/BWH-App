@@ -4,9 +4,11 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
+import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.*;
@@ -56,17 +58,8 @@ public class GenericServiceRequest extends GenericPage {
 
     List<FieldTemplate> requestFieldList = new ArrayList<>();
 
-    /*
-    *   shared.put("REQUESTID", reqID);
-        shared.put("AUTHORID", Aapp.username);
-        shared.put("STATUS", "Unassigned");
-        shared.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
-        shared.put("FIRSTNAME", firstName.getText());
-        shared.put("LASTNAME", lastName.getText());
-        shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));*/
-
     @FXML
-    void submit() throws SQLException {
+    void submit() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         for(FieldTemplate field : requestFieldList){
             if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
@@ -91,10 +84,21 @@ public class GenericServiceRequest extends GenericPage {
         requestValues.put("REQUESTID",requestID);
 
         db.addServiceRequest(sharedValues,requestValues);
-        System.out.println(db.getServiceRequest(serviceRequestType, requestID).toString());
+        String user =  PREFERENCES.get ( USER_NAME ,null );
+
+
+        EmailService.sendServiceRequestConfirmation(
+                db.getUserByUsername ( user ).get ( "EMAIL"),
+                db.getUserByUsername ( user ).get ("USERNAME"),
+                new HashMap<String,String>() {{
+                    putAll(sharedValues);
+                    putAll(requestValues);
+                }}
+        );
 
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
-        sceneSwitch("DefaultServicePage");
+
+        goHome();
     }
 
     @FXML

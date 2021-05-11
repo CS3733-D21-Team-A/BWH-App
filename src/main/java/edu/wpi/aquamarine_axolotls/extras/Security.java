@@ -8,19 +8,18 @@ import dev.samstevens.totp.qr.QrData;
 import dev.samstevens.totp.qr.ZxingPngQrGenerator;
 import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
-import dev.samstevens.totp.time.NtpTimeProvider;
 import dev.samstevens.totp.time.SystemTimeProvider;
-import dev.samstevens.totp.time.TimeProvider;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import javafx.util.Pair;
 
-import java.net.UnknownHostException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.SQLException;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,32 +28,21 @@ public class Security {
 
 	final static private Charset CHARSET = StandardCharsets.ISO_8859_1;
 
-	final static private DatabaseController dbController = DatabaseController.getInstance();
-	final static private SecretGenerator secretGenerator = new DefaultSecretGenerator();
-	final static private CodeVerifier codeVerifier;
+	final static private DatabaseController DB_CONTROLLER = DatabaseController.getInstance();
 
-	static {
-		TimeProvider tp;
-
-		try {
-			tp = new NtpTimeProvider("pool.ntp.org");
-		} catch (UnknownHostException e) {
-			System.out.println("Unable to establish connection with pool.ntp.org, reverting to system time for 2FA");
-			tp = new SystemTimeProvider();
-		}
-		codeVerifier = new DefaultCodeVerifier(new DefaultCodeGenerator(), tp);
-	}
+	final static private SecretGenerator SECRET_GENERATOR = new DefaultSecretGenerator();
+	final static private CodeVerifier CODE_VERIFIER = new DefaultCodeVerifier(new DefaultCodeGenerator(), new SystemTimeProvider());
 
 
 	/**
-	 * Enables TOTP 2FA for the provided user
+	 * Enables TOTP 2FA for the provided user (Assumes provided user is already in the database)
 	 * @return User's TOTP secret and a QR code for it
 	 * @param username Username of user to enable TOTP 2FA for
 	 * @throws SQLException Something went wrong.
 	 */
 	public static Pair<String,byte[]> enableTOTP(String username) throws SQLException, QrGenerationException {
-		String secret = secretGenerator.generate();
-		dbController.editUser(username, new HashMap<String,String>() {{
+		String secret = SECRET_GENERATOR.generate();
+		DB_CONTROLLER.editUser(username, new HashMap<String,String>() {{
 			put("TOTPSECRET",secret);
 			put("MFAENABLED","true");
 		}});
@@ -69,7 +57,7 @@ public class Security {
 	 * @throws SQLException Something went wrong.
 	 */
 	public static boolean verifyTOTP(String username, String passcode) throws SQLException {
-		return codeVerifier.isValidCode(dbController.getUserByUsername(username).get("TOTPSECRET"), passcode);
+		return CODE_VERIFIER.isValidCode(DB_CONTROLLER.getUserByUsername(username).get("TOTPSECRET"), passcode);
 	}
 
 	/**
@@ -95,7 +83,7 @@ public class Security {
 	 * @throws SQLException Something went wrong.
 	 */
 	public static void disableTOTP(String username) throws SQLException {
-		dbController.editUser(username, new HashMap<String,String>() {{
+		DB_CONTROLLER.editUser(username, new HashMap<String,String>() {{
 			put("TOTPSECRET","");
 			put("MFAENABLED","false");
 		}});
@@ -144,13 +132,25 @@ public class Security {
 			System.out.println("SOMETHING WENT WRONG THIS SHOULD NEVER HAPPEN");
 		}
 
-		if (!dbController.checkUserExists(username)) return false;
-		Map<String,String> userMap = dbController.getUserByUsername(username);
+		if (!DB_CONTROLLER.checkUserExists(username)) return false;
+		Map<String,String> userMap = DB_CONTROLLER.getUserByUsername(username);
 
 		md.update(userMap.get("SALT").getBytes(CHARSET));
 
 		String hash = new String(md.digest(password.getBytes(CHARSET)), CHARSET);
 
 		return hash.equals(userMap.get("PASSWORD"));
+	}
+
+	/**
+	 * Generates a single-use verification code
+	 * @return a single-use verification code
+	 */
+	public static String generateOneTimeSecurityCode() { //credit: https://stackoverflow.com/questions/46261055/how-to-generate-a-securerandom-string-of-length-n-in-java
+		SecureRandom random = new SecureRandom();
+		byte[] bytes = new byte[16];
+		random.nextBytes(bytes);
+		Encoder encoder = Base64.getUrlEncoder().withoutPadding();
+		return encoder.encodeToString(bytes);
 	}
 }

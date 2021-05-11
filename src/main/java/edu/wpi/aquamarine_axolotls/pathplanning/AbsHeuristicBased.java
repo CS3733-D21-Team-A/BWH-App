@@ -118,7 +118,6 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
                 }
             }
         }
-        System.out.println("pathfound");
         //Build the actual path that we can return
         List<Node> foundPath = buildPath(cameFrom, goal);
         //Check if the created path is valid and return if it is

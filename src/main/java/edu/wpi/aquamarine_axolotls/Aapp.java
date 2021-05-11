@@ -76,6 +76,13 @@ public class Aapp extends Application {
       db.addUser(instanceUser);
     }
 
+    if (!db.checkUserExists(PREFERENCES.get(USER_NAME,null))) {
+      PREFERENCES.put(USER_TYPE, DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+      PREFERENCES.put(USER_NAME, PREFERENCES.get(INSTANCE_ID,null));
+      PREFERENCES.remove(USER_FIRST_NAME);
+      usertype = DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST);
+    }
+
 
     try {
       Parent root = FXMLLoader.load(getClass().getResource("fxml/" + usertype + "MainPage.fxml"));

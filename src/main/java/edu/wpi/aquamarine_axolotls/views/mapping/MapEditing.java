@@ -133,10 +133,25 @@ public class MapEditing extends GenericMap {
             deleteEdges.setVisible(false);
             addAnchorPoint.setVisible(false);
             for (Map<String, String> node: selectedNodesList){
-                nodesOnImage.get(node.get("NODEID")).setFill(darkBlue);
+                try {
+                    nodesOnImage.get(node.get("NODEID")).setFill(darkBlue);
+                    if (!db.getNode(node.get("NODEID")).get("FLOOR").equals(FLOOR)) {
+                        removeNodeOnImage(node.get("NODEID"));
+                    }
+                } catch(SQLException throwables){
+                    throwables.printStackTrace();
+                }
             }
             for (Map<String, String> edge: selectedEdgesList){
-                linesOnImage.get(edge.get("EDGEID")).setStroke(Color.BLACK);
+                try {
+                    String edgeID = edge.get("EDGEID");
+                    linesOnImage.get(edgeID).setStroke(Color.BLACK);
+                    if (!db.getNode(db.getEdge(edgeID).get("STARTNODE")).get("FLOOR").equals(FLOOR)) {
+                        removeEdgeOnImage(edgeID);
+                    }
+                } catch (SQLException throwables){
+                    throwables.printStackTrace();
+                }
             }
             selectedNodesList.clear();
             selectedEdgesList.clear();
@@ -222,6 +237,7 @@ public class MapEditing extends GenericMap {
                     String nodeID = node.get("NODEID");
                     removeNodeOnImage(nodeID);
                     for (Map<String, String> edge : db.getEdgesConnectedToNode(nodeID)){
+                        selectedEdgesList.remove(edge);
                         removeEdgeOnImage(edge.get("EDGEID"));
                     }
                     db.deleteNode(nodeID);
@@ -321,7 +337,7 @@ public class MapEditing extends GenericMap {
                 deleteEdges.setVisible(false);
             }
 
-            if (!selectedNodesList.isEmpty() || !anchor1.isEmpty() || !anchor2.isEmpty()){ //If there's nothing selected, set deselect to be invisible
+            if (!selectedNodesList.isEmpty() || !anchor1.isEmpty() || !anchor2.isEmpty() || !selectedEdgesList.isEmpty()){ //If there's nothing selected, set deselect to be invisible
                 deselect.setVisible(true);
             }
             else {
@@ -346,6 +362,7 @@ public class MapEditing extends GenericMap {
                     newCoords.put("XCOORD", String.valueOf(Math.round(inverseXScale(event.getX()))));
                     newCoords.put("YCOORD", String.valueOf(Math.round(inverseYScale(event.getY()))));
                     db.editNode(nodeBeingDragged, newCoords);
+                    deselect.fire();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -366,7 +383,7 @@ public class MapEditing extends GenericMap {
         myDialog.initModality(Modality.APPLICATION_MODAL);
         myDialog.centerOnScreen();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + "Node" + "PopUp" + ".fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/NodePopUp.fxml"));
 
             NodePopUp controller = new NodePopUp(this);
             loader.setController(controller);

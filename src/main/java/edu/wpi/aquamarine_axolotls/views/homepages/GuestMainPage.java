@@ -1,33 +1,20 @@
 package edu.wpi.aquamarine_axolotls.views.homepages;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
-import edu.wpi.aquamarine_axolotls.Aapp;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
-import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
-import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 
 public class GuestMainPage extends GenericPage {
 
     DatabaseController db = DatabaseController.getInstance();
 
-    @FXML Text userNameText;
-
-    @FXML
-    public void signInP(ActionEvent actionEvent) {
+	@FXML
+    public void signInP() {
         sceneSwitch("LogIn");
     }
 
@@ -52,6 +39,5 @@ public class GuestMainPage extends GenericPage {
 	public void covidSurveyPage() {
 		sceneSwitch("CovidSurvey");
 	}
-
 
 }

@@ -4,19 +4,19 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
-import java.awt.event.ActionEvent;
+
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class PatientMainPage extends GuestMainPage{
     @FXML StackPane serviceRequestPane;
 
-    public void initialize() {
-        startUp();
-    }
+    @FXML
+    Text userNameText;
 
-    public void startUp() {
+    public void initialize() {
         userNameText.setText(PREFERENCES.get(USER_TYPE,null) + ": " + PREFERENCES.get(USER_FIRST_NAME,null));
 
         serviceRequestPane.setOnMouseExited(mouseEvent -> {

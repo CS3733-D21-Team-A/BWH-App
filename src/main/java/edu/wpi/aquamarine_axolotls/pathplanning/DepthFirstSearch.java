@@ -41,22 +41,14 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
             result = depthFirstRecursive(startID, endID, visited);
             //If the result ends up as null, that means there was no path, so that will be the final output
             if (result == null) {
-                System.out.println("Couldn't find a path between those nodes");
                 return null;
             }
         }
 
         //IF we got a valid path, we'll initialize the final list of results from the IDs of the nodes on the path
         List<String> resultStrings = new ArrayList<>();
-        for (int j = 0; j < result.size(); j++) {
-            resultStrings.add(result.get(j).getNodeID());
-        }
-
-        //Print out path
-        System.out.println("Successfully found a path from node " + startID + " to node " + endID + "!");
-        System.out.println("Final path: ");
-        for (int i = 0; i < resultStrings.size(); i++) {
-            System.out.println(resultStrings.get(i));
+        for (Node node : result) {
+            resultStrings.add(node.getNodeID());
         }
 
         List<Map<String, String>> nodeMapList = new ArrayList<Map<String, String>>();
@@ -87,7 +79,6 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
     public List<Node> depthFirstRecursive(String startID, String endID, List<Node> visited) {
         //If either start or end are null, indicate that they're invalid
         if (getNode(startID) == null || getNode(endID) == null) {
-            System.out.println("Invalid start or end ID");
             return null;
         }
 
