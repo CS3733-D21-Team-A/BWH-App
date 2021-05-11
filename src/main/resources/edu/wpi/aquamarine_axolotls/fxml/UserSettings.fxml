@@ -67,7 +67,7 @@
                   </JFXTextField>
                </children>
             </Pane>
-            <JFXButton cancelButton="true" layoutX="35.0" layoutY="233.0" onAction="#forgotPasswordP" prefHeight="79.0" prefWidth="281.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Forgot Password" textFill="WHITE">
+            <JFXButton cancelButton="true" layoutX="35.0" layoutY="233.0" onAction="#forgotPasswordP" prefHeight="79.0" prefWidth="281.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Reset Password" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="25.0" />
                </font>
