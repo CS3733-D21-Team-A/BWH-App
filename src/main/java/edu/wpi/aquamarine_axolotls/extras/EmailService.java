@@ -14,7 +14,7 @@ import static edu.wpi.aquamarine_axolotls.Settings.EMAIL_API_KEY;
 import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
 
 public class EmailService {
-	public EmailService(){} //no instantiation allowed
+	private EmailService(){} //no instantiation allowed
 
 	private static final String ACCOUNT_CONFIRM_TEMPLATE = "d-ae1015ad10034e53845d03c85698f60a";
 	private static final String ACCOUNT_RESET_TEMPLATE = "d-73eda03e75b843fca186dd142c4a7611";
