@@ -189,7 +189,10 @@ public class UserSettings extends GenericPage {
 				tfadisable.close();
 				cancel2fa();
 			});
-			cancel_button.setOnAction(event -> tfadisable.close());
+			cancel_button.setOnAction(event -> {
+				tfa.setSelected(true);
+				tfadisable.close();
+			});
 			content.setActions(cancel_button, disable);
 			tfadisable.show();
 		}
