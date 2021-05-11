@@ -145,7 +145,7 @@ public class DatabaseController {
 	 */
 	private Pair<Boolean,Boolean> connectToDB(String hostname) throws SQLException {
 		boolean remote = hostname != null;
-		String connectionURL = "jdbc:derby:" + (remote ? "//"+hostname+":1527/SERVER_BWH_DB" : "EMBEDDED_BWH_DB");
+		String connectionURL = "jdbc:derby:" + (remote ? "//"+hostname+":1527/SERVER_BWH_DB" : "derby/EMBEDDED_BWH_DB");
 		this.usingEmbedded = !remote;
 
 		boolean dbExists = true;
@@ -156,7 +156,7 @@ public class DatabaseController {
 			} catch (SQLNonTransientConnectionException e) {
 				if (e.getSQLState().equals("08001")) {
 					System.out.println("Unable to establish Client-Server connection. Falling back to embedded database.");
-					connectionURL = "jdbc:derby:EMBEDDED_BWH_DB";
+					connectionURL = "jdbc:derby:derby/EMBEDDED_BWH_DB";
 					usingEmbedded = true;
 				} else dbExists = false;
 			}
@@ -188,12 +188,12 @@ public class DatabaseController {
 	 */
 	boolean shutdownDB() {
 		if (!usingEmbedded) {
-			System.out.println("Warning: Not allowed to shut down remote database. Action ignored");
+			//System.out.println("Warning: Not allowed to shut down remote database. Action ignored");
 			return false;
 		}
 
 		try {
-			DriverManager.getConnection("jdbc:derby:EMBEDDED_BWH_DB;shutdown=true", "admin", "admin");
+			DriverManager.getConnection("jdbc:derby:derby/EMBEDDED_BWH_DB;shutdown=true", "admin", "admin");
 			return false; // Shutting down a database should throw an exception. If it doesn't, something went wrong!
 		} catch (SQLException e) {
 			return true; // Shutting down a database throws an exception!
