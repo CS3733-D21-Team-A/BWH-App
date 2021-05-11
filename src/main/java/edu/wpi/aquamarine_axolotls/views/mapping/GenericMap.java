@@ -1,10 +1,7 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
-import com.jfoenix.controls.JFXButton;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
-import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
@@ -13,7 +10,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -22,7 +18,6 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,6 +68,7 @@ public abstract class GenericMap extends GenericPage {
     Polygon currentPathArrow;
 
     List<Map<String, String>> selectedNodesList = new ArrayList<>();
+    List<Map<String, String>> selectedEdgesList = new ArrayList<>();
     String FLOOR = "1";
     Group zoomGroup;
     int zoomLevel;
@@ -92,8 +88,7 @@ public abstract class GenericMap extends GenericPage {
     public void startUp(){
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
-            else mapScrollPane.pannableProperty().set(false);
+            mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY);
         });
 
         Group contentGroup = new Group();
@@ -256,6 +251,7 @@ public abstract class GenericMap extends GenericPage {
             updatedNode.setFill(darkBlue); // could be changed
             updatedNode.toFront();
             updatedNode.setStroke(darkBlue);
+            updatedNode.setVisible(true);
             setNodeOnImage(updatedNode, nodeID);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -284,6 +280,14 @@ public abstract class GenericMap extends GenericPage {
         return mapView.getChildren().indexOf(nodesOnImage.get(nodeID));
     }
 
+    /**
+     * Gets the index of the line on the map that corresponds to edgeID
+     * @param edgeID a ID that links to an edge in the database
+     * @return
+     */
+    public int getEdgeIndexOnImage(String edgeID){
+        return mapView.getChildren().indexOf(linesOnImage.get(edgeID));
+    }
 
     /**
      * Changes the color of the circle representing the nodeID on the map
@@ -294,7 +298,7 @@ public abstract class GenericMap extends GenericPage {
         Circle currentNode = nodesOnImage.get(nodeID);
         currentNode.toFront();
         currentNode.setFill(color);
-
+        setNodeOnImage(currentNode, nodeID);
     }
 
     /**
@@ -324,6 +328,15 @@ public abstract class GenericMap extends GenericPage {
         edge.setStroke(color);
     }
 
+    /**
+     * Removes a given edgeID from the map
+     * @param edgeID a ID that links to a edge in the database
+     */
+    public void removeEdgeOnImage(String edgeID){
+        int index = getEdgeIndexOnImage(edgeID);
+        linesOnImage.remove(edgeID);
+        mapView.getChildren().remove(index);
+    }
 
     /**
      * Re-draws all the edges connected to a particular node
@@ -357,12 +370,6 @@ public abstract class GenericMap extends GenericPage {
      * Pop up that happens when user clicks a node
      */
     public abstract void nodePopUp();
-
-
-    /**
-     * Pop up that happens when user clicks an edge
-     */
-    public abstract void edgePopUp();
 
 
 //=== DRAW FUNCTIONS ===//
@@ -422,6 +429,16 @@ public abstract class GenericMap extends GenericPage {
 
 
     //====EDGE FUNCTIONS
+    /**
+     * Draws all edges on the current floor, check for floor is in drawTwoNodesWithEdge
+     * @param colorOfNodes
+     * @throws SQLException
+     */
+    //public void drawEdges(Color colorOfNodes) throws SQLException {
+    //    for (Map<String, String> edge : db.getEdges())
+    //        drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+    //}
+
 
     /**
       * Draws a line on the map that represents an edge.
@@ -473,12 +490,21 @@ public abstract class GenericMap extends GenericPage {
         edge.setStrokeWidth(magicNumber);
         edge.setFill(edgeCol);
 
+        String edgeID = startID + "_" + endID;
+
         //Opening the popup menu
         edge.setOnMouseClicked((MouseEvent e) ->{
-            if(e.getClickCount() == 2){
-                state = "Edit";
-                currentID = startID+"_"+endID;
-                edgePopUp();
+
+            try {
+                if (selectedEdgesList.contains(db.getEdge(edgeID))) {
+                    selectedEdgesList.remove(db.getEdge(edgeID));
+                    edge.setStroke(Color.BLACK);
+                } else {
+                    selectedEdgesList.add(db.getEdge(edgeID));
+                    edge.setStroke(yellow);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
         });
 
@@ -493,7 +519,6 @@ public abstract class GenericMap extends GenericPage {
             edge.setStrokeWidth(magicNumber);
         });
 
-        String edgeID = startID + "_" + endID;
         if(linesOnImage.containsKey(edgeID)){
             Line key = linesOnImage.get(edgeID);
             mapView.getChildren().set(mapView.getChildren().indexOf(key), edge);
@@ -531,7 +556,7 @@ public abstract class GenericMap extends GenericPage {
 
     /**
      * Draws up and down arrows to signify floor change for a given edge
-     *
+     * //TODO: UPDATE THIS JAVADOC
      */
     void drawArrow(Map<String, String> startNode, Map<String, String> endNode) { // TODO : investigate stairs arrows not being drawn
         String startFloor = startNode.get("FLOOR");
