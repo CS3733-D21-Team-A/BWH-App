@@ -187,8 +187,11 @@ public class SideMenu extends GenericPage {
         TreeItem<String> root = new TreeItem<>("");
         root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
         TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
+        treeTableColumn1.setPrefWidth(348);
+        treeTableColumn1.setResizable(false);
         treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
                 new ReadOnlyStringWrapper(p.getValue().getValue()));
+        treeTableColumn1.sortableProperty().set(false);
         treeTable.setRoot(root);
         treeTable.setShowRoot(false);
         treeTable.getColumns().add(treeTableColumn1);
