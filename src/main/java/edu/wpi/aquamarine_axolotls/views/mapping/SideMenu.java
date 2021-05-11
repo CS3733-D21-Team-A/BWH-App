@@ -1,20 +1,31 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
 import com.jfoenix.controls.JFXToggleButton;
+import edu.wpi.aquamarine_axolotls.Aapp;
+import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
+import java.util.Map;
+
+import static edu.wpi.aquamarine_axolotls.Settings.PREFERENCES;
+import static edu.wpi.aquamarine_axolotls.Settings.USER_NAME;
 
 public class SideMenu extends GenericPage {
 
@@ -39,8 +50,12 @@ public class SideMenu extends GenericPage {
 
     Navigation navController;
 
+    DatabaseController db = DatabaseController.getInstance();
+
     @FXML
     JFXToggleButton voiceDirection;
+
+    TreeItem<String> fav = new TreeItem<>("Favorites");
 
     double eta;
 
@@ -68,6 +83,124 @@ public class SideMenu extends GenericPage {
         startLabel.setText("Start Location");
         endLabel.setText("End Location");
         navController.clearNav();
+    }
+
+    public void addToFavorites(String nodeID){
+        try {
+            Map<String, String > node = db.getNode(nodeID);
+            if(fav.getChildren().size() == 0) treeTable.getRoot().getChildren().add(0, fav);
+            db.addFavoriteNodeToUser(PREFERENCES.get(USER_NAME,null), nodeID, node.get("LONGNAME"));
+            fav.getChildren().add(new TreeItem<String>(node.get("LONGNAME")));
+            if(node.get("NODETYPE").equals("PARK")) navController.changeNodeColorOnImage(nodeID, javafx.scene.paint.Color.YELLOW);
+            else navController.changeNodeColorOnImage(nodeID, Color.HOTPINK);
+            treeTable.refresh();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public void deleteFromFavorites(String nodeID){
+        try {
+            Map<String, String> node = db.getNode(nodeID);
+            if(node != null) {
+                if(db.getFavoriteNodeByUserAndName(PREFERENCES.get(USER_NAME,null), node.get("LONGNAME")) != null){
+                    for (int i = 0; i < fav.getChildren().size(); i++) {
+                        String nodeName = fav.getChildren().get(i).getValue();
+                        if (nodeName.equals(node.get("LONGNAME"))) {
+                            fav.getChildren().remove(i);
+                            db.deleteFavoriteNodeFromUser(PREFERENCES.get(USER_NAME,null), nodeName);
+                            navController.changeNodeColorOnImage(nodeID, Color.BLUE);
+                            break;
+                        }
+                    }
+                    if(fav.getChildren().isEmpty()) treeTable.getRoot().getChildren().remove(0);
+                    treeTable.refresh();
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+    }
+
+    public void setUpTree(){
+        TreeItem<String> park = new TreeItem<>("Parking Spots");
+        TreeItem<String> rest = new TreeItem<>("Restrooms");
+        TreeItem<String> stai = new TreeItem<>("Stairs");
+        TreeItem<String> dept = new TreeItem<>("Departments");
+        TreeItem<String> labs = new TreeItem<>("Laboratories");
+        TreeItem<String> info = new TreeItem<>("Help Desks");
+        TreeItem<String> conf = new TreeItem<>("Conference Rooms");
+        TreeItem<String> exit = new TreeItem<>("Entrances");
+        TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
+        TreeItem<String> serv = new TreeItem<>("Non Medical Services");
+        fav = new TreeItem<>("Favorites");
+
+
+        try {
+            for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
+                if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
+                    String nodeType = node.get("NODETYPE");
+                    String longName = node.get("LONGNAME");
+                    switch (nodeType){
+                        case "PARK":
+                            park.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "REST":
+                            rest.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "STAI":
+                            stai.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "DEPT":
+                            dept.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "LABS":
+                            labs.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "INFO":
+                            info.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "CONF":
+                            conf.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "EXIT":
+    //                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
+                            //                      if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
+                            exit.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "RETL":
+                            retl.getChildren().add(new TreeItem<>(longName));
+                            break;
+                        case "SERV":
+                            serv.getChildren().add(new TreeItem<>(longName));
+                            break;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        TreeItem<String> root = new TreeItem<>("");
+        root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
+        TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
+        treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
+                new ReadOnlyStringWrapper(p.getValue().getValue()));
+        treeTable.setRoot(root);
+        treeTable.setShowRoot(false);
+        treeTable.getColumns().add(treeTableColumn1);
+        try {
+            List<Map<String, String>> favorites = db.getFavoriteNodesForUser(PREFERENCES.get(USER_NAME,null));
+            for(Map<String, String> node: favorites) fav.getChildren().add(new TreeItem<>(node.get("NODENAME")));
+            if(favorites.isEmpty()) treeTable.getRoot().getChildren().remove(0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void findPath() {

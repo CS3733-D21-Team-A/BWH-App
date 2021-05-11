@@ -16,7 +16,7 @@
            <children>
                <HBox prefHeight="42.0" prefWidth="351.0">
                    <children>
-                       <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="55.0" prefWidth="65.0" text=" ">
+                       <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="55.0" prefWidth="65.0" text=" ">
                            <graphic>
                                <ImageView fitHeight="33.5" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                                    <image>

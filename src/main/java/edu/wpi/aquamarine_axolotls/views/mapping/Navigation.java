@@ -56,6 +56,8 @@ public class Navigation extends GenericMap {
     MenuItem removeStop = new MenuItem("Remove ");
     MenuItem addStart = new MenuItem("Add Starting Point");
     MenuItem addEnd = new MenuItem("Make Ending Point");
+    MenuItem addFav = new MenuItem("Add Favorite");
+    MenuItem deleteFav = new MenuItem("Delete Favorite");
     MenuItem changeToStart = new MenuItem("Change to Start");
     MenuItem changeToEnd = new MenuItem("Change to End");
     MenuItem makeIntermediatePoint = new MenuItem("Make Intermediate Point");
@@ -88,69 +90,8 @@ public class Navigation extends GenericMap {
         // TODO: CHANGE THIS
         covidLikely = db.getUserByUsername(PREFERENCES.get(USER_NAME,null)).get("COVIDLIKELY");
 
-        TreeItem<String> park = new TreeItem<>("Parking Spots");
-        TreeItem<String> rest = new TreeItem<>("Restrooms");
-        TreeItem<String> stai = new TreeItem<>("Stairs");
-        TreeItem<String> dept = new TreeItem<>("Departments");
-        TreeItem<String> labs = new TreeItem<>("Laboratories");
-        TreeItem<String> info = new TreeItem<>("Help Desks");
-        TreeItem<String> conf = new TreeItem<>("Conference Rooms");
-        TreeItem<String> exit = new TreeItem<>("Entrances");
-        TreeItem<String> retl = new TreeItem<>("Non Medical Commercial Areas");
-        TreeItem<String> serv = new TreeItem<>("Non Medical Services");
-        TreeItem<String> fav = new TreeItem<>("Favorites");
 
-        for (Map<String, String> node: db.getNodes()) { // TODO : make db method to get nodes that arent hall/walk
-            if(!(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))){
-                String nodeType = node.get("NODETYPE");
-                String longName = node.get("LONGNAME");
-                switch (nodeType){
-                    case "PARK":
-                        park.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "REST":
-                        rest.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "STAI":
-                        stai.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "DEPT":
-                        dept.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "LABS":
-                        labs.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "INFO":
-                        info.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "CONF":
-                        conf.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "EXIT":
-//                        if (covidLikely.equals("true") && node.get("LONGNAME").equals("75 Francis Valet Drop-off")) break;
-  //                      if (covidLikely.equals("false") && node.get("LONGNAME").equals("Emergency Department Entrance")) break;
-                        exit.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "RETL":
-                        retl.getChildren().add(new TreeItem<>(longName));
-                        break;
-                    case "SERV":
-                        serv.getChildren().add(new TreeItem<>(longName));
-                        break;
-                }
-            }
-        }
-
-        TreeItem<String> root = new TreeItem<>("");
-        root.getChildren().addAll(fav, park, rest, stai, dept, labs, info, conf, exit, retl, serv);
-        TreeTableColumn<String, String> treeTableColumn1 = new TreeTableColumn<>("Locations");
-        treeTableColumn1.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> p) ->
-                new ReadOnlyStringWrapper(p.getValue().getValue()));
-        sideControllers.get(0).treeTable.setRoot(root);
-        sideControllers.get(0).treeTable.setShowRoot(false);
-        sideControllers.get(0).treeTable.getColumns().add(treeTableColumn1);
-
-        // remove from stop list
+        currentMenu.setUpTree();
 
 
         removeStop.setOnAction((ActionEvent e) -> {
@@ -204,10 +145,18 @@ public class Navigation extends GenericMap {
             if(stopList.size() >= 2) findPath();
         });
 
+        addFav.setOnAction((ActionEvent e) ->{
+            sideControllers.get(0).addToFavorites(currentNodeIDContextMenu);
+        });
+
+        deleteFav.setOnAction((ActionEvent e)->{
+            sideControllers.get(0).deleteFromFavorites(currentNodeIDContextMenu);
+        });
+
         // TODO : figure this out
         makeIntermediatePoint.setOnAction((ActionEvent e) ->{
         });
-        contextMenu.getItems().addAll(removeStop, addStart, addEnd, changeToStart, changeToEnd, makeIntermediatePoint);
+        contextMenu.getItems().addAll(removeStop, addStart, addEnd, changeToStart, changeToEnd, makeIntermediatePoint, addFav, deleteFav);
 
         sideControllers.get(0).treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
@@ -290,6 +239,8 @@ public class Navigation extends GenericMap {
         changeToStart.setVisible(false);
         changeToEnd.setVisible(false);
         makeIntermediatePoint.setVisible(false);
+        deleteFav.setVisible(false);
+        addFav.setVisible(false);
     }
 
     @Override
@@ -298,11 +249,21 @@ public class Navigation extends GenericMap {
         node.setOnMouseClicked((MouseEvent e) -> {
             if (e.getButton().equals(MouseButton.SECONDARY)) {
                 currentNodeIDContextMenu = nodeID;
-                currentNodeIDContextMenu = nodeID;
                 resetContextMenu();
                  // maybe remove?
                 if(stopList.size() == 0){
                     addStart.setVisible(true);
+                    try {
+                        if(!PREFERENCES.get(USER_TYPE, null).equals("Guest")) {
+                            if(db.getFavoriteNodeByUserAndName(PREFERENCES.get(USER_NAME, null), db.getNode(currentNodeIDContextMenu).get("LONGNAME")) != null){
+                                deleteFav.setVisible(true);
+                            }else{
+                                addFav.setVisible(true);
+                            }
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 }
                 if(stopList.size() >= 1){
                     changeToStart.setVisible(true);
@@ -314,6 +275,7 @@ public class Navigation extends GenericMap {
                 if(stopList.contains(currentNodeIDContextMenu)){
                     removeStop.setVisible(true);
                 }
+
                 contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
 
             }
@@ -404,7 +366,7 @@ public class Navigation extends GenericMap {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        currentPath.get(0).get("FLOOR");
+//        currentPath.get(0).get("FLOOR");
         for(int i = 0; i < currentPath.size() - 1; i++){
             Map<String, String> node = currentPath.get(i);
             Map<String, String> nextNode = currentPath.get(i+1);
