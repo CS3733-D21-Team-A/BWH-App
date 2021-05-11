@@ -177,9 +177,5 @@ public class NodePopUp extends GenericPage {
         mapController.changeNodeColorOnImage(nodeIDTextField.getText(), GenericMap.darkBlue);
     }
 
-
-    public void loadHelp() {
-
-    }
 }
 
