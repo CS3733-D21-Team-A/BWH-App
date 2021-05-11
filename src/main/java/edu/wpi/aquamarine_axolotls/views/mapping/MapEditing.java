@@ -117,13 +117,16 @@ public class MapEditing extends GenericMap {
             if(selectedNode == null) return;
             if(anchor1.isEmpty()){
                 anchor1 = selectedNode;
+                if(selectedNodesList.contains(selectedNode)) selectedNodesList.remove(selectedNode);
                 addAnchorPoint.setText("Add 2nd Anchor Point");
             }
             else {
                 anchor2 = selectedNode;
+                if(selectedNodesList.contains(selectedNode)) selectedNodesList.remove(selectedNode);
                 addAnchorPoint.setText("Change 2nd Anchor Point");
             }
-            changeNodeColorOnImage(selectedNode.get("NODEID"), Color.PURPLE);
+            nodesOnImage.get(selectedNode.get("NODEID")).setFill(Color.PURPLE);
+//            changeNodeColorOnImage(selectedNode.get("NODEID"), Color.PURPLE);
 
         });
 
@@ -419,6 +422,11 @@ public class MapEditing extends GenericMap {
             for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
                 drawSingleNode(node.get("NODEID"), colorOfNodes);
             }
+            for (Map<String, String> node: selectedNodesList) {
+                drawSingleNode(node.get("NODEID"), yellow);
+            }
+            if(!anchor1.isEmpty()) drawSingleNode(anchor1.get("NODEID"), Color.PURPLE);
+            if(!anchor2.isEmpty()) drawSingleNode(anchor2.get("NODEID"), Color.PURPLE);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -431,6 +439,8 @@ public class MapEditing extends GenericMap {
         try {
             for (Map<String, String> edge : db.getEdges())
                 drawSingleEdge(edge.get("STARTNODE"), edge.get("ENDNODE"), Color.BLACK);
+            for (Map<String, String> edge : selectedEdgesList)
+                drawSingleEdge(edge.get("STARTNODE"), edge.get("ENDNODE"), yellow);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -449,33 +459,32 @@ public class MapEditing extends GenericMap {
 
                 //System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2) {
-                    node.setFill(yellow);
-                    System.out.println("Successfully clicked node");
-                    currentID = nodeID;
-                    state = "Edit";
-                    editPopUp();
+                    if(e.isStillSincePress()){
+                        node.setFill(yellow);
+                        System.out.println("Successfully clicked node");
+                        currentID = nodeID;
+                        state = "Edit";
+                        editPopUp();
+                    }
                 }
                 //Otherwise, single clicks will select/deselect nodes
                 else {
                     Circle currentCircle = nodesOnImage.get(nodeID);
-                    if (currentCircle.getFill().equals(yellow)) {
-                        try {
-                            selectedNodesList.remove(db.getNode(nodeID));
-                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
+                    Map<String, String> nodeMap = new HashMap<String, String>();
+                    try{
+                        nodeMap = db.getNode(nodeID);
+                    } catch (SQLException throwables){
+                        throwables.printStackTrace();
+                    }
+                    if (selectedNodesList.contains(nodeMap)) {
+                            selectedNodesList.remove(nodeMap);
+                            if(!nodeMap.get("FLOOR").equals(FLOOR)){
+                                removeNodeOnImage(nodeID);
+                            }
                             node.setFill(darkBlue);
-                            //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    } else {
-                        try {
-                            selectedNodesList.add(db.getNode(nodeID));
-                            //contextMenu.getItems().get(1).setVisible(true);
+                    } else if (!anchor1.equals(nodeMap) && !anchor2.equals(nodeMap)){
+                            selectedNodesList.add(nodeMap);
                             currentCircle.setFill(yellow);
-                            //setNodeOnImage(currentCircle, nodeID);
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
                     }
                 }
             }
