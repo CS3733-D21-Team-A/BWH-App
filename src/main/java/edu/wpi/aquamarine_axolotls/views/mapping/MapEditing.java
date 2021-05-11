@@ -372,6 +372,7 @@ public class MapEditing extends GenericMap {
                     newCoords.put("XCOORD", String.valueOf(Math.round(inverseXScale(event.getX()))));
                     newCoords.put("YCOORD", String.valueOf(Math.round(inverseYScale(event.getY()))));
                     db.editNode(nodeBeingDragged, newCoords);
+                    deselect.fire();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
