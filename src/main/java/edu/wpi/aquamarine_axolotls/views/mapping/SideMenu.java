@@ -233,13 +233,33 @@ public class SideMenu extends GenericPage {
     }
 
     public void addToListOfDirections(String directionText){
+
+        String textToDisplay = directionText;
+        textToDisplay = textToDisplay.substring(textToDisplay.indexOf(' ') + 1);
+
         ImageView arrow = new ImageView(navController.textDirectionToImage(directionText));
         arrow.setFitHeight(50.0);
         arrow.setFitWidth(50.0);
-        Label directionLabel = new Label(directionText);
-        directionLabel.setWrapText(true);
-        HBox directionContainer = new HBox(10, arrow, directionLabel);
-        directionContainer.setAlignment(Pos.CENTER_LEFT);
+
+        HBox directionContainer;
+
+        if(textToDisplay.contains("You are now on Floor")){
+            textToDisplay = textToDisplay.substring(textToDisplay.indexOf('F'), textToDisplay.indexOf('.'));
+            Label directionLabel = new Label(textToDisplay);
+            directionLabel.setMaxWidth(240);
+            directionLabel.setMinWidth(240);
+            directionLabel.setWrapText(true);
+            directionContainer = new HBox(0, arrow, directionLabel);
+            directionContainer.setAlignment(Pos.CENTER_LEFT);
+        } else {
+            Label directionLabel = new Label(textToDisplay);
+            directionLabel.setMaxWidth(240);
+            directionLabel.setMinWidth(240);
+            directionLabel.setWrapText(true);
+            directionContainer = new HBox(0, arrow, directionLabel);
+            directionContainer.setAlignment(Pos.CENTER_RIGHT);
+        }
+
         listOfDirections.getChildren().add(directionContainer);
     }
 

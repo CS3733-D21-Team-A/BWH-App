@@ -320,11 +320,11 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
 
         if(path.get(0).getNodeType().equals("ELEV") && path.get(1).getNodeType().equals("ELEV")){
-            instructions.add(stepNum + ". Take the elevator to floor " + path.get(1).getFloor() + ".");
+            instructions.add(stepNum + ". Take the elevator to Floor " + path.get(1).getFloor() + ".");
             nodeIDS.add(path.get(0).getNodeID());
             stepNum++;
         } else if(path.get(0).getNodeType().equals("STAI") && path.get(1).getNodeType().equals("STAI")){
-            instructions.add(stepNum + ". Take the stairs to floor " + path.get(1).getFloor() + ".");
+            instructions.add(stepNum + ". Take the stairs to Floor " + path.get(1).getFloor() + ".");
             nodeIDS.add(path.get(0).getNodeID());
             stepNum++;
         } else {
@@ -338,17 +338,17 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
 
         for (int i = 1; i < path.size() - 1; i++){
             if(path.get(i).getNodeType().equals("ELEV") && path.get(i+1).getNodeType().equals("ELEV")){
-                instructions.add(stepNum + ". Take the elevator to floor " + path.get(i+1).getFloor() + ".");
+                instructions.add(stepNum + ". Take the elevator to Floor " + path.get(i+1).getFloor() + ".");
                 nodeIDS.add(path.get(i).getNodeID());
                 stepNum++;
             } else if(path.get(i).getNodeType().equals("STAI") && path.get(i+1).getNodeType().equals("STAI")){
-                instructions.add(stepNum + ". Take the stairs to floor " + path.get(i+1).getFloor() + ".");
+                instructions.add(stepNum + ". Take the stairs to Floor " + path.get(i+1).getFloor() + ".");
                 nodeIDS.add(path.get(i).getNodeID());
                 stepNum++;
             } else {
 
                 if(!path.get(i).getFloor().equals(path.get(i-1).getFloor())) {
-                    instructions.add(stepNum + ". You are now on floor " + path.get(i).getFloor() + ".");
+                    instructions.add(stepNum + ". You are now on Floor " + path.get(i).getFloor() + ".");
                     nodeIDS.add(path.get(i+1).getNodeID());
                     stepNum++;
                 } else{
@@ -446,11 +446,11 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
         String secondNodeFloor = path.get(1).get("FLOOR");
 
         if(firstNodeType.equals("ELEV") && secondNodeType.equals("ELEV")){
-            instructions.add(stepNum + ". Take the elevator to floor " + secondNodeFloor + ".");
+            instructions.add(stepNum + ". Take the elevator to Floor " + secondNodeFloor + ".");
             nodeIDS.add(firstNodeID);
             stepNum++;
         } else if(firstNodeType.equals("STAI") && secondNodeType.equals("STAI")){
-            instructions.add(stepNum + ". Take the stairs to floor " + secondNodeFloor + ".");
+            instructions.add(stepNum + ". Take the stairs to Floor " + secondNodeFloor + ".");
             nodeIDS.add(firstNodeID);
             stepNum++;
         } else {
@@ -469,17 +469,17 @@ public abstract class AbsAlgorithmMethod implements ISearchAlgorithmStrategy{
             Map<String, String> prevNode = path.get(i-1);
 
             if(thisNode.get("NODETYPE").equals("ELEV") && nextNode.get("NODETYPE").equals("ELEV")){
-                instructions.add(stepNum + ". Take the elevator to floor " + nextNode.get("FLOOR") + ".");
+                instructions.add(stepNum + ". Take the elevator to Floor " + nextNode.get("FLOOR") + ".");
                 nodeIDS.add(thisNode.get("NODEID"));
                 stepNum++;
             } else if(thisNode.get("NODETYPE").equals("STAI") && nextNode.get("NODETYPE").equals("STAI")){
-                instructions.add(stepNum + ". Take the stairs to floor " + nextNode.get("FLOOR") + ".");
+                instructions.add(stepNum + ". Take the stairs to Floor " + nextNode.get("FLOOR") + ".");
                 nodeIDS.add(thisNode.get("NODEID"));
                 stepNum++;
             } else {
 
                 if(!thisNode.get("FLOOR").equals(prevNode.get("FLOOR"))) {
-                    instructions.add(stepNum + ". You are now on floor " + thisNode.get("FLOOR") + ".");
+                    instructions.add(stepNum + ". You are now on Floor " + thisNode.get("FLOOR") + ".");
                     nodeIDS.add(thisNode.get("NODEID"));
                     stepNum++;
                 } else{

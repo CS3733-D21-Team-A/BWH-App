@@ -343,6 +343,7 @@ public class Navigation extends GenericMap {
         curPathDirections.clear();
         curPathDirections = SearchAlgorithmContext.getSearchAlgorithmContext().getTextDirections(currentPath);
         sideControllers.get(1).clearListOfDirections();
+        sideControllers.get(1).addToListOfDirections("0. You are now on Floor " + currentPath.get(0).get("FLOOR") + ".");
         for(String direction : curPathDirections.get(0)){
             sideControllers.get(1).addToListOfDirections(direction);
         }
