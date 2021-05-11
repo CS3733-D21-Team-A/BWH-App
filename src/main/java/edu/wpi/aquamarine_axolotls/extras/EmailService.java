@@ -32,9 +32,6 @@ public class EmailService {
 		request.setBody(mail.build());
 
 		Response response = new SendGrid(PREFERENCES.get(EMAIL_API_KEY,null)).api(request);
-		System.out.println(response.getStatusCode());
-		System.out.println(response.getBody());
-		System.out.println(response.getHeaders());
 	}
 
 

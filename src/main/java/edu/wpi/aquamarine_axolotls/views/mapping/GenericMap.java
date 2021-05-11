@@ -146,7 +146,6 @@ public abstract class GenericMap extends GenericPage {
     //=== ZOOM FUNCTIONS ===//
     public void zoom(){
         double tick = zoomSlider.getValue();
-        System.out.println(tick);
         zoomGroup.setScaleX(tick);
         zoomGroup.setScaleY(tick);
     }
@@ -367,7 +366,6 @@ public abstract class GenericMap extends GenericPage {
                 if (e.getClickCount() == 2) {
                     if(e.isStillSincePress()) {
                         node.setFill(yellow);
-                        System.out.println("Successfully clicked node");
                         currentID = nodeID;
                         state = "Edit";
                         nodePopUp();

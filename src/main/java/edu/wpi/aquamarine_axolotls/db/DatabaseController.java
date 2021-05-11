@@ -569,7 +569,6 @@ public class DatabaseController {
 			attrTable.addEntry(values);
 			return true;
 		}
-		System.out.println("Entry already has attribute!");
 		return false;
 	}
 

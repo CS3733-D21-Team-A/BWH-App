@@ -58,7 +58,6 @@ public class NodePopUp extends GenericPage {
     public void initialize() throws SQLException, IOException {
           db = mapController.db;
 
-        System.out.println(mapController.FLOOR);
         floorDropdown.setItems(FXCollections
                 .observableArrayList("L2","L1","1","2","3"));
         nodeTypeDropdown.setItems(FXCollections

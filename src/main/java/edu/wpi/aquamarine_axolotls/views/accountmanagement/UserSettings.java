@@ -96,7 +96,6 @@ public class UserSettings extends GenericPage {
 
 		username = PREFERENCES.get(USER_NAME, null);
 		try {
-			System.out.println(db.getUserByUsername(username).get("USERTYPE"));
 			databasePicker.setVisible(db.getUserByUsername(username).get("USERTYPE").equals("Admin"));
 
 			userName.setText(username);
