@@ -10,39 +10,64 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.shape.Rectangle?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.EmployeeRequests">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
+            prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.wpi.aquamarine_axolotls.views.servicerequests.EmployeeRequests">
     <children>
-        <JFXTabPane fx:id="tabs" layoutX="10.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="63.0">
+        <JFXTabPane fx:id="tabs" layoutX="10.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0"
+                    prefWidth="962.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0"
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="63.0">
             <tabs>
                 <Tab fx:id="covidSurveys" text="COVID Surveys">
                     <content>
                         <TableView fx:id="covidSurveyTable" prefHeight="750.0" prefWidth="2000.0">
                             <columns>
-                                <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
-                                <TableColumn fx:id="covidLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
-                                <TableColumn fx:id="entryApprovedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Entry Approved" />
-                                <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
-                                <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
-                                <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
-                                <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
-                                <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
-                                <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
-                                <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
-                                <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
-                                <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
-                                <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
-                                <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
+                                <TableColumn fx:id="usernameColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username"/>
+                                <TableColumn fx:id="covidLikelyColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely"/>
+                                <TableColumn fx:id="entryApprovedColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;"
+                                             text="Entry Approved"/>
+                                <TableColumn fx:id="quarantineColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;"
+                                             text="Quarantine/Self-Isolation"/>
+                                <TableColumn fx:id="feverColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever"/>
+                                <TableColumn fx:id="coughColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough"/>
+                                <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;"
+                                             text="Shortness of Breath"/>
+                                <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches"/>
+                                <TableColumn fx:id="tiredColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired"/>
+                                <TableColumn fx:id="nasalColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;"
+                                             text="Runny Nose/Nasal Congestion"/>
+                                <TableColumn fx:id="soreThroatColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat"/>
+                                <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;"
+                                             text="Nausea/Diarrhea"/>
+                                <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;"
+                                             text="Loss of Taste/Smell"/>
+                                <TableColumn fx:id="chillsColumn" prefWidth="150.0"
+                                             style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills"/>
                             </columns>
                         </TableView>
                     </content>
                 </Tab>
             </tabs>
         </JFXTabPane>
-        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="63.0" stroke="BLACK" strokeType="INSIDE" width="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-        <JFXButton layoutY="10.0" minWidth="51.0" onAction="#goBack" prefHeight="32.0" prefWidth="56.0" text=" " />
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="63.0" stroke="BLACK" strokeType="INSIDE"
+                   width="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+        <JFXButton layoutY="10.0" minWidth="51.0" onAction="#goBack" prefHeight="32.0" prefWidth="56.0" text=" "/>
         <ImageView fitHeight="33.0" fitWidth="35.0" layoutX="20.0" layoutY="15.0">
             <image>
-                <Image url="@../img/back icon.jpg" />
+                <Image url="@../img/back icon.jpg"/>
             </image>
         </ImageView>
     </children>

@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
+import static edu.wpi.aquamarine_axolotls.db.enums.USERTYPE.PATIENT;
 
 public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
 
@@ -200,8 +201,13 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     }
 
     public void createTabs(ObservableList names, ObservableList stats){
+        USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
+
         for (String serReqType : serviceRequestIndex){
             String s = serReqType;
+            if (usertype.equals(PATIENT) && s.equals("External Transport")){
+                break;
+            }
 
             TableView<Request> table = new TableView<Request>();
             table.setPrefSize(950.0, 750.0);
@@ -256,8 +262,6 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     }
                 }
             });
-
-            USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
 
             if (usertype != null) {
                 switch (usertype) {
