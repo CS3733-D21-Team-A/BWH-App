@@ -94,7 +94,6 @@ public class GenericServiceRequest extends GenericPage {
         requestValues.put("REQUESTID",requestID);
 
         db.addServiceRequest(sharedValues,requestValues);
-        System.out.println(db.getServiceRequest(serviceRequestType, requestID).toString());
         String user =  PREFERENCES.get ( USER_NAME ,null );
 
 
@@ -107,13 +106,8 @@ public class GenericServiceRequest extends GenericPage {
                 }}
         );
 
-
-
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
-        String username = PREFERENCES.get(USER_NAME,null);
-        String email = db.getUserByUsername(username).get("EMAIL");
 
-        emailService.sendServiceRequestConfirmation(email, username, requestValues);
         sceneSwitch("DefaultServicePage");
     }
 
