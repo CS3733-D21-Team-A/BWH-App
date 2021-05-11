@@ -432,8 +432,8 @@ public class GenericMap extends GenericPage {
 
         if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow); //TODO:remomve
         directionArrow = new Polygon();
-        directionArrow.setFill(Color.BLUE);
-        directionArrow.setStroke(Color.BLUE);
+        directionArrow.setFill(Color.ORANGE);
+        directionArrow.setStroke(Color.ORANGE);
         directionArrow.setVisible(false);
 
         Double points[] = new Double[6];

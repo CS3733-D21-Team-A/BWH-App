@@ -422,6 +422,7 @@ public class Navigation extends GenericMap {
      */
     public void startDir() throws SQLException,InterruptedException, IOException{
 
+        robotDirectionNum = 0;
         stepByStep.setVisible(true);
         listDirVBox.setVisible(false);
         treeTable.setVisible(false);
@@ -441,9 +442,9 @@ public class Navigation extends GenericMap {
             voice.say(voice.getTextOptimization(curDirection.getText()), newThread);
         }
         String sendPacket = getROSDirection();
-        Aapp.clientSender.send(sendPacket);
-        popUp("robot comming info", "robot is coming to you!");
-        robotDirectionNum = 0;
+        if(robotConnection.isSelected()){
+            Aapp.clientSender.send(sendPacket);
+        }
     }
 
     /**
@@ -936,8 +937,8 @@ public class Navigation extends GenericMap {
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientReceiver.getMassage();
                         Double[] robotCoordinate = getROSCoordinate(message);
-                        if (robotCoordinate != null){
-                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),"L1",-robotCoordinate[2]*180/Math.PI+90));
+                        if (robotCoordinate != null  && FLOOR.equals("L1")){
+                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
                         }
                     }
                 } catch (Exception e){
@@ -954,8 +955,8 @@ public class Navigation extends GenericMap {
                     while (!Thread.currentThread().isInterrupted()){
                         String message = Aapp.clientReceiver.getMassage();
                         Double[] robotCoordinate = getROSCoordinate(message);
-                        if (robotCoordinate != null){
-                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),"L1",-robotCoordinate[2]*180/Math.PI+90));
+                        if (robotCoordinate != null && FLOOR.equals("L1")){
+                            Platform.runLater(() -> drawArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
                         }
                     }
                 } catch (Exception e){
@@ -963,10 +964,53 @@ public class Navigation extends GenericMap {
                 }
             });
             Aapp.clientThreadReceiver.start();
+            Aapp.clientInfoThreadReceiver.stop();
+            Aapp.clientInfoThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientInfoReceiver.getMassage();
+                        System.out.println("robotDirectionNum: " + robotDirectionNum);
+                        if(message.contains("progress to the")){
+                                System.out.println(message);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 1");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                                Thread.sleep(2500);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 2");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                                robotDirectionNum ++;
+                        }
+                        else if(message.contains("faraway")){
+                            System.out.println(message);
+                            Platform.runLater(() ->popUp("Turtlebot Info", "Your robot is waiting, Please catch up! "));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientInfoThreadReceiver.start();
         }
         else if(!robotConnection.isSelected() && Aapp.serverRunning){
             Aapp.clientThreadReceiver.stop();
+            //Aapp.clientInfoThreadReceiver.stop();
             removeDirectionArrow();
+            Aapp.clientSender.send("cancel nav");
         }
     }
 }
