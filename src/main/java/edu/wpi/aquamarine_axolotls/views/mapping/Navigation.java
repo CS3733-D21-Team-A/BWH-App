@@ -490,6 +490,7 @@ public class Navigation extends GenericMap {
         String sendPacket = getROSDirection();
         if(robotConnection){
             Aapp.clientSender.send(sendPacket);
+            popUp("Turtlebot Info", "\n\n\n\n\n Robot is coming ...\n Please wait... ");
         }
     }
 
@@ -748,7 +749,7 @@ public class Navigation extends GenericMap {
 //                        }
                         else if(message.contains("faraway")){
                             System.out.println(message);
-                            Platform.runLater(() ->popUp("Turtlebot Info", "Your robot is waiting, Please catch up! "));
+                            Platform.runLater(() ->popUp("Turtlebot Info", "\n\n\n\n\n Looks like you are far behind ...\n Robot is waiting for you "));
                         }
                     }
                 } catch (Exception e){
@@ -819,7 +820,7 @@ public class Navigation extends GenericMap {
                         }
                         else if(message.contains("faraway")){
                             System.out.println(message);
-                            Platform.runLater(() ->popUp("Turtlebot Info", "Your robot is waiting, Please catch up! "));
+                            Platform.runLater(() ->popUp("Turtlebot Info", "\n\n\n\n\n Looks like you are far behind ...\n Robot is waiting for you "));
                         }
                     }
                 } catch (Exception e){
