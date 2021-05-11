@@ -70,7 +70,7 @@
                            <GridPane.margin>
                               <Insets right="25.0" top="40.0" />
                            </GridPane.margin></JFXTextField>
-                        <JFXComboBox fx:id="roomNumber" prefHeight="50.0" prefWidth="300.0" promptText="Room Options" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXComboBox fx:id="location" prefHeight="50.0" prefWidth="300.0" promptText="Room Options" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets right="25.0" top="40.0" />
                            </GridPane.margin>

@@ -20,8 +20,8 @@ public class FoodDelivery extends GenericServiceRequest {
 
     @FXML
     private JFXTimePicker deliveryTime;
-    @FXML
-    private JFXComboBox roomNumber;
+//    @FXML
+//    private JFXComboBox roomNumber;
     @FXML
     private JFXComboBox<String> foodOptions;
     @FXML
@@ -81,7 +81,7 @@ public class FoodDelivery extends GenericServiceRequest {
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
-        roomNumber.setItems(FXCollections
+        location.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk", "Connors Center Security Desk Floor 1")
         );
         drinkOptions.setItems(FXCollections

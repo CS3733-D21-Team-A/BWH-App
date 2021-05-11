@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.servicerequests;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
@@ -21,8 +22,8 @@ public class GenericServiceRequest extends GenericPage {
     JFXTextField firstName;
     @FXML
     JFXTextField lastName;
-   // @FXML
-   // JFXComboBox location; //TODO: Don't all requests need a location?
+    @FXML
+    JFXComboBox location; //TODO: Don't all requests need a location?
 
     DatabaseController db = DatabaseController.getInstance();
 
@@ -58,12 +59,18 @@ public class GenericServiceRequest extends GenericPage {
 
     List<FieldTemplate> requestFieldList = new ArrayList<>();
 
+
     @FXML
     void submit() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         for(FieldTemplate field : requestFieldList){
             if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
         }
+
+        if(!location.hasProperties()) errorMessage.append("\n  -" + "LOCATION");
+        if(!firstName.hasProperties()) errorMessage.append("\n  -" + "FIRSTNAME");
+        if(!lastName.hasProperties()) errorMessage.append("\n  -" + "LASTNAME");
+
         if(errorMessage.length() != 0){
             errorFields(errorMessage.toString());
             return;
@@ -74,7 +81,7 @@ public class GenericServiceRequest extends GenericPage {
         }
 
         sharedValues.put("AUTHORID", PREFERENCES.get(USER_NAME,null));
-        sharedValues.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
+        sharedValues.put("LOCATIONID", location.getAccessibleText()); // TODO: change around location
         sharedValues.put("FIRSTNAME", firstName.getText());
         sharedValues.put("LASTNAME", lastName.getText());
         sharedValues.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));

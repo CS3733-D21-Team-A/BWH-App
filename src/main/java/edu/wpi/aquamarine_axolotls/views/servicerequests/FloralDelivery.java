@@ -16,7 +16,7 @@ public class FloralDelivery extends GenericServiceRequest {
 
     @FXML
     private JFXTimePicker deliveryTime;
-    @FXML private JFXComboBox roomNumber;
+    @FXML private JFXComboBox location;
     @FXML
     private JFXTextArea persMessage;
     @FXML
@@ -69,7 +69,7 @@ public class FloralDelivery extends GenericServiceRequest {
 
         serviceRequestType = SERVICEREQUEST.FLORAL_DELIVERY;
 
-        roomNumber.setItems(FXCollections
+        location.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
         flowerOptions.setItems(FXCollections
