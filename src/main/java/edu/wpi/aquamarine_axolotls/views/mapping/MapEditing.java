@@ -1,36 +1,27 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,7 +103,7 @@ public class MapEditing extends GenericMap {
         newNode.setOnAction((ActionEvent e) -> {
             state = "New";
             currentID = "";
-            nodePopUp();
+            editPopUp();
         });
 
         //Handler for the button that adds an anchor point
@@ -239,13 +230,13 @@ public class MapEditing extends GenericMap {
                 throwables.printStackTrace();
             }
 
-            drawSingleEdge(edgeID, Color.BLACK);
+            drawSingleEdge(startNodeID, endNodeID, Color.BLACK);
             deselect.fire();
 
         });
 
         deleteNodes.setOnAction((ActionEvent e) -> {
-            for (Map<String, String> node: selectedNodesList){
+            for (Map<String, String> node : selectedNodesList){
                 try {
                     String nodeID = node.get("NODEID");
                     removeNodeOnImage(nodeID);
@@ -298,7 +289,7 @@ public class MapEditing extends GenericMap {
             contextMenuY = event.getY();
 
             Map<String, String> nearestNode = null;
-            try { //Get the nearest node to the context menu -- will be used in subsequent operations
+            try { //Get the nearest node to the context menu -- will be used in subsequent operatinos
                 nearestNode = getNearestNode(contextMenuX, contextMenuY);
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -387,6 +378,7 @@ public class MapEditing extends GenericMap {
     }
 
 
+
     /**
      * Brings up the editing popup for users to change values of an edge/node
      */
@@ -407,30 +399,93 @@ public class MapEditing extends GenericMap {
         }
     }
 
-    @FXML
-    public void nodePopUp() {
-        editPopUp();
-    }
-
     /**
      * Switches to a given floor, then draws all nodes and edges on it
      * @param floor Floor to move to
      */
     @Override
     public void drawFloor(String floor) {
+        changeFloorImage(floor);
+        drawEdges();
+        drawNodes(darkBlue);
+        /*if(contextMenu.getItems().contains(deselect)) {
+            ObservableList<MenuItem> items = contextMenu.getItems();
+            items.get(items.indexOf(deselect)).fire(); // targets deselect
+        }*/
+    }
+
+    public void drawNodes(Color colorOfNodes) {
         try {
-            changeFloorImage(floor);
-            drawEdges(Color.BLACK);
-            drawNodes(darkBlue);
-            /*if(contextMenu.getItems().contains(deselect)) {
-                ObservableList<MenuItem> items = contextMenu.getItems();
-                items.get(items.indexOf(deselect)).fire(); // targets deselect
-            }*/
-            //deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
+            for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
+                drawSingleNode(node.get("NODEID"), colorOfNodes);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * Draws all edges on the current floor, check for floor is in drawTwoNodesWithEdge
+     */
+    public void drawEdges() {
+        try {
+            for (Map<String, String> edge : db.getEdges())
+                drawSingleEdge(edge.get("STARTNODE"), edge.get("ENDNODE"), Color.BLACK);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public Circle setEventHandler(Circle node, String nodeID) {
+        node.setOnMousePressed((MouseEvent e) ->{
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+                if(e.getClickCount() == 2) nodeBeingDragged = nodeID;
+            }
+        });
+
+        node.setOnMouseClicked((MouseEvent e) -> {
+            if (e.getButton().equals(MouseButton.PRIMARY)){
+
+                //System.out.println(e.getClickCount());
+                if (e.getClickCount() == 2) {
+                    node.setFill(yellow);
+                    System.out.println("Successfully clicked node");
+                    currentID = nodeID;
+                    state = "Edit";
+                    editPopUp();
+                }
+                //Otherwise, single clicks will select/deselect nodes
+                else {
+                    Circle currentCircle = nodesOnImage.get(nodeID);
+                    if (currentCircle.getFill().equals(yellow)) {
+                        try {
+                            selectedNodesList.remove(db.getNode(nodeID));
+                            //if (selectedNodesList.size() == 0) contextMenu.getItems().get(1).setVisible(false);
+                            node.setFill(darkBlue);
+                            //setNodeOnImage(currentCircle, nodeID);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    } else {
+                        try {
+                            selectedNodesList.add(db.getNode(nodeID));
+                            //contextMenu.getItems().get(1).setVisible(true);
+                            currentCircle.setFill(yellow);
+                            //setNodeOnImage(currentCircle, nodeID);
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+
+        node.setOnMouseEntered((MouseEvent e) -> node.setRadius(5));
+
+        node.setOnMouseExited((MouseEvent e) -> node.setRadius(magicNumber));
+
+        return node;
     }
 
 

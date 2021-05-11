@@ -61,7 +61,7 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
         return frontier.poll().getItem();
     }
 
-    List<Node> getPathImpl(String startID, String goalID) {
+    List<Map<String, String>> getPathImpl(String startID, String goalID) {
         //Empty out the priority queue
         clearFrontier();
 
@@ -122,7 +122,23 @@ public abstract class AbsHeuristicBased extends AbsAlgorithmMethod{
         List<Node> foundPath = buildPath(cameFrom, goal);
         //Check if the created path is valid and return if it is
         if (checkPath(foundPath,start,goal)){
-            return foundPath;
+
+            List<Map<String, String>> nodeMapList = new ArrayList<Map<String, String>>();
+
+            for (Node node: foundPath){
+                Map<String, String> nodeMap = new HashMap<String, String>();
+                nodeMap.put("NODEID", node.getNodeID());
+                nodeMap.put("XCOORD", String.valueOf(node.getXcoord()));
+                nodeMap.put("YCOORD", String.valueOf(node.getYcoord()));
+                nodeMap.put("NODETYPE", node.getNodeType());
+                nodeMap.put("BUILDING", node.getBuilding());
+                nodeMap.put("LONGNAME", node.getLongName());
+                nodeMap.put("SHORTNAME", node.getShortName());
+                nodeMap.put("FLOOR", node.getFloor());
+                nodeMapList.add(nodeMap);
+            }
+
+            return nodeMapList;
         }
         return null;
     }

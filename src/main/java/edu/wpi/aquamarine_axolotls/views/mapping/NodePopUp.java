@@ -156,7 +156,7 @@ public class NodePopUp extends GenericPage {
         buildingDropdown.getSelectionModel().clearSelection();
     }
 
-    public void delete(ActionEvent actionEvent) {
+    public void delete() {
         String nodeID = nodeIDTextField.getText();
         try {
             mapController.selectedNodesList.clear();
@@ -170,13 +170,13 @@ public class NodePopUp extends GenericPage {
     }
 
     @FXML
-    public void cancel(ActionEvent actionEvent) {
+    public void cancel() {
         clear();
         submissionStatusLabel.getScene().getWindow().hide();
     }
 
 
-    public void loadHelp(ActionEvent actionEvent) {
+    public void loadHelp() {
 
     }
 }

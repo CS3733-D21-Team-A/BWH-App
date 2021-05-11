@@ -330,7 +330,7 @@ public class DatabaseControllerTest4 {
     //Emily
 
     // Testing List<Map<String, String>> getUsers() throws SQLException
-    @Test
+    /*@Test //deprecated
     public void testGetUsers(){
         try{
             List<Map<String,String>> testBoi = new ArrayList<>();
@@ -393,7 +393,7 @@ public class DatabaseControllerTest4 {
             e.printStackTrace();
             fail();
         }
-    }
+    }*/
 
     // Testing public boolean checkUserExists(String username)
     @Test
@@ -450,7 +450,7 @@ public class DatabaseControllerTest4 {
 
             db.addUser(user3);
 
-            assertTrue(db.checkUserExists("Alexa123"));
+            assertTrue(db.checkUserExistsByUsername("Alexa123"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -511,7 +511,7 @@ public class DatabaseControllerTest4 {
 
             db.addUser(user3);
 
-            assertFalse(db.checkUserExists("Bumblebee"));
+            assertFalse(db.checkUserExistsByUsername("Bumblebee"));
         } catch (SQLException e) {
             e.printStackTrace();
             fail();
@@ -783,7 +783,7 @@ public class DatabaseControllerTest4 {
         }
     }
 
-    @Test
+    /*@Test
     public void testGetUserByEmail()
     {
         try{
@@ -804,7 +804,7 @@ public class DatabaseControllerTest4 {
 
             db.addUser(user);
 
-            assertEquals(user, db.getUserByEmail("Sean@gmail.com"));
+            assertTrue(user, db.checkUserExistsByEmail("Sean@gmail.com"));
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -823,8 +823,8 @@ public class DatabaseControllerTest4 {
 
             db.addUser(user2);
 
-            assertEquals(user, db.getUserByEmail("Sean@gmail.com"));
-            assertEquals(user2, db.getUserByEmail("emily@gmail.com"));
+            assertEquals(user, db.checkUserExistsByEmail("Sean@gmail.com"));
+            assertEquals(user2, db.checkUserExistsByEmail("emily@gmail.com"));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -854,8 +854,8 @@ public class DatabaseControllerTest4 {
 
             db.addUser(user);
 
-            assertEquals(user, db.getUserByEmail("Sean@gmail.com"));
-            assertEquals(null, db.getUserByEmail("seansta@gmail.com"));
+            assertEquals(user, db.checkUserExistsByEmail("Sean@gmail.com"));
+            assertEquals(null, db.checkUserExistsByEmail("seansta@gmail.com"));
 
             Map<String, String> user2 = new HashMap<String, String>();
             user2.put("USERNAME", "EKelley");
@@ -872,9 +872,9 @@ public class DatabaseControllerTest4 {
             user2.put("MFAENABLED","false");
             Security.addHashedPassword(user2, "fjdasklgjlskf");
 
-            assertEquals(null, db.getUserByEmail("emily@gmail.com"));
+            assertEquals(null, db.checkUserExistsByEmail("emily@gmail.com"));
             db.addUser(user2);
-            assertEquals(user2, db.getUserByEmail("emily@gmail.com"));
+            assertEquals(user2, db.checkUserExistsByEmail("emily@gmail.com"));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -963,7 +963,7 @@ public class DatabaseControllerTest4 {
             e.printStackTrace();
             fail();
         }
-    }
+    }*/
 
 
     //Test getServiceRequestsByAuthor

@@ -39,7 +39,7 @@ public class Aapp extends Application {
     String instanceID;
     do {
       instanceID = UUID.randomUUID().toString();
-    } while (db.checkUserExists(instanceID));
+    } while (db.checkUserExistsByUsername(instanceID));
 
     instanceUser.put("USERNAME",instanceID);
     instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
@@ -66,7 +66,7 @@ public class Aapp extends Application {
     }
 
     String instanceID = PREFERENCES.get(INSTANCE_ID,null);
-    if (!db.checkUserExists(instanceID)) {
+    if (!db.checkUserExistsByUsername(instanceID)) {
       Map<String,String> instanceUser = new HashMap<>();
       instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
       instanceUser.put("USERNAME",instanceID);
@@ -76,7 +76,7 @@ public class Aapp extends Application {
       db.addUser(instanceUser);
     }
 
-    if (!db.checkUserExists(PREFERENCES.get(USER_NAME,null))) {
+    if (!db.checkUserExistsByUsername(PREFERENCES.get(USER_NAME,null))) {
       PREFERENCES.put(USER_TYPE, DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
       PREFERENCES.put(USER_NAME, PREFERENCES.get(INSTANCE_ID,null));
       PREFERENCES.remove(USER_FIRST_NAME);

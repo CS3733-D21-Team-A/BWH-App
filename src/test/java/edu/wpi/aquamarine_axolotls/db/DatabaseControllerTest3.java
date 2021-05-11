@@ -1494,7 +1494,7 @@ public class DatabaseControllerTest3 {
                     -> db.addAttribute("aPARK030GG", ATTRIBUTE.COVID_SAFE, true));
 
         assertTrue(exception.getMessage().contains("caused a violation of foreign key constraint"));
-    }*/
+    }
     
 
     // Emily testing getNodes and getEdges:
@@ -1637,5 +1637,5 @@ public class DatabaseControllerTest3 {
     @Test
     public void testGetEdgesNoIDsError() throws SQLException {
         assertThrows(SQLException.class, () -> db.getEdges(new ArrayList<>()));
-    }
+    }*/
 }

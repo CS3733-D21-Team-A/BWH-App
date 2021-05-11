@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
@@ -38,9 +39,16 @@ public abstract class GenericMap extends GenericPage {
         put("3", "edu/wpi/aquamarine_axolotls/img/thirdFloor.png");
     }};
 
-
-    // valid nodes list
-    //canvas stuff
+    @FXML
+    public JFXButton floorL2Button;
+    @FXML
+    public JFXButton floorL1Button;
+    @FXML
+    public JFXButton floor1Button;
+    @FXML
+    public JFXButton floor2Button;
+    @FXML
+    public JFXButton floor3Button;
     @FXML
     ImageView mapImage;
     @FXML
@@ -56,6 +64,10 @@ public abstract class GenericMap extends GenericPage {
     String nodeBeingDragged;
     Map<String, Circle> nodesOnImage = new HashMap<>();
     Map<String, Line> linesOnImage = new HashMap<>();
+    ArrayList<ArrayList<Polygon>> arrowsOnImage = new ArrayList<>();
+
+    Polygon currentPathArrow;
+
     List<Map<String, String>> selectedNodesList = new ArrayList<>();
     List<Map<String, String>> selectedEdgesList = new ArrayList<>();
     String FLOOR = "1";
@@ -70,14 +82,13 @@ public abstract class GenericMap extends GenericPage {
     String currentID;
     double magicNumber = (Math.PI + Math.E) / 2.0; //this is used as the radius for the nodes because Chris likes it. I don't know why
 
+
     /**
      * Responsible for setting up the map
      */
     public void startUp(){
         mapScrollPane.pannableProperty().set(true);
-        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY);
-        });
+        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY));
 
         Group contentGroup = new Group();
         zoomGroup = new Group();
@@ -96,7 +107,7 @@ public abstract class GenericMap extends GenericPage {
             zoomGroup.setScaleY(tick);
         });
 
-        drawFloor(FLOOR);
+        changeFloor1();
 
         zoomLevel = 1;
     }
@@ -106,11 +117,52 @@ public abstract class GenericMap extends GenericPage {
     /**
      * Change the active floor
      */
-    public void changeFloor3() { drawFloor("3"); }
-    public void changeFloor2() { drawFloor("2"); }
-    public void changeFloor1() { drawFloor("1"); }
-    public void changeFloorL1() { drawFloor("L1"); }
-    public void changeFloorL2() { drawFloor("L2"); }
+    public void changeFloor3() {
+        resetButtons();
+        floor3Button.setTextFill(Color.WHITE);
+        floor3Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("3");
+    }
+    public void changeFloor2() {
+        resetButtons();
+        floor2Button.setTextFill(Color.WHITE);
+        floor2Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("2");
+    }
+    public void changeFloor1() {
+        resetButtons();
+        floor1Button.setTextFill(Color.WHITE);
+        floor1Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("1");
+    }
+    public void changeFloorL1() {
+        resetButtons();
+        floorL1Button.setTextFill(Color.WHITE);
+        floorL1Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("L1");
+    }
+    public void changeFloorL2() {
+        resetButtons();
+        floorL2Button.setTextFill(Color.WHITE);
+        floorL2Button.setStyle("-fx-background-color: #f4ba47");
+        drawFloor("L2");
+    }
+
+    public void resetButtons(){
+
+        // #f4ba47
+        // F0F0F0 gray
+        floor3Button.setStyle("-fx-background-color: #F0F0F0");
+        floor3Button.setTextFill(darkGray);
+        floor2Button.setStyle("-fx-background-color: #F0F0F0");
+        floor2Button.setTextFill(darkGray);
+        floor1Button.setStyle("-fx-background-color: #F0F0F0");
+        floor1Button.setTextFill(darkGray);
+        floorL1Button.setStyle("-fx-background-color: #F0F0F0");
+        floorL1Button.setTextFill(darkGray);
+        floorL2Button.setStyle("-fx-background-color: #F0F0F0");
+        floorL2Button.setTextFill(darkGray);
+    }
 
 
 //=== SCALING FUNCTIONS ===//
@@ -162,7 +214,7 @@ public abstract class GenericMap extends GenericPage {
      * @param floor the floor that will be drawn
      * @throws SQLException error with database
      */
-    public void changeFloorImage(String floor) throws SQLException {
+    public void changeFloorImage(String floor) {
         FLOOR = floor;
         mapImage.setImage(new Image(floors.get(FLOOR)));
         mapView.getChildren().clear();
@@ -217,13 +269,6 @@ public abstract class GenericMap extends GenericPage {
     }
 
 
-    public void setMultipleNodesOnImage(List<Map<String, String>> nodes, Color colorOfNodes){
-        for(Map<String, String> node : nodes){
-            node.get("NODEID");
-        }
-    }
-
-
     /**
      * Gets the index of the circle on the map that corresponds to nodeID
      * @param nodeID a ID that links to a node in the database
@@ -249,8 +294,20 @@ public abstract class GenericMap extends GenericPage {
      */
     public void changeNodeColorOnImage(String nodeID, Color color){ // WILL BE USED IN NAVIGATION
         Circle currentNode = nodesOnImage.get(nodeID);
+        currentNode.toFront();
         currentNode.setFill(color);
         setNodeOnImage(currentNode, nodeID);
+    }
+
+    /**
+     * Changes the size of the circle representing the nodeID on the map
+     * @param nodeID a ID that links to a node in the database
+     * @param radius size to change the circle to be
+     */
+    public void updateNodeSize(String nodeID, int radius){ // WILL BE USED IN NAVIGATION
+        Circle currentNode = nodesOnImage.get(nodeID);
+        currentNode.toFront();
+        currentNode.setRadius(radius);
     }
 
 
@@ -262,6 +319,11 @@ public abstract class GenericMap extends GenericPage {
         int index = getNodeIndexOnImage(nodeID);
         nodesOnImage.remove(nodeID);
         mapView.getChildren().remove(index);
+    }
+
+    public void updateEdgeColor(String edgeID, Color color){
+        Line edge = linesOnImage.get(edgeID);
+        edge.setStroke(color);
     }
 
     /**
@@ -284,18 +346,25 @@ public abstract class GenericMap extends GenericPage {
         try {
             List<Map<String, String>> connectedEdges = db.getEdgesConnectedToNode(nodeID);
             for (Map<String, String> edge : connectedEdges) {
-                drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+                drawSingleEdge(edge.get("STARTNODE"), edge.get("ENDNODE"), Color.BLACK);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
-
     /**
-     * Pop up that happens when user clicks a node
+     * Re-draws all the edges connected to a particular node
      */
-    public abstract void nodePopUp();
+    public void setArrowsToBeVisible() {
+        if (arrowsOnImage.size() >= floorToInt(FLOOR)) {
+            for(Polygon arrow : arrowsOnImage.get(floorToInt(FLOOR))){
+                arrow.setVisible(true);
+                if (!mapView.getChildren().contains(arrow)) mapView.getChildren().add(arrow);
+            }
+        }
+    }
+
 
 
 //=== DRAW FUNCTIONS ===//
@@ -308,14 +377,8 @@ public abstract class GenericMap extends GenericPage {
      * @param colorOfNodes the color the nodes will be displayed as on the map
      * @throws SQLException error with database
      */
-    public void drawNodes(Color colorOfNodes) throws SQLException{
-        for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
-            drawSingleNode(node.get("NODEID"), colorOfNodes);
-        }
-        for (Map<String, String> node: selectedNodesList){
-            drawSingleNode(node.get("NODEID"), yellow);
-        }
-    }
+    public abstract void drawNodes(Color colorOfNodes);
+
 
 
     /**
@@ -335,6 +398,8 @@ public abstract class GenericMap extends GenericPage {
 
     }
 
+    public abstract Circle setEventHandler(Circle node, String nodeID);
+
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -344,7 +409,6 @@ public abstract class GenericMap extends GenericPage {
      */
     private void drawSingleNode(double x, double y, String nodeID, Color color){
         double radius = magicNumber;
-
         Circle node = new Circle();
         node.setCenterX(x);
         node.setCenterY(y);
@@ -353,93 +417,33 @@ public abstract class GenericMap extends GenericPage {
         node.toFront();
         node.setStroke(darkBlue);
 
-        node.setOnMousePressed((MouseEvent e) ->{
-            if (e.getButton().equals(MouseButton.PRIMARY)){
-                if(e.getClickCount() == 2) nodeBeingDragged = nodeID;
-            }
-        });
-
-        node.setOnMouseClicked((MouseEvent e) -> {
-            if (e.getButton().equals(MouseButton.PRIMARY)){
-
-                //System.out.println(e.getClickCount());
-                if (e.getClickCount() == 2) {
-                    if(e.isStillSincePress()) {
-                        node.setFill(yellow);
-                        currentID = nodeID;
-                        state = "Edit";
-                        nodePopUp();
-                    }
-                }
-                //Otherwise, single clicks will select/deselect nodes
-                else {
-                    try {
-                        if (selectedNodesList.contains(db.getNode(nodeID))) {
-                            selectedNodesList.remove(db.getNode(nodeID));
-                            node.setFill(darkBlue);
-                            if(!db.getNode(nodeID).get("FLOOR").equals(FLOOR)){
-                                removeNodeOnImage(nodeID);
-                            }
-                        } else {
-                            selectedNodesList.add(db.getNode(nodeID));
-                            node.setFill(yellow);
-                        }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        node.setOnMouseEntered((MouseEvent e) -> {
-            node.setRadius(5);
-        });
-
-        node.setOnMouseExited((MouseEvent e) -> {
-            node.setRadius(magicNumber);
-        });
-
+        setEventHandler(node, nodeID);
         setNodeOnImage(node, nodeID);
 
     }
 
 
     //====EDGE FUNCTIONS
-    /**
-     * Draws all edges on the current floor, check for floor is in drawTwoNodesWithEdge
-     * @param colorOfNodes
-     * @throws SQLException
-     */
-    public void drawEdges(Color colorOfNodes) throws SQLException {
-        for (Map<String, String> edge : db.getEdges()) {
-            drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
-        }
-        for (Map<String, String> edge: selectedEdgesList){
-            drawSingleEdge(edge.get("EDGEID"), yellow);
-        }
-    }
-
 
     /**
-     * Draws a line on the map that represents an edge.
-     * @param edgeID a key that corresponds to an edge in the database
-     * @param edgeColor the color the edge will be drawn in
-     */
-    public void drawSingleEdge(String edgeID, Color edgeColor) {
+      * Draws a line on the map that represents an edge.
+      * @param startNodeID Edge start node
+      * @param endNodeID Edge end node
+      * @param edgeColor the color the edge will be drawn in
+      */
+    public void drawSingleEdge(String startNodeID, String endNodeID, Color edgeColor) {
         try {
-            Map<String, String> edge = db.getEdge(edgeID);
-            Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
-            Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
+            Map<String, String> startNode = db.getNode(startNodeID);
+            Map<String, String> endNode = db.getNode(endNodeID);
 
-            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR) || selectedEdgesList.contains(edge)){
+            if (startNode.get("FLOOR").equals(FLOOR) && endNode.get("FLOOR").equals(FLOOR)){
                 double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
                 double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
-                String startID = startNode.get("NODEID");
                 double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
                 double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
-                String endID = endNode.get("NODEID");
-                drawSingleEdge(startX, startY, startID, endX, endY, endID, edgeColor);
+                drawSingleEdge(startX, startY, startNodeID, endX, endY, endNodeID, edgeColor);
             }
+
         }
         catch (SQLException se) {
             se.printStackTrace();
@@ -488,13 +492,6 @@ public abstract class GenericMap extends GenericPage {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-
-//
-//            if(e.getClickCount() == 2){
-//                state = "Edit";
-//                currentID = startID+"_"+endID;
-//                edgePopUp();
-//            }
         });
 
         // Hover over edge to make it thicker
@@ -521,28 +518,66 @@ public abstract class GenericMap extends GenericPage {
 
     //====ARROWS
 
-    /**
-     * Draws up and down arrows to signify floor change for a given edge
-     * @param edgeID representation of an edge in the database
-     */
-    void drawArrow(String edgeID) { // TODO : investigate stairs arrows not being drawn
-        try {
-            Map<String, String> edge = db.getEdge(edgeID);
-            Map<String, String> startNode = db.getNode(edge.get("STARTNODE"));
-            Map<String, String> endNode = db.getNode(edge.get("ENDNODE"));
-            double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
-            double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
-            String startFloor = startNode.get("FLOOR");
-            String endFloor = endNode.get("FLOOR");
-            if(startFloor.equals(FLOOR) && !endFloor.equals(FLOOR)){
-                drawArrow(startX, startY, startFloor, endFloor, 0.0);
+    void drawArrows(){
+        for(ArrayList<Polygon> floor : arrowsOnImage){
+            for(Polygon arrow : floor){
+                if(intToFloor(arrowsOnImage.indexOf(floor)).equals(FLOOR)) arrow.setVisible(true);
+                else arrow.setVisible(false);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
+
+    public int floorToInt(String floor){
+        if (floor.equals("L2")) return 0;
+        else if (floor.equals("L1")) return 1;
+        else return Integer.parseInt(floor) + 1;
+    }
+
+    public String intToFloor(int floor){
+        if(floor == 0) return "L2";
+        if(floor == 1) return "L1";
+        else return String.valueOf(floor- 1) ;
+    }
+
+    /**
+     * Draws up and down arrows to signify floor change for a given edge
+     * //TODO: UPDATE THIS JAVADOC
+     */
+    void drawArrow(Map<String, String> startNode, Map<String, String> endNode) { // TODO : investigate stairs arrows not being drawn
+        String startFloor = startNode.get("FLOOR");
+        String endFloor = endNode.get("FLOOR");
+        int startFloorInt = floorToInt(startFloor);
+        int endFloorInt = floorToInt(endFloor);
+
+        double startX = xScale(Integer.parseInt(startNode.get("XCOORD")));
+        double startY = yScale(Integer.parseInt(startNode.get("YCOORD")));
+        double endX = xScale(Integer.parseInt(endNode.get("XCOORD")));
+        double endY = yScale(Integer.parseInt(endNode.get("YCOORD")));
+
+        if(startFloorInt < endFloorInt){
+            drawUpArrow(startX, startY, startFloorInt, endFloorInt);
+            drawDownArrow(endX, endY, endFloorInt, startFloorInt);
+        }
+        else{
+            drawDownArrow(startX, startY, startFloorInt, endFloorInt);
+            drawUpArrow(endX, endY, endFloorInt, startFloorInt);
+        }
+    }
+
+    // add event handler to draw arrow
+    // draw the actual arrow
+    // place the arrow to arrows on image
+    // draw them on the map view
+
+    private void drawUpArrow(double centerX, double centerY, int startFloor, int endFloor) {
+        drawArrow(centerX, centerY, startFloor, endFloor, Color.GREEN, 0);
+
+    }
+
+    private void drawDownArrow(double centerX, double centerY, int startFloor, int endFloor){
+        drawArrow(centerX, centerY, startFloor, endFloor, Color.RED, 180);
+    }
 
     /**
      * Draws up and down arrows to signify floor change for a given edge (two nodes)
@@ -553,13 +588,17 @@ public abstract class GenericMap extends GenericPage {
      * @param startFloor floor of the start node
      * @param endFloor floor of the end node
      */
-    private void drawArrow(double centerX, double centerY, String startFloor, String endFloor, double rotationAngle){
+    private void drawArrow(double centerX, double centerY, int startFloor, int endFloor, Color color, double rotationAngle){
 
-        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
-        directionArrow = new Polygon();
-        directionArrow.setFill(darkBlue);
-        directionArrow.setStroke(darkBlue);
-        directionArrow.setVisible(false);
+        // make the polygon
+        Polygon arrow = new Polygon();
+        arrow.setFill(color);
+        arrow.setStroke(color);
+//        if(startFloor == floorToInt(FLOOR)) arrow.setVisible(true);
+//        else
+        arrow.setVisible(false);
+        arrow.toFront();
+
 
         Double points[] = new Double[6];
         points[0] = centerX;
@@ -570,46 +609,79 @@ public abstract class GenericMap extends GenericPage {
         points[3] = centerY + 7 * Math.sqrt(2.0) / 2.0;
         points[5] = centerY + 7 * Math.sqrt(2.0) / 2.0;
 
-        if (startFloor.equals("G")) startFloor = "0";
-        if (startFloor.equals("L1")) startFloor = "-1";
-        if (startFloor.equals("L2")) startFloor = "-2";
-        if (endFloor.equals("G")) endFloor = "0";
-        if (endFloor.equals("L1")) endFloor = "-1";
-        if (endFloor.equals("L2")) endFloor = "-2";
+        arrow.getPoints().addAll(points);
+        arrow.setRotate(rotationAngle);
 
-        if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor)){
-            directionArrow.getPoints().removeAll();
-            directionArrow.getPoints().addAll(points);
-            directionArrow.setScaleX(5.0/7.0);
-            directionArrow.setScaleY(5.0/7.0);
-            directionArrow.setRotate(rotationAngle);
-            directionArrow.setVisible(true);
-            mapView.getChildren().add(directionArrow);
-        } else {
-
-            Polygon floorChangeArrow = new Polygon();
-            floorChangeArrow.toFront();
-
-            if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
-                floorChangeArrow.setFill(Color.GREEN);
-                floorChangeArrow.setRotate(0);
-            } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
-                floorChangeArrow.setFill(Color.RED);
-                floorChangeArrow.setRotate(180);
-            }
-
-            for (int i = 0; i < points.length; i++) {
-                floorChangeArrow.getPoints().add(points[i]);
-            }
-            mapView.getChildren().add(floorChangeArrow);
-
-            String finalEndFloor = endFloor;
-            floorChangeArrow.setOnMousePressed((MouseEvent e) ->{
-                FLOOR = finalEndFloor;
-                drawFloor(finalEndFloor);
-            });
-
+        if(arrowsOnImage.size() - 1 < startFloor){
+            for(int i = 0; i < 5; i++) arrowsOnImage.add(new ArrayList<Polygon>());
         }
+        arrowsOnImage.get(startFloor).add(arrow);
+//        mapView.getChildren().add(arrow);
+
+        arrow.setOnMousePressed((MouseEvent e) ->{
+            drawFloor(intToFloor(endFloor));
+        });
+
+        // Hover over edge to make it thicker
+        arrow.setOnMouseEntered((MouseEvent e) ->{
+            arrow.setScaleX(2.0);
+            arrow.setScaleY(2.0);
+            arrow.toFront();
+        });
+
+        //Moving mouse off edge will make it stop highlighting
+        arrow.setOnMouseExited((MouseEvent e) ->{
+            arrow.setScaleX(1.0);
+            arrow.setScaleY(1.0);
+        });
+
+//        if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor)){ // TODO : add code for
+//            directionArrow.getPoints().removeAll();
+//            directionArrow.getPoints().addAll(points);
+//            directionArrow.setScaleX(5.0/7.0);
+//            directionArrow.setScaleY(5.0/7.0);
+//            directionArrow.setRotate(rotationAngle);
+//            directionArrow.setVisible(true);
+//            mapView.getChildren().add(directionArrow);
+    }
+
+
+    public void drawPathArrow(Map<String, String> startNode, Map<String, String> endNode){
+        int index = mapView.getChildren().indexOf(currentPathArrow);
+        if(index != -1) mapView.getChildren().remove(index);
+        double X1 = xScale(Integer.parseInt(startNode.get("XCOORD")));
+        double Y1 = yScale(Integer.parseInt(startNode.get("YCOORD")));
+        double X2 = xScale(Integer.parseInt(endNode.get("XCOORD")));
+        double Y2 = yScale(Integer.parseInt(endNode.get("YCOORD")));
+
+        double centerX = (X1 + X2) / 2.0;
+        double centerY = (Y1 + Y2) / 2.0;
+
+        double rotationAngle = Math.atan2(Y2-Y1, X2-X1) * 180 / Math.PI + 90.0;
+
+        Polygon arrow = new Polygon();
+        arrow = new Polygon();
+        arrow.setFill(darkBlue);
+        arrow.setStroke(darkBlue);
+        arrow.setVisible(false);
+        arrow.toFront();
+
+
+        Double points[] = new Double[6];
+        points[0] = centerX;
+        points[2] = centerX + 7 * Math.sqrt(2.0) / 2.0;
+        points[4] = centerX - 7 * Math.sqrt(2.0) / 2.0;
+
+        points[1] = centerY - 7;
+        points[3] = centerY + 7 * Math.sqrt(2.0) / 2.0;
+        points[5] = centerY + 7 * Math.sqrt(2.0) / 2.0;
+
+        arrow.getPoints().addAll(points);
+        arrow.setRotate(rotationAngle);
+
+        currentPathArrow = arrow;
+        mapView.getChildren().add(currentPathArrow);
+
     }
 
 
@@ -678,7 +750,6 @@ public abstract class GenericMap extends GenericPage {
 
         return dist;
     }
-
 
 
 }

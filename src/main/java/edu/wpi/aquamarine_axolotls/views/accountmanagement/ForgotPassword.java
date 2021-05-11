@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
@@ -16,6 +17,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static edu.wpi.aquamarine_axolotls.Settings.*;
 
 public class ForgotPassword extends GenericPage {
 	@FXML
@@ -48,10 +51,16 @@ public class ForgotPassword extends GenericPage {
 	private String otp;
 	private final DatabaseController db = DatabaseController.getInstance();
 
+	String resetUsername = PREFERENCES.get ( USER_NAME ,null );
+	String usertype = PREFERENCES.get ( USER_TYPE ,null );
 
 	public void initialize() {
-		verfPane.setVisible(false);
-		newPassPane.setVisible(false);
+		System.out.println ( usertype );
+			verfPane.setVisible ( false );
+			newPassPane.setVisible ( false );
+		if (!usertype.equals("Guest") ){
+			resetPassword ( );
+		}
 	}
 
 
@@ -66,7 +75,7 @@ public class ForgotPassword extends GenericPage {
 		label.setText("Please enter the verification code sent to your email");
 
 		try {
-			if (db.checkUserExists(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
+			if (db.checkUserExistsByUsername(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
 				otp = Security.generateOneTimeSecurityCode();
 				EmailService.sendAccountResetEmail(email.getText(), username.getText(), otp);
 			}
@@ -92,17 +101,34 @@ public class ForgotPassword extends GenericPage {
 			if (password.getText().equals(confirmPassword.getText())) {
 				Map<String, String> updated = new HashMap<>();
 				Security.addHashedPassword(updated, password.getText());
+				if(usertype.equals ("Guest")){
 				db.editUser(username.getText(), updated);
 				popUp("New Password", "\n\n\n\n\nYour password has been successfully created. " +
 					"Please check your email for a confirmation message. Log in using your new credentials.");
 				sceneSwitch("Login");
-			} else {
+			}
+				else if(!usertype.equals("Guest")){
+					db.editUser(resetUsername, updated);
+					popUp("New Password", "\n\n\n\n\nYour password has been reset. " +
+										  "Please check your email for a confirmation message.");
+					sceneSwitch("UserSettings");
+				}
+			}
+				else {
 				popUp("Invalid Request", "The two passwords did not match. Please try again");
 			}
 		} else {
 			popUp("Invalid Request", "Password fields must be filled");
 		}
 	}
-
+	public void resetPassword() {
+		gridPane.setVisible ( false );
+		first.setVisible ( false );
+		verfPane.setVisible ( false );
+		second.setVisible ( false );
+		finalSubmit.setVisible ( true );
+		newPassPane.setVisible ( true );
+		label.setText ( "Please enter your new password" );
+	}
 }
 

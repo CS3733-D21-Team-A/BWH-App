@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
         super(nodeList, edgeList);
     }
 
-    public List<Node> getPathImpl(String startLongName, String endLongName){
+    public List<Map<String, String>> getPathImpl(String startLongName, String endLongName){
 
         List<Node> visited = new ArrayList<>();
 
@@ -50,8 +51,23 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
             resultStrings.add(node.getNodeID());
         }
 
-        //Return the list of ids of the nodes on the path
-        return result;
+        List<Map<String, String>> nodeMapList = new ArrayList<Map<String, String>>();
+
+        for (Node node: result){
+            Map<String, String> nodeMap = new HashMap<String, String>();
+            nodeMap.put("NODEID", node.getNodeID());
+            nodeMap.put("XCOORD", String.valueOf(node.getXcoord()));
+            nodeMap.put("YCOORD", String.valueOf(node.getYcoord()));
+            nodeMap.put("NODETYPE", node.getNodeType());
+            nodeMap.put("BUILDING", node.getBuilding());
+            nodeMap.put("LONGNAME", node.getLongName());
+            nodeMap.put("SHORTNAME", node.getShortName());
+            nodeMap.put("FLOOR", node.getFloor());
+            nodeMapList.add(nodeMap);
+        }
+
+        return nodeMapList;
+
     }
 
     /**
