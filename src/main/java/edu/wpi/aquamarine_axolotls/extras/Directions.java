@@ -14,11 +14,11 @@ public class Directions {
 	private Directions(){} //No instantiation! >:(
 
 	//Note: All parking sites have valet (patient use only)
-	public static final String VISITOR_PARKING = "80 Francis St, Boston, MA 02115";
-	public static final String PATIENT_PARKING = "15-51 New Whitney St Parking"; //Can't use provided address verbatim because it goes somewhere else
-	public static final String VALET_PARKING = "42.33584099869926, -71.10735590684958"; //couldn't get a reliable address, so this works
-	public static final String OTHER_PARKING = "42.33533602615294, -71.10923373042405"; //couldn't get a reliable address, so this works
-	public static final String EMERGENCY_ROOM = "42.33584099869926, -71.10735590684958"; //couldn't get a reliable address, so this works
+	private static final String VISITOR_PARKING = "80 Francis St, Boston, MA 02115";
+	private static final String PATIENT_PARKING = "15-51 New Whitney St Parking"; //Can't use provided address verbatim because it goes somewhere else
+	private static final String VALET_PARKING = "42.33584099869926, -71.10735590684958"; //couldn't get a reliable address, so this works
+	private static final String OTHER_PARKING = "42.33533602615294, -71.10923373042405"; //couldn't get a reliable address, so this works
+	private static final String EMERGENCY_ROOM = "42.33584099869926, -71.10735590684958"; //couldn't get a reliable address, so this works
 
 	public static DirectionsLeg navigateToER(String location) throws IOException, InterruptedException, ApiException {
 		return getDirections(location, EMERGENCY_ROOM);

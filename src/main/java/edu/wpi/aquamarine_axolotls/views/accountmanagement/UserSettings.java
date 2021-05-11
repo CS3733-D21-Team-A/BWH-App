@@ -7,15 +7,17 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
-import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import javax.swing.text.html.ImageView;
@@ -86,15 +88,14 @@ public class UserSettings extends GenericPage {
 	public void initialize() {
 		databasePicker.setVisible(PREFERENCES.get(USER_TYPE,null).equals("Admin"));
 		reloadDbButton.setVisible(PREFERENCES.get(USER_TYPE,null).equals("Admin"));
-		databasePicker.setSelected(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null);
+		databasePicker.setSelected(PREFERENCES.get(DATABASE_HOSTNAME,null) != null);
 
-		databasePane.setVisible(PREFERENCES.get(USER_TYPE,null).equals("Admin") && PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,null) != null);
+		databasePane.setVisible(PREFERENCES.get(USER_TYPE,null).equals("Admin") && PREFERENCES.get(DATABASE_HOSTNAME,null) != null);
 
-		hostLabel.setText(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,"localhost"));
+		hostLabel.setText(PREFERENCES.get(DATABASE_HOSTNAME,"localhost"));
 
 		username = PREFERENCES.get(USER_NAME, null);
 		try {
-			System.out.println(db.getUserByUsername(username).get("USERTYPE"));
 			databasePicker.setVisible(db.getUserByUsername(username).get("USERTYPE").equals("Admin"));
 
 			userName.setText(username);
@@ -235,8 +236,8 @@ public class UserSettings extends GenericPage {
 	}
 
 	public void reloadDB() {
-		if (databasePicker.isSelected()) PREFERENCES.put(USE_CLIENT_SERVER_DATABASE, hostLabel.getText());
-		else PREFERENCES.remove(USE_CLIENT_SERVER_DATABASE);
+		if (databasePicker.isSelected()) PREFERENCES.put(DATABASE_HOSTNAME, hostLabel.getText());
+		else PREFERENCES.remove(DATABASE_HOSTNAME);
 
 		boolean usingEmbedded;
 
@@ -264,7 +265,7 @@ public class UserSettings extends GenericPage {
 			e.printStackTrace();
 		}
 
-		if (PREFERENCES.get(USE_CLIENT_SERVER_DATABASE, null) != null) {
+		if (PREFERENCES.get(DATABASE_HOSTNAME, null) != null) {
 			popUp("Database Update", usingEmbedded ? "Unable to connect to client-server database. Falling back to embedded database." : "Connected to client-server database!");
 		} else {
 			popUp("Database Update", "Connected to embedded database!");
@@ -273,6 +274,19 @@ public class UserSettings extends GenericPage {
 
 	public void databaseCheckbox() {
 		databasePane.setVisible(databasePicker.isSelected());
-		hostLabel.setText(PREFERENCES.get(USE_CLIENT_SERVER_DATABASE,"localhost"));
+		hostLabel.setText(PREFERENCES.get(DATABASE_HOSTNAME,"localhost"));
+	}
+
+	public void apiEdit() {
+		final Stage myDialog = new Stage();
+		myDialog.centerOnScreen();
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/ApiPopup.fxml"));
+
+			myDialog.setScene(new Scene(loader.load()));
+			myDialog.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

@@ -37,9 +37,9 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-                <Text layoutX="178.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text=": BWH App is a java based computer application integrated with database elements. The main features of this application are the navigation in, to, and around the hospital, service request submission abilities, and accounts for patients, guests, employees, and administration with restricted access to certain features for each." wrappingWidth="468.1419372558594">
+                <Text layoutX="57.0" layoutY="364.0" lineSpacing="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes. BWH App is a java based computer application integrated with database elements. The main features of this application are the navigation in, to, and around the hospital, service request submission abilities, and accounts for patients, guests, employees, and administration with restricted access to certain features for each." wrappingWidth="678.572650787092">
                     <font>
-                        <Font name="Verdana" size="33.0" />
+                        <Font name="Verdana" size="20.0" />
                     </font>
                 </Text>
             </children>
