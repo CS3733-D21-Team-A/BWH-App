@@ -389,7 +389,7 @@ public class Navigation extends GenericMap {
                     color = Color.ORANGE;
                     radius = 5;
                 }
-                drawSingleEdge(node.get("NODEID") + "_" + nextNode.get("NODEID"), Color.BLACK);
+                drawSingleEdge(node.get("NODEID"), nextNode.get("NODEID"), Color.BLACK);
                 if ((node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) {
                     drawSingleNode(node.get("NODEID"), color);
                 }

@@ -346,7 +346,7 @@ public abstract class GenericMap extends GenericPage {
         try {
             List<Map<String, String>> connectedEdges = db.getEdgesConnectedToNode(nodeID);
             for (Map<String, String> edge : connectedEdges) {
-                drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+                drawSingleEdge(edge.get("STARTNODE"), edge.get("ENDNODE"), Color.BLACK);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -427,13 +427,12 @@ public abstract class GenericMap extends GenericPage {
 
     /**
       * Draws a line on the map that represents an edge.
-      * @param edgeID a key that corresponds to an edge in the database
+      * @param startNodeID Edge start node
+      * @param endNodeID Edge end node
       * @param edgeColor the color the edge will be drawn in
       */
-    public void drawSingleEdge(String edgeID, Color edgeColor) {
+    public void drawSingleEdge(String startNodeID, String endNodeID, Color edgeColor) {
         try {
-            String startNodeID = edgeID.substring(0, edgeID.indexOf("_"));
-            String endNodeID = edgeID.substring(edgeID.indexOf("_")+1);
             Map<String, String> startNode = db.getNode(startNodeID);
             Map<String, String> endNode = db.getNode(endNodeID);
 

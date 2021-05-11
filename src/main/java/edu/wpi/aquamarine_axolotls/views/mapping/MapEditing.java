@@ -226,7 +226,7 @@ public class MapEditing extends GenericMap {
                 throwables.printStackTrace();
             }
 
-            drawSingleEdge(edgeID, Color.BLACK);
+            drawSingleEdge(startNodeID, endNodeID, Color.BLACK);
             deselect.fire();
 
         });
@@ -426,7 +426,7 @@ public class MapEditing extends GenericMap {
     public void drawEdges() {
         try {
             for (Map<String, String> edge : db.getEdges())
-                drawSingleEdge(edge.get("EDGEID"), Color.BLACK);
+                drawSingleEdge(edge.get("STARTNODE"), edge.get("ENDNODE"), Color.BLACK);
         } catch (SQLException e) {
             e.printStackTrace();
         }
