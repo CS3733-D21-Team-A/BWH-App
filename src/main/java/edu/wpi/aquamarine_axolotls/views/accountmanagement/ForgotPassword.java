@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
+import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.extras.EmailService;
 import edu.wpi.aquamarine_axolotls.extras.Security;
@@ -30,8 +31,6 @@ public class ForgotPassword extends GenericPage {
 	@FXML
 	private JFXPasswordField confirmPassword;
 	@FXML
-	private JFXButton next;
-	@FXML
 	private GridPane gridPane;
 	@FXML
 	private Pane newPassPane;
@@ -51,21 +50,21 @@ public class ForgotPassword extends GenericPage {
 	private String otp;
 	private final DatabaseController db = DatabaseController.getInstance();
 
-	String resetUsername = PREFERENCES.get ( USER_NAME ,null );
-	String usertype = PREFERENCES.get ( USER_TYPE ,null );
+	String resetUsername = PREFERENCES.get(USER_NAME, null);
+	String usertype = PREFERENCES.get(USER_TYPE, null);
 
 	public void initialize() {
-		System.out.println ( usertype );
-			verfPane.setVisible ( false );
-			newPassPane.setVisible ( false );
-		if (!usertype.equals("Guest") ){
-			resetPassword ( );
+		System.out.println(usertype);
+		verfPane.setVisible(false);
+		newPassPane.setVisible(false);
+		if (!usertype.equals(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST))) {
+			resetPassword();
 		}
 	}
 
 
 	public void userCheck() {
-		String usrname = username.getText();
+		resetUsername = username.getText();
 		String eml = email.getText();
 
 		verfPane.setVisible(true);
@@ -75,7 +74,7 @@ public class ForgotPassword extends GenericPage {
 		label.setText("Please enter the verification code sent to your email");
 
 		try {
-			if (db.checkUserExistsByUsername(usrname) && db.getUserByUsername(usrname).get("EMAIL").equals(eml)) {
+			if (db.checkUserExistsByUsername(resetUsername) && db.getUserByUsername(resetUsername).get("EMAIL").equals(eml)) {
 				otp = Security.generateOneTimeSecurityCode();
 				EmailService.sendAccountResetEmail(email.getText(), username.getText(), otp);
 			}
@@ -96,42 +95,42 @@ public class ForgotPassword extends GenericPage {
 		}
 	}
 
-	public void finalSubmit() throws SQLException {
-		if (!(password.getText().isEmpty() && confirmPassword.getText().isEmpty())) {
+	public void finalSubmit() throws SQLException, IOException {
+		if (!password.getText().isEmpty() && !confirmPassword.getText().isEmpty()) {
 			if (password.getText().equals(confirmPassword.getText())) {
 				Map<String, String> updated = new HashMap<>();
 				Security.addHashedPassword(updated, password.getText());
-				if(usertype.equals ("Guest")){
-				db.editUser(username.getText(), updated);
-				popUp("New Password", "\n\n\n\n\nYour password has been successfully created. " +
-					"Please check your email for a confirmation message. Log in using your new credentials.");
-				sceneSwitch("Login");
-			}
-				else if(!usertype.equals("Guest")){
-					db.editUser(resetUsername, updated);
-					popUp("New Password", "\n\n\n\n\nYour password has been reset. " +
-										  "Please check your email for a confirmation message.");
+
+				db.editUser(resetUsername,updated);
+				Map<String,String> user = db.getUserByUsername(resetUsername);
+				EmailService.sendPasswordChangeConfirmation(user.get("EMAIL"),resetUsername,user.get("FIRSTNAME"));
+
+				if (usertype.equals(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST))) {
+					popUp("New Password", "\n\n\n\n\nYour password has been successfully created.\nPlease log in using your new credentials.");
+					sceneSwitch("Login");
+				} else  {
+					popUp("New Password", "\n\n\n\n\nYour password has been reset.");
 					sceneSwitch("UserSettings");
 				}
-			}
-				else {
-				popUp("Invalid Request", "The two passwords did not match. Please try again");
+			} else {
+				popUp("Invalid Request", "The passwords did not match. Please try again");
 			}
 		} else {
 			popUp("Invalid Request", "Password fields must be filled");
 		}
 	}
+
 	public void resetPassword() {
-		gridPane.setVisible ( false );
-		first.setVisible ( false );
-		verfPane.setVisible ( false );
-		second.setVisible ( false );
-		finalSubmit.setVisible ( true );
-		newPassPane.setVisible ( true );
-		label.setText ( "Please enter your new password" );
+		gridPane.setVisible(false);
+		first.setVisible(false);
+		verfPane.setVisible(false);
+		second.setVisible(false);
+		finalSubmit.setVisible(true);
+		newPassPane.setVisible(true);
+		label.setText("Please enter your new password");
 	}
 
-	public void cancelVerf(){
+	public void cancelVerf() {
 		verfPane.setVisible(false);
 		gridPane.setVisible(true);
 		first.setVisible(true);
