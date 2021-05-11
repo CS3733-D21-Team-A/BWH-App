@@ -988,7 +988,7 @@ public class DatabaseController {
 			put("USERNAME", "admin");
 			put("FIRSTNAME", "admin");
 			put("LASTNAME", "admin");
-			put("EMAIL", "admin@wpi.edu");
+			put("EMAIL", "admin");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.ADMIN));
 		}};
 		Security.addHashedPassword(adminAccount,"admin");
@@ -1000,7 +1000,7 @@ public class DatabaseController {
 			put("USERNAME", "employee");
 			put("FIRSTNAME", "employee");
 			put("LASTNAME", "employee");
-			put("EMAIL", "employee@wpi.edu");
+			put("EMAIL", "employee");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.EMPLOYEE));
 		}};
 		Security.addHashedPassword(employeeAccount,"employee");
@@ -1012,7 +1012,7 @@ public class DatabaseController {
 			put("USERNAME", "patient");
 			put("FIRSTNAME", "patient");
 			put("LASTNAME", "patient");
-			put("EMAIL", "patient@wpi.edu");
+			put("EMAIL", "patient");
 			put("USERTYPE", USER_TYPE_NAMES.get(USERTYPE.PATIENT));
 		}};
 		Security.addHashedPassword(patientAccount,"patient");

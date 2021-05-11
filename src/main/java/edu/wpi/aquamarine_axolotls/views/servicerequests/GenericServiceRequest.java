@@ -25,7 +25,6 @@ public class GenericServiceRequest extends GenericPage {
    // JFXComboBox location; //TODO: Don't all requests need a location?
 
     DatabaseController db = DatabaseController.getInstance();
-    EmailService emailService = new EmailService();
 
     Map<String,String> sharedValues = new HashMap<>();
     Map<String,String> requestValues = new HashMap<>();
@@ -59,15 +58,6 @@ public class GenericServiceRequest extends GenericPage {
 
     List<FieldTemplate> requestFieldList = new ArrayList<>();
 
-    /*
-    *   shared.put("REQUESTID", reqID);
-        shared.put("AUTHORID", Aapp.username);
-        shared.put("STATUS", "Unassigned");
-        shared.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
-        shared.put("FIRSTNAME", firstName.getText());
-        shared.put("LASTNAME", lastName.getText());
-        shared.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));*/
-
     @FXML
     void submit() throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
@@ -97,7 +87,7 @@ public class GenericServiceRequest extends GenericPage {
         String user =  PREFERENCES.get ( USER_NAME ,null );
 
 
-        emailService.sendServiceRequestConfirmation(
+        EmailService.sendServiceRequestConfirmation(
                 db.getUserByUsername ( user ).get ( "EMAIL"),
                 db.getUserByUsername ( user ).get ("USERNAME"),
                 new HashMap<String,String>() {{
@@ -108,7 +98,7 @@ public class GenericServiceRequest extends GenericPage {
 
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
 
-        sceneSwitch("DefaultServicePage");
+        goHome();
     }
 
     @FXML

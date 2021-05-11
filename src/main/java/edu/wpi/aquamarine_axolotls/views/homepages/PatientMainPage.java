@@ -16,9 +16,7 @@ public class PatientMainPage extends GuestMainPage{
     @FXML
     Text userNameText;
 
-    @Override
     public void initialize() {
-        super.initialize();
         userNameText.setText(PREFERENCES.get(USER_TYPE,null) + ": " + PREFERENCES.get(USER_FIRST_NAME,null));
 
         serviceRequestPane.setOnMouseExited(mouseEvent -> {

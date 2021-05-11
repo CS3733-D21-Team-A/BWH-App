@@ -38,17 +38,22 @@
                   <Font name="Verdana Bold" size="40.0" />
                </font>
             </JFXButton>
-            <JFXCheckBox fx:id="databasePicker" checkedColor="#f4ba47" layoutX="45.0" layoutY="468.0" onAction="#databaseCheckbox" prefHeight="45.0" prefWidth="368.0" text="Use Client-Server Database" unCheckedColor="#003da6">
-               <font>
-                  <Font name="Verdana" size="20.0" />
-               </font>
-            </JFXCheckBox>
-            <JFXButton fx:id="reloadDbButton" layoutX="35.0" layoutY="513.0" onAction="#reloadDB" pickOnBounds="false" prefHeight="64.0" prefWidth="331.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Reload Database Connection" textFill="WHITE">
+            <JFXButton layoutX="35.0" layoutY="413.0" onAction="#apiEdit" pickOnBounds="false" prefHeight="64.0" prefWidth="203.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Edit API Keys" textFill="WHITE">
                <font>
                   <Font name="Verdana" size="20.0" />
                </font>
             </JFXButton>
-            <Pane fx:id="databasePane" layoutX="28.0" layoutY="594.0" prefHeight="115.0" prefWidth="431.0">
+            <JFXCheckBox fx:id="databasePicker" checkedColor="#f4ba47" layoutX="45.0" layoutY="502.0" onAction="#databaseCheckbox" prefHeight="45.0" prefWidth="368.0" text="Use Client-Server Database" unCheckedColor="#003da6">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXCheckBox>
+            <JFXButton fx:id="reloadDbButton" layoutX="35.0" layoutY="557.0" onAction="#reloadDB" pickOnBounds="false" prefHeight="64.0" prefWidth="331.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Reload Database Connection" textFill="WHITE">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </JFXButton>
+            <Pane fx:id="databasePane" layoutX="28.0" layoutY="628.0" prefHeight="115.0" prefWidth="431.0">
                <children>
                   <Text layoutX="9.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Client Server Database Hostname:" textAlignment="CENTER" wrappingWidth="362.9222412109375">
                      <font>

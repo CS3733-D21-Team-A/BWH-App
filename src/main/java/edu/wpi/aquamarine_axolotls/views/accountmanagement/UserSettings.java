@@ -7,13 +7,17 @@ import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import javax.swing.text.html.ImageView;
@@ -272,5 +276,18 @@ public class UserSettings extends GenericPage {
 	public void databaseCheckbox() {
 		databasePane.setVisible(databasePicker.isSelected());
 		hostLabel.setText(PREFERENCES.get(DATABASE_HOSTNAME,"localhost"));
+	}
+
+	public void apiEdit() {
+		final Stage myDialog = new Stage();
+		myDialog.centerOnScreen();
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/ApiPopup.fxml"));
+
+			myDialog.setScene(new Scene(loader.load()));
+			myDialog.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

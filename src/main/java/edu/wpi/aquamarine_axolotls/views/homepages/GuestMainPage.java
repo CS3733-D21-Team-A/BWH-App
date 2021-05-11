@@ -2,8 +2,14 @@ package edu.wpi.aquamarine_axolotls.views.homepages;
 
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
+import edu.wpi.aquamarine_axolotls.views.mapping.NodePopUp;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import static edu.wpi.aquamarine_axolotls.Settings.*;
@@ -14,17 +20,6 @@ public class GuestMainPage extends GenericPage {
     DatabaseController db = DatabaseController.getInstance();
 
 	@FXML
-	public void initialize() {
-		if (PREFERENCES.get(GOOGLE_MAPS_API_KEY,null) == null) {
-
-		}
-
-		if (PREFERENCES.get(EMAIL_API_KEY, null) == null) {
-
-		}
-	}
-
-    @FXML
     public void signInP() {
         sceneSwitch("LogIn");
     }
