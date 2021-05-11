@@ -410,6 +410,8 @@ public class Navigation extends GenericMap {
 
     /**
      * Draws animated path
+     * @param startID ID of starting node
+     * @param endID ID of ending node
      * @param edgeCol Color of the edge
      */
     public void drawAnimatedPath(String startID, String endID, Color edgeCol) {
@@ -654,7 +656,9 @@ public class Navigation extends GenericMap {
 
     public void unHighlightDirection() {
         String curDirectionID = curPathDirections.get(1).get(currentStepNumber);
-        if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
+        if (curDirectionID.contains("_")) {
+            updateEdgeColor(curDirectionID, Color.BLACK);
+        }
         else {
             if(currentStepNumber == curPathDirections.get(1).size() - 1) changeNodeColorOnImage(curDirectionID, Color.RED);
             else if (stopList.contains(curDirectionID)) changeNodeColorOnImage(curDirectionID, Color.ORANGE);
