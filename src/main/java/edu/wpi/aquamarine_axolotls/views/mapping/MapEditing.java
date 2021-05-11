@@ -163,8 +163,8 @@ public class MapEditing extends GenericMap {
             selectedNodesList.clear();
             selectedEdgesList.clear();
             addAnchorPoint.setText("Add Anchor Point");
-            if (!anchor1.isEmpty()) drawSingleNode(anchor1.get("NODEID"), darkBlue);
-            if (!anchor2.isEmpty()) drawSingleNode(anchor2.get("NODEID"), darkBlue);
+            if (!anchor1.isEmpty()) changeNodeColorOnImage(anchor1.get("NODEID"), darkBlue);
+            if (!anchor2.isEmpty()) changeNodeColorOnImage(anchor2.get("NODEID"), darkBlue);
             anchor1.clear();
             anchor2.clear();
             deselect.setVisible(false);
