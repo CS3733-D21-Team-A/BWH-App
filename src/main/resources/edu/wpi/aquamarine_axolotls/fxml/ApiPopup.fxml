@@ -40,7 +40,7 @@
                 </Label>
                 <JFXTextField fx:id="gmapsField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="210.0" promptText="Please Enter API Key" style="-fx-font-size: 16px; -fx-font-family: Verdana;" GridPane.rowIndex="1">
                     <GridPane.margin>
-                        <Insets left="200.0" />
+                        <Insets left="195.0" />
                     </GridPane.margin>
                 </JFXTextField>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="617.0" text="SendGrid API Key:" textAlignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
@@ -48,9 +48,15 @@
                   <Font name="Verdana" size="18.0" />
                </font>
             </Label>
-            <JFXTextField fx:id="sendGridField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="210.0" promptText="Please Enter API Key" style="-fx-font-size: 16px; -fx-font-family: Verdana;" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <JFXTextField fx:id="sendGridField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="210.0" promptText="Please Enter API Key" style="-fx-font-size: 16px; -fx-font-family: Verdana;" GridPane.rowIndex="3">
+               <GridPane.margin>
+                  <Insets left="195.0" />
+               </GridPane.margin></JFXTextField>
             </children>
         </GridPane>
-      <JFXButton layoutX="438.0" layoutY="330.0" onAction="#submitKeys" prefHeight="42.0" prefWidth="112.0" style="-fx-background-color: #003da6;" text="Submit" textFill="WHITE" />
+      <JFXButton layoutX="438.0" layoutY="330.0" onAction="#submitKeys" prefHeight="42.0" prefWidth="112.0" style="-fx-background-color: #003da6;" text="Submit" textFill="WHITE">
+         <font>
+            <Font name="Verdana Bold" size="15.0" />
+         </font></JFXButton>
     </children>
 </Pane>

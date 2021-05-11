@@ -288,4 +288,8 @@ public class UserSettings extends GenericPage {
 			e.printStackTrace();
 		}
 	}
+
+	public void forgotPasswordP(){
+		sceneSwitch ( "ForgotPassword" );
+	}
 }
