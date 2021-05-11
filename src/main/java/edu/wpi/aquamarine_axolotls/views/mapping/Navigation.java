@@ -223,22 +223,10 @@ public class Navigation extends GenericMap {
                 }
             }
         });
-//
-//        drawFloor("1");
     }
 
 
 
-
-    @Override
-    public void nodePopUp() {
-
-    }
-
-    @Override
-    public void edgePopUp() {
-
-    }
 
     //====DRAWING
     @Override

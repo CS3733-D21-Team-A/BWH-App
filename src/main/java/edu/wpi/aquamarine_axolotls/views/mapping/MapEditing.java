@@ -1,36 +1,26 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import edu.wpi.aquamarine_axolotls.db.CSVHandler;
-import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.enums.TABLES;
 import edu.wpi.aquamarine_axolotls.pathplanning.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.input.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import org.checkerframework.checker.units.qual.C;
 
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +99,7 @@ public class MapEditing extends GenericMap {
         newNode.setOnAction((ActionEvent e) -> {
             state = "New";
             currentID = "";
-            nodePopUp();
+            editPopUp();
         });
 
         //Handler for the button that adds an anchor point
@@ -227,7 +217,7 @@ public class MapEditing extends GenericMap {
         });
 
         deleteNodes.setOnAction((ActionEvent e) -> {
-            for (Map<String, String> node: selectedNodesList){
+            for (Map<String, String> node : selectedNodesList){
                 try {
                     String nodeID = node.get("NODEID");
                     removeNodeOnImage(nodeID);
@@ -388,11 +378,6 @@ public class MapEditing extends GenericMap {
         }
     }
 
-    @FXML
-    public void nodePopUp() {
-        editPopUp();
-    }
-
     /**
      * Switches to a given floor, then draws all nodes and edges on it
      * @param floor Floor to move to
@@ -406,7 +391,6 @@ public class MapEditing extends GenericMap {
             ObservableList<MenuItem> items = contextMenu.getItems();
             items.get(items.indexOf(deselect)).fire(); // targets deselect
         }*/
-        deselect.fire(); //TODO: Figure out why an invocationTargetException() is happening here
     }
 
     public void drawNodes(Color colorOfNodes) {
@@ -448,7 +432,7 @@ public class MapEditing extends GenericMap {
                     System.out.println("Successfully clicked node");
                     currentID = nodeID;
                     state = "Edit";
-                    nodePopUp();
+                    editPopUp();
                 }
                 //Otherwise, single clicks will select/deselect nodes
                 else {

@@ -1,5 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.views.GenericPage;
 import javafx.fxml.FXML;
@@ -87,9 +88,7 @@ public abstract class GenericMap extends GenericPage {
      */
     public void startUp(){
         mapScrollPane.pannableProperty().set(true);
-        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY);
-        });
+        mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY));
 
         Group contentGroup = new Group();
         zoomGroup = new Group();
@@ -365,11 +364,6 @@ public abstract class GenericMap extends GenericPage {
         }
     }
 
-
-    /**
-     * Pop up that happens when user clicks a node
-     */
-    public abstract void nodePopUp();
 
 
 //=== DRAW FUNCTIONS ===//
