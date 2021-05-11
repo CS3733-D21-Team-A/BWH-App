@@ -80,8 +80,7 @@ public abstract class GenericMap extends GenericPage {
     public void startUp(){
         mapScrollPane.pannableProperty().set(true);
         mapView.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
-            if(event.getButton() == MouseButton.PRIMARY) mapScrollPane.pannableProperty().set(true);
-            else mapScrollPane.pannableProperty().set(false);
+            mapScrollPane.pannableProperty().set(event.getButton() == MouseButton.PRIMARY);
         });
 
         Group contentGroup = new Group();
@@ -111,11 +110,11 @@ public abstract class GenericMap extends GenericPage {
     /**
      * Change the active floor
      */
-    public void changeFloor3() throws SQLException { drawFloor("3"); }
-    public void changeFloor2() throws SQLException { drawFloor("2"); }
-    public void changeFloor1() throws SQLException { drawFloor("1"); }
-    public void changeFloorL1() throws SQLException { drawFloor("L1"); }
-    public void changeFloorL2() throws SQLException { drawFloor("L2"); }
+    public void changeFloor3() { drawFloor("3"); }
+    public void changeFloor2() { drawFloor("2"); }
+    public void changeFloor1() { drawFloor("1"); }
+    public void changeFloorL1() { drawFloor("L1"); }
+    public void changeFloorL2() { drawFloor("L2"); }
 
 
 //=== SCALING FUNCTIONS ===//
