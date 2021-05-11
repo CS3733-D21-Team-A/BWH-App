@@ -95,6 +95,19 @@ public class GenericServiceRequest extends GenericPage {
 
         db.addServiceRequest(sharedValues,requestValues);
         System.out.println(db.getServiceRequest(serviceRequestType, requestID).toString());
+        String user =  PREFERENCES.get ( USER_NAME ,null );
+
+
+        emailService.sendServiceRequestConfirmation(
+                db.getUserByUsername ( user ).get ( "EMAIL"),
+                db.getUserByUsername ( user ).get ("USERNAME"),
+                new HashMap<String,String>() {{
+                    putAll(sharedValues);
+                    putAll(requestValues);
+                }}
+        );
+
+
 
         popUp("Submission Successful" ,"\nSubmission Success!\nYour information has successfully been submitted.\n");
         String username = PREFERENCES.get(USER_NAME,null);

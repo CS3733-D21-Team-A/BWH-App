@@ -20,6 +20,7 @@ public class EmailService {
 	private static final String ACCOUNT_RESET_TEMPLATE = "d-73eda03e75b843fca186dd142c4a7611";
 	private static final String SERVICE_REQUEST_TEMPLATE = "d-4ba0ff1157d945d48834039618450d01";
 
+
 	/**
 	 * Sends the provided email
 	 * @param mail email to send
@@ -98,7 +99,7 @@ public class EmailService {
 			details.append(key);
 			details.append("</b>: ");
 			details.append(requestValues.get(key));
-			details.append("\n");
+			details.append("<br>");
 		}
 
 		Personalization personalization = new Personalization();
