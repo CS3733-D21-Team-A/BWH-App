@@ -46,6 +46,8 @@ public class MapEditing extends GenericMap {
     public RadioMenuItem mergeCSVButton;
     @FXML
     public RadioMenuItem exportButton;
+    @FXML
+    public Pane helpPane;
 
     ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
     CSVHandler csvHandler;
@@ -66,6 +68,7 @@ public class MapEditing extends GenericMap {
     @FXML
     public void initialize() throws SQLException, IOException {
         startUp();
+        helpPane.setVisible(false);
 
     //====SET UP SEARCH ALGORITHM SELECTION====//
 
@@ -599,4 +602,13 @@ public class MapEditing extends GenericMap {
             sq.printStackTrace();
         }
     }
+
+    public void helpButton(){
+        helpPane.setVisible(true);
+    }
+
+    public void cancelHelp(){
+        helpPane.setVisible ( false );
+    }
+
 }
