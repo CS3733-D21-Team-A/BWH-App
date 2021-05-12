@@ -300,11 +300,14 @@ public class UserSettings extends GenericPage {
 
 	@FXML
 	private void clearPrefs() throws SQLException {
+		databasePicker.setSelected(false);
+
 		try {
 			PREFERENCES.clear();
 		} catch (BackingStoreException e) {
 			e.printStackTrace();
 		}
+
 		Map<String,String> instanceUser = new HashMap<>();
 
 		instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
@@ -314,15 +317,11 @@ public class UserSettings extends GenericPage {
 			instanceID = UUID.randomUUID().toString();
 		} while (db.checkUserExistsByUsername(instanceID));
 
-		instanceUser.put("USERNAME",instanceID);
-		instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
-		Security.addHashedPassword(instanceUser,instanceID); //account login should never be used, but it's a thing
-
-		db.addUser(instanceUser);
-
 		PREFERENCES.put(INSTANCE_ID,instanceID);
 		PREFERENCES.put(USER_TYPE,DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
 		PREFERENCES.put(USER_NAME, instanceID);
+
+		reloadDB();
 		goHome();
 	}
 }
