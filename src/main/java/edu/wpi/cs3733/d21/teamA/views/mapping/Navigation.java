@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d21.teamA.views.mapping;
 import edu.wpi.cs3733.d21.teamA.extras.SocketClient;
+import edu.wpi.cs3733.d21.teamA.pathplanning.*;
 import javafx.application.Platform;
 
 import com.google.maps.model.DirectionsLeg;
@@ -7,8 +8,6 @@ import com.google.maps.model.DirectionsStep;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.cs3733.d21.teamA.extras.VoiceController;
-import edu.wpi.cs3733.d21.teamA.pathplanning.AStar;
-import edu.wpi.cs3733.d21.teamA.pathplanning.SearchAlgorithmContext;
 import edu.wpi.cs3733.d21.teamA.Aapp;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -91,8 +90,26 @@ public class Navigation extends GenericMap {
 
 
         startUp();
-        if(SearchAlgorithmContext.getSearchAlgorithmContext().context == null) {
-            SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+        if (PREFERENCES.get(SEARCH_ALGORITHM, null) == null) {
+            PREFERENCES.put(SEARCH_ALGORITHM, "A Star");
+        }
+
+        switch (PREFERENCES.get(SEARCH_ALGORITHM,null)) {
+            case "A Star":
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new AStar());
+                break;
+            case "Dijkstra":
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new Dijkstra());
+                break;
+            case "Breadth First":
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BreadthFirstSearch());
+                break;
+            case "Depth First":
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new DepthFirstSearch());
+                break;
+            case "Best First":
+                SearchAlgorithmContext.getSearchAlgorithmContext().setContext(new BestFirstSearch());
+                break;
         }
 
         drawer.setOnDrawerClosed(event ->{

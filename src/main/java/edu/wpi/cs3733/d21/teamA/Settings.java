@@ -14,4 +14,5 @@ public class Settings {
 	final public static String USER_FIRST_NAME = "User First Name";
 	final public static String INSTANCE_ID = "Instance ID";
 	final public static String EMAIL_API_KEY = "SendGrid Email API Key";
+	final public static String SEARCH_ALGORITHM = "Navigation Search Algorithm";
 }
