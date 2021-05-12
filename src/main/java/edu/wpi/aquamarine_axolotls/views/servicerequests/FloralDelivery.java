@@ -75,9 +75,16 @@ public class FloralDelivery extends GenericServiceRequest {
         ));
 
         serviceRequestType = SERVICEREQUEST.FLORAL_DELIVERY;
-
+        ArrayList<String> locations = new ArrayList<>();
+        try {
+            for (Map<String, String> oneNode: db.getNodes()) {
+                locations.add(oneNode.get("LONGNAME"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         roomNumber.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
+                .observableArrayList(locations)
         );
         flowerOptions.setItems(FXCollections
                 .observableArrayList("Roses", "Sunflowers", "Peruvian Lilies", "Hydrangeas", "Orchids")

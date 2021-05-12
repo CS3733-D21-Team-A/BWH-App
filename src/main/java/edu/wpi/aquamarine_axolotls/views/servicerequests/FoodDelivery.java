@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class FoodDelivery extends GenericServiceRequest {
@@ -81,8 +82,16 @@ public class FoodDelivery extends GenericServiceRequest {
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
+        ArrayList<String> locations = new ArrayList<>();
+        try {
+            for (Map<String, String> oneNode: db.getNodes()) {
+                locations.add(oneNode.get("LONGNAME"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         roomNumber.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk", "Connors Center Security Desk Floor 1")
+                .observableArrayList(locations)
         );
         drinkOptions.setItems(FXCollections
                 .observableArrayList("Water", "Coca-Cola", "Sprite", "Milk", "Orange Juice")
