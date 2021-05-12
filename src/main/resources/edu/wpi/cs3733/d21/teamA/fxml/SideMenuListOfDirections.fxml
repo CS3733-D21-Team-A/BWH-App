@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="351.0" style="-fx-font-family: Verdana;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d21.teamA.views.mapping.SideMenu">
+   <children>
+       <VBox prefHeight="293.0" prefWidth="351.0" style="-fx-background-color: #003DA6;">
+           <children>
+               <HBox prefHeight="42.0" prefWidth="351.0" style="-fx-background-color: #003da6;">
+                   <children>
+                       <JFXButton alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#goHome" prefHeight="55.0" prefWidth="65.0" text=" ">
+                           <graphic>
+                               <ImageView fitHeight="33.5" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                   <image>
+                                       <Image url="@../img/yellowIcons/homeYellow.png" />
+                                   </image>
+                               </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                               <Insets right="170.0" />
+                           </HBox.margin>
+                       </JFXButton>
+                       <JFXToggleButton fx:id="robotConnection" contentDisplay="RIGHT" onAction="#toggleRobotConnectionButton" prefHeight="62.0" prefWidth="218.0" text="Robot" textFill="WHITE" toggleColor="#f0f0f0" toggleLineColor="#f4ba4f" unToggleColor="#f0f0f0" />
+                       <JFXToggleButton fx:id="voiceDirection" contentDisplay="RIGHT" onAction="#toggleVoiceDirectionButton" prefHeight="62.0" prefWidth="218.0" text="Voice" textFill="WHITE" toggleColor="#f0f0f0" toggleLineColor="#f4ba4f" unToggleColor="#f0f0f0" />
+                   </children>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               </HBox>
+               <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="117.0" prefWidth="351.0" style="-fx-background-color: #003da6;">
+                   <children>
+                       <Label fx:id="startLabel" prefHeight="41.0" prefWidth="301.0" style="-fx-background-radius: 13; -fx-background-color: #F0F0F0;" text="Start Location">
+                           <VBox.margin>
+                               <Insets bottom="15.0" />
+                           </VBox.margin>
+                           <padding>
+                               <Insets left="15.0" />
+                           </padding>
+                       </Label>
+                       <Label fx:id="endLabel" prefHeight="41.0" prefWidth="301.0" style="-fx-background-radius: 13; -fx-background-color: #F0F0F0;" text="End Location">
+                           <padding>
+                               <Insets left="15.0" />
+                           </padding>
+                       </Label>
+                   </children>
+                   <VBox.margin>
+                       <Insets />
+                   </VBox.margin>
+               </VBox>
+               <HBox prefHeight="14.0" prefWidth="351.0" style="-fx-background-color: #003da6;" />
+               <HBox alignment="CENTER_LEFT" prefHeight="61.0" prefWidth="351.0" style="-fx-background-color: #7D99C9;">
+                   <children>
+                       <Label prefHeight="23.0" prefWidth="133.0" style="-fx-font-weight: bold;" text="Est. Travel Time : " textFill="WHITE">
+                           <HBox.margin>
+                               <Insets left="30.0" right="10.0" />
+                           </HBox.margin>
+                       </Label>
+                       <Label fx:id="etaLabel" textFill="WHITE" />
+                   </children>
+                   <VBox.margin>
+                       <Insets />
+                   </VBox.margin>
+               </HBox>
+           </children>
+       </VBox>
+       <ScrollPane prefHeight="636.0" prefWidth="351.0" style="-fx-background-color: #F0F0F0;">
+           <content>
+               <VBox fx:id="listOfDirections" prefHeight="646.0" prefWidth="327.0" />
+           </content>
+       </ScrollPane>
+       <HBox alignment="CENTER" prefHeight="126.0" prefWidth="351.0" style="-fx-background-color: #003da6;">
+           <children>
+               <JFXButton onAction="#goToTreeView" prefHeight="33.6" prefWidth="108.0" style="-fx-background-radius: 5; -fx-background-color: #7D99C9;" text="Cancel" textFill="#f0f0f0" />
+               <JFXButton onAction="#startPath" prefHeight="33.6" prefWidth="149.0" style="-fx-background-radius: 5; -fx-background-color: #F4BA47;" text="Start path" textFill="#646464">
+                   <HBox.margin>
+                       <Insets left="10.0" />
+                   </HBox.margin>
+               </JFXButton>
+           </children>
+       </HBox>
+   </children>
+</VBox>
