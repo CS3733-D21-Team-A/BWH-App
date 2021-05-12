@@ -5,7 +5,11 @@ import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Map;
 
 
 public class FloralDelivery extends GenericServiceRequest {
@@ -25,7 +29,7 @@ public class FloralDelivery extends GenericServiceRequest {
     private JFXComboBox vaseOptions;
 
     @FXML
-    void submitFloral() throws SQLException, IOException{
+    void submitFloral() throws SQLException, IOException {
         String errorVals = "";
         if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
         sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));

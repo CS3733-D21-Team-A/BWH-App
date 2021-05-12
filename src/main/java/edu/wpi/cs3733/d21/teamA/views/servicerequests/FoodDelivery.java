@@ -5,6 +5,8 @@ import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -94,7 +96,7 @@ public class FoodDelivery extends GenericServiceRequest {
 
     // new method for getting the submit information regarding the location id into submit
     @FXML
-    void submitFood() throws SQLException, IOException{
+    void submitFood() throws SQLException, IOException {
         String errorVals = "";
         if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
         sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));

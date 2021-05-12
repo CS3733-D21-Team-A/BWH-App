@@ -5,8 +5,11 @@ import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ExternalTransport extends GenericServiceRequest {
 
@@ -69,19 +72,30 @@ public class ExternalTransport extends GenericServiceRequest {
 
         serviceRequestType = SERVICEREQUEST.EXTERNAL_TRANSPORT;
 
-
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
         levelOfEmergency.setItems(FXCollections
                 .observableArrayList("Very Critical","Critical","Moderately Critical","Non-Emergent")
         );
         modeOfTrans.setItems(FXCollections
                 .observableArrayList("Helicopter","Ambulance","Non-Emergent Vehicle Transport")
         );
+        ArrayList<String> locations = new ArrayList<>();
+        try {
+            for (Map<String, String> oneNode: db.getNodes()) {
+                locations.add(oneNode.get("LONGNAME"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         roomNumber.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
+            .observableArrayList(locations)
         );
     }
 
+    @FXML
+    void submitExternalTransport() throws SQLException, IOException {
+        String errorVals = "";
+        if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+        submit(errorVals);
+    }
 }

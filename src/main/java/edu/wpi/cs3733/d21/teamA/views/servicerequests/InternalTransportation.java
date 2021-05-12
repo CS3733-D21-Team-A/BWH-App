@@ -2,9 +2,13 @@ package edu.wpi.cs3733.d21.teamA.views.servicerequests;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class InternalTransportation extends GenericServiceRequest {
@@ -56,10 +60,11 @@ public class InternalTransportation extends GenericServiceRequest {
 
         serviceRequestType = SERVICEREQUEST.INTERNAL_TRANSPORT;
 
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
 
     }
 
+    @FXML
+    void submitInternalTransport() throws SQLException, IOException {
+        submit("");
+    }
 }
