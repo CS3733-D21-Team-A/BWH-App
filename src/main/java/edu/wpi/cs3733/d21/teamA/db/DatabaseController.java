@@ -82,6 +82,14 @@ public class DatabaseController {
 		return connection.isClosed();
 	}
 
+	public List<String> getEdgeColumns() throws SQLException {
+		return edgeTable.getColumns();
+	}
+
+	public List<String> getNodeColumns() throws SQLException {
+		return nodeTable.getColumns();
+	}
+
 	/**
 	 * Static nested class for databasecontrollerSingleton
 	 */

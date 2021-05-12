@@ -20,9 +20,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +45,7 @@ public class MapEditing extends GenericMap {
 	public Pane helpPane;
 
 	ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
-	CSVHandler csvHandler;
+	CSVHandler csvHandler = new CSVHandler(db);
 
 	private Map<String, String> anchor1 = new HashMap<>();
 	private Map<String, String> anchor2 = new HashMap<>();
@@ -662,12 +662,58 @@ public class MapEditing extends GenericMap {
 			new FileChooser.ExtensionFilter("CSV Files", "*.csv")
 		);
 		File csv = fileChooser.showOpenDialog(algoSelectBox.getScene().getWindow());
+		if (csv == null) return;
+
+		TABLES table = null;
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csv)))) {
+			List<String> columns = Arrays.asList(br.readLine().split(","));
+			System.out.println(columns);
+			if (columns.size() == 3) {
+				boolean hasEdgeCols = true;
+				List<String> edgeTabCols = db.getEdgeColumns();
+				for (String col : columns) {
+					if (!edgeTabCols.contains(col.toUpperCase())) {
+						hasEdgeCols = false;
+						break;
+					}
+				}
+				if (hasEdgeCols) table = TABLES.EDGES;
+				else {
+					popUp("CSV Importing","Error: Malformed CSV. Import halted");
+					return;
+				}
+			} else if (columns.size() == 8) {
+				boolean hasNodeCols = true;
+				List<String> nodeTabCols = db.getNodeColumns();
+				System.out.println(nodeTabCols);
+				for (String col : columns) {
+					if (!nodeTabCols.contains(col.toUpperCase())) {
+						System.out.println(col.toUpperCase());
+						hasNodeCols = false;
+						break;
+					}
+				}
+				if (hasNodeCols) table = TABLES.NODES;
+				else {
+					popUp("CSV Importing","Error: Malformed CSV. Import halted");
+					return;
+				}
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		if (table == null) {
+			popUp("CSV Importing","Error: Something went wrong. Import halted");
+			return;
+		}
+
+
 		try {
-			csvHandler.importCSV(csv, TABLES.EDGES, true);
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		} catch (SQLException sq) {
-			sq.printStackTrace();
+			csvHandler.importCSV(csv, table, true);
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
 		}
 
 		try {
@@ -686,12 +732,57 @@ public class MapEditing extends GenericMap {
 			new FileChooser.ExtensionFilter("CSV Files", "*.csv")
 		);
 		File csv = fileChooser.showOpenDialog(algoSelectBox.getScene().getWindow());
+		if (csv == null) return;
+
+		TABLES table = null;
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(csv)))) {
+			List<String> columns = Arrays.asList(br.readLine().split(","));
+			System.out.println(columns);
+			if (columns.size() == 3) {
+				boolean hasEdgeCols = true;
+				List<String> edgeTabCols = db.getEdgeColumns();
+				for (String col : columns) {
+					if (!edgeTabCols.contains(col.toUpperCase())) {
+						hasEdgeCols = false;
+						break;
+					}
+				}
+				if (hasEdgeCols) table = TABLES.EDGES;
+				else {
+					popUp("CSV Importing","Error: Malformed CSV. Import halted");
+					return;
+				}
+			} else if (columns.size() == 8) {
+				boolean hasNodeCols = true;
+				List<String> nodeTabCols = db.getNodeColumns();
+				System.out.println(nodeTabCols);
+				for (String col : columns) {
+					if (!nodeTabCols.contains(col.toUpperCase())) {
+						System.out.println(col.toUpperCase());
+						hasNodeCols = false;
+						break;
+					}
+				}
+				if (hasNodeCols) table = TABLES.NODES;
+				else {
+					popUp("CSV Importing","Error: Malformed CSV. Import halted");
+					return;
+				}
+			}
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+			return;
+		}
+
+		if (table == null) {
+			popUp("CSV Importing","Error: Something went wrong. Import halted");
+			return;
+		}
+
 		try {
-			csvHandler.importCSV(csv, TABLES.EDGES, false);
-		} catch (IOException ie) {
+			csvHandler.importCSV(csv, table, false);
+		} catch (IOException | SQLException ie) {
 			ie.printStackTrace();
-		} catch (SQLException sq) {
-			sq.printStackTrace();
 		}
 
 		try {
@@ -709,13 +800,23 @@ public class MapEditing extends GenericMap {
 		fileChooser.getExtensionFilters().add(
 			new FileChooser.ExtensionFilter("CSV Files", "*.csv")
 		);
-		File csv = fileChooser.showSaveDialog(algoSelectBox.getScene().getWindow()); //TODO: what isthis?
-		try {
-			csvHandler.exportCSV(csv, TABLES.EDGES);
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		} catch (SQLException sq) {
-			sq.printStackTrace();
+
+		File nodeCsv = fileChooser.showSaveDialog(algoSelectBox.getScene().getWindow());
+		if (nodeCsv != null) {
+			try {
+				csvHandler.exportCSV(nodeCsv, TABLES.NODES);
+			} catch (IOException | SQLException ie) {
+				ie.printStackTrace();
+			}
+		}
+
+		File edgeCsv = fileChooser.showSaveDialog(algoSelectBox.getScene().getWindow());
+		if (edgeCsv != null) {
+			try {
+				csvHandler.exportCSV(edgeCsv, TABLES.EDGES);
+			} catch (IOException | SQLException ie) {
+				ie.printStackTrace();
+			}
 		}
 	}
 
