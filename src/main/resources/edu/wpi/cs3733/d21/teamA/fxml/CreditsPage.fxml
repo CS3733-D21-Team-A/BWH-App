@@ -37,7 +37,7 @@
                         </ImageView>
                     </graphic>
                 </JFXButton>
-            <Text layoutX="73.0" layoutY="339.0" lineSpacing="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An API, or application programming interface, defines the interactions between multiple software components. The APIs used in this application are: FreeTTS, Google Maps API,  ROS API, SendMail API, TOTP API." wrappingWidth="669.1815795898438">
+            <Text layoutX="73.0" layoutY="339.0" lineSpacing="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="An API, or application programming interface, defines the interactions between multiple software components. The APIs used in this application are: FreeTTS, Google Maps API, ROS API, SendGrid API, and smdjstevens java-totp API." wrappingWidth="669.1815795898438">
                <font>
                   <Font name="Verdana" size="25.0" />
                </font>

@@ -148,40 +148,34 @@ public class EmployeeRequests extends GenericPage {
 			nauseaDiarrheaColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("nauseaDiarrhea"));
 
 			covidLikelyColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
-			covidLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
-				@Override
-				public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
-					try {
-						int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+			covidLikelyColumn.setOnEditCommit(event -> {
+				try {
+					int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
 
-						Map<String, String> edits = new HashMap<>();
-						edits.put("COVIDLIKELY", event.getNewValue());
+					Map<String, String> edits = new HashMap<>();
+					edits.put("COVIDLIKELY", event.getNewValue());
 
-						covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
+					covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
 
-						db.editUser(covidSurveyTable.getItems().get(index).username, edits);
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
-					}
+					db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+				} catch (SQLException throwables) {
+					throwables.printStackTrace();
 				}
 			});
 
 			entryApprovedColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
-			entryApprovedColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
-				@Override
-				public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
-					try {
-						int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+			entryApprovedColumn.setOnEditCommit(event -> {
+				try {
+					int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
 
-						Map<String, String> edits = new HashMap<>();
-						edits.put("ENTRYAPPROVED", event.getNewValue());
+					Map<String, String> edits = new HashMap<>();
+					edits.put("ENTRYAPPROVED", event.getNewValue());
 
-						covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
+					covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
 
-						db.editUser(covidSurveyTable.getItems().get(index).username, edits);
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
-					}
+					db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+				} catch (SQLException throwables) {
+					throwables.printStackTrace();
 				}
 			});
 
@@ -196,8 +190,8 @@ public class EmployeeRequests extends GenericPage {
 	 * Populates the corresponding tables with requests and surveys
 	 */
 	public void populateTable() {
-		List<Map<String, String>> serviceRequests = null;
-		List<Map<String, String>> covSurveys = null;
+		List<Map<String, String>> serviceRequests;
+		List<Map<String, String>> covSurveys;
 		try {
 			switch (DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE, null))) {
 				case ADMIN:
