@@ -302,8 +302,13 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
             Map<String, String> edits = new HashMap<>();
             edits.put(colName, event.getNewValue());
+            if (colName == "ENTRYAPPROVED"){
+                covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
+            }
+            if (colName == "COVIDLIKELY"){
+                covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
+            }
 
-            covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
 
             db.editUser(covidSurveyTable.getItems().get(index).username, edits);
         } catch (SQLException throwables) {
