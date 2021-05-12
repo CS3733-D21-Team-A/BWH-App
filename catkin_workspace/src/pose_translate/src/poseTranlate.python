@@ -1,0 +1,25 @@
+#! /usr/bin/env python
+
+import rospy
+from nav_msgs.msg import Odometry
+from tf.transformations import euler_from_quaternion
+from std_msgs.msg import *
+
+def callback(msg):
+    #print msg.pose.pose
+    #print str(format(float(msg.pose.pose.position.x),'.12f'))
+    #print  str(format(float(msg.pose.pose.position.y),'.12f'))
+    qtn_list = [msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w]
+    (roll,pitch,yaw) = euler_from_quaternion(qtn_list)
+    #print  str(format(float(yaw),'.12f'))
+    odom_pub_string = str(format(float(msg.pose.pose.position.x),'.12f')) + "," + str(format(float(msg.pose.pose.position.y),'.12f')) + "," +  str(format(float(yaw),'.12f'))
+    print odom_pub_string
+    odom_pub.publish(odom_pub_string)
+
+if __name__ == "__main__":
+    rospy.init_node('check_odometry', anonymous=True)
+    odom_sub = rospy.Subscriber('/odom', Odometry, callback)
+    odom_pub = rospy.Publisher('/odom_String', String, queue_size = 10)
+    rospy.loginfo("poseTranslate running")
+    rate = rospy.Rate(5)
+    rospy.spin()

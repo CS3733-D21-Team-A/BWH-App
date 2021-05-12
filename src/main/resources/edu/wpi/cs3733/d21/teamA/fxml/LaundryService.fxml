@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d21.teamA.views.servicerequests.LaundryService">
+    <right>
+        <Pane prefHeight="900.0" prefWidth="556.0" BorderPane.alignment="CENTER">
+            <children>
+                <Circle fill="#1f93ff00" layoutX="363.0" layoutY="149.0" radius="79.0" smooth="false" stroke="#003da6" strokeType="INSIDE" strokeWidth="5.0" />
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="64.0" layoutY="461.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="149.0" prefWidth="412.0" text="Please provide at least 30 minutes between your desired pickup time and order placement. Be sure to include any specific information regarding detergents or other related service options including allergies or skin sensitivities." textAlignment="RIGHT" wrapText="true">
+                    <font>
+                        <Font name="Verdana" size="15.0" />
+                    </font>
+                    <padding>
+                        <Insets left="20.0" right="20.0" />
+                    </padding>
+                </Label>
+                <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="79.0" layoutY="268.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="183.0" prefWidth="373.0" text="LaundryRequest" textAlignment="RIGHT" textFill="#003da6" wrapText="true">
+                    <font>
+                        <Font name="Verdana Bold" size="70.0" />
+                    </font>
+                </Label>
+                <ImageView fitHeight="105.0" fitWidth="113.0" layoutX="306.0" layoutY="115.0">
+                    <image>
+                        <Image url="@../img/ServiceReq Icons/laundryServicesB.png" />
+                    </image>
+                </ImageView>
+                <Line endX="281.4117431640625" layoutX="180.0" layoutY="600.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
+            </children>
+        </Pane>
+    </right>
+    <left>
+        <Pane prefHeight="839.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+            <children>
+                <GridPane alignment="CENTER" layoutX="57.0" layoutY="90.0" maxHeight="807.0" maxWidth="1612.0" minHeight="200.0" prefHeight="560.0" prefWidth="635.0">
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="400.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="300.0" minWidth="200.0" prefWidth="200.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="100.0" minHeight="0.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <JFXTextField fx:id="firstName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="267.0" promptText="First Name" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets top="40.0" />
+                            </GridPane.margin></JFXTextField>
+                        <JFXTextField fx:id="lastName" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Last Name" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="2">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin></JFXTextField>
+                        <JFXComboBox fx:id="roomNumber" prefHeight="50.0" prefWidth="300.0" promptText="Room Options" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXTextField fx:id="lastName1" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="50.0" prefWidth="300.0" promptText="Contact Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin>
+                        </JFXTextField>
+                        <JFXComboBox fx:id="articlesOfClothing" prefHeight="50.0" prefWidth="308.0" promptText="Clothing Articles" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXTimePicker fx:id="deliveryTime" defaultColor="#003da6" prefHeight="50.0" prefWidth="324.0" promptText="Delivery Time" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin></JFXTimePicker>
+                        <JFXComboBox fx:id="loadOptions" prefHeight="50.0" prefWidth="308.0" promptText="Type of Load" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="detergentType" prefHeight="50.0" prefWidth="294.0" promptText="Type of Detergent" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                            <GridPane.margin>
+                                <Insets right="25.0" top="40.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                    </children>
+                </GridPane>
+                <JFXTextArea fx:id="specialRequest" layoutX="72.0" layoutY="612.0" prefHeight="71.0" prefWidth="582.0" promptText="Please list any laundering preferences. ">
+                    <font>
+                        <Font name="Verdana" size="20.0" />
+                    </font>
+                    <padding>
+                        <Insets top="20.0" />
+                    </padding>
+                </JFXTextArea>
+
+                <Rectangle fill="#003da6" height="65.0" layoutX="-3.0" layoutY="-12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
+                            <image>
+                                <Image url="@../img/image.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+            </children>
+        </Pane>
+    </left>
+   <center>
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
+              <font>
+                  <Font name="Verdana" size="30.0" />
+              </font>
+         <BorderPane.margin>
+            <Insets left="600.0" top="600.0" />
+         </BorderPane.margin>
+          </JFXButton>
+   </center>
+</BorderPane>
