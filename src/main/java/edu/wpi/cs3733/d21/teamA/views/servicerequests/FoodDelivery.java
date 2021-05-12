@@ -5,8 +5,11 @@ import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class FoodDelivery extends GenericServiceRequest {
@@ -71,11 +74,17 @@ public class FoodDelivery extends GenericServiceRequest {
 
         foodOptions.setItems(FXCollections
                 .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
+
+        ArrayList<String> locations = new ArrayList<>();
+        try {
+            for (Map<String, String> oneNode: db.getNodes()) {
+                locations.add(oneNode.get("LONGNAME"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         roomNumber.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk", "Connors Center Security Desk Floor 1")
+                .observableArrayList(locations)
         );
         drinkOptions.setItems(FXCollections
                 .observableArrayList("Water", "Coca-Cola", "Sprite", "Milk", "Orange Juice")
@@ -83,6 +92,15 @@ public class FoodDelivery extends GenericServiceRequest {
         numberServings.setItems(FXCollections
                 .observableArrayList("1", "2", "3", "4", "5")
         );
+    }
+
+    // new method for getting the submit information regarding the location id into submit
+    @FXML
+    void submitFood() throws SQLException, IOException {
+        String errorVals = "";
+        if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+        submit(errorVals);
     }
 }
 

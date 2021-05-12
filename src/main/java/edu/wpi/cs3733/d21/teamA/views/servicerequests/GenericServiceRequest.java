@@ -1,11 +1,13 @@
 package edu.wpi.cs3733.d21.teamA.views.servicerequests;
 
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d21.teamA.db.DatabaseController;
 import edu.wpi.cs3733.d21.teamA.db.DatabaseUtil;
 import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
 import edu.wpi.cs3733.d21.teamA.extras.EmailService;
 import edu.wpi.cs3733.d21.teamA.views.GenericPage;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
 import java.io.IOException;
@@ -21,16 +23,14 @@ public class GenericServiceRequest extends GenericPage {
     JFXTextField firstName;
     @FXML
     JFXTextField lastName;
-   // @FXML
-   // JFXComboBox location; //TODO: Don't all requests need a location?
+//    @FXML
+//    JFXComboBox location; //TODO: Don't all requests need a location?
 
     DatabaseController db = DatabaseController.getInstance();
 
     Map<String,String> sharedValues = new HashMap<>();
     Map<String,String> requestValues = new HashMap<>();
     SERVICEREQUEST serviceRequestType = null;
-
-
 
     class FieldTemplate<T> {
         private String column;
@@ -58,12 +58,18 @@ public class GenericServiceRequest extends GenericPage {
 
     List<FieldTemplate> requestFieldList = new ArrayList<>();
 
+
     @FXML
-    void submit() throws SQLException, IOException {
+    void submit(String errorValues) throws SQLException, IOException {
         StringBuilder errorMessage = new StringBuilder();
         for(FieldTemplate field : requestFieldList){
             if(!field.checkSyntax()) errorMessage.append("\n  -" + field.getColumn());
         }
+
+        errorMessage.append(errorValues);
+        if(firstName.getText().isEmpty()) errorMessage.append("\n  -" + "FIRSTNAME");
+        if(lastName.getText().isEmpty()) errorMessage.append("\n  -" + "LASTNAME");
+
         if(errorMessage.length() != 0){
             errorFields(errorMessage.toString());
             return;
@@ -74,7 +80,7 @@ public class GenericServiceRequest extends GenericPage {
         }
 
         sharedValues.put("AUTHORID", PREFERENCES.get(USER_NAME,null));
-        sharedValues.put("LOCATIONID", "aPARK002GG");//location.get(room)); // TODO: change around location
+//        sharedValues.put("LOCATIONID", location.getAccessibleText()); // TODO: change around location
         sharedValues.put("FIRSTNAME", firstName.getText());
         sharedValues.put("LASTNAME", lastName.getText());
         sharedValues.put("REQUESTTYPE", DatabaseUtil.SERVICEREQUEST_NAMES.get(serviceRequestType));
