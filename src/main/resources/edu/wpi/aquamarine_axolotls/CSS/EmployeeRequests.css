@@ -40,12 +40,15 @@
 
 .table-view .column-header{
     -fx-background-color: CHART_COLOR_YELLOW;
-    -fx-pref-width: 150;
     -fx-pref-height: 40;
+}
+
+.table-view .table-cell{
+    -fx-font-size: 20;
+    -fx-font-family: Verdana;
 }
 
 .table-view .column-header .label{
     -fx-font-size: 20;
     -fx-font-family: Verdana;
-    -fx-padding: 0 10 0 10;
 }

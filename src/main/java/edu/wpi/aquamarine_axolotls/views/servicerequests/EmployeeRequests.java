@@ -53,17 +53,33 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
     static {
         serviceRequestIndex = new ArrayList<String>();
-        serviceRequestIndex.add("  floral");
-        serviceRequestIndex.add("  food");
-        serviceRequestIndex.add("  gift");
-        serviceRequestIndex.add("  language");
-        serviceRequestIndex.add("  facilities");
-        serviceRequestIndex.add("  laundry");
-        serviceRequestIndex.add("  sanitation");
-        serviceRequestIndex.add("  external");
-        serviceRequestIndex.add("  internal");
-        serviceRequestIndex.add("  medicine");
+        serviceRequestIndex.add("Floral Delivery");
+        serviceRequestIndex.add("Food Delivery");
+        serviceRequestIndex.add("Gift Delivery");
+        serviceRequestIndex.add("Language Interpreter");
+        serviceRequestIndex.add("Facilities Maintenance");
+        serviceRequestIndex.add("Laundry Services");
+        serviceRequestIndex.add("Sanitation");
+        serviceRequestIndex.add("External Transport");
+        serviceRequestIndex.add("Internal Transport");
+        serviceRequestIndex.add("Medicine Delivery");
     }
+
+//    private static final List<String> serviceRequestIndex;
+//
+//    static {
+//        serviceRequestIndex = new ArrayList<String>();
+//        serviceRequestIndex.add("  floral");
+//        serviceRequestIndex.add("  food");
+//        serviceRequestIndex.add("  gift");
+//        serviceRequestIndex.add("  language");
+//        serviceRequestIndex.add("  facilities");
+//        serviceRequestIndex.add("  laundry");
+//        serviceRequestIndex.add("  sanitation");
+//        serviceRequestIndex.add("  external");
+//        serviceRequestIndex.add("  internal");
+//        serviceRequestIndex.add("  medicine");
+//    }
 
     static Map<String, String> icons = new HashMap<String,String>() {{
         put("  floral", "edu/wpi/aquamarine_axolotls/img/iconsWWords/FloralDeliverywWords.png");
@@ -146,15 +162,36 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             covidLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
                 @Override
                 public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
-                    updateCovidTable("COVIDLIKELY", event);
+                    try {
+                        int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+
+                        Map<String, String> edits = new HashMap<>();
+                        edits.put("COVIDLIKELY", event.getNewValue());
+
+                        covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
+
+                        db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
                 }
             });
 
             entryApprovedColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
             entryApprovedColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
                 @Override
-                public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
-                    updateCovidTable("ENTRYAPPROVED", event);
+                public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {try {
+                    int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+
+                    Map<String, String> edits = new HashMap<>();
+                    edits.put("ENTRYAPPROVED", event.getNewValue());
+
+                    covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
+
+                    db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 }
             });
 
@@ -187,6 +224,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     for (Map<String, String> survey : covSurveys) {
                         covidSurveyTable.getItems().add(new CovidSurvey(survey));
                     }
+                    break;
                 case PATIENT:
                     serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
                     for (Map<String, String> req : serviceRequests) {
@@ -280,39 +318,16 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 }
             }
 
+            String tabHeader = "  " + s.split(" ")[0].toLowerCase(Locale.ROOT);
+
             Tab tab = new Tab(s, table);
-            Image img = new Image(icons.get(s));
+            Image img = new Image(icons.get(tabHeader));
             ImageView tabImg = new ImageView(img);
             tabImg.setFitWidth(256.0);
             tabImg.setPreserveRatio(true);
             tab.setGraphic(tabImg);
 
             tabs.getTabs().add(tab);
-        }
-    }
-
-    /**
-     * Updates the DB and the table when a change is made in COVID Table
-     * @param colName Column name in DB
-     * @param event the onEditCommit event
-     */
-    public void updateCovidTable(String colName, TableColumn.CellEditEvent<CovidSurvey, String> event){
-        try {
-            int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
-
-            Map<String, String> edits = new HashMap<>();
-            edits.put(colName, event.getNewValue());
-            if (colName == "ENTRYAPPROVED"){
-                covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
-            }
-            if (colName == "COVIDLIKELY"){
-                covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
-            }
-
-
-            db.editUser(covidSurveyTable.getItems().get(index).username, edits);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
     }
 
