@@ -615,6 +615,14 @@ public class DatabaseController {
 	}
 
 	/**
+	 * Returns the list of columns of the covid survey table
+	 * @return the list of columns of the covid survey table
+	 */
+	public List<String> getSurveyColumns() throws SQLException {
+		return covidSurveyTable.getColumns();
+	}
+
+	/**
 	 * Gets the survey from a specific user
 	 *
 	 * @param username The username of the user

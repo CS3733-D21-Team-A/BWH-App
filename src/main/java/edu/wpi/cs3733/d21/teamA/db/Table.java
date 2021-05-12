@@ -37,6 +37,14 @@ class Table {
 	}
 
 	/**
+	 * Gets this table's columns
+	 * @return this table's columns
+	 */
+	public List<String> getColumns() throws SQLException {
+		return new ArrayList<>(this.columns.keySet());
+	}
+
+	/**
 	 * Add an entry to the database (assumes entry with provided primary key doesn't already exist).
 	 * @param values Values to enter into the database. Key is column name, value is value to enter.
 	 * @throws SQLException Something went wrong.

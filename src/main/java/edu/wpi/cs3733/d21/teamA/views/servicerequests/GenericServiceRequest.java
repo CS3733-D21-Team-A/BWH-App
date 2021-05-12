@@ -130,14 +130,14 @@ public class GenericServiceRequest extends GenericPage {
 	 *
 	 * @return a unique id
 	 */
-	private String generateRequestID() { // giving neg values?
+	private String generateRequestID() {
 		StringBuilder sb = new StringBuilder();
 
 		sharedValues.forEach((k, v) -> sb.append(k).append(v));
 		requestValues.forEach((k, v) -> sb.append(k).append(v));
 		sb.append(System.currentTimeMillis());
 
-		return Integer.toString(sb.toString().hashCode());
+		return Integer.toString(Math.abs(sb.toString().hashCode()));
 	}
 
 }

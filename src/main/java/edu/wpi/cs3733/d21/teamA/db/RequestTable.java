@@ -28,7 +28,8 @@ class RequestTable extends Table {
 		}
 	}
 
-	List<String> getColumns() throws SQLException {
+	@Override
+	public List<String> getColumns() throws SQLException {
 		List<String> cols = new ArrayList<>();
 		DatabaseMetaData dbmd = connection.getMetaData();
 		try (ResultSet rs = dbmd.getColumns(null, null, TABLES.SERVICE_REQUESTS.name(), null)){
