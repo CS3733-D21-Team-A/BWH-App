@@ -524,6 +524,38 @@ public class Navigation extends GenericMap {
     }
 
 
+    public void centerPath() {
+        double furthestLeft = 10000;
+        double furthestRight = 0;
+        double furthestDown = 10000;
+        double furthestUp = 0;
+
+        if (!currentPath.isEmpty()) {
+            for (Map<String, String> currNode: currentPath) {
+                if (currNode.get("FLOOR").equals(FLOOR)) {
+                    double currX = xScale(Integer.parseInt(currNode.get("XCOORD")));
+                    double currY = yScale(Integer.parseInt(currNode.get("YCOORD")));
+
+                    if (currX < furthestLeft) furthestLeft = currX;
+                    if (currX > furthestRight) furthestRight = currX;
+
+                    if (currY < furthestDown) furthestDown = currY;
+                    if (currY > furthestUp) furthestUp = currY;
+                }
+            }
+
+            double centerX = (Math.abs(furthestRight - furthestLeft) / 2) + furthestLeft;
+            double centerY = (Math.abs(furthestUp - furthestDown) / 2) + furthestDown;
+
+            double horizontalShift = (centerX / mapScrollPane.getViewportBounds().getWidth());
+            double verticalShift = (centerY / mapScrollPane.getViewportBounds().getHeight());
+
+            mapScrollPane.setHvalue(horizontalShift);
+            mapScrollPane.setVvalue(verticalShift);
+        }
+    }
+
+
     //==== GMAPS ====//
 
     public void clearGmaps(){

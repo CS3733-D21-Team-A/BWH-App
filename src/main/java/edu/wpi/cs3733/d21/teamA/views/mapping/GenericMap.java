@@ -224,8 +224,11 @@ public abstract class GenericMap extends GenericPage {
         zoomGroup.setScaleY(tick);
     }
 
-    public void resetZoom(){ // TODO : implement this
-
+    public void resetZoom(){
+        zoomLevel = 1;
+        zoomSlider.setValue(1);
+        zoomGroup.setScaleX(1);
+        zoomGroup.setScaleY(1);
     }
 
 
