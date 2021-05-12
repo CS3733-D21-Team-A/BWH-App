@@ -15,7 +15,7 @@
     <children>
         <JFXTabPane fx:id="tabs" layoutX="10.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="63.0">
             <tabs>
-                <Tab fx:id="covidSurveys" text="COVID Surveys">
+                <Tab fx:id="covidSurveys">
                     <content>
                         <TableView fx:id="covidSurveyTable" prefHeight="750.0" prefWidth="2000.0">
                             <columns>
@@ -37,9 +37,9 @@
                         </TableView>
                     </content>
                <graphic>
-                  <ImageView fitHeight="62.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="100.0" fitWidth="353.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/covid.png" />
+                        <Image url="@../img/iconsWWords/CovidSurveywWords.png" />
                      </image>
                   </ImageView>
                </graphic>

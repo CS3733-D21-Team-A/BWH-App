@@ -53,29 +53,29 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
 
     static {
         serviceRequestIndex = new ArrayList<String>();
-        serviceRequestIndex.add("Floral Delivery");
-        serviceRequestIndex.add("Food Delivery");
-        serviceRequestIndex.add("Gift Delivery");
-        serviceRequestIndex.add("Language Interpreter");
-        serviceRequestIndex.add("Facilities Maintenance");
-        serviceRequestIndex.add("Laundry Services");
-        serviceRequestIndex.add("Sanitation");
-        serviceRequestIndex.add("External Transport");
-        serviceRequestIndex.add("Internal Transport");
-        serviceRequestIndex.add("Medicine Delivery");
+        serviceRequestIndex.add("  floral");
+        serviceRequestIndex.add("  food");
+        serviceRequestIndex.add("  gift");
+        serviceRequestIndex.add("  language");
+        serviceRequestIndex.add("  facilities");
+        serviceRequestIndex.add("  laundry");
+        serviceRequestIndex.add("  sanitation");
+        serviceRequestIndex.add("  external");
+        serviceRequestIndex.add("  internal");
+        serviceRequestIndex.add("  medicine");
     }
 
     static Map<String, String> icons = new HashMap<String,String>() {{
-        put("Floral Delivery", "edu/wpi/aquamarine_axolotls/img/floralDeliveryB.png");
-        put("Food Delivery", "edu/wpi/aquamarine_axolotls/img/foodDeliveryB.png");
-        put("Gift Delivery", "edu/wpi/aquamarine_axolotls/img/giftDeliveryB.png");
-        put("Language Interpreter", "edu/wpi/aquamarine_axolotls/img/languageInterpreterB.png");
-        put("Facilities Maintenance", "edu/wpi/aquamarine_axolotls/img/maintenanceB.png");
-        put("Laundry Services", "edu/wpi/aquamarine_axolotls/img/laundryServicesB.png");
-        put("Sanitation", "edu/wpi/aquamarine_axolotls/img/sanitationB.png");
-        put("External Transport", "edu/wpi/aquamarine_axolotls/img/externalTransportB.png");
-        put("Internal Transport", "edu/wpi/aquamarine_axolotls/img/internalTransport.png");
-        put("Medicine Delivery", "edu/wpi/aquamarine_axolotls/img/medicineDeliveryB.png");
+        put("  floral", "edu/wpi/aquamarine_axolotls/img/iconsWWords/FloralDeliverywWords.png");
+        put("  food", "edu/wpi/aquamarine_axolotls/img/iconsWWords/FoodDeliverywWords.png");
+        put("  gift", "edu/wpi/aquamarine_axolotls/img/iconsWWords/GiiftDeliverywWords.png");
+        put("  language", "edu/wpi/aquamarine_axolotls/img/iconsWWords/LanguageInterpreterwWords.png");
+        put("  facilities", "edu/wpi/aquamarine_axolotls/img/iconsWWords/FacilitiesMaintenancewWords.png");
+        put("  laundry", "edu/wpi/aquamarine_axolotls/img/iconsWWords/LaundrywWords.png");
+        put("  sanitation", "edu/wpi/aquamarine_axolotls/img/iconsWWords/SanitationwWords.png");
+        put("  external", "edu/wpi/aquamarine_axolotls/img/iconsWWords/ExternalTransportwWords.png");
+        put("  internal", "edu/wpi/aquamarine_axolotls/img/iconsWWords/InternalTransportwWords.png");
+        put("  medicine", "edu/wpi/aquamarine_axolotls/img/iconsWWords/MedicineDeliverywWords.png");
     }};
 
     /**
@@ -283,7 +283,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             Tab tab = new Tab(s, table);
             Image img = new Image(icons.get(s));
             ImageView tabImg = new ImageView(img);
-            tabImg.setFitWidth(40.0);
+            tabImg.setFitWidth(256.0);
             tabImg.setPreserveRatio(true);
             tab.setGraphic(tabImg);
 
