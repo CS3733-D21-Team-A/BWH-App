@@ -15,9 +15,6 @@ public class DatabaseControllerTest6 {
 
     private final DatabaseController db = DatabaseController.getInstance();
 
-    public DatabaseControllerTest6() throws SQLException, IOException, URISyntaxException {
-    }
-
     @BeforeEach
     void resetDB() throws IOException, SQLException {
         db.emptyEdgeTable();
