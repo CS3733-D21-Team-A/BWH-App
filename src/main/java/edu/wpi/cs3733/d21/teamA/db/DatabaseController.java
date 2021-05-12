@@ -96,8 +96,10 @@ public class DatabaseController {
 	 */
 	public static DatabaseController getInstance() {
 		try {
-			if (DBControllerSingleton.instance == null || DBControllerSingleton.instance.connectionIsClosed()) {
+			if (DBControllerSingleton.instance == null) {
 				DBControllerSingleton.instance = new DatabaseController();
+			} else if (DBControllerSingleton.instance.connectionIsClosed()) {
+				DBControllerSingleton.instance.updateConnection();
 			}
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
