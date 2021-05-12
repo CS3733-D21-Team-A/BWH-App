@@ -253,9 +253,6 @@ public class Navigation extends GenericMap {
 
 
 
-
-
-
     //====DRAWING
     @Override
     public void drawFloor(String floor) {
@@ -382,6 +379,9 @@ public class Navigation extends GenericMap {
                             addStop.setVisible(true);
                             contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
                         }
+                        if(!startAndStop[0].equals(currentNodeIDContextMenu) && !startAndStop[1].equals(currentNodeIDContextMenu)) changeToStart.setVisible(true);
+                        if(!startAndStop[1].equals(currentNodeIDContextMenu) && !startAndStop[0].equals(currentNodeIDContextMenu)) changeToEnd.setVisible(true);
+
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
