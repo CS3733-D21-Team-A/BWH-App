@@ -67,49 +67,20 @@ public class EmployeeRequests extends GenericPage {
 
 	private final DatabaseController db = DatabaseController.getInstance();
 
-	private static final List<SERVICEREQUEST> serviceRequestIndex;
+	private static final List<SERVICEREQUEST> serviceRequestIndex = Arrays.asList(SERVICEREQUEST.values());
 
-	static {
-		serviceRequestIndex = new ArrayList<>();
-		serviceRequestIndex.add(FLORAL_DELIVERY);
-		serviceRequestIndex.add(FOOD_DELIVERY);
-		serviceRequestIndex.add(GIFT_DELIVERY);
-		serviceRequestIndex.add(LANGUAGE_INTERPRETER);
-		serviceRequestIndex.add(FACILITIES_MAINTENANCE);
-		serviceRequestIndex.add(LAUNDRY);
-		serviceRequestIndex.add(SANITATION);
-		serviceRequestIndex.add(EXTERNAL_TRANSPORT);
-		serviceRequestIndex.add(INTERNAL_TRANSPORT);
-		serviceRequestIndex.add(MEDICINE_DELIVERY);
-	}
 
-//    private static final List<String> serviceRequestIndex;
-//
-//    static {
-//        serviceRequestIndex = new ArrayList<String>();
-//        serviceRequestIndex.add("  floral");
-//        serviceRequestIndex.add("  food");
-//        serviceRequestIndex.add("  gift");
-//        serviceRequestIndex.add("  language");
-//        serviceRequestIndex.add("  facilities");
-//        serviceRequestIndex.add("  laundry");
-//        serviceRequestIndex.add("  sanitation");
-//        serviceRequestIndex.add("  external");
-//        serviceRequestIndex.add("  internal");
-//        serviceRequestIndex.add("  medicine");
-//    }
-
-	static Map<String, String> icons = new HashMap<String, String>() {{
-		put("  floral", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FloralDeliverywWords.png");
-		put("  food", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FoodDeliverywWords.png");
-		put("  gift", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/GiiftDeliverywWords.png");
-		put("  language", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/LanguageInterpreterwWords.png");
-		put("  facilities", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FacilitiesMaintenancewWords.png");
-		put("  laundry", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/LaundrywWords.png");
-		put("  sanitation", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/SanitationwWords.png");
-		put("  external", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/ExternalTransportwWords.png");
-		put("  internal", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/InternalTransportwWords.png");
-		put("  medicine", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/MedicineDeliverywWords.png");
+	static Map<SERVICEREQUEST,String> icons = new HashMap<SERVICEREQUEST,String>() {{
+		put(FLORAL_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FloralDeliverywWords.png");
+		put(FOOD_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FoodDeliverywWords.png");
+		put(GIFT_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/GiiftDeliverywWords.png");
+		put(LANGUAGE_INTERPRETER, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/LanguageInterpreterwWords.png");
+		put(FACILITIES_MAINTENANCE, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FacilitiesMaintenancewWords.png");
+		put(LAUNDRY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/LaundrywWords.png");
+		put(SANITATION, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/SanitationwWords.png");
+		put(EXTERNAL_TRANSPORT, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/ExternalTransportwWords.png");
+		put(INTERNAL_TRANSPORT, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/InternalTransportwWords.png");
+		put(MEDICINE_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/MedicineDeliverywWords.png");
 	}};
 
 	/**
@@ -327,10 +298,8 @@ public class EmployeeRequests extends GenericPage {
 					break;
 			}
 
-			String tabHeader = "  " + SERVICEREQUEST_NAMES.get(serReqType).split(" ")[0].toLowerCase(Locale.ROOT);
-
 			Tab tab = new Tab(SERVICEREQUEST_NAMES.get(serReqType), table);
-			Image img = new Image(icons.get(tabHeader));
+			Image img = new Image(icons.get(serReqType));
 			ImageView tabImg = new ImageView(img);
 			tabImg.setFitWidth(256.0);
 			tabImg.setPreserveRatio(true);
