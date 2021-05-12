@@ -1,23 +1,16 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
-import edu.wpi.aquamarine_axolotls.socketServer.*;
+import edu.wpi.aquamarine_axolotls.extras.SocketClient;
 import javafx.application.Platform;
 
-import com.google.maps.model.DirectionsLeg;
-import com.google.maps.model.DirectionsStep;
-import com.google.maps.model.Duration;
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
-import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
 import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.animation.*;
-import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,13 +24,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import oracle.jrockit.jfr.JFR;
-import org.checkerframework.checker.units.qual.C;
-import javafx.scene.shape.Line;
-import com.google.maps.model.Duration;
 
 
-import javax.swing.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

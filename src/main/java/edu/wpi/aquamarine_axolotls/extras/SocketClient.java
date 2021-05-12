@@ -1,4 +1,4 @@
-package edu.wpi.aquamarine_axolotls.socketServer;
+package edu.wpi.aquamarine_axolotls.extras;
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.util.Scanner;

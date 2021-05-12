@@ -8,7 +8,7 @@ import java.util.prefs.BackingStoreException;
 import edu.wpi.aquamarine_axolotls.db.DatabaseController;
 import edu.wpi.aquamarine_axolotls.db.DatabaseUtil;
 import edu.wpi.aquamarine_axolotls.db.enums.USERTYPE;
-import edu.wpi.aquamarine_axolotls.socketServer.SocketClient;
+import edu.wpi.aquamarine_axolotls.extras.SocketClient;
 import edu.wpi.aquamarine_axolotls.extras.Security;
 import javafx.application.Application;
 import javafx.application.Platform;
