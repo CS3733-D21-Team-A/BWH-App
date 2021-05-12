@@ -173,28 +173,39 @@ public class EmployeeRequests extends GenericPage {
 			switch (DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE, null))) {
 				case ADMIN:
 				case EMPLOYEE:
-					for (Map<String, String> req : db.getServiceRequests()) {
+					for (SERVICEREQUEST servReq : SERVICEREQUEST.values()) {
+						int index = SERVICE_REQUEST_INDEX.indexOf(servReq) + 1;
+						TableView<Map> table = (TableView) tabs.getTabs().get(index).getContent();
+						table.getItems().addAll(db.getServiceRequestsByType(servReq));
+					}
+
+					/*for (Map<String, String> req : db.getServiceRequests()) {
 						int index = SERVICE_REQUEST_INDEX.indexOf(SERVICEREQUEST_NAMES.inverse().get(req.get("REQUESTTYPE"))) + 1;          // adds one to take into account of the COVID tab
 						TableView<Map> table = (TableView) tabs.getTabs().get(index).getContent();
 						table.getItems().add(req);
-					}
+					}*/
 
 					TableView<Map> covidSurveyTable = (TableView) tabs.getTabs().get(0).getContent();
 					covidSurveyTable.getItems().clear();
 					for (Map<String, String> survey : db.getSurveys()) {
 						Map<String,String> user = db.getUserByUsername(survey.get("USERNAME"));
 						survey.put("COVIDLIKELY",user.get("COVIDLIKELY"));
-						System.out.println(user.get("COVIDLIKELY"));
 						survey.put("ENTRYAPPROVED",user.get("ENTRYAPPROVED"));
 						covidSurveyTable.getItems().add(survey);
 					}
 					break;
 				case PATIENT:
-					for (Map<String, String> req : db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME, null))) {
-						int index = SERVICE_REQUEST_INDEX.indexOf(SERVICEREQUEST_NAMES.inverse().get(req.get("REQUESTTYPE")));
-						System.out.println(index);
-						TableView table = (TableView) tabs.getTabs().get(index).getContent();
-						table.getItems().add(req);
+					for (SERVICEREQUEST servReq : SERVICEREQUEST.values()) {
+						if (servReq == EXTERNAL_TRANSPORT || servReq == INTERNAL_TRANSPORT || servReq == MEDICINE_DELIVERY) continue; //skip these forms for patients
+						int index = SERVICE_REQUEST_INDEX.indexOf(servReq);
+						TableView<Map> table = (TableView) tabs.getTabs().get(index).getContent();
+						List<Map<String,String>> requests = db.getServiceRequestsByType(servReq);
+						List<Map> tableItems = table.getItems();
+						for (Map<String,String> req : requests) {
+							if (PREFERENCES.get(USER_NAME,null).equals(req.get("AUTHORID"))) {
+								tableItems.add(req);
+							}
+						}
 					}
 			}
 		} catch (SQLException e) {

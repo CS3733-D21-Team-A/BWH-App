@@ -15,46 +15,53 @@ import java.util.stream.Collectors;
 
 public class InternalTransportation extends GenericServiceRequest {
 
-    @FXML
-    private JFXTextField patientFirstName;
+	@FXML
+	private JFXTextField patientFirstName;
 
-    @FXML
-    private JFXTextField patientLastName;
+	@FXML
+	private JFXTextField patientLastName;
 
-    @FXML
-    private JFXComboBox<String> newLocation;
+	@FXML
+	private JFXComboBox<String> newLocation;
 
 
-    @FXML
-    public void initialize() {
-        super.initialize();
-        try {
-            newLocation.setItems(FXCollections.observableArrayList(db.getNodes().stream().map(node -> node.get("LONGNAME")).collect(Collectors.toList())));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+	@FXML
+	public void initialize() {
+		super.initialize();
+		try {
+			newLocation.setItems(FXCollections.observableArrayList(db.getNodes().stream().map(node -> node.get("LONGNAME")).collect(Collectors.toList())));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 
-        requestFieldList.add(new FieldTemplate<>(
-            "NEWLOCATION",
-            newLocation,
-            (a) -> a.getSelectionModel().getSelectedItem(),
-            (a) -> a.getSelectionModel().getSelectedItem() != null
-        ));
+		requestFieldList.add(new FieldTemplate<>(
+			"NEWLOCATION",
+			newLocation,
+			(a) -> {
+				try {
+					return db.getNodesByValue("LONGNAME", locationPicker.getSelectionModel().getSelectedItem()).get(0).get("NODEID");
+				} catch (SQLException throwables) {
+					throwables.printStackTrace();
+				}
+				return null;
+			},
+			(a) -> a.getSelectionModel().getSelectedItem() != null
+		));
 
-        requestFieldList.add(new FieldTemplate<>(
-            "PATIENTFIRSTNAME",
-            patientFirstName,
-            (a) -> a.getText(),
-            (a) -> !a.getText().isEmpty()
-        ));
+		requestFieldList.add(new FieldTemplate<>(
+			"PATIENTFIRSTNAME",
+			patientFirstName,
+			(a) -> a.getText(),
+			(a) -> !a.getText().isEmpty()
+		));
 
-        requestFieldList.add(new FieldTemplate<>(
-            "PATIENTLASTNAME",
-            patientLastName,
-            (a) -> a.getText(),
-            (a) -> !a.getText().isEmpty()
-        ));
+		requestFieldList.add(new FieldTemplate<>(
+			"PATIENTLASTNAME",
+			patientLastName,
+			(a) -> a.getText(),
+			(a) -> !a.getText().isEmpty()
+		));
 
-        serviceRequestType = SERVICEREQUEST.INTERNAL_TRANSPORT;
-    }
+		serviceRequestType = SERVICEREQUEST.INTERNAL_TRANSPORT;
+	}
 }
