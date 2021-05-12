@@ -30,6 +30,9 @@ public class DepthFirstSearch extends AbsAlgorithmMethod {
         Node startNode = getNodeByLongName(startLongName);
         Node endNode = getNodeByLongName(endLongName);
 
+        if(startNode == null) startNode = getNode(startLongName);
+        if(endNode == null) endNode = getNode(endLongName);
+
         String startID = startNode.getNodeID();
         String endID = endNode.getNodeID();
 
