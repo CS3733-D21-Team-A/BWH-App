@@ -45,7 +45,7 @@ public class MapEditing extends GenericMap {
 	public Pane helpPane;
 
 	ObservableList<String> searchAlgorithms = FXCollections.observableArrayList();
-	CSVHandler csvHandler;
+	CSVHandler csvHandler = new CSVHandler(db);
 
 	private Map<String, String> anchor1 = new HashMap<>();
 	private Map<String, String> anchor2 = new HashMap<>();

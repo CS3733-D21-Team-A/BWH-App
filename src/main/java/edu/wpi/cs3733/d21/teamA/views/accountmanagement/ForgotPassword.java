@@ -107,7 +107,7 @@ public class ForgotPassword extends GenericPage {
 
 				if (usertype.equals(DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST))) {
 					popUp("New Password", "\n\n\n\n\nYour password has been successfully created.\nPlease log in using your new credentials.");
-					sceneSwitch("Login");
+					sceneSwitch("LogIn");
 				} else  {
 					popUp("New Password", "\n\n\n\n\nYour password has been reset.");
 					sceneSwitch("UserSettings");
