@@ -228,7 +228,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 case PATIENT:
                     serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
                     for (Map<String, String> req : serviceRequests) {
-                        int index = serviceRequestIndex.indexOf(req.get("REQUESTTYPE"))+1;          // adds one to take into account of the COVID tab
+                        int index = serviceRequestIndex.indexOf(req.get("REQUESTTYPE"));
                         TableView table = (TableView) ((tabs.getTabs().get(index).getContent()));
                         table.getItems().add(new Request(req));
                     }
