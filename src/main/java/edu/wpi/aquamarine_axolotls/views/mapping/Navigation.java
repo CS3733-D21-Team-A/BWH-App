@@ -1,10 +1,16 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
+import edu.wpi.aquamarine_axolotls.extras.SocketClient;
+import javafx.application.Platform;
 
+import com.google.maps.model.DirectionsLeg;
+import com.google.maps.model.DirectionsStep;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
+import edu.wpi.aquamarine_axolotls.Aapp;
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +23,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
+
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -32,40 +40,49 @@ public class Navigation extends GenericMap {
 
 
     List<String> stopList = new ArrayList<>(); //Holds all the stops for when we're doing pathfinding
+    String[] startAndStop = new String[]{"", ""};
     List<Map<String, String>> currentPath = new ArrayList<>();
 
-    String covidLikely = "false";
+    String covidLikely;
+
     VBox treeViewSideMenu;
     VBox listOfDirectionsSideMenu;
     VBox stepByStepSideMenu;
-    final private Thread newThread = new Thread();
-    final private VoiceController voice = new VoiceController("kevin16");
+    VBox gmapsListOfDirections;
+    VBox gmapsStepByStep;
+    List<String> gmapsDir = new ArrayList<String>();
+    private Thread newThread = new Thread();
+    private VoiceController voice = new VoiceController("kevin16");
 
     ArrayList<SideMenu> sideControllers = new ArrayList<>();
     SideMenu currentMenu;
     @FXML
     JFXDrawer drawer;
-    private int currentStepNumber;
+    private int currentStepNumber = 0;
+    private int currentStepNumberGmaps = 0;
     private List<List<String>> curPathDirections = new ArrayList<>();
     double eta;
     String currentNodeIDContextMenu;
 
     MenuItem removeStop = new MenuItem("Remove ");
-    MenuItem addStart = new MenuItem("Add Starting Point");
-    MenuItem addEnd = new MenuItem("Make Ending Point");
+    MenuItem addStart = new MenuItem("Set to Start Location");
+    MenuItem addEnd = new MenuItem("Set to End Location");
     MenuItem addFav = new MenuItem("Add Favorite");
     MenuItem deleteFav = new MenuItem("Delete Favorite");
     MenuItem changeToStart = new MenuItem("Change to Start");
     MenuItem changeToEnd = new MenuItem("Change to End");
-    MenuItem makeIntermediatePoint = new MenuItem("Make Intermediate Point");
+    MenuItem addStop = new MenuItem("Add Stop");
 
     boolean isVoiceToggled;
+    boolean robotConnection;
 
     public void initialize() throws java.sql.SQLException, IOException {
 
         treeViewSideMenu = setUpSideMenu("SideMenuTreeView");
         listOfDirectionsSideMenu = setUpSideMenu("SideMenuListOfDirections");
         stepByStepSideMenu = setUpSideMenu("SideMenuStepByStep");
+        gmapsListOfDirections = setUpSideMenu("SideMenuListOfDirectionsGMAPS");
+        gmapsStepByStep = setUpSideMenu("SideMenuStepByStepGMAPS");
         drawer.setVisible(false);
 
         drawer.setSidePane(treeViewSideMenu);
@@ -84,16 +101,48 @@ public class Navigation extends GenericMap {
             drawer.setVisible(false);
         });
 
-        // TODO: CHANGE THIS
-        covidLikely = db.getUserByUsername(PREFERENCES.get(USER_NAME,null)).get("COVIDLIKELY");
 
 
         currentMenu.setUpTree();
 
+        mapView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(event.getButton() != MouseButton.SECONDARY) contextMenu.hide();
+        });
+
 
         removeStop.setOnAction((ActionEvent e) -> {
-            stopList.remove(currentNodeIDContextMenu);
-            changeNodeColorOnImage(currentNodeIDContextMenu, Color.web("#003da6", .4));
+            if(startAndStop[0].equals(currentNodeIDContextMenu)){
+                if(stopList.isEmpty()){
+                    startAndStop[0] = "";
+                    currentPath.clear();
+                    sideControllers.get(1).clearAll();
+                    sideControllers.get(2).clearAll();
+                    drawFloor(FLOOR);
+                }
+                else{
+                    startAndStop[0] = stopList.get(0);
+                    changeNodeColorOnImage(startAndStop[0], Color.GREEN);
+                    stopList.remove(0);
+                }
+            }
+            else if(startAndStop[1].equals(currentNodeIDContextMenu)){
+                if(stopList.isEmpty()){
+                    startAndStop[1] = "";
+                    currentPath.clear();
+                    sideControllers.get(1).clearAll();
+                    sideControllers.get(2).clearAll();
+                    drawFloor(FLOOR);
+                }
+                else{
+                    startAndStop[1] = stopList.get(stopList.size()-1);
+                    changeNodeColorOnImage(startAndStop[stopList.size()-1], Color.RED);
+                    stopList.remove(stopList.size()-1);
+                }
+            }
+            else stopList.remove(currentNodeIDContextMenu);
+            double opacity = 1;
+            if(currentPath.size() > 0) opacity = .4;
+            changeNodeColorOnImage(currentNodeIDContextMenu, Color.web("#003da6", opacity));
             updateNodeSize(currentNodeIDContextMenu, 3);
             setStartAndEnd();
             openDrawer();
@@ -101,71 +150,108 @@ public class Navigation extends GenericMap {
         });
 
         addStart.setOnAction((ActionEvent e) ->{
-            changeNodeColorOnImage(currentNodeIDContextMenu, Color.GREEN);
-            updateNodeSize(currentNodeIDContextMenu, 5);
-            stopList.add(currentNodeIDContextMenu);
-            setStartAndEnd();
-            openDrawer();
-            if(stopList.size() >= 2) findPath();
+            addStart(currentNodeIDContextMenu);
         });
 
         addEnd.setOnAction((ActionEvent e) ->{
-            changeNodeColorOnImage(currentNodeIDContextMenu, Color.RED);
-            updateNodeSize(currentNodeIDContextMenu, 5);
-            stopList.add(currentNodeIDContextMenu);
-            setStartAndEnd();
-            openDrawer();
-            if(stopList.size() >= 2) findPath();
+            addEnd(currentNodeIDContextMenu);
         });
 
         changeToStart.setOnAction((ActionEvent e) -> {
-            String prevID = stopList.get(0);
-            changeNodeColorOnImage(prevID, Color.web("#003da6", .4));
-            updateNodeSize(prevID, 3);
-            stopList.set(0, currentNodeIDContextMenu);
+            if(stopList.contains(currentNodeIDContextMenu)) stopList.remove(currentNodeIDContextMenu);
+            double opacity = 1;
+            if(currentPath.size() > 0) opacity = .4;
+            changeNodeColorOnImage(startAndStop[0], Color.web("#003da6", opacity));
+            updateNodeSize(startAndStop[0], 3);
+            startAndStop[0] = currentNodeIDContextMenu;
             changeNodeColorOnImage(currentNodeIDContextMenu, Color.GREEN);
             updateNodeSize(currentNodeIDContextMenu, 5);
             setStartAndEnd();
             openDrawer();
-            if(stopList.size() >= 2) findPath();
+            if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
         });
 
         changeToEnd.setOnAction((ActionEvent e) -> {
-            String prevID = stopList.get(stopList.size()-1);
-            changeNodeColorOnImage(prevID, Color.web("#003da6", .4));
-            updateNodeSize(prevID, 3);
-            stopList.set(stopList.size()-1, currentNodeIDContextMenu);
+            if(stopList.contains(currentNodeIDContextMenu)) stopList.remove(currentNodeIDContextMenu);
+            double opacity = 1;
+            if(currentPath.size() > 0) opacity = .4;
+            changeNodeColorOnImage(startAndStop[1], Color.web("#003da6", opacity));
+            updateNodeSize(startAndStop[1], 3);
+            startAndStop[1] = currentNodeIDContextMenu;
             changeNodeColorOnImage(currentNodeIDContextMenu, Color.RED);
             updateNodeSize(currentNodeIDContextMenu, 5);
             setStartAndEnd();
             openDrawer();
-            if(stopList.size() >= 2) findPath();
+            if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
         });
 
-        addFav.setOnAction((ActionEvent e) -> sideControllers.get(0).addToFavorites(currentNodeIDContextMenu));
-
-        deleteFav.setOnAction((ActionEvent e)-> sideControllers.get(0).deleteFromFavorites(currentNodeIDContextMenu));
-
-        // TODO : figure this out
-        makeIntermediatePoint.setOnAction((ActionEvent e) ->{
+        addFav.setOnAction((ActionEvent e) ->{
+            sideControllers.get(0).addToFavorites(currentNodeIDContextMenu);
         });
-        contextMenu.getItems().addAll(removeStop, addStart, addEnd, changeToStart, changeToEnd, makeIntermediatePoint, addFav, deleteFav);
+
+        deleteFav.setOnAction((ActionEvent e)->{
+            sideControllers.get(0).deleteFromFavorites(currentNodeIDContextMenu);
+        });
+
+        addStop.setOnAction((ActionEvent e) ->{
+            addStop(currentNodeIDContextMenu);
+        });
+        contextMenu.getItems().addAll(removeStop, addStart, addEnd, changeToStart, changeToEnd, addStop, addFav, deleteFav);
 
         sideControllers.get(0).treeTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {
                 TreeItem<String> selectedFromTreeView = sideControllers.get(0).treeTable.getSelectionModel().getSelectedItem();
                 if (selectedFromTreeView.getChildren().isEmpty()) {
                     try {
-                        stopList.add(db.getNodesByValue("LONGNAME", selectedFromTreeView.getValue()).get(0).get("NODEID"));
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                        String nodeID = db.getNodesByValue("LONGNAME", selectedFromTreeView.getValue()).get(0).get("NODEID");
+                        if(startAndStop[0].equals("") && !startAndStop[1].equals(nodeID)){
+                            changeFloor(db.getNode(nodeID).get("FLOOR"));
+                            addStart(nodeID);
+                        }
+                        else if(startAndStop[1].equals("") && !startAndStop[0].equals(nodeID)){
+                            changeFloor(db.getNode(nodeID).get("FLOOR"));
+                            addEnd(nodeID);
+                        }
+                        else if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
+                                && !startAndStop[1].equals(nodeID) && !startAndStop[0].equals(nodeID)
+                                && !stopList.contains(nodeID) && !currentPath.contains(db.getNode(nodeID))){
+                            changeFloor(db.getNode(nodeID).get("FLOOR"));
+                            addStop(nodeID);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
                     }
-                    if (stopList.size() == 1) currentMenu.setStartLabel(selectedFromTreeView.getValue());
-                    else if (stopList.size() >= 2) findPath();
+
                 }
             }
         });
     }
+
+    public void addStart(String nodeID){
+        changeNodeColorOnImage(nodeID, Color.GREEN);
+        updateNodeSize(nodeID, 5);
+        startAndStop[0] = nodeID;
+        setStartAndEnd();
+        openDrawer();
+        if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
+    }
+
+    public void addEnd(String nodeID){
+        changeNodeColorOnImage(nodeID, Color.RED);
+        updateNodeSize(nodeID, 5);
+        startAndStop[1] = nodeID;
+        setStartAndEnd();
+        openDrawer();
+        if(!startAndStop[0].equals("") && !startAndStop[1].equals("")) findPath();
+    }
+
+    public void addStop(String nodeID){
+        stopList.add(nodeID);
+        findPath();
+    }
+
+
+
 
 
 
@@ -181,6 +267,25 @@ public class Navigation extends GenericMap {
         }
         else{
             drawNodes(darkBlue);
+            try {
+                if(!startAndStop[0].equals("") && db.getNode(startAndStop[0]).get("FLOOR").equals(FLOOR)){
+                    changeNodeColorOnImage(startAndStop[0], Color.GREEN);
+                    updateNodeSize(startAndStop[0], 5);
+                }
+                if(!startAndStop[1].equals("") && db.getNode(startAndStop[0]).get("FLOOR").equals(FLOOR)){
+                    changeNodeColorOnImage(startAndStop[1], Color.RED);
+                    updateNodeSize(startAndStop[1], 5);
+                }
+                for(String node : stopList){
+                    if(db.getNode(node).get("FLOOR").equals(FLOOR)){
+                        changeNodeColorOnImage(node, Color.ORANGE);
+                        updateNodeSize(node, 5);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -195,6 +300,7 @@ public class Navigation extends GenericMap {
     }
 
     public void drawNodesNoHallWalk(Color colorOfNodes) throws SQLException{
+        covidLikely = db.getUserByUsername(PREFERENCES.get(USER_NAME,null)).get("COVIDLIKELY");
         for (Map<String, String> node: db.getNodesByValue("FLOOR", FLOOR)) {
             if(
                    !(node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))
@@ -231,7 +337,7 @@ public class Navigation extends GenericMap {
         addEnd.setVisible(false);
         changeToStart.setVisible(false);
         changeToEnd.setVisible(false);
-        makeIntermediatePoint.setVisible(false);
+        addStop.setVisible(false);
         deleteFav.setVisible(false);
         addFav.setVisible(false);
     }
@@ -244,8 +350,7 @@ public class Navigation extends GenericMap {
                 currentNodeIDContextMenu = nodeID;
                 resetContextMenu();
                  // maybe remove?
-                if(stopList.size() == 0){
-                    addStart.setVisible(true);
+                if(currentPath.size() == 0){
                     try {
                         if(!PREFERENCES.get(USER_TYPE, null).equals("Guest")) {
                             if(db.getFavoriteNodeByUserAndName(PREFERENCES.get(USER_NAME, null), db.getNode(currentNodeIDContextMenu).get("LONGNAME")) != null){
@@ -258,45 +363,56 @@ public class Navigation extends GenericMap {
                         throwables.printStackTrace();
                     }
                 }
-                if(stopList.size() >= 1){
-                    changeToStart.setVisible(true);
-                    addEnd.setVisible(true);
-                }
-                if(stopList.size() >= 2){
-                    changeToEnd.setVisible(true);
-                }
-                if(stopList.contains(currentNodeIDContextMenu)){
-                    removeStop.setVisible(true);
-                }
 
-                contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
+                if(currentPath.size() == 0){
+                    if(startAndStop[0].equals("") && !startAndStop[1].equals(currentNodeIDContextMenu)) addStart.setVisible(true);
+                    else if(!startAndStop[0].equals(currentNodeIDContextMenu) && !startAndStop[1].equals(currentNodeIDContextMenu)) changeToStart.setVisible(true);
+                    if(startAndStop[1].equals("") && !startAndStop[0].equals(currentNodeIDContextMenu)) addEnd.setVisible(true);
+                    else if(!startAndStop[1].equals(currentNodeIDContextMenu) && !startAndStop[0].equals(currentNodeIDContextMenu)) changeToEnd.setVisible(true);
+                    if(startAndStop[1].equals(currentNodeIDContextMenu) || startAndStop[0].equals(currentNodeIDContextMenu) || stopList.contains(currentNodeIDContextMenu)){
+                        removeStop.setVisible(true);
+                    }
+                    contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
+                }
+                else{
+                    try {
+                        if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
+                                && !startAndStop[1].equals(currentNodeIDContextMenu) && !startAndStop[0].equals(currentNodeIDContextMenu)
+                                && !stopList.contains(currentNodeIDContextMenu) && !currentPath.contains(db.getNode(currentNodeIDContextMenu))){
+                            addStop.setVisible(true);
+                            contextMenu.show(mapView, e.getScreenX(), e.getScreenY());
+                        }
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
 
             }
             else{
-                if (stopList.contains(nodeID)) { //If the node you click is already in the stopList, it gets removed
-                    stopList.remove(nodeID); //So you can toggle destinations
-                    changeNodeColorOnImage(nodeID, Color.web("#003da6", .4));
-                    updateNodeSize(nodeID, 3);
-                }
-                else{
-
-                    if(stopList.size() == 0){
-                        stopList.add(nodeID);
-                        changeNodeColorOnImage(nodeID, Color.GREEN);
-                        updateNodeSize(nodeID, 5);
+                try {
+                    if(startAndStop[0].equals("") && !startAndStop[1].equals(nodeID)){
+                        changeFloor(db.getNode(nodeID).get("FLOOR"));
+                        addStart(nodeID);
                     }
-                    else{
-                        stopList.add(nodeID);
+                    else if(startAndStop[1].equals("") && !startAndStop[0].equals(nodeID)){
+                        changeFloor(db.getNode(nodeID).get("FLOOR"));
+                        addEnd(nodeID);
                     }
-                    goToTreeView();
-                    openDrawer();
+                    else if(!startAndStop[0].equals("") && !startAndStop[1].equals("")
+                            && !startAndStop[1].equals(nodeID) && !startAndStop[0].equals(nodeID)
+                            && !stopList.contains(nodeID) && !currentPath.contains(db.getNode(nodeID))){
+                        changeFloor(db.getNode(nodeID).get("FLOOR"));
+                        addStop(nodeID);
+                    }
+                } catch(SQLException ex){
+                    ex.printStackTrace();
                 }
-                setStartAndEnd();
-                if(stopList.size() >= 2) findPath();
             }
         });
 
-        node.setOnMouseEntered((MouseEvent e) -> node.setRadius(5));
+        node.setOnMouseEntered((MouseEvent e) -> {
+            node.setRadius(5);
+        });
 
         node.setOnMouseExited((MouseEvent e) -> {
             if (!(node.getFill().equals(Color.RED) || node.getFill().equals(Color.ORANGE) || node.getFill().equals(Color.GREEN))) {
@@ -305,6 +421,11 @@ public class Navigation extends GenericMap {
         });
 
         return node;
+    }
+
+    @Override
+    public void setUpEdgeEventHandler(Line edge, String edgeID) {
+
     }
 
 
@@ -317,9 +438,13 @@ public class Navigation extends GenericMap {
     void findPath() {
         goToListOfDirections();
         currentPath.clear();
-        for (int i = 0; i < stopList.size() - 1; i++) {
-            String currentStart = stopList.get(i);
-            String currentEnd = stopList.get(i + 1);
+        List<String> allStops = new ArrayList<>();
+        allStops.add(startAndStop[0]);
+        allStops.addAll(stopList);
+        allStops.add(startAndStop[1]);
+        for (int i = 0; i < allStops.size() - 1; i++) {
+            String currentStart = allStops.get(i);
+            String currentEnd = allStops.get(i + 1);
             List<Map<String, String>> path = SearchAlgorithmContext.getSearchAlgorithmContext().getPath(currentStart, currentEnd);
             for(int j = 0; j < 3; j++){
                 List<Map<String, String>> toRemove = new ArrayList<>();
@@ -348,7 +473,7 @@ public class Navigation extends GenericMap {
     /**
      * Draws the current path onto the map
      */
-    void drawPath(){
+    void drawPath() {
         linesOnImage.clear();
         nodesOnImage.clear();
         arrowsOnImage.clear();
@@ -380,7 +505,7 @@ public class Navigation extends GenericMap {
                     color = Color.ORANGE;
                     radius = 5;
                 }
-                drawSingleEdge(node.get("NODEID"), nextNode.get("NODEID"), Color.BLACK);
+                drawAnimatedPath(node.get("NODEID"),  nextNode.get("NODEID"), Color.BLACK);
                 if ((node.get("NODETYPE").equals("HALL") || node.get("NODETYPE").equals("WALK"))) {
                     drawSingleNode(node.get("NODEID"), color);
                 }
@@ -398,9 +523,150 @@ public class Navigation extends GenericMap {
 
     }
 
+
+    //==== GMAPS ====//
+
+    public void clearGmaps(){
+        sideControllers.get(3).clearAll();
+        sideControllers.get(4).clearAll();
+    }
+
+    public void setGmapsListOfDirections(DirectionsLeg directionsLeg){
+        sideControllers.get(3).updateETA(directionsLeg.duration.inSeconds/60);
+        sideControllers.get(4).updateETA(directionsLeg.duration.inSeconds/60);
+        sideControllers.get(4).setStartLabel(sideControllers.get(3).getStartLocationGmap());
+        sideControllers.get(4).setEndLabel(sideControllers.get(3).getEndLocationGmap());
+        DirectionsStep[] steps = directionsLeg.steps;
+        for(int i = 0; i < steps.length; i++){
+            String s = steps[i].htmlInstructions;
+            String newString = String.valueOf(i+1) + ") " + parseHtmlDir(s);
+
+            if (newString.contains("Destination")){
+                String[] str = newString.split("Destination", 2);
+                str[1] = String.valueOf(i+1) + ") Destination" + str[1];
+
+                for (int j = 0; j < 2; j++){
+                    gmapsDir.add(str[j]);
+                    sideControllers.get(3).addToListOfDirections(str[j]);
+                }
+                return;
+            }
+
+            gmapsDir.add(newString);
+            sideControllers.get(3).addToListOfDirections(newString);
+        }
+
+    }
+
+    public String parseHtmlDir(String direction){
+        String parsed = direction.replaceAll("\\<.*?\\>", "");
+        return parsed;
+    }
+
+    public void regressGmaps() {
+        voice.stop();
+        if (currentStepNumberGmaps != 0){
+            currentStepNumberGmaps -= 1;
+            currentMenu.setCurDirection(gmapsDir.get(currentStepNumberGmaps));
+            currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(currentStepNumberGmaps)));
+            if(isVoiceToggled) {
+                voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(currentStepNumberGmaps)), newThread);
+            }
+        }
+    }
+
+    public void progressGmaps() {
+        voice.stop();
+        if (currentStepNumberGmaps < gmapsDir.size()-1){
+            currentStepNumberGmaps += 1;
+            currentMenu.setCurDirection(gmapsDir.get(currentStepNumberGmaps));
+            currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(currentStepNumberGmaps)));
+            if(isVoiceToggled) {
+                voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(currentStepNumberGmaps)), newThread);
+            }
+        }
+    }
+
+
+
+    /**
+     * Draws animated path
+     * @param startID ID of starting node
+     * @param endID ID of ending node
+     * @param edgeCol Color of the edge
+     */
+    public void drawAnimatedPath(String startID, String endID, Color edgeCol) {
+        Map<String, String> snode;
+        Map<String, String> enode;
+
+        try{
+            snode = db.getNode(startID);
+            enode = db.getNode(endID);
+            String edgeID = startID + "_" + endID;
+
+            double startX = xScale(Integer.parseInt(snode.get("XCOORD")));
+            double startY = yScale(Integer.parseInt(snode.get("YCOORD")));
+            double endX = xScale(Integer.parseInt(enode.get("XCOORD")));
+            double endY = yScale(Integer.parseInt(enode.get("YCOORD")));
+
+            Line l = new Line();
+            l.getStrokeDashArray().addAll(25d, 10d);
+            l.setStartX(startX);
+            l.setStartY(startY);
+            l.setEndX(endX);
+            l.setEndY(endY);
+            l.setStroke(edgeCol);
+            l.setStrokeWidth(magicNumber);
+            l.setId(edgeID);
+
+            if(linesOnImage.containsKey(edgeID)){
+                Line key = linesOnImage.get(edgeID);
+                mapView.getChildren().set(mapView.getChildren().indexOf(key), l);
+                linesOnImage.get(edgeID).setStroke(yellow);
+            }
+            else mapView.getChildren().add(l);
+
+            linesOnImage.put(edgeID, l);
+
+            final double maxOffset =
+                    l.getStrokeDashArray().stream()
+                            .reduce(
+                                    0d,
+                                    (a, b) -> a + b
+                            );
+
+            Timeline timeline = new Timeline(
+                    new KeyFrame(
+
+                            javafx.util.Duration.ZERO,
+                            new KeyValue(
+                                    l.strokeDashOffsetProperty(),
+                                    0,
+                                    Interpolator.LINEAR
+                            )
+                    ),
+                    new KeyFrame(
+                            javafx.util.Duration.seconds(2),
+                            new KeyValue(
+                                    l.strokeDashOffsetProperty(),
+                                    maxOffset,
+                                    Interpolator.LINEAR
+                            )
+                    )
+            );
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.setRate(-1.0);
+            timeline.play();
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
                                             //=== SIDE BAR METHODS ===//
 
-    public void startPath() {
+    public void startPath() throws IOException {
         goToStepByStep();
     }
 
@@ -429,17 +695,44 @@ public class Navigation extends GenericMap {
     }
 
     public void goToListOfDirections() {
+        if(currentMenu.equals(sideControllers.get(2))) {
+            try {
+                unHighlightDirection();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
         drawer.setSidePane(listOfDirectionsSideMenu);
         currentMenu = sideControllers.get(1);
         setStartAndEnd();
     }
 
-    public void goToStepByStep() {
+    public void goToStepByStep() throws IOException {
+        currentStepNumber = 0;
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
         setStartAndEnd();
         startDir();
     }
+
+    public void goToGmapsListOfDirections() {
+        voice.stop();
+        drawer.setSidePane(gmapsListOfDirections);
+        sideControllers.get(3).setUpGmaps();
+        currentMenu = sideControllers.get(3);
+    }
+
+    public void goToGmapsStepByStep() {
+        currentStepNumberGmaps = 0;
+        drawer.setSidePane(gmapsStepByStep);
+        currentMenu = sideControllers.get(4);
+        if(isVoiceToggled) {
+            voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(0)), newThread);
+        }
+        currentMenu.setCurDirection(gmapsDir.get(0));
+        currentMenu.setCurArrow(textDirectionToImage(gmapsDir.get(0)));
+    }
+
 
     public VBox setUpSideMenu(String name) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/wpi/aquamarine_axolotls/fxml/" + name +  ".fxml"));
@@ -453,13 +746,10 @@ public class Navigation extends GenericMap {
     public void setStartAndEnd(){
         int size = stopList.size();
         try{
-            if(size == 1){
-                currentMenu.setStartLabel(db.getNode(stopList.get(0)).get("LONGNAME"));
-            }
-            else if(size >= 2) {
-                currentMenu.setStartLabel(db.getNode(stopList.get(0)).get("LONGNAME"));
-                currentMenu.setEndLabel(db.getNode(stopList.get(stopList.size() - 1)).get("LONGNAME"));
-            }
+            if(startAndStop[0].equals("")) currentMenu.setStartLabel("Start Location");
+            else currentMenu.setStartLabel(db.getNode(startAndStop[0]).get("LONGNAME"));
+            if(startAndStop[1].equals("")) currentMenu.setEndLabel("End Location");
+            else currentMenu.setEndLabel(db.getNode(startAndStop[1]).get("LONGNAME"));
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -467,7 +757,7 @@ public class Navigation extends GenericMap {
     }
 
                                         //==== LIST OF DIRECTIONS ====//
-    public void startDir() {
+    public void startDir() throws IOException {
         currentStepNumber = 0; // was dirIndex
         String curDirection = curPathDirections.get(0).get(currentStepNumber);
         setArrowsToBeVisible();
@@ -483,6 +773,11 @@ public class Navigation extends GenericMap {
         }
         if(isVoiceToggled) {
             voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        }
+        String sendPacket = getROSDirection();
+        if(robotConnection){
+            Aapp.clientSender.send(sendPacket);
+            popUp("Turtlebot Info", "\n\n\n\n\n Robot is coming ...\n Please wait... ");
         }
     }
 
@@ -537,13 +832,16 @@ public class Navigation extends GenericMap {
         sideControllers.forEach((a) -> {
             if (a != currentMenu) a.toggleVoiceSlider();
         });
-        if(isVoiceToggled && currentPath.size() > 0) voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        if(isVoiceToggled && currentPath.size() > 0 && sideControllers.indexOf(currentMenu) == 2) voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        else if(isVoiceToggled && sideControllers.indexOf(currentMenu) == 4 && gmapsDir.size() > 0) voice.say(voice.getTextOptimizationGmaps(gmapsDir.get(currentStepNumberGmaps)), newThread);
     }
 
     public void highlightDirection() throws SQLException{
         String curID = curPathDirections.get(1).get(currentStepNumber);
 
         if (curID.contains("_")) {
+            String floor = db.getNode(curID.substring(0, curID.indexOf("_"))).get("FLOOR");
+            if(!floor.equals(FLOOR)) changeFloor(floor);
             updateEdgeColor(curID, yellow);
             int index = curID.indexOf("_");
             Map<String, String> start = db.getNode(curID.substring(0,index));
@@ -552,6 +850,8 @@ public class Navigation extends GenericMap {
 
         }
         else {
+            String floor = db.getNode(curID).get("FLOOR");
+            if(!floor.equals(FLOOR)) changeFloor(floor);
             Map<String, String> node = db.getNode(curID);
             changeNodeColorOnImage(curID, darkBlue);
             if(currentStepNumber != 0) changeNodeColorOnImage(curID, yellow);
@@ -569,10 +869,16 @@ public class Navigation extends GenericMap {
         }
     }
 
-    public void unHighlightDirection() {
+    public void unHighlightDirection() throws SQLException{
         String curDirectionID = curPathDirections.get(1).get(currentStepNumber);
-        if (curDirectionID.contains("_")) updateEdgeColor(curDirectionID, Color.BLACK);
+        if (curDirectionID.contains("_")){
+            String floor = db.getNode(curDirectionID.substring(0, curDirectionID.indexOf("_"))).get("FLOOR");
+            if(!floor.equals(FLOOR)) changeFloor(floor);
+            updateEdgeColor(curDirectionID, Color.BLACK);
+        }
         else {
+            String floor = db.getNode(curDirectionID).get("FLOOR");
+            if(!floor.equals(FLOOR)) changeFloor(floor);
             if(currentStepNumber == curPathDirections.get(1).size() - 1) changeNodeColorOnImage(curDirectionID, Color.RED);
             else if (stopList.contains(curDirectionID)) changeNodeColorOnImage(curDirectionID, Color.ORANGE);
             else if(currentStepNumber != 0) changeNodeColorOnImage(curDirectionID, darkBlue);
@@ -584,7 +890,13 @@ public class Navigation extends GenericMap {
     }
 
     public void clearNav() {
+        sideControllers.get(0).clearAll();
+        sideControllers.get(1).clearAll();
+        sideControllers.get(2).clearAll();
+        gmapsDir.clear();
         stopList.clear();
+        startAndStop[0] = "";
+        startAndStop[1] = "";
         currentPath.clear();
         linesOnImage.clear();
         nodesOnImage.clear();
@@ -643,11 +955,12 @@ public class Navigation extends GenericMap {
                     e.printStackTrace();
                 }
             } else if (currentStepNumber < curPathDirections.get(1).size()){
+                String nodeID = edgeID;
                 String otherID;
                 if (edgeID.equals(curPathDirections.get(1).get(currentStepNumber))) otherID = curPathDirections.get(1).get(currentStepNumber + 1);
                 else otherID = curPathDirections.get(1).get(currentStepNumber);
-                if (db.nodeExists(edgeID) && db.nodeExists(otherID)){
-                    Map<String, String> node = db.getNode(edgeID);
+                if (db.nodeExists(nodeID) && db.nodeExists(otherID)){
+                    Map<String, String> node = db.getNode(nodeID);
                     Map<String, String> otherNode = db.getNode(otherID);
                     if (!node.get("FLOOR").equals(otherNode.get("FLOOR"))) {
                         currentMenu.updateETA(number * SearchAlgorithmContext.getSearchAlgorithmContext().getETASingleEdge(node, otherNode));
@@ -679,6 +992,155 @@ public class Navigation extends GenericMap {
         else closeDrawer();
     }
 
+
+    private String getROSDirection(){
+        String coordinateList = "";
+        for (Map<String,String> n: currentPath) {
+            coordinateList += n.get("XCOORD") + "," + n.get("YCOORD") + ";";
+        }
+        System.out.println(coordinateList);
+        return coordinateList;
+    }
+
+    public void toggleRobot() throws IOException, InterruptedException {
+        robotConnection = !robotConnection;
+        if (robotConnection && !Aapp.serverRunning){
+            String host = "192.168.1.118";
+            Aapp.clientSender = new SocketClient(host,7777);
+            Aapp.clientReceiver = new SocketClient(host,5555);
+            Aapp.clientInfoReceiver = new SocketClient(host,5556);
+            Aapp.clientThreadSender = new Thread(() -> {
+                try {
+                    String massage;
+                    massage = Aapp.clientSender.getMassage();
+                    //System.out.println("get massage");
+                    if(!massage.equals("Verifying Server!")){
+                        System.out.println("Server Wrong!");
+                        System.exit(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadSender.start();
+
+            Aapp.clientInfoThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientInfoReceiver.getMassage();
+                        System.out.println("in first info thread");
+                        if(message.contains("progress to the")){
+                                System.out.println(message);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 1");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                                Thread.sleep(2500);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 2");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                            }
+//                            else if(robotDirectionNum == 0){
+//                                robotDirectionNum ++;
+//                        }
+                        else if(message.contains("faraway")){
+                            System.out.println(message);
+                            Platform.runLater(() ->popUp("Turtlebot Info", "\n\n\n\n\n Looks like you are far behind ...\n Robot is waiting for you "));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                });
+                Aapp.clientInfoThreadReceiver.start();
+
+            Aapp.clientThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientReceiver.getMassage();
+                        Double[] robotCoordinate = getROSCoordinate(message);
+                        if (robotCoordinate != null  && FLOOR.equals("L1")){
+                            Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadReceiver.start();
+            Aapp.serverRunning = true;
+            System.out.println("server running");
+        }
+        else if(robotConnection && Aapp.serverRunning){
+            Aapp.clientSender.send("resume nav");
+            Aapp.clientThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientReceiver.getMassage();
+                        System.out.println(message);
+                        Double[] robotCoordinate = getROSCoordinate(message);
+                        if (robotCoordinate != null && FLOOR.equals("L1")){
+                            Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadReceiver.start();
+            Aapp.clientInfoThreadReceiver.stop();
+            Aapp.clientInfoThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientInfoReceiver.getMassage();
+                        System.out.println("in restarted info thread");
+                        if(message.contains("progress to the")){
+                                System.out.println(message);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 1");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                                Thread.sleep(2500);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 2");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                        }
+                        else if(message.contains("faraway")){
+                            System.out.println(message);
+                            Platform.runLater(() ->popUp("Turtlebot Info", "\n\n\n\n\n Looks like you are far behind ...\n Robot is waiting for you "));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientInfoThreadReceiver.start();
+        }
+        else if(!robotConnection && Aapp.serverRunning){
+            Aapp.clientThreadReceiver.suspend();
+            //Aapp.clientInfoThreadReceiver.stop();
+            removeDirectionArrow();
+            Aapp.clientSender.send("cancel nav");
+        }
+    }
 }
 
 

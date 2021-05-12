@@ -20,10 +20,19 @@ public class VoiceController {
     }
 
     public String getTextOptimization(String textToOptimize){
-        int dotIndex = textToOptimize.indexOf(".");
-        String subString = "";
 
         String[] parts = textToOptimize.split("\\.");
+
+        if(textToOptimize.contains("You have arrived at your destination")){
+            return parts[1];
+        }
+        else{
+            return "Please" + parts[1];
+        }
+    }
+
+    public String getTextOptimizationGmaps(String textToOptimize){
+        String[] parts = textToOptimize.split("\\)");
 
         if(textToOptimize.contains("You have arrived at your destination")){
             return parts[1];

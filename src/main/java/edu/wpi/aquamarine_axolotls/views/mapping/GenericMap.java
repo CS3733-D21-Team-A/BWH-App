@@ -148,6 +148,28 @@ public abstract class GenericMap extends GenericPage {
         drawFloor("L2");
     }
 
+
+    public void changeFloor(String floor){
+        switch(floor){
+            case "L2":
+                changeFloorL2();
+                break;
+            case "L1":
+                changeFloorL1();
+                break;
+            case "1":
+                changeFloor1();
+                break;
+            case "2":
+                changeFloor2();
+                break;
+            case "3":
+                changeFloor3();
+                break;
+        }
+
+    }
+
     public void resetButtons(){
 
         // #f4ba47
@@ -400,6 +422,8 @@ public abstract class GenericMap extends GenericPage {
 
     public abstract Circle setEventHandler(Circle node, String nodeID);
 
+    public abstract void setUpEdgeEventHandler(Line edge, String edgeID);
+
 
     /**
      * Draws a single circle of radius 3 at the given x and y coordinates
@@ -479,36 +503,7 @@ public abstract class GenericMap extends GenericPage {
 
         String edgeID = startID + "_" + endID;
 
-        //Opening the popup menu
-        edge.setOnMouseClicked((MouseEvent e) ->{
-
-            try {
-                if (selectedEdgesList.contains(db.getEdge(edgeID))) {
-                    selectedEdgesList.remove(db.getEdge(edgeID));
-                    edge.setStroke(Color.BLACK);
-                    linesOnImage.get(edgeID).setStroke(Color.BLACK);
-                    if (!db.getNode(db.getEdge(edgeID).get("STARTNODE")).get("FLOOR").equals(FLOOR)) {
-                        removeEdgeOnImage(edgeID);
-                    }
-                } else {
-                    selectedEdgesList.add(db.getEdge(edgeID));
-                    edge.setStroke(yellow);
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        });
-
-        // Hover over edge to make it thicker
-        edge.setOnMouseEntered((MouseEvent e) ->{
-            edge.setStrokeWidth(5);
-            edge.toBack();
-        });
-
-        //Moving mouse off edge will make it stop highlighting
-        edge.setOnMouseExited((MouseEvent e) ->{
-            edge.setStrokeWidth(magicNumber);
-        });
+        setUpEdgeEventHandler(edge, edgeID);
 
         if(linesOnImage.containsKey(edgeID)){
             Line key = linesOnImage.get(edgeID);
@@ -624,7 +619,23 @@ public abstract class GenericMap extends GenericPage {
 //        mapView.getChildren().add(arrow);
 
         arrow.setOnMousePressed((MouseEvent e) ->{
-            drawFloor(intToFloor(endFloor));
+            switch(endFloor){
+                case 0:
+                    changeFloorL2();
+                    break;
+                case 1:
+                    changeFloorL1();
+                    break;
+                case 2:
+                    changeFloor1();
+                    break;
+                case 3:
+                    changeFloor2();
+                    break;
+                case 4:
+                    changeFloor3();
+                    break;
+            }
         });
 
         // Hover over edge to make it thicker
@@ -640,17 +651,20 @@ public abstract class GenericMap extends GenericPage {
             arrow.setScaleY(1.0);
         });
 
-//        if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor)){ // TODO : add code for
+//        if (startFloor == endFloor) { // TODO : add code for
 //            directionArrow.getPoints().removeAll();
 //            directionArrow.getPoints().addAll(points);
-//            directionArrow.setScaleX(5.0/7.0);
-//            directionArrow.setScaleY(5.0/7.0);
+//            directionArrow.setScaleX(5.0 / 7.0);
+//            directionArrow.setScaleY(5.0 / 7.0);
 //            directionArrow.setRotate(rotationAngle);
 //            directionArrow.setVisible(true);
 //            mapView.getChildren().add(directionArrow);
+//        }
     }
 
     public void drawPathArrow(double xCoord, double yCoord, double rotationAngle){
+        int index = mapView.getChildren().indexOf(currentPathArrow);
+        if(index != -1) mapView.getChildren().remove(index);
         Polygon arrow = new Polygon();
         arrow = new Polygon();
         arrow.setFill(darkBlue);
@@ -760,5 +774,101 @@ public abstract class GenericMap extends GenericPage {
         return dist;
     }
 
+    void removeDirectionArrow(){
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
+    }
+
+
+    Double[] getROSCoordinate(String packet){
+        String[] parts = packet.split(",");
+        //System.out.println("first: " + parts[0] + ", " + parts[1] + ", " + parts[2]);
+        int count = parts[2].length() - parts[2].replaceAll("\\.","").length();
+        if(count > 1){
+            parts[2] = parts[2].split("\\.")[0] + "." + parts[2].split("\\.")[1];
+            //System.out.println("parse once: " + parts[2]);
+            int countMinus = parts[2].length() - parts[2].replaceAll("-","").length();
+            if(parts[2].indexOf("-") != 0 && countMinus == 1){
+                //System.out.println("in one");
+                parts[2] = parts[2].split("-")[0];
+                //System.out.println("parse twice: " + parts[2]);
+            }
+            if(countMinus > 1){
+                //System.out.println("in two");
+                parts[2] = "-" + parts[2].split("-")[1];
+                //System.out.println("parse twice: " + parts[2]);
+            }
+        }
+        System.out.println(parts[0] + ", " + parts[1] + ", " + parts[2]);
+
+        Double xCoord = Double.valueOf(parts[0]);
+        Double yCoord = Double.valueOf(parts[1]);
+        Double yaw = Double.valueOf(parts[2]);
+
+        Double [] coordinate = new Double[3];
+        coordinate[0] = xCoord;
+        coordinate[1] = yCoord;
+        coordinate[2] = yaw;
+
+        //System.out.println(coordinate);
+        return coordinate;
+    }
+
+    void drawRobotArrow(double centerX, double centerY, String floor, double rotationAngle) {
+//        double scaledX = xScale((int)centerX);
+//        double scaledY = xScale((int)centerY);
+        drawRobotArrow(centerX, centerY, floor, floor, rotationAngle);
+    }
+
+    private void drawRobotArrow(double centerX, double centerY, String startFloor, String endFloor, double rotationAngle){
+
+        Polygon floorChangeArrow = new Polygon();
+
+        if(mapView.getChildren().contains(directionArrow)) mapView.getChildren().remove(directionArrow);
+        directionArrow = new Polygon();
+        directionArrow.setFill(Color.MAGENTA);
+        directionArrow.setStroke(Color.MAGENTA);
+        directionArrow.setVisible(false);
+
+        Double points[] = new Double[6];
+        points[0] = centerX;
+        points[2] = centerX + 7 * Math.sqrt(2.0) / 2.0;
+        points[4] = centerX - 7 * Math.sqrt(2.0) / 2.0;
+
+        points[1] = centerY - 7;
+        points[3] = centerY + 7 * Math.sqrt(2.0) / 2.0;
+        points[5] = centerY + 7 * Math.sqrt(2.0) / 2.0;
+
+        if (startFloor.equals("G")) startFloor = "0";
+        if (startFloor.equals("L1")) startFloor = "-1";
+        if (startFloor.equals("L2")) startFloor = "-2";
+        if (endFloor.equals("G")) endFloor = "0";
+        if (endFloor.equals("L1")) endFloor = "-1";
+        if (endFloor.equals("L2")) endFloor = "-2";
+
+        if (Integer.parseInt(startFloor) < Integer.parseInt(endFloor)) {
+            floorChangeArrow.setFill(Color.GREEN);
+            floorChangeArrow.setRotate(0);
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
+            }
+            mapView.getChildren().add(floorChangeArrow);
+        } else if (Integer.parseInt(startFloor) > Integer.parseInt(endFloor)) {
+            floorChangeArrow.setFill(Color.RED);
+            floorChangeArrow.setRotate(180);
+            for (int i = 0; i < points.length; i++) {
+                floorChangeArrow.getPoints().add(points[i]);
+            }
+            mapView.getChildren().add(floorChangeArrow);
+        } else /*if (Integer.parseInt(startFloor) == Integer.parseInt(endFloor))*/{
+
+            directionArrow.getPoints().removeAll();
+            directionArrow.getPoints().addAll(points);
+            directionArrow.setScaleX(5.0/7.0);
+            directionArrow.setScaleY(5.0/7.0);
+            directionArrow.setRotate(rotationAngle);
+            directionArrow.setVisible(true);
+            mapView.getChildren().add(directionArrow);
+        }
+    }
 
 }
