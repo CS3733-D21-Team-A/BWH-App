@@ -1,0 +1,6 @@
+<launch> 
+  <arg name="map_file" value="/home/zcxu/catkin_ws/src/turtlebot_mqp/maps/ll1_cleaned.yaml">
+  </arg> 
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)"> 
+  </node> 
+</launch>

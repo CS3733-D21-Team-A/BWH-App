@@ -13,7 +13,7 @@ plugins {
     id 'java'
 }
 
-mainClassName = 'edu.wpi.aquamarine_axolotls.Main'
+mainClassName = 'edu.wpi.cs3733.d21.teamA.Main'
 
 
 //These are the repositories where Gradle looks for dependencies.
@@ -81,7 +81,7 @@ test {
 jar {
     manifest {
         exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-        attributes 'Main-Class': 'edu.wpi.aquamarine_axolotls.Main',
+        attributes 'Main-Class': 'edu.wpi.cs3733.d21.teamA.Main',
                 'Class-Path': configurations.runtime.files.collect { "$it.name"}.join(' ')
     }
     from {
