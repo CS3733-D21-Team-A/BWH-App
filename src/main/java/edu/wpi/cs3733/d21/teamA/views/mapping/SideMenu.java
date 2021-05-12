@@ -93,6 +93,7 @@ public class SideMenu extends GenericPage {
         } catch (IOException | InterruptedException e) {
             popUp("Robot", "Cannot toggle robot right now.");
             robotConnection.setSelected(!robotConnection.isSelected());
+            navController.robotConnection = !navController.robotConnection;
         }
     }
 
