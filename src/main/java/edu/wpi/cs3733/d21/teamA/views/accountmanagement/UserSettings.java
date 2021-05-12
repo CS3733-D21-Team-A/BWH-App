@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.prefs.BackingStoreException;
 
 import static edu.wpi.cs3733.d21.teamA.Settings.*;
 
@@ -294,5 +296,33 @@ public class UserSettings extends GenericPage {
 
 	public void forgotPasswordP(){
 		sceneSwitch ( "ForgotPassword" );
+	}
+
+	@FXML
+	private void clearPrefs() throws SQLException {
+		try {
+			PREFERENCES.clear();
+		} catch (BackingStoreException e) {
+			e.printStackTrace();
+		}
+		Map<String,String> instanceUser = new HashMap<>();
+
+		instanceUser.put("USERTYPE",DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+
+		String instanceID;
+		do {
+			instanceID = UUID.randomUUID().toString();
+		} while (db.checkUserExistsByUsername(instanceID));
+
+		instanceUser.put("USERNAME",instanceID);
+		instanceUser.put("EMAIL",instanceID); //This is because email must be unique and not null
+		Security.addHashedPassword(instanceUser,instanceID); //account login should never be used, but it's a thing
+
+		db.addUser(instanceUser);
+
+		PREFERENCES.put(INSTANCE_ID,instanceID);
+		PREFERENCES.put(USER_TYPE,DatabaseUtil.USER_TYPE_NAMES.get(USERTYPE.GUEST));
+		PREFERENCES.put(USER_NAME, instanceID);
+		goHome();
 	}
 }

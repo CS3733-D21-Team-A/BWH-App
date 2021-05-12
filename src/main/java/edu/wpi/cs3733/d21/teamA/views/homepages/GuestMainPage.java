@@ -24,7 +24,7 @@ public class GuestMainPage extends GenericPage {
 			String username = PREFERENCES.get(USER_NAME,null);
 			if (!db.hasUserTakenCovidSurvey(username)) {
 				popUp("Covid Survey", "\n\n\n\n\nTaking the Covid-19 Survey is necessary before completing this action.");
-			} else if (db.getUserByUsername(username).get("COVIDLIKELY") == null) {
+			} else if (db.getUserByUsername(username).get("COVIDLIKELY") == null || db.getUserByUsername(username).get("COVIDLIKELY").isEmpty()) {
 				popUp("Covid Survey", "\n\n\n\n\nWait for an employee to approve your survey.");
 			} else {
 				sceneSwitch("Navigation");
