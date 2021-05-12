@@ -79,9 +79,7 @@ public class FoodDelivery extends GenericServiceRequest {
 
         foodOptions.setItems(FXCollections
                 .observableArrayList("Mac and Cheese", "Salad", "Pizza"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
+
         ArrayList<String> locations = new ArrayList<>();
         try {
             for (Map<String, String> oneNode: db.getNodes()) {

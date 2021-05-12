@@ -5,7 +5,10 @@ import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class Sanitation extends GenericServiceRequest {
@@ -36,14 +39,27 @@ public class Sanitation extends GenericServiceRequest {
 
 		serviceRequestType = SERVICEREQUEST.SANITATION;
 
-		nodeIDS = new ArrayList<>();
-		nodeIDS.add("FINFO00101");
-		nodeIDS.add("EINFO00101");
-		sanitLocation.setItems(FXCollections.observableArrayList("75 Lobby Information Desk", "Connors Center Security Desk Floor 1"));
+		ArrayList<String> locations = new ArrayList<>();
+		try {
+			for (Map<String, String> oneNode: db.getNodes()) {
+				locations.add(oneNode.get("LONGNAME"));
+			}
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+		sanitLocation.setItems(FXCollections.observableArrayList(locations));
 		biohazard.setItems(FXCollections.observableArrayList("Yes", "No"));
 
 	}
 
+	// new method for getting the submit information regarding the location id into submit
+	@FXML
+	void submitSanitation() throws SQLException, IOException {
+		String errorVals = "";
+		if(sanitLocation.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+		sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",sanitLocation.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+		submit(errorVals);
+	}
 
 
 }
