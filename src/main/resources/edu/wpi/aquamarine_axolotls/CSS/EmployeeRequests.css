@@ -22,6 +22,7 @@
 .tab *.tab-label{
     -fx-rotate: 90;
     -fx-text-fill: CHART_COLOR_BLUE;
+    -fx-content-display: graphic-only ;
 }
 
 .tab {
