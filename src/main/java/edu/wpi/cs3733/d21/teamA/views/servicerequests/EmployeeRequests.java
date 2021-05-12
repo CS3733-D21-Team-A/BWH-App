@@ -11,10 +11,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.ComboBoxTableCell;
+import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -70,7 +70,7 @@ public class EmployeeRequests extends GenericPage {
 	private static final List<SERVICEREQUEST> serviceRequestIndex = Arrays.asList(SERVICEREQUEST.values());
 
 
-	static Map<SERVICEREQUEST,String> icons = new HashMap<SERVICEREQUEST,String>() {{
+	static Map<SERVICEREQUEST, String> icons = new HashMap<SERVICEREQUEST, String>() {{
 		put(FLORAL_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FloralDeliverywWords.png");
 		put(FOOD_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FoodDeliverywWords.png");
 		put(GIFT_DELIVERY, "edu/wpi/cs3733/d21/teamA/img/iconsWWords/GiiftDeliverywWords.png");
@@ -93,29 +93,29 @@ public class EmployeeRequests extends GenericPage {
 
 			USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE, null));
 
-			if (usertype != null) {
-				switch (usertype) {
-					case PATIENT: // only display their service requests
-						tabs.getTabs().remove(covidSurveys);
-						break;
-					case ADMIN:
-						names = FXCollections.observableArrayList();
-						for (Map<String, String> user : db.getEmployees()) {
-							if (user.get("USERTYPE").equals("Employee")) {
-								names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
-							}
+
+			switch (usertype) {
+				case PATIENT: // only display their service requests
+					tabs.getTabs().remove(covidSurveys);
+					break;
+				case ADMIN:
+					names = FXCollections.observableArrayList();
+					for (Map<String, String> user : db.getEmployees()) {
+						if (user.get("USERTYPE").equals("Employee")) {
+							names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
 						}
-						covidSurveyTable.setEditable(true);
-						break;
-					case EMPLOYEE:
-						names = FXCollections.observableArrayList();
-						Map<String, String> usr = db.getUserByUsername(PREFERENCES.get(USER_NAME, null));
-						String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
-						names.add(name);
-						covidSurveyTable.setEditable(true);
-						break;
-				}
+					}
+					covidSurveyTable.setEditable(true);
+					break;
+				case EMPLOYEE:
+					names = FXCollections.observableArrayList();
+					Map<String, String> usr = db.getUserByUsername(PREFERENCES.get(USER_NAME, null));
+					String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
+					names.add(name);
+					covidSurveyTable.setEditable(true);
+					break;
 			}
+
 
 			//COVID Status
 			ObservableList<String> covidStatAndEntry = FXCollections.observableArrayList();
@@ -190,28 +190,23 @@ public class EmployeeRequests extends GenericPage {
 	 * Populates the corresponding tables with requests and surveys
 	 */
 	public void populateTable() {
-		List<Map<String, String>> serviceRequests;
-		List<Map<String, String>> covSurveys;
 		try {
 			switch (DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE, null))) {
 				case ADMIN:
 				case EMPLOYEE:
-					serviceRequests = db.getServiceRequests();
-					for (Map<String, String> req : serviceRequests) {
+					for (Map<String, String> req : db.getServiceRequests()) {
 						int index = serviceRequestIndex.indexOf(SERVICEREQUEST_NAMES.inverse().get(req.get("REQUESTTYPE"))) + 1;          // adds one to take into account of the COVID tab
-						TableView table = (TableView) ((tabs.getTabs().get(index).getContent()));
-						table.getItems().add(new Request(req));
+						TableView table = (TableView) tabs.getTabs().get(index).getContent();
+						table.getItems().add(req);
 					}
 
-					covSurveys = db.getSurveys();
 					covidSurveyTable.getItems().clear();
-					for (Map<String, String> survey : covSurveys) {
+					for (Map<String, String> survey : db.getSurveys()) {
 						covidSurveyTable.getItems().add(new CovidSurvey(survey));
 					}
 					break;
 				case PATIENT:
-					serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME, null));
-					for (Map<String, String> req : serviceRequests) {
+					for (Map<String, String> req : db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME, null))) {
 						int index = serviceRequestIndex.indexOf(SERVICEREQUEST_NAMES.inverse().get("REQUESTTYPE"));
 						TableView table = (TableView) tabs.getTabs().get(index).getContent();
 						table.getItems().add(new Request(req));
@@ -228,16 +223,17 @@ public class EmployeeRequests extends GenericPage {
 	 * @param names List of employee names to assign a service request to
 	 * @param stats List of statuses for each service request
 	 */
-	public void createTabs(ObservableList names, ObservableList stats) {
+	public void createTabs(ObservableList names, ObservableList stats) throws SQLException {
 		USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE, null));
 
 		for (SERVICEREQUEST serReqType : serviceRequestIndex) {
-			if (usertype == PATIENT && serReqType == EXTERNAL_TRANSPORT) break; //everything after and including external transport is employees-only
+			if (usertype == PATIENT && serReqType == EXTERNAL_TRANSPORT)
+				break; //everything after and including external transport is employees-only
 
-			TableView<Request> table = new TableView<Request>();
+			TableView<Map> table = new TableView<>();
 			table.setPrefSize(950.0, 750.0);
 
-			TableColumn<Request, String> assignedColumn = new TableColumn<Request, String>();
+			/*TableColumn<Request, String> assignedColumn = new TableColumn<Request, String>();
 			TableColumn<Request, String> assigneeColumn = new TableColumn<Request, String>();
 			TableColumn<Request, String> statusColumn = new TableColumn<Request, String>();
 			TableColumn<Request, String> locationColumn = new TableColumn<Request, String>();
@@ -245,17 +241,23 @@ public class EmployeeRequests extends GenericPage {
 			assignedColumn.setText("Assigned");
 			assigneeColumn.setText("Assignee");
 			statusColumn.setText("Status");
-			locationColumn.setText("Location");
+			locationColumn.setText("Location");*/
 
-			table.getColumns().addAll(assignedColumn, assigneeColumn, statusColumn, locationColumn);
+			List<String> reqCols = db.getServiceRequestColumns(serReqType);
+			for (String col : reqCols) {
+				TableColumn<Map, String> tableColumn = new TableColumn<>(col);
+				tableColumn.setCellValueFactory(new MapValueFactory<>(col));
+				table.getColumns().add(tableColumn);
+			}
 
-			assignedColumn.setCellValueFactory(cellData -> cellData.getValue().assignedProp());
+
+			/*assignedColumn.setCellValueFactory(cellData -> cellData.getValue().assignedProp());
 			assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
 			statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProp());
 			locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
 
 			assignedColumn.setCellFactory(ComboBoxTableCell.forTableColumn(names));
-			assignedColumn.setOnEditCommit(event -> {
+			assignedColumn.setOnEditCommit(event -> { //TODO: EDITABLE COLUMNS
 				try {
 					int index = table.getSelectionModel().getFocusedIndex();
 
@@ -280,7 +282,7 @@ public class EmployeeRequests extends GenericPage {
 				} catch (SQLException throwables) {
 					throwables.printStackTrace();
 				}
-			});
+			});*/
 
 			switch (usertype) {
 				case PATIENT: // only display their service requests

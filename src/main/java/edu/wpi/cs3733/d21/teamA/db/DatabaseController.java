@@ -484,8 +484,8 @@ public class DatabaseController {
 	 * @return a map whose keys are the names of the columns and value.
 	 * 	Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
-	public List<String> getServiceRequestColumns(SERVICEREQUEST requestType) {
-		return new ArrayList<>(requestsTables.get(requestType).getColumns().keySet());
+	public List<String> getServiceRequestColumns(SERVICEREQUEST requestType) throws SQLException {
+		return requestsTables.get(requestType).getColumns();
 	}
 
 

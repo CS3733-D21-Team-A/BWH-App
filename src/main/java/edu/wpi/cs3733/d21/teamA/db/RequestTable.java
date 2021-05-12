@@ -2,10 +2,8 @@ package edu.wpi.cs3733.d21.teamA.db;
 
 import edu.wpi.cs3733.d21.teamA.db.enums.TABLES;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,5 +26,17 @@ class RequestTable extends Table {
 				return resultSetToList(rs);
 			}
 		}
+	}
+
+	List<String> getColumns() throws SQLException {
+		List<String> cols = new ArrayList<>();
+		DatabaseMetaData dbmd = connection.getMetaData();
+		try (ResultSet rs = dbmd.getColumns(null, null, TABLES.SERVICE_REQUESTS.name(), null)){
+			while (rs.next()) {
+				cols.add(rs.getString("COLUMN_NAME"));
+			}
+		}
+		cols.addAll(columns.keySet()); //do this second so shared values are first
+		return cols;
 	}
 }

@@ -10,7 +10,7 @@ class Table {
 	Connection connection;
 	final String tableName;
 	final private String primaryKey; //this isn't absolutely necessary, but may simplify things.
-	final private Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
+	final Map<String,Boolean> columns; //this isn't absolutely necessary, but may simplify things. //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 
 	/**
 	 * Table contructor
@@ -34,15 +34,6 @@ class Table {
 				columns.put(rs.getString("COLUMN_NAME"), rs.getInt("DATA_TYPE") == Types.VARCHAR); //TODO: Make this use ints referencing java.sql.Types instead of a boolean
 			}
 		}
-	}
-
-	/**
-	 * get the columns of of this table.
-	 * @return a map whose keys are the names of the columns and value.
-	 * Value is a boolean indicating if they representing type (false = int,true = String).
-	 */
-	Map<String,Boolean> getColumns() {
-		return this.columns;
 	}
 
 	/**
