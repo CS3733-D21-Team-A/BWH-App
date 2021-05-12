@@ -12,6 +12,7 @@ import javafx.scene.control.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class LanguageInterpreter extends GenericServiceRequest {
@@ -22,8 +23,6 @@ public class LanguageInterpreter extends GenericServiceRequest {
     private JFXTextArea preferences;
     @FXML
     private JFXComboBox roomNumber;
-    @FXML
-    private ArrayList<String> nodeIDS;
     @FXML
     private JFXTextField contactNumber;
 
@@ -54,12 +53,26 @@ public class LanguageInterpreter extends GenericServiceRequest {
 
         languageSelect.setItems(FXCollections
                 .observableArrayList("Espanol", "Portugues", "Francais", "Polskie"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
+
+        ArrayList<String> locations = new ArrayList<>();
+        try {
+            for (Map<String, String> oneNode: db.getNodes()) {
+                locations.add(oneNode.get("LONGNAME"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         roomNumber.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
+                .observableArrayList(locations)
         );
+    }
+    // new method for getting the submit information regarding the location id into submit
+    @FXML
+    void submitLanguage() throws SQLException, IOException{
+        String errorVals = "";
+        if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+        submit(errorVals);
     }
 
 }

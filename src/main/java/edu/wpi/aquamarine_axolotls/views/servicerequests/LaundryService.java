@@ -29,9 +29,6 @@ public class LaundryService extends GenericServiceRequest {
     private JFXComboBox articlesOfClothing;
     @FXML
     private JFXTextArea specialRequest;
-    @FXML
-    private ArrayList<String> nodeIDS;
-
 
 
     @FXML
@@ -69,9 +66,6 @@ public class LaundryService extends GenericServiceRequest {
 
         loadOptions.setItems(FXCollections
                 .observableArrayList("Delicates", "Light", "Heavy"));
-        nodeIDS = new ArrayList<String>();
-        nodeIDS.add("FINFO00101");
-        nodeIDS.add("EINFO00101");
         roomNumber.setItems(FXCollections
                 .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
         );
@@ -81,6 +75,15 @@ public class LaundryService extends GenericServiceRequest {
         articlesOfClothing.setItems(FXCollections
                 .observableArrayList("Work Clothes","T-Shirts", "Under Garments", "Clerical Garb")
         );
+    }
+
+    // new method for getting the submit information regarding the location id into submit
+    @FXML
+    void submitLaundry() throws SQLException, IOException{
+        String errorVals = "";
+        if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+        submit(errorVals);
     }
 
 }
