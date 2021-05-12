@@ -131,7 +131,7 @@
                                     <graphic>
                                         <ImageView fitHeight="136.0" fitWidth="39.0" preserveRatio="true">
                                             <image>
-                                                <Image url="@../img/mainteanceB.png" />
+                                                <Image url="@../img/maintenanceB.png" />
                                             </image>
                                         </ImageView>
                                     </graphic>

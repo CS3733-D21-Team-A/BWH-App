@@ -1,36 +1,32 @@
 package edu.wpi.cs3733.d21.teamA.views.servicerequests;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTabPane;
 import edu.wpi.cs3733.d21.teamA.db.DatabaseController;
 import edu.wpi.cs3733.d21.teamA.db.*;
+import edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST;
 import edu.wpi.cs3733.d21.teamA.db.enums.STATUS;
 import edu.wpi.cs3733.d21.teamA.db.enums.USERTYPE;
 import edu.wpi.cs3733.d21.teamA.views.GenericPage;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static edu.wpi.cs3733.d21.teamA.Settings.*;
+import static edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST.*;
+import static edu.wpi.cs3733.d21.teamA.db.enums.USERTYPE.*;
 
 public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
-
-    @FXML private TableView<Request> srTable;
-    @FXML private TableColumn<Request, String> assignedColumn;
-    @FXML private TableColumn<Request, String> assigneeColumn;
-    @FXML private TableColumn<Request, String> statusColumn;
-    @FXML private TableColumn<Request, String> serviceRequestColumn;
-    @FXML private TableColumn<Request, String> locationColumn;
 
     @FXML private TableView<CovidSurvey> covidSurveyTable;
     @FXML private TableColumn<CovidSurvey, String> usernameColumn;
@@ -45,42 +41,74 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     @FXML private TableColumn<CovidSurvey, String> lossOfTasteSmellColumn;
     @FXML private TableColumn<CovidSurvey, String> chillsColumn;
     @FXML private TableColumn<CovidSurvey, String> quarantineColumn;
-    @FXML private TableColumn<CovidSurvey, String> COVIDLikelyColumn;
-
-    @FXML VBox srVbox;
-    @FXML private JFXButton assignB;
-    @FXML private JFXButton changeStatusB;
-    @FXML private JFXComboBox assignD;
-    @FXML JFXComboBox statusD;
-    @FXML Line line;
-
-    @FXML VBox covidVbox;
-    @FXML JFXComboBox covidStatus;
+    @FXML private TableColumn<CovidSurvey, String> covidLikelyColumn;
+    @FXML private TableColumn<CovidSurvey, String> entryApprovedColumn;
 
     @FXML private JFXTabPane tabs;
     @FXML private Tab covidSurveys;
 
-
     DatabaseController db;
 
+    private static final List<String> serviceRequestIndex;
 
+    static {
+        serviceRequestIndex = new ArrayList<String>();
+        serviceRequestIndex.add("Floral Delivery");
+        serviceRequestIndex.add("Food Delivery");
+        serviceRequestIndex.add("Gift Delivery");
+        serviceRequestIndex.add("Language Interpreter");
+        serviceRequestIndex.add("Facilities Maintenance");
+        serviceRequestIndex.add("Laundry Services");
+        serviceRequestIndex.add("Sanitation");
+        serviceRequestIndex.add("External Transport");
+        serviceRequestIndex.add("Internal Transport");
+        serviceRequestIndex.add("Medicine Delivery");
+    }
+
+//    private static final List<String> serviceRequestIndex;
+//
+//    static {
+//        serviceRequestIndex = new ArrayList<String>();
+//        serviceRequestIndex.add("  floral");
+//        serviceRequestIndex.add("  food");
+//        serviceRequestIndex.add("  gift");
+//        serviceRequestIndex.add("  language");
+//        serviceRequestIndex.add("  facilities");
+//        serviceRequestIndex.add("  laundry");
+//        serviceRequestIndex.add("  sanitation");
+//        serviceRequestIndex.add("  external");
+//        serviceRequestIndex.add("  internal");
+//        serviceRequestIndex.add("  medicine");
+//    }
+
+    static Map<String, String> icons = new HashMap<String,String>() {{
+        put("  floral", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FloralDeliverywWords.png");
+        put("  food", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FoodDeliverywWords.png");
+        put("  gift", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/GiiftDeliverywWords.png");
+        put("  language", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/LanguageInterpreterwWords.png");
+        put("  facilities", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/FacilitiesMaintenancewWords.png");
+        put("  laundry", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/LaundrywWords.png");
+        put("  sanitation", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/SanitationwWords.png");
+        put("  external", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/ExternalTransportwWords.png");
+        put("  internal", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/InternalTransportwWords.png");
+        put("  medicine", "edu/wpi/cs3733/d21/teamA/img/iconsWWords/MedicineDeliverywWords.png");
+    }};
+
+    /**
+     * Initializes the page for each user type
+     */
     @FXML
-    public void initialize() { // creds : http://tutorials.jenkov.com/javafx/tableview.html
+    public void initialize() {
         try {
             db = DatabaseController.getInstance();
 
-            ObservableList<String> names;
+            ObservableList<String> names = FXCollections.observableArrayList();
 
             USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
 
             if (usertype != null) {
                 switch (usertype) {
                     case PATIENT: // only display their service requests
-                        assignB.setVisible(false);
-                        changeStatusB.setVisible(false);
-                        statusD.setVisible(false);
-                        assignD.setVisible(false);
-                        line.setVisible(false);
                         tabs.getTabs().remove(covidSurveys);
                         break;
                     case ADMIN:
@@ -90,38 +118,34 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                                 names.add(user.get("FIRSTNAME") + " " + user.get("LASTNAME"));
                             }
                         }
-                        assignD.setItems(names);
+                        covidSurveyTable.setEditable(true);
                         break;
                     case EMPLOYEE:
                         names = FXCollections.observableArrayList();
                         Map<String, String> usr = db.getUserByUsername(PREFERENCES.get(USER_NAME, null));
                         String name = usr.get("FIRSTNAME") + " " + usr.get("LASTNAME");
                         names.add(name);
-                        assignD.setItems(names);
+                        covidSurveyTable.setEditable(true);
                         break;
                 }
             }
 
             //COVID Status
-            ObservableList<String> covidStat = FXCollections.observableArrayList();
-            covidStat.add("true");
-            covidStat.add("false");
-            covidStatus.setItems(covidStat);
+            ObservableList<String> covidStatAndEntry = FXCollections.observableArrayList();
+            covidStatAndEntry.add("true");
+            covidStatAndEntry.add("false");
 
-            //Service Request Table
-            statusD.setItems(FXCollections
-                    .observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
+            //Service Request Status
+            ObservableList<String> stats = FXCollections.observableArrayList(DatabaseUtil.STATUS_NAMES.get(STATUS.IN_PROGRESS),
                             DatabaseUtil.STATUS_NAMES.get(STATUS.DONE),
-                            DatabaseUtil.STATUS_NAMES.get(STATUS.CANCELED)));
-            assignedColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assigned"));
-            assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
-            statusColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("status"));
-            serviceRequestColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("serviceRequest"));
-            locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
+                            DatabaseUtil.STATUS_NAMES.get(STATUS.CANCELED));
+
+            createTabs(names, stats);
 
             // COVID Table
             usernameColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("username"));
-            COVIDLikelyColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("isCovidLikely"));
+            covidLikelyColumn.setCellValueFactory(cellData -> cellData.getValue().isCovidLikelyProp());
+            entryApprovedColumn.setCellValueFactory(cellData -> cellData.getValue().entryApprovedProp());
             feverColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("fever"));
             coughColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("cough"));
             shortnessOfBreathColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("shortnessOfBreath"));
@@ -134,18 +158,54 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             soreThroatColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("soreThroat"));
             nauseaDiarrheaColumn.setCellValueFactory(new PropertyValueFactory<CovidSurvey, String>("nauseaDiarrhea"));
 
-            srVbox.setVisible(true);
-            covidVbox.setVisible(false);
-            srVbox.toFront();
+            covidLikelyColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
+            covidLikelyColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
+                @Override
+                public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {
+                    try {
+                        int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
 
-            refresh();
+                        Map<String, String> edits = new HashMap<>();
+                        edits.put("COVIDLIKELY", event.getNewValue());
+
+                        covidSurveyTable.getItems().get(index).setIsCovidLikely(event.getNewValue());
+
+                        db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            });
+
+            entryApprovedColumn.setCellFactory(ComboBoxTableCell.forTableColumn(covidStatAndEntry));
+            entryApprovedColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<CovidSurvey, String>>() {
+                @Override
+                public void handle(TableColumn.CellEditEvent<CovidSurvey, String> event) {try {
+                    int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
+
+                    Map<String, String> edits = new HashMap<>();
+                    edits.put("ENTRYAPPROVED", event.getNewValue());
+
+                    covidSurveyTable.getItems().get(index).setEntryApproved(event.getNewValue());
+
+                    db.editUser(covidSurveyTable.getItems().get(index).username, edits);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                }
+            });
+
+            populateTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
     }
 
-    public void refresh(){
+    /**
+     * Populates the corresponding tables with requests and surveys
+     */
+    public void populateTable(){
         List<Map<String, String>> serviceRequests = null;
         List<Map<String, String>> covSurveys = null;
         try {
@@ -153,9 +213,10 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                 case ADMIN:
                 case EMPLOYEE:
                     serviceRequests = db.getServiceRequests();
-                    srTable.getItems().clear();
                     for (Map<String, String> req : serviceRequests) {
-                        srTable.getItems().add(new Request(req));
+                        int index = serviceRequestIndex.indexOf(req.get("REQUESTTYPE"))+1;          // adds one to take into account of the COVID tab
+                        TableView table = (TableView) ((tabs.getTabs().get(index).getContent()));
+                        table.getItems().add(new Request(req));
                     }
 
                     covSurveys = db.getSurveys();
@@ -163,98 +224,143 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
                     for (Map<String, String> survey : covSurveys) {
                         covidSurveyTable.getItems().add(new CovidSurvey(survey));
                     }
+                    break;
                 case PATIENT:
                     serviceRequests = db.getServiceRequestsByAuthor(PREFERENCES.get(USER_NAME,null));
-                    srTable.getItems().clear();
                     for (Map<String, String> req : serviceRequests) {
-                        srTable.getItems().add(new Request(req));
+                        int index = serviceRequestIndex.indexOf(req.get("REQUESTTYPE"))+1;          // adds one to take into account of the COVID tab
+                        TableView table = (TableView) ((tabs.getTabs().get(index).getContent()));
+                        table.getItems().add(new Request(req));
                     }
             }
         } catch(SQLException e){
             e.printStackTrace();
         }
-
     }
 
+    /**
+     * Creates tabs and tables for each service request type
+     * @param names List of employee names to assign a service request to
+     * @param stats List of statuses for each service request
+     */
+    public void createTabs(ObservableList names, ObservableList stats){
+        USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
 
-    @FXML
-    public void assign(){
-        try {
-            if(assignD.getSelectionModel() == null) return;
-            int index = srTable.getSelectionModel().getFocusedIndex();
-            if(index == -1) return;
-            db.assignEmployee(srTable.getItems().get(index).getRequestID(), assignD.getSelectionModel().getSelectedItem().toString());
-            refresh();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        for (String serReqType : serviceRequestIndex){
+            String s = serReqType;
+            if (usertype.equals(PATIENT) && s.equals("External Transport")){
+                break;
+            }
+
+            TableView<Request> table = new TableView<Request>();
+            table.setPrefSize(950.0, 750.0);
+
+            TableColumn<Request, String> assignedColumn = new TableColumn<Request, String>();
+            TableColumn<Request, String> assigneeColumn = new TableColumn<Request, String>();
+            TableColumn<Request, String> statusColumn = new TableColumn<Request, String>();
+            TableColumn<Request, String> locationColumn = new TableColumn<Request, String>();
+
+            assignedColumn.setText("Assigned");
+            assigneeColumn.setText("Assignee");
+            statusColumn.setText("Status");
+            locationColumn.setText("Location");
+
+            table.getColumns().addAll(assignedColumn, assigneeColumn, statusColumn, locationColumn);
+
+            assignedColumn.setCellValueFactory(cellData -> cellData.getValue().assignedProp());
+            assigneeColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("assignee"));
+            statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProp());
+            locationColumn.setCellValueFactory(new PropertyValueFactory<Request, String>("location"));
+
+            assignedColumn.setCellFactory(ComboBoxTableCell.forTableColumn(names));
+            assignedColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Request, String>>() {
+                @Override
+                public void handle(TableColumn.CellEditEvent<Request, String> event) {
+                    try {
+                        int index = table.getSelectionModel().getFocusedIndex();
+
+                        String employeeID = event.getNewValue();
+                        table.getItems().get(index).setAssigned(event.getNewValue());
+
+                        db.assignEmployee((table.getItems().get(index)).getRequestID(), employeeID);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            });
+
+            statusColumn.setCellFactory(ComboBoxTableCell.forTableColumn(stats));
+            statusColumn.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Request, String>>() {
+                @Override
+                public void handle(TableColumn.CellEditEvent<Request, String> event) {
+                    try {
+                        int index = table.getSelectionModel().getFocusedIndex();
+
+                        String status = event.getNewValue();
+                        table.getItems().get(index).setStatus(event.getNewValue());
+
+                        db.changeStatus((table.getItems().get(index)).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            });
+
+            if (usertype != null) {
+                switch (usertype) {
+                    case PATIENT: // only display their service requests
+                        table.setEditable(false);
+                        break;
+                    case ADMIN:
+                    case EMPLOYEE:
+                        table.setEditable(true);
+                        break;
+                }
+            }
+
+            String tabHeader = "  " + s.split(" ")[0].toLowerCase(Locale.ROOT);
+
+            Tab tab = new Tab(s, table);
+            Image img = new Image(icons.get(tabHeader));
+            ImageView tabImg = new ImageView(img);
+            tabImg.setFitWidth(256.0);
+            tabImg.setPreserveRatio(true);
+            tab.setGraphic(tabImg);
+
+            tabs.getTabs().add(tab);
         }
     }
 
-    @FXML
-    public void changeStatus(){
-        try {
-            if(statusD.getSelectionModel() == null) return;
-            int index = srTable.getSelectionModel().getFocusedIndex();
-            if(index == -1) return;
-
-            String status = statusD.getSelectionModel().getSelectedItem().toString();
-            db.changeStatus(srTable.getItems().get(index).getRequestID(), DatabaseUtil.STATUS_NAMES.inverse().get(status));
-            refresh();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void changeCovidStatus() {
-        // TODO: add db integration
-        try {
-            if(covidStatus.getSelectionModel() == null) return;
-            int index = covidSurveyTable.getSelectionModel().getFocusedIndex();
-            if(index == -1) return;
-
-            String status = covidStatus.getSelectionModel().getSelectedItem().toString();
-
-            Map<String, String> isCovidLikely = new HashMap<>();
-            isCovidLikely.put("COVIDLIKELY", status);
-
-            db.editUser(covidSurveyTable.getItems().get(index).username, isCovidLikely);
-            refresh();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void showCovidBox() {
-        srVbox.setVisible(false);
-        covidVbox.setVisible(true);
-        covidVbox.toFront();
-    }
-
-    public void showSRBox() {
-        srVbox.setVisible(true);
-        covidVbox.setVisible(false);
-        srVbox.toFront();
-    }
-
+    /**
+     * Represents each service request in the tables
+     */
     public class Request { //This needs to be public for things to work :(
 
-        private String assigned;
+        private StringProperty assigned;
         private String assignee;
-        private String status;
+        private StringProperty status;
         private String serviceRequest;
         private String location;
         private String requestID;
 
         public void setAssigned(String assigned) {
-            this.assigned = assigned;
+            this.assignedProp().set(assigned);
         }
 
         public void setStatus(String status) {
-            this.status = status;
+            this.statusProp().set(status);
+        }
+
+        public StringProperty assignedProp(){
+            return assigned;
+        }
+
+        public StringProperty statusProp(){
+            return status;
         }
 
         public String getAssigned() {
-            return assigned;
+            return assigned.get();
         }
 
         public String getAssignee() {
@@ -262,7 +368,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         }
 
         public String getStatus() {
-            return status;
+            return status.get();
         }
 
         public String getServiceRequest() {
@@ -278,15 +384,18 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         }
 
         public Request(Map<String, String> sr) {
-            this.assigned = sr.get("EMPLOYEEID"); // TODO : update when DB database is here
+            this.assigned = new SimpleStringProperty(sr.get("EMPLOYEEID"));
             this.assignee = sr.get("FIRSTNAME") + " " + sr.get("LASTNAME");
-            this.status = sr.get("STATUS");
+            this.status = new SimpleStringProperty(sr.get("STATUS"));
             this.serviceRequest = sr.get("REQUESTTYPE");
             this.location = sr.get("LOCATIONID");
             this.requestID = sr.get("REQUESTID");
         }
     }
 
+    /**
+     * Represents each COVID Survey taken in the COVID Table
+     */
     public class CovidSurvey { //This needs to be public for things to work :(
         private String username;
         private String fever;
@@ -300,7 +409,8 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
         private String lossOfTasteSmell;
         private String chills;
         private String quarantine;
-        private String isCovidLikely;
+        private StringProperty isCovidLikely;
+        private StringProperty entryApproved;
 
         public CovidSurvey(Map<String, String> survey) {
             this.username = survey.get("USERNAME");
@@ -316,7 +426,8 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.lossOfTasteSmell = survey.get("LOSSTASTESMELL");
             this.chills = survey.get("NEWCHILLS");
             try {
-                this.isCovidLikely = db.getUserByUsername(survey.get("USERNAME")).get("COVIDLIKELY");
+                this.isCovidLikely = new SimpleStringProperty(db.getUserByUsername(survey.get("USERNAME")).get("COVIDLIKELY"));
+                this.entryApproved = new SimpleStringProperty(db.getUserByUsername(survey.get("USERNAME")).get("ENTRYAPPROVED"));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -418,14 +529,29 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
             this.quarantine = quarantine;
         }
 
-        public String getIsCovidLikely() {
+        public StringProperty isCovidLikelyProp() {
             return isCovidLikely;
         }
 
-        public void setIsCovidLikely(String isCovidLikely) {
-            this.isCovidLikely = isCovidLikely;
+        public String getIsCovidLikely() {
+            return isCovidLikely.get();
         }
 
+        public void setIsCovidLikely(String isCovidLikely) {
+            this.isCovidLikelyProp().set(isCovidLikely);
+        }
+
+        public String getEntryApproved() {
+            return entryApproved.get();
+        }
+
+        public StringProperty entryApprovedProp() {
+            return entryApproved;
+        }
+
+        public void setEntryApproved(String entryApproved) {
+            this.entryApprovedProp().set(entryApproved);
+        }
     }
 
 }

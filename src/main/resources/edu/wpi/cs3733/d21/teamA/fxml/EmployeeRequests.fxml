@@ -1,297 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Group?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
+<?import java.net.URL?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d21.teamA.views.servicerequests.EmployeeRequests">
-   <left>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="340.0" prefWidth="310.0" style="-fx-background-color: #F0F0F0;" BorderPane.alignment="TOP_LEFT">
-         <children>
-            <JFXButton minWidth="51.0" onAction="#goHome" prefHeight="26.0" prefWidth="51.0" text=" ">
-               <VBox.margin>
-                  <Insets right="250.0" top="10.0" />
-               </VBox.margin>
-               <graphic>
-                  <ImageView fitHeight="45.0" fitWidth="35.0">
-                     <image>
-                        <Image url="@../img/back icon.jpg" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </JFXButton>
-            <Group>
-               <children>
-                  <VBox fx:id="srVbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="310.0" style="-fx-background-color: #F0F0F0;">
-                     <children>
-                        <Label text="Service Requests">
-                           <font>
-                              <Font name="Verdana" size="25.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <HBox alignment="CENTER" prefHeight="70.0" prefWidth="313.0">
-                           <children>
-                              <JFXButton fx:id="assignB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#assign" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #003da6; -fx-background-radius: 5; -fx-bold: true;" text="Assign" textFill="WHITE">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font name="Verdana" size="15.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXButton fx:id="changeStatusB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeStatus" prefHeight="40.0" prefWidth="133.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Change Status" textFill="WHITE">
-                                 <font>
-                                    <Font name="Verdana" size="15.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </HBox>
-                        <Line fx:id="line" endX="175.0" stroke="#c4c4c4">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Line>
-                        <JFXComboBox fx:id="assignD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Assign To" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </JFXComboBox>
-                        <JFXComboBox fx:id="statusD" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets top="15.0" />
-                           </VBox.margin>
-                        </JFXComboBox>
-                     </children>
-                  </VBox>
-                  <VBox fx:id="covidVbox" alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="310.0" style="-fx-background-color: #F0F0F0;">
-                     <children>
-                        <Label text="COVID Surveys">
-                           <font>
-                              <Font name="Verdana" size="25.0" />
-                           </font>
-                        </Label>
-                        <Line fx:id="line1" endX="175.0" stroke="#c4c4c4">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Line>
-                        <JFXComboBox fx:id="covidStatus" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="175.0" promptText="COVID Status" style="-fx-background-radius: 7; -fx-background-color: #E4E4E4;" unFocusColor="#4d4d4d00">
-                           <padding>
-                              <Insets left="10.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </JFXComboBox>
-                        <HBox alignment="CENTER" prefHeight="39.0" prefWidth="310.0">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                           <children>
-                              <JFXButton fx:id="changeCovidB" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#changeCovidStatus" prefHeight="40.0" prefWidth="176.0" style="-fx-background-color: #003da6; -fx-background-radius: 5;" text="Update COVID Status" textFill="WHITE">
-                                 <font>
-                                    <Font name="Verdana" size="13.0" />
-                                 </font>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-               </children>
-            </Group>
-         </children>
-      </VBox>
-   </left>
-   <top>
-      <VBox prefHeight="75.0" prefWidth="1300.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="55.0" prefWidth="600.0">
-               <children>
-                  <ImageView fitHeight="65.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../img/logo.png" />
-                     </image>
-                     <HBox.margin>
-                        <Insets left="10.0" top="20.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <Label fx:id="text1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="36.0" prefWidth="460.0" text="BRIGHAM AND WOMEN'S HOSPITAL" wrapText="true">
-                     <font>
-                        <Font name="Verdana" size="24.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="5.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets left="10.0" top="20.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
-            <Rectangle fill="#003da6" height="35.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1300.0">
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </Rectangle>
-         </children>
-      </VBox>
-   </top>
-   <center>
-      <JFXTabPane fx:id="tabs" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" rotateGraphic="true" side="LEFT" tabClosingPolicy="ALL_TABS" BorderPane.alignment="TOP_LEFT">
-         <tabs>
-            <Tab fx:id="serviceRequests" onSelectionChanged="#showSRBox" text="Service Request">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <TableView fx:id="srTable" maxWidth="1000.0" prefHeight="750.0" prefWidth="1400.0">
-                           <columns>
-                              <TableColumn fx:id="assignedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Assigned" />
-                              <TableColumn fx:id="assigneeColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Assignee" />
-                              <TableColumn fx:id="statusColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Status" />
-                              <TableColumn fx:id="serviceRequestColumn" prefWidth="182.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Service Name" />
-                              <TableColumn fx:id="locationColumn" prefWidth="118.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Location" />
-                           </columns>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d21.teamA.views.servicerequests.EmployeeRequests">
+    <children>
+        <JFXTabPane fx:id="tabs" layoutX="10.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="790.0" prefWidth="962.0" side="LEFT" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="63.0">
+            <tabs>
+                <Tab fx:id="covidSurveys">
+                    <content>
+                        <TableView fx:id="covidSurveyTable" prefHeight="750.0" prefWidth="2000.0">
+                            <columns>
+                                <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
+                                <TableColumn fx:id="covidLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
+                                <TableColumn fx:id="entryApprovedColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Entry Approved" />
+                                <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
+                                <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
+                                <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
+                                <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
+                                <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
+                                <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
+                                <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
+                                <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
+                                <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
+                                <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
+                                <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
+                            </columns>
                         </TableView>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab fx:id="covidSurveys" onSelectionChanged="#showCovidBox" text="COVID Surveys">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <ScrollPane prefHeight="766.0" prefWidth="992.0">
-                           <content>
-                              <TableView fx:id="covidSurveyTable" prefHeight="750.0" prefWidth="2000.0">
-                                 <columns>
-                                    <TableColumn fx:id="usernameColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
-                                    <TableColumn fx:id="COVIDLikelyColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
-                                    <TableColumn fx:id="quarantineColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
-                                    <TableColumn fx:id="feverColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
-                                    <TableColumn fx:id="coughColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
-                                    <TableColumn fx:id="shortnessOfBreathColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
-                                    <TableColumn fx:id="muscleAchesColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
-                                    <TableColumn fx:id="tiredColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
-                                    <TableColumn fx:id="nasalColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
-                                    <TableColumn fx:id="soreThroatColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
-                                    <TableColumn fx:id="nauseaDiarrheaColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
-                                    <TableColumn fx:id="lossOfTasteSmellColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
-                                    <TableColumn fx:id="chillsColumn" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
-                                 </columns>
-                              </TableView>
-                           </content>
-                        </ScrollPane>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </Tab>
-            <Tab fx:id="covidSurveys1" onSelectionChanged="#showCovidBox">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <ScrollPane prefHeight="766.0" prefWidth="992.0">
-                           <content>
-                              <TableView fx:id="covidSurveyTable1" prefHeight="750.0" prefWidth="2000.0">
-                                 <columns>
-                                    <TableColumn fx:id="usernameColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
-                                    <TableColumn fx:id="COVIDLikelyColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
-                                    <TableColumn fx:id="quarantineColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
-                                    <TableColumn fx:id="feverColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
-                                    <TableColumn fx:id="coughColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
-                                    <TableColumn fx:id="shortnessOfBreathColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
-                                    <TableColumn fx:id="muscleAchesColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
-                                    <TableColumn fx:id="tiredColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
-                                    <TableColumn fx:id="nasalColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
-                                    <TableColumn fx:id="soreThroatColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
-                                    <TableColumn fx:id="nauseaDiarrheaColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
-                                    <TableColumn fx:id="lossOfTasteSmellColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
-                                    <TableColumn fx:id="chillsColumn1" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
-                                 </columns>
-                              </TableView>
-                           </content>
-                        </ScrollPane>
-                     </children>
-                  </AnchorPane>
-               </content>
+                    </content>
                <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" style="-fx-rotate: 90;">
+                  <ImageView fitHeight="100.0" fitWidth="353.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../img/ServiceReq Icons/foodDeliveryB.png" />
+                        <Image url="@../img/iconsWWords/CovidSurveywWords.png" />
                      </image>
                   </ImageView>
                </graphic>
-            </Tab>
-            <Tab fx:id="covidSurveys11" onSelectionChanged="#showCovidBox" text=" ">
-               <content>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
-                     <children>
-                        <ScrollPane prefHeight="766.0" prefWidth="992.0">
-                           <content>
-                              <TableView fx:id="covidSurveyTable11" prefHeight="750.0" prefWidth="2000.0">
-                                 <columns>
-                                    <TableColumn fx:id="usernameColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Username" />
-                                    <TableColumn fx:id="COVIDLikelyColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Covid Likely" />
-                                    <TableColumn fx:id="quarantineColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Quarantine/Self-Isolation" />
-                                    <TableColumn fx:id="feverColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Fever" />
-                                    <TableColumn fx:id="coughColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Severe Cough" />
-                                    <TableColumn fx:id="shortnessOfBreathColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Shortness of Breath" />
-                                    <TableColumn fx:id="muscleAchesColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Muscle Aches" />
-                                    <TableColumn fx:id="tiredColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Tired" />
-                                    <TableColumn fx:id="nasalColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Runny Nose/Nasal Congestion" />
-                                    <TableColumn fx:id="soreThroatColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Sore Throat" />
-                                    <TableColumn fx:id="nauseaDiarrheaColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Nausea/Diarrhea" />
-                                    <TableColumn fx:id="lossOfTasteSmellColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Loss of Taste/Smell" />
-                                    <TableColumn fx:id="chillsColumn11" prefWidth="150.0" style="-fx-font-size: 20; -fx-font-family: Verdana;" text="Chills" />
-                                 </columns>
-                              </TableView>
-                           </content>
-                        </ScrollPane>
-                     </children>
-                  </AnchorPane>
-               </content>
-               <graphic>
-                  <ImageView fitHeight="25.0" fitWidth="25.0" style="-fx-rotate: 90;">
-                     <image>
-                        <Image url="@../img/ServiceReq Icons/medicineDeliveryB.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Tab>
-         </tabs>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </JFXTabPane>
-   </center>
-</BorderPane>
+                </Tab>
+            </tabs>
+        </JFXTabPane>
+        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#003da6" height="63.0" stroke="BLACK" strokeType="INSIDE" width="1300.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
+            <graphic>
+                <ImageView fitHeight="30.0" fitWidth="20.0">
+                    <image>
+                        <Image url="@../img/image.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </JFXButton>
+    </children>
+    <stylesheets>
+        <URL value="@../CSS/EmployeeRequests.css" />
+    </stylesheets>
+</AnchorPane>
