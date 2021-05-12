@@ -8,9 +8,9 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 public class SocketClient {
-    private Socket client;
-    private InputStream in;
-    private OutputStream out;
+    private final Socket client;
+    private final InputStream in;
+    private final OutputStream out;
 
     public SocketClient(String host, int port) throws IOException {
         client = new Socket(host, port);

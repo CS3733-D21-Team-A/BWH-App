@@ -707,7 +707,7 @@ public class Navigation extends GenericMap {
         setStartAndEnd();
     }
 
-    public void goToStepByStep() {
+    public void goToStepByStep() throws IOException {
         currentStepNumber = 0;
         drawer.setSidePane(stepByStepSideMenu);
         currentMenu = sideControllers.get(2);
