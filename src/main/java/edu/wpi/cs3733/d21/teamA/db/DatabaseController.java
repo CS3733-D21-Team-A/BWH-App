@@ -96,8 +96,10 @@ public class DatabaseController {
 	 */
 	public static DatabaseController getInstance() {
 		try {
-			if (DBControllerSingleton.instance == null || DBControllerSingleton.instance.connectionIsClosed()) {
+			if (DBControllerSingleton.instance == null) {
 				DBControllerSingleton.instance = new DatabaseController();
+			} else if (DBControllerSingleton.instance.connectionIsClosed()) {
+				DBControllerSingleton.instance.updateConnection();
 			}
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
@@ -484,8 +486,8 @@ public class DatabaseController {
 	 * @return a map whose keys are the names of the columns and value.
 	 * 	Value is a boolean indicating if they representing type (false = int,true = String).
 	 */
-	public List<String> getServiceRequestColumns(SERVICEREQUEST requestType) {
-		return new ArrayList<>(requestsTables.get(requestType).getColumns().keySet());
+	public List<String> getServiceRequestColumns(SERVICEREQUEST requestType) throws SQLException {
+		return requestsTables.get(requestType).getColumns();
 	}
 
 
@@ -602,16 +604,26 @@ public class DatabaseController {
 	 */
 	public void addSurvey(Map<String, String> survey) throws SQLException {
 		if (covidSurveyTable.getEntry(survey.get("USERNAME")) != null) {
-			covidSurveyTable.deleteEntry(survey.get("USERNAME")); //TODO: Talk to UI about having users resubmit a survey
+			covidSurveyTable.editEntry(survey.get("USERNAME"),survey);
+		} else {
+			covidSurveyTable.addEntry(survey);
 		}
-		//TODO: Make it so guests create a random ID for username
-		covidSurveyTable.addEntry(survey);
 
 		String username = covidSurveyTable.getEntry(survey.get("USERNAME")).get("USERNAME");
 		Map<String, String> theUser = userTable.getEntry(username);
-		theUser.replace("TAKENSURVEY", "true");
+		theUser.put("TAKENSURVEY", "true");
+		theUser.put("COVIDLIKELY","");
+		theUser.put("ENTRYAPPROVED","");
 
 		userTable.editEntry(username, theUser);
+	}
+
+	/**
+	 * Returns the list of columns of the covid survey table
+	 * @return the list of columns of the covid survey table
+	 */
+	public List<String> getSurveyColumns() throws SQLException {
+		return covidSurveyTable.getColumns();
 	}
 
 	/**

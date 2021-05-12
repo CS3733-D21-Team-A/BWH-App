@@ -72,6 +72,11 @@
                   <Font name="Verdana Bold" size="25.0" />
                </font>
             </JFXButton>
+            <JFXButton layoutX="263.0" layoutY="413.0" onAction="#clearPrefs" pickOnBounds="false" prefHeight="64.0" prefWidth="234.0" style="-fx-background-radius: 7; -fx-background-color: #003da6;" text="Reset Preferences" textFill="WHITE">
+               <font>
+                  <Font name="Verdana Bold" size="20.0" />
+               </font>
+            </JFXButton>
             </children>
         </Pane>
    </bottom>

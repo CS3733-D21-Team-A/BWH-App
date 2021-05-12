@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d21.teamA.db.DatabaseController;
 import edu.wpi.cs3733.d21.teamA.db.DatabaseUtil;
 import edu.wpi.cs3733.d21.teamA.db.enums.USERTYPE;
+import edu.wpi.cs3733.d21.teamA.extras.EmailService;
 import edu.wpi.cs3733.d21.teamA.extras.Security;
 import edu.wpi.cs3733.d21.teamA.views.GenericPage;
 import javafx.collections.FXCollections;
@@ -49,7 +50,7 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
         );
     }
     @FXML
-    public void submit_button() throws SQLException {
+    public void submit_button() throws SQLException, IOException {
         // maybe we should wait to check emails until they work? Not entirely sure how this regex works the $ and ^
 /*        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
@@ -93,7 +94,9 @@ public class AdminNewAccount extends GenericPage { //TODO: Make this extend Crea
 
         db.addUser(user);
 
-        popUp ( "Account Success", "\n\n\n\n\nAdmin, the account you submitted was successfully created." );
+        EmailService.sendAccountCreationEmail(emailAddress.getText(), userName.getText(), firstName.getText());
+
+        popUp ( "Account Success", "\n\n\n\n\nThe account was successfully created." );
         sceneSwitch("AdminMainPage");
     }
 }

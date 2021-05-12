@@ -58,6 +58,11 @@
                   </JFXButton>
                </children>
             </Group>
+            <JFXButton layoutX="1132.0" layoutY="828.0" onAction="#resetZoom" prefHeight="46.0" prefWidth="141.0" style="-fx-background-color: #7D99C9; -fx-text-fill: #F0F0F0;" text="Reset Zoom">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </JFXButton>
             <Pane fx:id="apiKeyPane" prefHeight="200.0" prefWidth="290.0" style="visibility: false; -fx-background-color: ffffff;">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="288.0">
