@@ -61,8 +61,7 @@ public class GenericPage {
 
     @FXML
     public void goHome() {
-        USERTYPE usertype = DatabaseUtil.USER_TYPE_NAMES.inverse().get(PREFERENCES.get(USER_TYPE,null));
-        sceneSwitch(usertype+"MainPage");
+        sceneSwitch(PREFERENCES.get(USER_TYPE,null)+"MainPage");
         previousPages.clear(); //Need to clear the history when we go home
     }
 
