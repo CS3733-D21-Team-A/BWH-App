@@ -97,7 +97,7 @@ public class FoodDelivery extends GenericServiceRequest {
     void submitFood() throws SQLException, IOException{
         String errorVals = "";
         if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
-        sharedValues.put("LOCATIONID", roomNumber.getSelectionModel().getSelectedItem().toString());
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
         submit(errorVals);
     }
 }

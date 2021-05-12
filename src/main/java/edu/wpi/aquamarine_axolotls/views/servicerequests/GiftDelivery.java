@@ -5,8 +5,11 @@ import edu.wpi.aquamarine_axolotls.db.enums.SERVICEREQUEST;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class GiftDelivery extends GenericServiceRequest {
@@ -53,9 +56,23 @@ public class GiftDelivery extends GenericServiceRequest {
         nodeIDS = new ArrayList<String>();
         nodeIDS.add("FINFO00101");
         nodeIDS.add("EINFO00101");
-        deliveryLocation.setItems(FXCollections
-                .observableArrayList("75 Lobby Information Desk","Connors Center Security Desk Floor 1")
-        );
+        ArrayList<String> locations = new ArrayList<>();
+        try {
+            for (Map<String, String> oneNode: db.getNodes()) {
+                locations.add(oneNode.get("LONGNAME"));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        deliveryLocation.setItems(FXCollections.observableArrayList(locations));
+    }
+
+    @FXML
+    void submitGift() throws SQLException, IOException {
+        String errorVals = "";
+        if(deliveryLocation.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",deliveryLocation.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+        submit(errorVals);
     }
 
 }

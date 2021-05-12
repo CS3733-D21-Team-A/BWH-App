@@ -28,6 +28,13 @@ public class FloralDelivery extends GenericServiceRequest {
     @FXML
     private JFXComboBox vaseOptions;
 
+    @FXML
+    void submitFloral() throws SQLException, IOException{
+        String errorVals = "";
+        if(roomNumber.getSelectionModel().getSelectedItem().toString().isEmpty()) errorVals = "\n  -LOCATIONID";
+        sharedValues.put("LOCATIONID", db.getNodesByValue("LONGNAME",roomNumber.getSelectionModel().getSelectedItem().toString()).get(0).get("NODEID"));
+        submit(errorVals);
+    }
 
     @FXML
     public void initialize() {
