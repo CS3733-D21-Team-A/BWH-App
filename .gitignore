@@ -1,7 +1,3 @@
-derby.log
-*.lock
-
-
 # Created by https://www.gitignore.io/api/java,macos,gradle,intellij+all
 # Edit at https://www.gitignore.io/?templates=java,macos,gradle,intellij+all
 
@@ -161,3 +157,8 @@ gradle-app.setting
 # End of https://www.gitignore.io/api/java,macos,gradle,intellij+all
 
 /BWH/
+/EMBEDDED_BWH_DB/
+/SERVER_BWH_DB/
+
+/derby/*
+!/derby/*.jar

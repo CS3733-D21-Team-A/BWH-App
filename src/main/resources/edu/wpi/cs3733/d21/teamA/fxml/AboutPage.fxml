@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxWidth="1300.0" minWidth="3.0" prefHeight="900.0" prefWidth="1300.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d21.teamA.views.accountmanagement.AboutPage">
+    <right>
+        <Pane prefHeight="900.0" prefWidth="607.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label alignment="TOP_CENTER" contentDisplay="TOP" layoutX="76.0" layoutY="82.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="119.0" prefWidth="392.0" text="About" textAlignment="RIGHT" textFill="#003da6" wrapText="true">
+                    <font>
+                        <Font name="Verdana Bold" size="70.0" />
+                    </font>
+                </Label>
+                <Line endX="281.4117431640625" layoutX="180.0" layoutY="199.0" startX="-100.0" stroke="#7d99c9" strokeWidth="3.0" />
+            <ImageView fitHeight="388.0" fitWidth="536.0" layoutX="-36.0" layoutY="513.0">
+               <image>
+                  <Image url="@../img/Brigham-Womens-TO-USE.jpeg" />
+               </image>
+            </ImageView>
+            <Text layoutX="1.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WPI Computer Science" textAlignment="CENTER" wrappingWidth="505.4512939453125">
+               <font>
+                  <Font name="Verdana" size="30.0" />
+               </font>
+            </Text>
+            <Text layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CS3733-D21 Software Engineering" textAlignment="CENTER" wrappingWidth="498.72540283203125">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="-1.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Team Coach: Andrew Bonaventura" textAlignment="CENTER" wrappingWidth="500.96014404296875">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="-8.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Professor: Wilson Wong" textAlignment="CENTER" wrappingWidth="507.24310302734375">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Text>
+            </children>
+        </Pane>
+    </right>
+    <left>
+        <Pane prefHeight="795.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+            <children>
+                <Rectangle fill="#003da6" height="65.0" layoutX="-3.0" layoutY="-12.0" stroke="TRANSPARENT" strokeType="INSIDE" strokeWidth="0.0" width="1307.0" />
+                <JFXButton layoutX="1.0" layoutY="4.0" onAction="#goBack" prefHeight="43.0" prefWidth="46.0" text=" ">
+                    <graphic>
+                        <ImageView fitHeight="30.0" fitWidth="20.0">
+                            <image>
+                                <Image url="@../img/image.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </JFXButton>
+                <Text layoutX="33.0" layoutY="582.0" lineSpacing="8.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes. BWH App is a java based computer application integrated with database elements. The main features of this application are the navigation in, to, and around the hospital, service request submission abilities, and accounts for patients, guests, employees, and administration with restricted access to certain features for each. Thank you to Brigham and Women’s Hospital and your representative, Andrew Shinn, for your time and input. " wrappingWidth="705.614772674299">
+                    <font>
+                        <Font name="Verdana" size="20.0" />
+                    </font>
+                </Text>
+            <Text layoutX="305.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Team Members:" wrappingWidth="174.02720642089844">
+               <font>
+                  <Font name="Verdana" size="20.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="N'yoma Diamond: Lead Software Engineer">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Craig Dunn: Back-End DB Engineer">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="John Higgins: Assistant Lead Software Engineer">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Alexa Freglette: Lead UI &amp; Graphics Engineer" wrappingWidth="498.529541015625">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sean McMillian: Assistant Lead Software Engineer and Documentation Analyst" wrappingWidth="529.1332397460938">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Evelyn Tran: Product Owner, UI &amp; Graphics Engineer and Assistant Project Manager" wrappingWidth="529.07421875">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Emily Kelley: Scrum Master and Back-End DB Engineer" wrappingWidth="594.8170166015625">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Billy Cross: Algorithm Specialst and UI &amp; Graphics Engineer">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="410.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Zhongchuan: Algorthm Specialist ">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            <Text layoutX="50.0" layoutY="440.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chris DeMaio: Project Manager and UI &amp; Graphics Engineer">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Text>
+            </children>
+        </Pane>
+    </left>
+</BorderPane>

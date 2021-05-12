@@ -1,0 +1,44 @@
+
+/* The tables row */
+.tree-table-row-cell > .tree-disclosure-node > .arrow {
+    -fx-background-color: #003da6;
+}
+
+/* the whole column */
+.tree-table-view .column-header {
+    -fx-background-color: #F0F0F0;
+}
+
+.tree-table-view {
+    -fx-background-color: #003da6;
+}
+
+.table-view {
+    -fx-background-color: #003da6;
+}
+
+.tree-table-view > .column-header-background {
+    -fx-background-color: #F0F0F0;
+}
+
+/* The column text */
+.tree-table-view .column-header .label{
+    -fx-font-size: 15px;
+    -fx-text-fill: #003da6;
+    -fx-alignment: center-left;
+}
+
+.tree-table-view {
+    -fx-background-color:#F0F0F0;
+}
+
+/* each cell in the table */
+.tree-table-cell {
+    -fx-font-size:13px;
+    -fx-alignment: top-left;
+    -fx-wrap-text: true;
+    -fx-cell-size: 50px;
+    -fx-font-weight: 600;
+    -fx-background-color: #F0F0F0;
+
+}
