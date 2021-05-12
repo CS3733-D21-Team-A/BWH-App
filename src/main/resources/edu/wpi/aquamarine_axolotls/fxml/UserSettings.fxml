@@ -33,7 +33,7 @@
                   <Font name="Verdana Bold" size="40.0" />
                </font>
             </JFXButton>
-            <JFXButton cancelButton="true" layoutX="35.0" layoutY="135.0" onAction="#creditsP" prefHeight="79.0" prefWidth="262.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Credit" textFill="WHITE">
+            <JFXButton cancelButton="true" layoutX="35.0" layoutY="135.0" onAction="#creditsP" prefHeight="79.0" prefWidth="262.0" style="-fx-background-color: #003da6; -fx-background-radius: 7;" text="Credits" textFill="WHITE">
                <font>
                   <Font name="Verdana Bold" size="40.0" />
                </font>

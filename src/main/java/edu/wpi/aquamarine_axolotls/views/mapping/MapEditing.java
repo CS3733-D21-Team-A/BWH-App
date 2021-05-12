@@ -15,6 +15,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -381,6 +382,40 @@ public class MapEditing extends GenericMap {
     }
 
 
+    public void setUpEdgeEventHandler(Line edge, String edgeID){
+        //Opening the popup menu
+        edge.setOnMouseClicked((MouseEvent e) ->{
+
+            try {
+                if (selectedEdgesList.contains(db.getEdge(edgeID))) {
+                    selectedEdgesList.remove(db.getEdge(edgeID));
+                    edge.setStroke(Color.BLACK);
+                    linesOnImage.get(edgeID).setStroke(Color.BLACK);
+                    if (!db.getNode(db.getEdge(edgeID).get("STARTNODE")).get("FLOOR").equals(FLOOR)) {
+                        removeEdgeOnImage(edgeID);
+                    }
+                } else {
+                    selectedEdgesList.add(db.getEdge(edgeID));
+                    edge.setStroke(yellow);
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
+
+        // Hover over edge to make it thicker
+        edge.setOnMouseEntered((MouseEvent e) ->{
+            edge.setStrokeWidth(5);
+            edge.toBack();
+        });
+
+        //Moving mouse off edge will make it stop highlighting
+        edge.setOnMouseExited((MouseEvent e) ->{
+            edge.setStrokeWidth(magicNumber);
+        });
+    }
+
+
 
     /**
      * Brings up the editing popup for users to change values of an edge/node
@@ -460,7 +495,7 @@ public class MapEditing extends GenericMap {
                 //System.out.println(e.getClickCount());
                 if (e.getClickCount() == 2) {
                     if(e.isStillSincePress()){
-                        node.setFill(yellow);
+//                        node.setFill(yellow);
                         System.out.println("Successfully clicked node");
                         currentID = nodeID;
                         state = "Edit";
