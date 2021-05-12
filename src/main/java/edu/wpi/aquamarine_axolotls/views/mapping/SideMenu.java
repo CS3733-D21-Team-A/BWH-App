@@ -67,11 +67,14 @@ public class SideMenu extends GenericPage {
     @FXML
     JFXToggleButton voiceDirection;
 
+    @FXML
+    JFXToggleButton robotConnection;
+
     TreeItem<String> fav = new TreeItem<>("Favorites");
 
     double eta;
 
-    public void goToStepByStep() {
+    public void goToStepByStep() throws IOException {
         navController.goToStepByStep();
     }
 
@@ -81,6 +84,10 @@ public class SideMenu extends GenericPage {
 
     public void toggleVoiceSlider() {
         voiceDirection.setSelected(!voiceDirection.isSelected());
+    }
+
+    public void toggleRobotConnectionButton() throws IOException, InterruptedException {
+        navController.toggleRobot();
     }
 
     public void goToListOfDirections() {

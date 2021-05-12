@@ -28,7 +28,8 @@
                                <Insets right="170.0" />
                            </HBox.margin>
                        </JFXButton>
-                       <JFXToggleButton fx:id="voiceDirection" contentDisplay="RIGHT" onAction="#toggleVoiceDirectionButton" prefHeight="58.0" prefWidth="96.0" text="TTS" textFill="WHITE" toggleColor="#f0f0f0" toggleLineColor="#f4ba4f" unToggleColor="#f0f0f0" />
+                       <JFXToggleButton fx:id="robotConnection" contentDisplay="RIGHT" onAction="#toggleRobotConnectionButton" prefHeight="62.0" prefWidth="218.0" text="Robot" textFill="WHITE" toggleColor="#f0f0f0" toggleLineColor="#f4ba4f" unToggleColor="#f0f0f0" />
+                       <JFXToggleButton fx:id="voiceDirection" contentDisplay="RIGHT" onAction="#toggleVoiceDirectionButton" prefHeight="62.0" prefWidth="218.0" text="Voice" textFill="WHITE" toggleColor="#f0f0f0" toggleLineColor="#f4ba4f" unToggleColor="#f0f0f0" />
                    </children>
                <VBox.margin>
                   <Insets top="10.0" />

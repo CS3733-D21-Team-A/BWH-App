@@ -1,4 +1,6 @@
 package edu.wpi.aquamarine_axolotls.views.mapping;
+import edu.wpi.aquamarine_axolotls.socketServer.*;
+import javafx.application.Platform;
 
 import com.google.maps.model.DirectionsLeg;
 import com.google.maps.model.DirectionsStep;
@@ -11,6 +13,7 @@ import edu.wpi.aquamarine_axolotls.extras.VoiceController;
 import edu.wpi.aquamarine_axolotls.pathplanning.AStar;
 import edu.wpi.aquamarine_axolotls.pathplanning.Node;
 import edu.wpi.aquamarine_axolotls.pathplanning.SearchAlgorithmContext;
+import edu.wpi.aquamarine_axolotls.Aapp;
 import javafx.animation.*;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
@@ -83,6 +86,7 @@ public class Navigation extends GenericMap {
     MenuItem addStop = new MenuItem("Add Stop");
 
     boolean isVoiceToggled;
+    boolean robotConnection;
 
     public void initialize() throws java.sql.SQLException, IOException {
 
@@ -674,7 +678,7 @@ public class Navigation extends GenericMap {
 
                                             //=== SIDE BAR METHODS ===//
 
-    public void startPath() {
+    public void startPath() throws IOException {
         goToStepByStep();
     }
 
@@ -765,7 +769,7 @@ public class Navigation extends GenericMap {
     }
 
                                         //==== LIST OF DIRECTIONS ====//
-    public void startDir() {
+    public void startDir() throws IOException {
         currentStepNumber = 0; // was dirIndex
         String curDirection = curPathDirections.get(0).get(currentStepNumber);
         setArrowsToBeVisible();
@@ -781,6 +785,11 @@ public class Navigation extends GenericMap {
         }
         if(isVoiceToggled) {
             voice.say(voice.getTextOptimization(curPathDirections.get(0).get(currentStepNumber)), newThread);
+        }
+        String sendPacket = getROSDirection();
+        if(robotConnection){
+            Aapp.clientSender.send(sendPacket);
+            popUp("Turtlebot Info", "\n\n\n\n\n Robot is coming ...\n Please wait... ");
         }
     }
 
@@ -996,6 +1005,154 @@ public class Navigation extends GenericMap {
     }
 
 
+    private String getROSDirection(){
+        String coordinateList = "";
+        for (Map<String,String> n: currentPath) {
+            coordinateList += n.get("XCOORD") + "," + n.get("YCOORD") + ";";
+        }
+        System.out.println(coordinateList);
+        return coordinateList;
+    }
+
+    public void toggleRobot() throws IOException, InterruptedException {
+        robotConnection = !robotConnection;
+        if (robotConnection && !Aapp.serverRunning){
+            String host = "192.168.1.118";
+            Aapp.clientSender = new SocketClient(host,7777);
+            Aapp.clientReceiver = new SocketClient(host,5555);
+            Aapp.clientInfoReceiver = new SocketClient(host,5556);
+            Aapp.clientThreadSender = new Thread(() -> {
+                try {
+                    String massage;
+                    massage = Aapp.clientSender.getMassage();
+                    //System.out.println("get massage");
+                    if(!massage.equals("Verifying Server!")){
+                        System.out.println("Server Wrong!");
+                        System.exit(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadSender.start();
+
+            Aapp.clientInfoThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientInfoReceiver.getMassage();
+                        System.out.println("in first info thread");
+                        if(message.contains("progress to the")){
+                                System.out.println(message);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 1");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                                Thread.sleep(2500);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 2");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                            }
+//                            else if(robotDirectionNum == 0){
+//                                robotDirectionNum ++;
+//                        }
+                        else if(message.contains("faraway")){
+                            System.out.println(message);
+                            Platform.runLater(() ->popUp("Turtlebot Info", "\n\n\n\n\n Looks like you are far behind ...\n Robot is waiting for you "));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                });
+                Aapp.clientInfoThreadReceiver.start();
+
+            Aapp.clientThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientReceiver.getMassage();
+                        Double[] robotCoordinate = getROSCoordinate(message);
+                        if (robotCoordinate != null  && FLOOR.equals("L1")){
+                            Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadReceiver.start();
+            Aapp.serverRunning = true;
+            System.out.println("server running");
+        }
+        else if(robotConnection && Aapp.serverRunning){
+            Aapp.clientSender.send("resume nav");
+            Aapp.clientThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientReceiver.getMassage();
+                        System.out.println(message);
+                        Double[] robotCoordinate = getROSCoordinate(message);
+                        if (robotCoordinate != null && FLOOR.equals("L1")){
+                            Platform.runLater(() -> drawRobotArrow(xScale((int)(robotCoordinate[0]*10+2130)),yScale((int)(-robotCoordinate[1]*10+1050)),FLOOR,-robotCoordinate[2]*180/Math.PI+90));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientThreadReceiver.start();
+            Aapp.clientInfoThreadReceiver.stop();
+            Aapp.clientInfoThreadReceiver = new Thread(() -> {
+                try{
+                    while (!Thread.currentThread().isInterrupted()){
+                        String message = Aapp.clientInfoReceiver.getMassage();
+                        System.out.println("in restarted info thread");
+                        if(message.contains("progress to the")){
+                                System.out.println(message);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 1");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                                Thread.sleep(2500);
+                                Platform.runLater(() -> {
+                                    try {
+                                        System.out.println("progress 2");
+                                        progress();
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+                                });
+                        }
+                        else if(message.contains("faraway")){
+                            System.out.println(message);
+                            Platform.runLater(() ->popUp("Turtlebot Info", "\n\n\n\n\n Looks like you are far behind ...\n Robot is waiting for you "));
+                        }
+                    }
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+            });
+            Aapp.clientInfoThreadReceiver.start();
+        }
+        else if(!robotConnection && Aapp.serverRunning){
+            Aapp.clientThreadReceiver.suspend();
+            //Aapp.clientInfoThreadReceiver.stop();
+            removeDirectionArrow();
+            Aapp.clientSender.send("cancel nav");
+        }
+    }
 }
 
 

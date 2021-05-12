@@ -20,8 +20,6 @@ public class VoiceController {
     }
 
     public String getTextOptimization(String textToOptimize){
-        int dotIndex = textToOptimize.indexOf(".");
-        String subString = "";
 
         String[] parts = textToOptimize.split("\\.");
 
