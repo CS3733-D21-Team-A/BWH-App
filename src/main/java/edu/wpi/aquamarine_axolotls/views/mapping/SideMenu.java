@@ -21,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +99,7 @@ public class SideMenu extends GenericPage {
         navController.goToGmapsListOfDirections();
     }
 
-    public void startPath() {
+    public void startPath() throws IOException {
         navController.startPath();
     }
 
