@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -72,14 +73,16 @@
                             <GridPane.margin>
                                 <Insets top="40.0" />
                             </GridPane.margin></JFXTextField>
-                        <JFXTextField fx:id="currentRoom" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="Current Room Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.rowIndex="2">
-                            <GridPane.margin>
-                                <Insets top="40.0" />
-                            </GridPane.margin></JFXTextField>
-                        <JFXTextField fx:id="newRoom" alignment="BOTTOM_LEFT" maxWidth="-Infinity" prefHeight="100.0" prefWidth="267.0" promptText="New Room Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <GridPane.margin>
-                                <Insets top="40.0" />
-                            </GridPane.margin></JFXTextField>
+                  <JFXComboBox fx:id="locationPicker" prefHeight="50.0" prefWidth="267.0" promptText="Current Room" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="25.0" top="40.0" />
+                     </GridPane.margin>
+                  </JFXComboBox>
+                  <JFXComboBox fx:id="newLocation" prefHeight="50.0" prefWidth="267.0" promptText="New Room" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets right="25.0" top="40.0" />
+                     </GridPane.margin>
+                  </JFXComboBox>
                     </children>
                 </GridPane>
 
@@ -97,7 +100,7 @@
         </Pane>
     </left>
    <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submitInternalTransport" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="255.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
               <font>
                   <Font name="Verdana" size="30.0" />
               </font>

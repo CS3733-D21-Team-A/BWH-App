@@ -113,7 +113,7 @@
                   <Insets top="40.0" />
                </padding>
             </Label>
-            <JFXComboBox fx:id="locationDropdown" layoutX="232.0" layoutY="361.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="321.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Verdana;">
+            <JFXComboBox fx:id="locationPicker" layoutX="232.0" layoutY="361.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="70.0" prefWidth="321.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Verdana;">
                <padding>
                   <Insets top="40.0" />
                </padding></JFXComboBox>
@@ -121,7 +121,7 @@
       </Pane>
    </left>
    <center>
-      <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submitFacilities" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
+      <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
          <font>
             <Font name="Verdana" size="30.0" />
          </font>

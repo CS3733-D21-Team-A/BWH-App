@@ -26,7 +26,7 @@ import static edu.wpi.cs3733.d21.teamA.Settings.*;
 import static edu.wpi.cs3733.d21.teamA.db.enums.SERVICEREQUEST.*;
 import static edu.wpi.cs3733.d21.teamA.db.enums.USERTYPE.*;
 
-public class EmployeeRequests extends GenericPage { //TODO: please change the name of this class and page
+public class EmployeeRequests extends GenericPage {
 
     @FXML private TableView<CovidSurvey> covidSurveyTable;
     @FXML private TableColumn<CovidSurvey, String> usernameColumn;
@@ -52,7 +52,7 @@ public class EmployeeRequests extends GenericPage { //TODO: please change the na
     private static final List<String> serviceRequestIndex;
 
     static {
-        serviceRequestIndex = new ArrayList<String>();
+        serviceRequestIndex = new ArrayList<>();
         serviceRequestIndex.add("Floral Delivery");
         serviceRequestIndex.add("Food Delivery");
         serviceRequestIndex.add("Gift Delivery");

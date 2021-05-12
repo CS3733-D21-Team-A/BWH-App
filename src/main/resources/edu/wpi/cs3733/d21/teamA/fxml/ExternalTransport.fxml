@@ -90,7 +90,7 @@
                                 <Insets right="25.0" top="40.0" />
                             </GridPane.margin>
                         </JFXComboBox>
-                        <JFXComboBox fx:id="roomNumber" minWidth="280.0" prefHeight="72.0" prefWidth="295.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                        <JFXComboBox fx:id="locationPicker" minWidth="280.0" prefHeight="72.0" prefWidth="295.0" promptText="Room Number" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.rowIndex="3">
                             <GridPane.margin>
                                 <Insets right="25.0" top="40.0" />
                             </GridPane.margin>
@@ -116,7 +116,7 @@
         </Pane>
     </left>
    <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submitExternalTransport" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
               <font>
                   <Font name="Verdana" size="30.0" />
               </font>

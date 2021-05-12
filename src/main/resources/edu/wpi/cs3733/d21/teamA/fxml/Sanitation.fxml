@@ -73,7 +73,7 @@
                             <font>
                                 <Font name="Verdana" size="20.0" />
                             </font></JFXTextField>
-                        <JFXComboBox fx:id="sanitLocation" prefHeight="50.0" prefWidth="250.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                        <JFXComboBox fx:id="locationPicker" prefHeight="50.0" prefWidth="250.0" promptText="Location" style="-fx-font-size: 20; -fx-font-family: Verdana;" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                             <GridPane.margin>
                                 <Insets top="40.0" />
                             </GridPane.margin>
@@ -108,7 +108,7 @@
         </Pane>
     </left>
    <center>
-          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submitSanitation" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
+          <JFXButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="255.0" mnemonicParsing="false" onAction="#submit" prefHeight="75.0" prefWidth="274.0" style="-fx-background-color: F4BA47; -fx-background-radius: 7;" text="Submit" textFill="#003da6" BorderPane.alignment="CENTER">
               <font>
                   <Font name="Verdana" size="30.0" />
               </font>
